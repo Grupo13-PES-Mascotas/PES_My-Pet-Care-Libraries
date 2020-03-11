@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  coverage report:
+  coverage-report:
 
     runs-on: ubuntu-latest
 
