@@ -1,4 +1,4 @@
-package org.pesmypetcare.api;
+package org.pesmypetcare.usermanagerlibrary;
 
 public class Foo {
 
