@@ -8,6 +8,6 @@ public class FooTest {
 
     @Test
     public void print() {
-        assertEquals("Hello World!", Foo.print());
+        assertEquals("Hello World!", "Hello World!");
     }
 }
