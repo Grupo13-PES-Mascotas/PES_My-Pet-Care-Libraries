@@ -1,6 +1,6 @@
 package org.pesmypetcare.usermanagerlibrary;
 
-public class Foo {
+public class UserManagerLibrary {
 
     public static String print() {
         return "Hello World!";
