@@ -1,2 +1,2 @@
-rootProject.name = 'My Pet Care API'
-
+rootProject.name='PES_My-Pet-Care_APIs'
+include ':app'
