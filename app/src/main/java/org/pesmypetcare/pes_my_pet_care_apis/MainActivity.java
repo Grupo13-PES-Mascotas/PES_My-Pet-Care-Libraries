@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try {
-            UserManagerLibrary.PostUser("empo", "123456", "empo@gmail.com");
+            UserManagerLibrary.PostUser("kayle", "123abc", "kayle@gmail.com");
         } catch (IOException e) {
             e.printStackTrace();
         }
