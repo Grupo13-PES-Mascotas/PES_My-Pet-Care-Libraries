@@ -2,6 +2,7 @@ package org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary;
 
 
 import android.net.Uri;
+import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static java.util.Objects.*;
 
-public class UserManagerLibrary {
+public class UserManagerLibrary extends AsyncTask<String, String, String> {
 
     //1. Funcio petita amb atribut corresponent
     //2. Definir petició amb constructora
@@ -34,11 +35,32 @@ public class UserManagerLibrary {
 
     private static final String GET_URL = "https://pes-my-pet-care.herokuapp.com/singup?password=";
 
+    private static String attr_username;
+    private static String attr_email;
+    private static String attr_password;
+    private static int peticion_id;
+
+
     /*private static final String username = "username=Pankaj";
 
     private static final String password = "password=123456";
 
     private static final String email = "email=pankaj@gmail.com";*/
+
+    public static void AltaUsuari (String username, String password, String email) {
+        attr_email = email;
+        attr_password = password;
+        attr_username = username;
+
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+        if (peticion_id == 1) {
+            PostUser(attr_username, attr_password, attr_email);
+        }
+
+    }
 
     public static void PostUser(String username, String password, String email) throws IOException {
         URL obj = new URL(GET_URL+password);
@@ -133,6 +155,8 @@ public class UserManagerLibrary {
             System.out.println("POST request not worked");
         }*/
     }
+
+
 
     /*private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder feedback = new StringBuilder();
