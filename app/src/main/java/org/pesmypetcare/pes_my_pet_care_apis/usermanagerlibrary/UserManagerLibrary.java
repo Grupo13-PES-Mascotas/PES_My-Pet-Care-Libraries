@@ -46,7 +46,7 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         postData.put("username", username);
         task_id = 1;
         UserManagerLibrary task = new UserManagerLibrary(postData);
-        task.execute("http://10.4.41.170:8081/users/");
+        task.execute("https://10.4.41.170:8081/users/");
     }
 
     @Override

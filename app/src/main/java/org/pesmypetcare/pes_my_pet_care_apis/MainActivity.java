@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //UserManagerLibrary.PostUser("kayle", "123abc", "kayle@gmail.com");
-        //AltaUsuari("alvaroo","trius4576" , "bejarrr@gmail.com");
-        ConsultarUsuari("kayle");
+        AltaUsuari("pit_catalan","13santpere" , "mejubiloyaa@gmail.com");
+        //ConsultarUsuari("kayle");
     }
 }
