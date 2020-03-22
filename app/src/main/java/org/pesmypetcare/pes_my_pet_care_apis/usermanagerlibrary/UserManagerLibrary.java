@@ -1,143 +1,93 @@
 package org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary;
 
 
-import android.net.Uri;
 import android.os.AsyncTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.Objects;
-import java.lang.Object;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import static java.util.Objects.*;
+import java.util.Map;
 
 public class UserManagerLibrary extends AsyncTask<String, String, String> {
 
-    //1. Funcio petita amb atribut corresponent
-    //2. Definir petició amb constructora
-    //3. Request amb id_peticio
-    //4. Request real amb setRequestMethod
+
+
+    JSONObject postData;
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    //private static final String user_id = "145";
+    private static int task_id;
 
-    private static final String GET_URL = "https://pes-my-pet-care.herokuapp.com/singup?password=";
-
-    private static String attr_username;
-    private static String attr_email;
-    private static String attr_password;
-    private static int peticion_id;
-
-
-    /*private static final String username = "username=Pankaj";
-
-    private static final String password = "password=123456";
-
-    private static final String email = "email=pankaj@gmail.com";*/
+    public UserManagerLibrary(Map<String, String> postData) {
+        if (postData != null) {
+            this.postData = new JSONObject(postData);
+        }
+    }
 
     public static void AltaUsuari (String username, String password, String email) {
-        attr_email = email;
-        attr_password = password;
-        attr_username = username;
+        Map<String, String> postData = new HashMap<>();
+        postData.put("username", username);
+        postData.put("email", email);
+        postData.put("password",password);
+        task_id = 0;
+        UserManagerLibrary task = new UserManagerLibrary(postData);
+        task.execute("https://pes-my-pet-care.herokuapp.com/signup?password=");
+    }
 
+    public static void ConsultarUsuari (String username) {
+        Map<String, String> postData = new HashMap<>();
+        postData.put("username", username);
+        task_id = 1;
+        UserManagerLibrary task = new UserManagerLibrary(postData);
+        task.execute("http://10.4.41.170:8081/users/");
     }
 
     @Override
     protected String doInBackground(String... params) {
-        if (peticion_id == 1) {
-            PostUser(attr_username, attr_password, attr_email);
+        try {
+            if (task_id == 0) {
+                Post_AltaUsuari(params);
+            }
+            else {
+                Get_Usuari(params);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        return null;
     }
 
-    public static void PostUser(String username, String password, String email) throws IOException {
-        URL obj = new URL(GET_URL+password);
+    public void Post_AltaUsuari(String... params) throws IOException {
+        URL obj = null;
+        try {
+            obj = new URL(params[0] + postData.getString("password"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
         con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("User-Agent", USER_AGENT);
         con.setRequestProperty("Accept-Language", "UTF-8");
         con.setDoInput(true);
         con.setDoOutput(true);
 
-        con.connect();
-        //System.out.println(con.getResponseCode());
-
-        /*con.setRequestProperty("username", username);
-        con.setRequestProperty("password", password);
-        con.setRequestProperty("email", email);*/
-        //Map<String,String> UserParams= new HashMap<>();
-
-
-        /*OutputStream os = conn.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
-        writer.write(getPostDataString(postDataParams));
-
-        writer.flush();
-        writer.close();
-        os.close();*/
-
-            //Query amb tots els parametres de post de user
-        /*Uri.Builder builder = new Uri.Builder()
-                .appendQueryParameter("username", username)
-                .appendQueryParameter("email", email);
-        String query = builder.build().getEncodedQuery();*/
-
-        StringBuilder tokenUri=new StringBuilder("username=");
-        tokenUri.append(URLEncoder.encode(username,"UTF-8"));
-        tokenUri.append("&email=");
-        tokenUri.append(URLEncoder.encode(email,"UTF-8"));
-
-
-
-        /*OutputStream os = con.getOutputStream();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(os, "UTF-8"));
-        writer.write(getPostDataString(tokenUri));
-
-        writer.flush();
-        writer.close();
-        os.close();*/
-
-            //Parametres nous
-        /*OutputStreamWriter os = new OutputStreamWriter(con.getOutputStream());
-        //BufferedWriter writer = new BufferedWriter(
-                //new OutputStreamWriter(os, StandardCharsets.UTF_8));
-        os.write(String.valueOf(tokenUri));
-        os.flush();
-        os.close();
+        if (this.postData != null) {
+            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+            writer.write(postData.toString());
+            writer.flush();
+        }
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + obj);
-        System.out.println("Post parameters : " + tokenUri);
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-
-        System.out.println(response.toString());*/
-
-
-        /*int responseCode = con.getResponseCode();
         System.out.println("POST Response Code :: " + responseCode);
         StringBuffer response = new StringBuffer();
         if (responseCode == HttpURLConnection.HTTP_OK) { // success
@@ -153,31 +103,52 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
             System.out.println(response.toString());
         } else {
             System.out.println("POST request not worked");
-        }*/
+        }
     }
 
-
-
-    /*private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder feedback = new StringBuilder();
-        boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
-            if (first)
-                first = false;
-            else
-                feedback.append("&");
-
-            feedback.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            feedback.append("=");
-            feedback.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+    public String Get_Usuari(String... params) throws IOException {
+        System.out.println("HOLAAAAAAAAAAA");
+        URL obj = null;
+        try {
+            obj = new URL(params[0] + postData.getString("username"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        System.out.println("HOLAAAAAAAAAAA");
 
-        return feedback.toString();
-    }*/
+        con.setRequestMethod("GET");
+        System.out.println("HOLoooooooooooooooooo");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("Accept-Language", "UTF-8");
+        con.setDoInput(true);
+        con.setDoOutput(true);
 
+        /*if (this.postData != null) {
+            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+            writer.write(postData.toString());
+            writer.flush();
+        }*/
 
+        int responseCode = con.getResponseCode();
+        System.out.println("HOLtttttttttttttttt");
+        System.out.println("GET Response Code :: " + responseCode);
+        StringBuffer response = new StringBuffer();
+        if (responseCode == HttpURLConnection.HTTP_OK) { // success
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String inputLine;
 
-
-
-
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine + "\n");
+            }
+            in.close();
+            return response.toString();
+            // print result
+        } else {
+            System.out.println("GET request not worked");
+        }
+        return null;
+    }
 }

@@ -5,8 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary.UserManagerLibrary;
+import org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary.UserManagerLibrary.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary.UserManagerLibrary.AltaUsuari;
+import static org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary.UserManagerLibrary.ConsultarUsuari;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,10 +20,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            UserManagerLibrary.PostUser("kayle", "123abc", "kayle@gmail.com");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //UserManagerLibrary.PostUser("kayle", "123abc", "kayle@gmail.com");
+        //AltaUsuari("alvaroo","trius4576" , "bejarrr@gmail.com");
+        ConsultarUsuari("kayle");
     }
 }
