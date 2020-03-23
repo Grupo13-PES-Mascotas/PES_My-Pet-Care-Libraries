@@ -23,27 +23,25 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
 
     private static int taskId;
 
-    private static final String USER_AGENT = "Mozilla/5.0";
-
-    public UserManagerLibrary(Map<String, String> postData) {
+    private UserManagerLibrary(Map<String, String> postData) {
         if (postData != null) {
             this.postData = new JSONObject(postData);
         }
     }
 
-    public static void signUp(String usernameValue, String passwordValue, String emailValue) {
+    public static void signUp(String usernameValueSign, String passwordValueSign, String emailValueSign) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("username", usernameValue);
-        postData.put("email", emailValue);
-        postData.put("password", passwordValue);
+        postData.put("username", usernameValueSign);
+        postData.put("email", emailValueSign);
+        postData.put("password", passwordValueSign);
         taskId = 0;
         UserManagerLibrary task = new UserManagerLibrary(postData);
         task.execute("https://pes-my-pet-care.herokuapp.com/signup?password=");
     }
 
-    public static void getUser(String username) {
+    public static void getUser(String usernameValueGet) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("username", username);
+        postData.put("username", usernameValueGet);
         taskId = 1;
         UserManagerLibrary task = new UserManagerLibrary(postData);
         task.execute("http://10.4.41.170:8081/users/");
@@ -55,7 +53,7 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
             if (taskId == 0) {
                 postSignUp(params);
             } else {
-                getGetUser(params);
+                String response = getGetUser(params);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +62,7 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         return null;
     }
 
-    public void postSignUp(String... params) throws IOException {
+    private void postSignUp(String... params) throws IOException {
         URL obj = null;
         try {
             obj = new URL(params[0] + postData.getString("password"));
@@ -79,9 +77,7 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         }
         int responseCode = con.getResponseCode();
         System.out.println("POST Response Code :: " + responseCode);
-        if (responseCode == HttpURLConnection.HTTP_OK) { // success
-            StringBuffer response = makeResponse(con);
-        } else {
+        if (responseCode != HttpURLConnection.HTTP_OK) { //fail
             System.out.println("POST request not worked");
         }
     }
@@ -109,7 +105,7 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod(request);
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("User-Agent", USER_AGENT);
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "UTF-8");
         con.setDoInput(true);
         con.setDoOutput(true);

@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        signUp("tehdgfh", "sdthtth456456", "shghttrsh@gmail.com");
-        getUser("kayle");
+        signUp("tehdgkfh", "sdthutth456456", "shjghttrsh@gmail.com");
+        //getUser("kayle");
     }
 }
