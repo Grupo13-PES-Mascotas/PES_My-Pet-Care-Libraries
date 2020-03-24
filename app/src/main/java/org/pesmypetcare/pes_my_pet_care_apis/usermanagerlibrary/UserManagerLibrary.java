@@ -15,9 +15,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserManagerLibrary extends AsyncTask<String, String, String> {
+public class UserManagerLibrary extends AsyncTask<String, String, StringBuilder> {
 
+    private final String GET = "GET";
     private JSONObject postData;
+    private static String BASE_URL = "http://10.4.41.170:8081/";
 
     private static int taskId;
 
@@ -44,6 +46,25 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         UserManagerLibrary task = new UserManagerLibrary(postData);
         return String.valueOf(task.execute("http://10.4.41.170:8081/users/"));
     }
+
+    /*public static void getUser(Context context, String usernameValueGet, StringBuilder responseJson) {
+        String url = BASE_URL + "users/" + usernameValueGet;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null,
+            new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    responseJson.append(response.toString());
+                }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                responseJson.append(new String(error.networkResponse.data));
+            }
+        });
+
+        queue = Volley.newRequestQueue(context);
+        queue.add(jsonObjectRequest);
+    }*/
 
     public static void deleteUser(String usernameValueDelete) {
         Map<String, String> postData = new HashMap<>();
@@ -72,17 +93,20 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected StringBuilder doInBackground(String... params) {
         try {
             switch (taskId) {
                 case 0:
                     postSignUp(params);
+                    break;
                 case 1:
-                    return getGetUser(params);
+                    return doGet(params[0]);
                 case 2:
                     deleteDeleteUser(params);
+                    break;
                 case 3:
                     putUpdateEmail(params);
+                    break;
                 case 4:
                     putUpdatePassword(params);
                     break;
@@ -94,13 +118,13 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
     }
 
     private void postSignUp(String... params) throws IOException {
-        URL obj = null;
+        URL url = null;
         try {
-            obj = new URL(params[0] + postData.getString("password"));
+            url = new URL(params[0] + postData.getString("password"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        HttpURLConnection con = makeConnection("POST", obj);
+        HttpURLConnection con = makeConnection("POST", url);
         if (this.postData != null) {
             OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
             writer.write(postData.toString());
@@ -114,23 +138,46 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         }
     }
 
-    private String getGetUser(String... params) throws IOException {
-        URL obj = null;
+    private StringBuilder doGet(String baseUrl) {
+        StringBuilder response = new StringBuilder();
         try {
-            obj = new URL(params[0] + postData.getString("username"));
-        } catch (JSONException e) {
+            HttpURLConnection con = getSimpleHttpUrlConnection(baseUrl, GET);
+            int responseCode = con.getResponseCode();
+            System.out.println("GET Response Code :: " + responseCode);
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                response = getResponseBody(con);
+                System.out.println(response.toString());
+            } else {
+                System.out.println("GET request not worked");
+            }
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
-        HttpURLConnection con = makeConnection("GET", obj);
-        int responseCode = con.getResponseCode();
-        System.out.println("GET Response Code :: " + responseCode);
-        if (responseCode == HttpURLConnection.HTTP_OK) { // success
-            StringBuffer response = makeResponse(con);
-            return response.toString();
-        } else {
-            System.out.println("GET request not worked");
+        return response;
+    }
+
+    private HttpURLConnection getSimpleHttpUrlConnection(String baseUrl, String method) throws JSONException, IOException {
+        String targetUrl = baseUrl + postData.getString("username");
+        URL url = new URL(targetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod(method);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Accept-Language", "UTF-8");
+        return con;
+    }
+
+    private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+            con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
         }
-        return null;
+        in.close();
+        return response;
     }
 
     private void deleteDeleteUser(String... params) throws IOException {
@@ -196,8 +243,8 @@ public class UserManagerLibrary extends AsyncTask<String, String, String> {
         }
     }
 
-    private HttpURLConnection makeConnection(String request, URL obj) throws IOException {
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+    private HttpURLConnection makeConnection(String request, URL url) throws IOException {
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(request);
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
