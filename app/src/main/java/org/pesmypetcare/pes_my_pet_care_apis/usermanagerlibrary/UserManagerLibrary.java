@@ -156,16 +156,6 @@ public class UserManagerLibrary extends AsyncTask<String, String, StringBuilder>
         return response;
     }
 
-    private HttpURLConnection getSimpleHttpUrlConnection(String baseUrl, String method) throws JSONException, IOException {
-        String targetUrl = baseUrl + postData.getString("username");
-        URL url = new URL(targetUrl);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod(method);
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        con.setRequestProperty("Accept-Language", "UTF-8");
-        return con;
-    }
 
     private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -241,6 +231,17 @@ public class UserManagerLibrary extends AsyncTask<String, String, StringBuilder>
         if (responseCode != HttpURLConnection.HTTP_OK) { //fail
             System.out.println("PUT request not worked");
         }
+    }
+
+    private HttpURLConnection getSimpleHttpUrlConnection(String baseUrl, String method) throws JSONException, IOException {
+        String targetUrl = baseUrl + postData.getString("username");
+        URL url = new URL(targetUrl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod(method);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Accept-Language", "UTF-8");
+        return con;
     }
 
     private HttpURLConnection makeConnection(String request, URL url) throws IOException {
