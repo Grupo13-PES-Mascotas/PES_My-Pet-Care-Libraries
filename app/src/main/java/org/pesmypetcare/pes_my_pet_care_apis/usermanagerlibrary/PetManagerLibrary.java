@@ -14,24 +14,31 @@ public class PetManagerLibrary {
     private static String dash = "/";
     private static String usernameField = "username";
     private static String nameField = "name";
-    private static String sexField = "gender";
+    private static String genderField = "gender";
     private static String birthdayField = "birth";
-    private static String raceField = "breed";
+    private static String breedField = "breed";
     private static String weightField = "weight";
+    private static String patologiesField = "patologies";
+    private static String recommendedKcalField = "recommendedKcal";
+    private static String washFreqField = "washFreq";
 
     public PetManagerLibrary() {
         taskManager = TaskManager.getInstance();
     }
 
     public void signUpPet(String username, String nameValuePost, String sexValuePost, String
-            raceValuePost, String birthdayValuePost, double weightValuePost) {
+            breedValuePost, String birthdayValuePost, double weightValuePost, String
+            patologiesValuePost, double reckcalValuePost, int washFreqPost) {
         Map<String, String> reqData = new HashMap<>();
         reqData.put(usernameField, username);
         reqData.put(nameField, nameValuePost);
-        reqData.put(sexField, sexValuePost);
-        reqData.put(raceField, raceValuePost);
+        reqData.put(genderField, sexValuePost);
+        reqData.put(breedField, breedValuePost);
         reqData.put(birthdayField, birthdayValuePost);
         reqData.put(weightField, Double.toString(weightValuePost));
+        reqData.put(patologiesField, patologiesValuePost);
+        reqData.put(recommendedKcalField, Double.toString(reckcalValuePost));
+        reqData.put(washFreqField, Integer.toString(washFreqPost));
         taskManager.setTaskId(0);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + nameValuePost);
@@ -45,6 +52,14 @@ public class PetManagerLibrary {
         return response.toString();
     }
 
+    public String getAllPets(String username) throws ExecutionException, InterruptedException {
+        StringBuilder url = new StringBuilder(BASE_URL);
+        url.append(username);
+        taskManager.setTaskId(1);
+        StringBuilder response = taskManager.execute(url.toString()).get();
+        return response.toString();
+    }
+
     public void deletePet(String username, String petName) {
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(username).append(dash).append(petName);
@@ -53,12 +68,12 @@ public class PetManagerLibrary {
         taskManager.execute(url.toString());
     }
 
-    public void updateSex(String username, String petName, String newSex) {
+    public void updateGender(String username, String petName, String newGender) {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newSex);
+        reqData.put("value", newGender);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + username + dash + petName + dash + sexField);
+        taskManager.execute(BASE_URL + username + dash + petName + dash + genderField);
     }
 
     public void updateBirthday(String username, String petName, String newBirthday) {
@@ -69,12 +84,12 @@ public class PetManagerLibrary {
         taskManager.execute(BASE_URL + username + dash + petName + dash + birthdayField);
     }
 
-    public void updateRace(String username, String petName, String newRace) {
+    public void updateBreed(String username, String petName, String newBreed) {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newRace);
+        reqData.put("value", newBreed);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + username + dash + petName + dash + raceField);
+        taskManager.execute(BASE_URL + username + dash + petName + dash + breedField);
     }
 
     public void updateWeight(String username, String petName, double newWeight) {
@@ -83,5 +98,29 @@ public class PetManagerLibrary {
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + weightField);
+    }
+
+    public void updatePatologies(String username, String petName, String newPatologies) {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put("value", newPatologies);
+        taskManager.setTaskId(3);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + username + dash + petName + dash + patologiesField);
+    }
+
+    public void updateRecKcal(String username, String petName, double newKcal) {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put("value", Double.toString(newKcal));
+        taskManager.setTaskId(3);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + username + dash + petName + dash + recommendedKcalField);
+    }
+
+    public void updateWashFreq(String username, String petName, int newWashFreq) {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put("value", String.valueOf(newWashFreq));
+        taskManager.setTaskId(3);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + username + dash + petName + dash + washFreqField);
     }
 }

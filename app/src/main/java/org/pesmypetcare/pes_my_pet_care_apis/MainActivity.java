@@ -14,19 +14,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PetManagerLibrary manager = new PetManagerLibrary();
-        //manager.signUpPet("john", "Tristan", "Female", "Husky Siberiano", "2016-03-30", 13.4);
-        //Date myDate = new Date(2012, 03, 14);
 
+        //pending issue: la washfreq se pone a 0...
+        /*manager.signUpPet("john", "Tristana", "Female", "Husky Siberiano",
+                "2016-03-30", 13.4, "Coronavirus",
+                150, 2);
+        */
+        //Date myDate = new Date(2012, 03, 14);
 
         //manager.updateSex("john", "Tristan", "Male");
         //manager.updateRace("john", "Tristan", "Pastor Alemán");
-        //
         //manager.updateWeight("john", "Tristan", 12.4);
         //manager.updateBirthday("john", "Tristan", "2015-01-23");
-        //manager.deletePet("john", "Tristan");
+        //manager.deletePet("john", "Tristana");
+        //manager.updatePatologies("john", "Tristana", "COVID-19");
+        //manager.updateRecKcal("john", "Tristana", 120);
+        //manager.updateWashFreq("john", "Tristana", 5);
 
-        try {
-            manager.getPet("john", "Excalibur");
+       try {
+            manager.getPet("john", "Tristana");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
