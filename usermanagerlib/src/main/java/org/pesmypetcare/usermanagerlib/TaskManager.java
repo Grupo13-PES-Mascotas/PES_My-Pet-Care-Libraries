@@ -13,9 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
+    private static TaskManager instance;
     private int taskId;
     private JSONObject reqBody;
-    private static TaskManager instance;
 
     public static TaskManager getInstance() {
         if (instance == null) {
@@ -44,14 +44,13 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
                 case 2:
                     doDelete(params[0]);
                     break;
-                case 3:
+                default:
                     doPut(params[0]);
-                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return  null;
+        return null;
     }
 
     private void doPost(String targetUrl) throws IOException {
