@@ -30,13 +30,12 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     get pet/{owner}/{name}/{field}
     put pet/{owner}/{name}/{field}*/
 
-
-    private final String GET = "GET";
+    private static String baseUrl = "https://pes-my-pet-care.herokuapp.com/pet/";
+    private static String dash = "/";
+    private static int taskId;
     private JSONObject postData;
     // private static String BASE_URL = "http://10.4.41.170:8081/";
-    private static String BASE_URL = "https://pes-my-pet-care.herokuapp.com/pet/";
 
-    private static int taskId;
 
     private PetManagerLibrary(Map<String, String> postData) {
         if (postData != null) {
@@ -44,7 +43,8 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         }
     }
 
-    public static void signUpPet(String username, String nameValuePost, Boolean sexValuePost, String raceValuePost, Date birthdayValuePost, double weightValuePost){ //username?
+    public static void signUpPet(String username, String nameValuePost, Boolean sexValuePost, String
+            raceValuePost, Date birthdayValuePost, double weightValuePost) { //username?
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValuePost);
         postData.put("sex", sexValuePost.toString());
@@ -53,86 +53,69 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         postData.put("weight", Double.toString(weightValuePost));
         taskId = 0;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValuePost);
+        task.execute(baseUrl + username + dash + nameValuePost);
     }
 
-    public static StringBuilder getPet(String username, String nameValueGet) throws ExecutionException, InterruptedException {
+    public static StringBuilder getPet(String username, String nameValueGet) throws
+            ExecutionException, InterruptedException {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValueGet);
         taskId = 1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        return task.execute(BASE_URL + username + "/" + nameValueGet).get();
+        return task.execute(baseUrl + username + dash + nameValueGet).get();
     }
 
-    public static void deletePet(String username, String nameValueDelete){
+    public static void deletePet(String username, String nameValueDelete) {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValueDelete);
         taskId = 2;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValueDelete);
+        task.execute(baseUrl + username + dash + nameValueDelete);
     }
 
-    public static void updateSex(String username, String nameValuePut, Boolean sexValuePut){
+    public static void updateSex(String username, String nameValuePut, Boolean sexValuePut) {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValuePut);
         postData.put("sex", sexValuePut.toString());
         taskId = 3;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValuePut + "/" + sexValuePut);
+        task.execute(baseUrl + username + dash + nameValuePut + dash + sexValuePut);
     }
 
-    public static void updateRace(String username, String nameValuePut, String raceValuePut){
+    public static void updateRace(String username, String nameValuePut, String raceValuePut) {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValuePut);
         postData.put("race", raceValuePut);
         taskId = 4;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValuePut + "/" + raceValuePut);
+        task.execute(baseUrl + username + dash + nameValuePut + dash + raceValuePut);
     }
 
-    public static void updateBirthday(String username, String nameValuePut, Date birthdayValuePut){
+    public static void updateBirthday(String username, String nameValuePut, Date birthdayValuePut) {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValuePut);
         postData.put("birthday", birthdayValuePut.toString());
         taskId = 5;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValuePut + "/" + birthdayValuePut);
+        task.execute(baseUrl + username + dash + nameValuePut + dash + birthdayValuePut);
     }
 
-    public static void updateWeight(String username, String nameValuePut, double weightValuePut){
+    public static void updateWeight(String username, String nameValuePut, double weightValuePut) {
         Map<String, String> postData = new HashMap<>();
         postData.put("name", nameValuePut);
         postData.put("birthday", Double.toString(weightValuePut));
         taskId = 6;
         PetManagerLibrary task = new PetManagerLibrary(postData);
-        task.execute(BASE_URL + username + "/" + nameValuePut + "/" + weightValuePut);
+        task.execute(baseUrl + username + dash + nameValuePut + dash + weightValuePut);
     }
 
     @Override
     protected StringBuilder doInBackground(String... params) {
         try {
-            switch (taskId) {
-                case 0:
-                    postSignUpPet(params);
-                    break;
-                case 1:
-                    return doGetPet(params);
-                case 2:
-                    deleteDeletePet(params);
-                    break;
-                case 3:
-                    putUpdatePetSex(params);
-                    break;
-                case 4:
-                    putUpdatePetRace(params);
-                    break;
-                case 5:
-                    putUpdateBirthday(params);
-                    break;
-                case 6:
-                    putUpdateWeight(params);
-                    break;
-            }
+            if (taskId == 0) postSignUpPet(params);
+            else if (taskId == 1) return doGetPet(params);
+            else if (taskId == 2) deleteDeletePet(params);
+            else if (taskId == 3) putUpdatePetField(params);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -159,7 +142,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         StringBuilder response = new StringBuilder();
         try {
             URL url = new URL(params[0]);
-            HttpURLConnection con = getSimpleHttpUrlConnection(url, GET);
+            HttpURLConnection con = makeConnection("GET", url); //getSimpleHttpUrlConnection
             int responseCode = con.getResponseCode();
             System.out.println("GET Response Code :: " + responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -168,7 +151,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
             } else {
                 System.out.println("GET request not worked");
             }
-        } catch (JSONException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return response;
@@ -198,7 +181,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         }
     }
 
-    private void putUpdatePetSex(String... params) throws IOException {
+    private void putUpdatePetField(String... params) throws IOException {
         URL url = new URL(params[0]);
         HttpURLConnection con = makeConnection("PUT", url);
 
@@ -214,69 +197,6 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         if (responseCode != HttpURLConnection.HTTP_OK) { //fail
             System.out.println("PUT request not worked");
         }
-    }
-
-    private void putUpdatePetRace(String... params) throws IOException {
-        URL url = new URL(params[0]);
-        HttpURLConnection con = makeConnection("PUT", url);
-
-        if (this.postData != null) {
-            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-            writer.write(postData.toString());
-            writer.flush();
-            writer.close();
-        }
-
-        int responseCode = con.getResponseCode();
-        System.out.println("PUT Response Code :: " + responseCode);
-        if (responseCode != HttpURLConnection.HTTP_OK) { //fail
-            System.out.println("PUT request not worked");
-        }
-    }
-
-    private void putUpdateBirthday(String... params) throws IOException{
-        URL url = new URL(params[0]);
-        HttpURLConnection con = makeConnection("PUT", url);
-
-        if (this.postData != null) {
-            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-            writer.write(postData.toString());
-            writer.flush();
-            writer.close();
-        }
-
-        int responseCode = con.getResponseCode();
-        System.out.println("PUT Response Code :: " + responseCode);
-        if (responseCode != HttpURLConnection.HTTP_OK) { //fail
-            System.out.println("PUT request not worked");
-        }
-    }
-
-    private void putUpdateWeight(String... params) throws IOException{
-        URL url = new URL(params[0]);
-        HttpURLConnection con = makeConnection("PUT", url);
-
-        if (this.postData != null) {
-            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-            writer.write(postData.toString());
-            writer.flush();
-            writer.close();
-        }
-
-        int responseCode = con.getResponseCode();
-        System.out.println("PUT Response Code :: " + responseCode);
-        if (responseCode != HttpURLConnection.HTTP_OK) { //fail
-            System.out.println("PUT request not worked");
-        }
-    }
-
-    private HttpURLConnection getSimpleHttpUrlConnection(URL url, String method) throws JSONException, IOException {
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod(method);
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("User-Agent", "Mozilla/5.0");
-        con.setRequestProperty("Accept-Language", "UTF-8");
-        return con;
     }
 
     private HttpURLConnection makeConnection(String request, URL url) throws IOException {
@@ -289,5 +209,13 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         con.setDoOutput(true);
         return con;
     }
-
 }
+
+   /* private HttpURLConnection getSimpleHttpUrlConnection(String method,  URL url) throws IOException {
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod(method);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        con.setRequestProperty("Accept-Language", "UTF-8");
+        return con;
+    }*/
