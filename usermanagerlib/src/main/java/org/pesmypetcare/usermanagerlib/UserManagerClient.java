@@ -1,6 +1,8 @@
 package org.pesmypetcare.usermanagerlib;
 
 
+import com.google.gson.Gson;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -26,12 +28,14 @@ public class UserManagerClient {
         taskManager.execute(BASE_URL + "signup?password=" + password);
     }
 
-    public String getUser(String username) throws ExecutionException, InterruptedException {
+    public UserData getUser(String username) throws ExecutionException, InterruptedException {
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username);
         taskManager.setTaskId(1);
-        StringBuilder response = taskManager.execute(url.toString()).get();
-        return response.toString();
+        StringBuilder json = taskManager.execute(url.toString()).get();
+        Gson gson = new Gson();
+        UserData user = gson.fromJson(json.toString(), UserData.class);
+        return user;
     }
 
     public void deleteUser(String username) {

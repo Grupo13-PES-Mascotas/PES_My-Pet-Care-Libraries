@@ -61,6 +61,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestUtil 'androidx.test:orchestrator:1.2.0'
     implementation 'com.android.volley:dc-volley:1.1.0'
+    implementation project(path: ':usermanagerlib')
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {

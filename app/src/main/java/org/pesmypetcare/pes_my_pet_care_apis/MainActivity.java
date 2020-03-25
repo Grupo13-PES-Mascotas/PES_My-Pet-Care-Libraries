@@ -1,12 +1,13 @@
 package org.pesmypetcare.pes_my_pet_care_apis;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import java.util.concurrent.ExecutionException;
+import androidx.appcompat.app.AppCompatActivity;
 
-import static org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary.UserManagerLibrary.*;
+import org.pesmypetcare.usermanagerlib.UserData;
+import org.pesmypetcare.usermanagerlib.UserManagerClient;
+
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,11 +16,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //signUp("tehdgkfh", "sdthutth456456", "shjghttrsh@gmail.com");
+        UserManagerClient client = new UserManagerClient();
         try {
-            System.out.println("MAIN: " + getUser("kayle"));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            UserData user = client.getUser("usuario_de_pruebas");
+            System.out.println("Usuario: " + user);
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println("MAIN");
