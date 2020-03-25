@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class UserManagerLibrary extends AsyncTask<String, String, StringBuilder> {
 
@@ -39,12 +40,12 @@ public class UserManagerLibrary extends AsyncTask<String, String, StringBuilder>
         task.execute("https://pes-my-pet-care.herokuapp.com/signup?password=");
     }
 
-    public static String getUser(String usernameValueGet) {
+    public static String getUser(String usernameValueGet) throws ExecutionException, InterruptedException {
         Map<String, String> postData = new HashMap<>();
         postData.put("username", usernameValueGet);
         taskId = 1;
         UserManagerLibrary task = new UserManagerLibrary(postData);
-        return String.valueOf(task.execute("http://10.4.41.170:8081/users/"));
+        return String.valueOf(task.execute("http://10.4.41.170:8081/users/").get());
     }
 
     /*public static void getUser(Context context, String usernameValueGet, StringBuilder responseJson) {
