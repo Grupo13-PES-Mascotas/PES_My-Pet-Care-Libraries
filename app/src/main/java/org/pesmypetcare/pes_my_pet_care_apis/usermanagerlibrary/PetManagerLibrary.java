@@ -47,6 +47,7 @@ public class PetManagerLibrary {
     public String getPet(String username, String petName) throws ExecutionException, InterruptedException {
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(username).append(dash).append(petName);
+        System.out.println(url.toString());
         taskManager.setTaskId(1);
         StringBuilder response = taskManager.execute(url.toString()).get();
         return response.toString();
