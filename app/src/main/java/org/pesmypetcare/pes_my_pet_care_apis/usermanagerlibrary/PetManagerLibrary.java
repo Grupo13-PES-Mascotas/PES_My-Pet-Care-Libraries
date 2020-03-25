@@ -2,7 +2,6 @@ package org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary;
 
 import android.os.AsyncTask;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -34,6 +33,11 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     private static String dash = "/";
     private static int taskId;
     private JSONObject postData;
+    private static String nameField = "name";
+    private static String sexField = "sex";
+    private static String birthdayField = "birthday";
+    private static String raceField = "race";
+    private static String weightField = "weight";
     // private static String BASE_URL = "http://10.4.41.170:8081/";
 
 
@@ -46,11 +50,11 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     public static void signUpPet(String username, String nameValuePost, Boolean sexValuePost, String
             raceValuePost, Date birthdayValuePost, double weightValuePost) { //username?
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValuePost);
-        postData.put("sex", sexValuePost.toString());
-        postData.put("race", raceValuePost);
-        postData.put("birthday", birthdayValuePost.toString());
-        postData.put("weight", Double.toString(weightValuePost));
+        postData.put(nameField, nameValuePost);
+        postData.put(sexField, sexValuePost.toString());
+        postData.put(raceField, raceValuePost);
+        postData.put(birthdayField, birthdayValuePost.toString());
+        postData.put(weightField, Double.toString(weightValuePost));
         taskId = 0;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValuePost);
@@ -59,7 +63,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     public static StringBuilder getPet(String username, String nameValueGet) throws
             ExecutionException, InterruptedException {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValueGet);
+        postData.put(nameField, nameValueGet);
         taskId = 1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         return task.execute(baseUrl + username + dash + nameValueGet).get();
@@ -67,7 +71,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
 
     public static void deletePet(String username, String nameValueDelete) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValueDelete);
+        postData.put(nameField, nameValueDelete);
         taskId = 2;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValueDelete);
@@ -75,36 +79,36 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
 
     public static void updateSex(String username, String nameValuePut, Boolean sexValuePut) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValuePut);
-        postData.put("sex", sexValuePut.toString());
-        taskId = 3;
+        postData.put(nameField, nameValuePut);
+        postData.put(sexField, sexValuePut.toString());
+        taskId = -1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValuePut + dash + sexValuePut);
     }
 
     public static void updateRace(String username, String nameValuePut, String raceValuePut) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValuePut);
-        postData.put("race", raceValuePut);
-        taskId = 4;
+        postData.put(nameField, nameValuePut);
+        postData.put(raceField, raceValuePut);
+        taskId = -1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValuePut + dash + raceValuePut);
     }
 
     public static void updateBirthday(String username, String nameValuePut, Date birthdayValuePut) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValuePut);
-        postData.put("birthday", birthdayValuePut.toString());
-        taskId = 5;
+        postData.put(nameField, nameValuePut);
+        postData.put(birthdayField, birthdayValuePut.toString());
+        taskId = -1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValuePut + dash + birthdayValuePut);
     }
 
     public static void updateWeight(String username, String nameValuePut, double weightValuePut) {
         Map<String, String> postData = new HashMap<>();
-        postData.put("name", nameValuePut);
-        postData.put("birthday", Double.toString(weightValuePut));
-        taskId = 6;
+        postData.put(nameField, nameValuePut);
+        postData.put(birthdayField, Double.toString(weightValuePut));
+        taskId = -1;
         PetManagerLibrary task = new PetManagerLibrary(postData);
         task.execute(baseUrl + username + dash + nameValuePut + dash + weightValuePut);
     }
@@ -112,10 +116,15 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     @Override
     protected StringBuilder doInBackground(String... params) {
         try {
-            if (taskId == 0) postSignUpPet(params);
-            else if (taskId == 1) return doGetPet(params);
-            else if (taskId == 2) deleteDeletePet(params);
-            else if (taskId == 3) putUpdatePetField(params);
+            if (taskId == 0) {
+                postSignUpPet(params);
+            } else if (taskId == 1) {
+                return doGetPet(params);
+            } else if (taskId == 2) {
+                deleteDeletePet(params);
+            } else {
+                putUpdatePetField(params);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,11 +169,12 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
     private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
                 con.getInputStream()));
-        String inputLine;
+        String inputLine = in.readLine();
         StringBuilder response = new StringBuilder();
 
-        while ((inputLine = in.readLine()) != null) {
+        while (inputLine != null) {
             response.append(inputLine);
+            inputLine = in.readLine();
         }
         in.close();
         return response;
@@ -209,9 +219,7 @@ public class PetManagerLibrary extends AsyncTask<String, String, StringBuilder> 
         con.setDoOutput(true);
         return con;
     }
-}
-
-   /* private HttpURLConnection getSimpleHttpUrlConnection(String method,  URL url) throws IOException {
+}/* private HttpURLConnection getSimpleHttpUrlConnection(String method,  URL url) throws IOException {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(method);
         con.setRequestProperty("Content-Type", "application/json");
