@@ -45,7 +45,7 @@ public class UserManagerClient {
     public void updatePassword(String username, String newPassword) {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("password", newPassword);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(-1);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password");
     }
@@ -53,7 +53,7 @@ public class UserManagerClient {
     public void updateEmail(String username, String newEmail) {
         Map<String, String> reqData = new HashMap<>();
         reqData.put(EMAIL_KEY, newEmail);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(-1);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/email");
     }
