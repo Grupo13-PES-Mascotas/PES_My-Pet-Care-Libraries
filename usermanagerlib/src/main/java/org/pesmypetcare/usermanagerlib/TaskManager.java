@@ -34,13 +34,15 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     @Override
     protected StringBuilder doInBackground(String... params) {
+        StringBuilder result = new StringBuilder();
         try {
             switch (taskId) {
                 case 0:
                     doPost(params[0]);
                     break;
                 case 1:
-                    return doGet(params[0]);
+                    result = doGet(params[0]);
+                    break;
                 case 2:
                     doDelete(params[0]);
                     break;
@@ -50,7 +52,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     private void doPost(String targetUrl) throws IOException {
@@ -63,6 +65,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         StringBuilder response;
         if (responseCode == HttpURLConnection.HTTP_OK) {
             response = getResponseBody(con);
+            System.out.println(response.toString());
         } else {
             response = getErrorResponseBody(con);
             System.out.println("POST request not worked: " + response.toString());

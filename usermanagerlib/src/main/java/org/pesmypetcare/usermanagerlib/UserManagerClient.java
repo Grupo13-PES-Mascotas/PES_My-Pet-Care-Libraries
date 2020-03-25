@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String USERS_PATH = "users/";
     private final String EMAIL_KEY = "email";
     private TaskManager taskManager;
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
 
     public UserManagerClient() {
         taskManager = TaskManager.getInstance();
