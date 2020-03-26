@@ -1,11 +1,8 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
 public class Pet {
-    String name;
-    PetData body;
-
-    public Pet() {
-    }
+    private String name;
+    private PetData body;
 
     public String getName() {
         return name;
@@ -25,9 +22,9 @@ public class Pet {
 
     @Override
     public String toString() {
-        return "Pet{" +
-            "name='" + name + '\'' +
-            ", body=" + body +
-            '}';
+        return "{"
+            + "name='" + name + '\''
+            + ", body=" + body
+            + '}';
     }
 }

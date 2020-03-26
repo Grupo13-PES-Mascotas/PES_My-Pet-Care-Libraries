@@ -19,22 +19,22 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /*
      *Creation class
      */
-    public TaskManager() {
+    protected TaskManager() {
         taskId = -1;
-        reqBody = null;
+        reqBody = new JSONObject();
     }
 
     /*
      *Sets the local taskId to a new taskId
      */
-    public void setTaskId(int taskId) {
+    protected void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
     /*
      *Sets the request body to a new request body
      */
-    public void setReqBody(JSONObject reqBody) {
+    protected void setReqBody(JSONObject reqBody) {
         this.reqBody = reqBody;
     }
 
@@ -60,6 +60,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
                     break;
                 default:
                     doPut(params[0]);
+                    break;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,13 +79,8 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
         int responseCode = con.getResponseCode();
         System.out.println("POST Response Code :: " + responseCode);
-        StringBuilder response;
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            response = getResponseBody(con);
-            System.out.println(response.toString());
-        } else {
-            response = getErrorResponseBody(con);
-            System.out.println("POST request not worked: " + response.toString());
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            System.out.println("POST request not worked");
         }
     }
 
@@ -114,11 +110,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE");
         int responseCode = con.getResponseCode();
         System.out.println("DELETE Response Code :: " + responseCode);
-        StringBuilder response;
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            response = getResponseBody(con);
-            System.out.println(response.toString());
-        } else {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
             System.out.println("DELETE request not worked");
         }
     }
@@ -134,11 +126,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
         int responseCode = con.getResponseCode();
         System.out.println("PUT Response Code :: " + responseCode);
-        StringBuilder response;
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            response = getResponseBody(con);
-            System.out.println(response.toString());
-        } else {
+        if (responseCode != HttpURLConnection.HTTP_OK) {
             System.out.println("PUT request not worked");
         }
     }
@@ -161,23 +149,6 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
             con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-        return response;
-    }
-
-    /*
-     * Method that gets the body of an error
-     * @return void
-     */
-    private StringBuilder getErrorResponseBody(HttpURLConnection con) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-            con.getErrorStream()));
         String inputLine;
         StringBuilder response = new StringBuilder();
 

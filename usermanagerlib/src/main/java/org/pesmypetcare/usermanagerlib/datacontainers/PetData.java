@@ -11,9 +11,6 @@ public class PetData {
     private Double recommendedKcal;
     private int washFreq;
 
-    public PetData() {
-    }
-
     public GenderType getGender() {
         return gender;
     }
@@ -72,14 +69,14 @@ public class PetData {
 
     @Override
     public String toString() {
-        return "{" +
-            "gender=" + gender +
-            ", breed='" + breed + '\'' +
-            ", birth=" + birth +
-            ", weight=" + weight +
-            ", pathologies='" + pathologies + '\'' +
-            ", recommendedKcal=" + recommendedKcal +
-            ", washFreq=" + washFreq +
-            '}';
+        return "{"
+            + "gender=" + gender +
+            ", breed='" + breed + '\''
+            + ", birth=" + birth
+            + ", weight=" + weight
+            + ", pathologies='" + pathologies + '\''
+            + ", recommendedKcal=" + recommendedKcal
+            + ", washFreq=" + washFreq
+            + '}';
     }
 }

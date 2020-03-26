@@ -2,7 +2,6 @@ package org.pesmypetcare.usermanagerlib.clients;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
@@ -41,7 +40,6 @@ public class UserManagerClient {
         url.append(USERS_PATH).append(username);
         taskManager.setTaskId(1);
         StringBuilder json = taskManager.execute(url.toString()).get();
-        System.out.println("Salida string: "+ json.toString());
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), UserData.class);
     }
@@ -54,7 +52,6 @@ public class UserManagerClient {
         TaskManager taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username).append("/delete");
-        System.out.println(url.toString());
         taskManager.setTaskId(2);
         taskManager.execute(url.toString());
     }

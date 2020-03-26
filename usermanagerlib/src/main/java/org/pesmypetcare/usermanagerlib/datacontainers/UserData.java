@@ -5,9 +5,6 @@ public class UserData {
     private String username;
     private String email;
 
-    public UserData() {
-    }
-
     public String getUsername() {
         return username;
     }
@@ -26,9 +23,9 @@ public class UserData {
 
     @Override
     public String toString() {
-        return "{" +
-            "username='" + username + '\'' +
-            ", email='" + email + '\'' +
-            '}';
+        return "{"
+            + "username='" + username + '\''
+            + ", email='" + email + '\''
+            + '}';
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerClient {
-    private static String BASE_URL = "https://pes-my-pet-care.herokuapp.com/pet/";
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/pet/";
 
     private static String dash = "/";
     private static String usernameField = "username";
@@ -26,36 +26,47 @@ public class PetManagerClient {
     private static String pathologiesField = "pathologies";
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
+    private final String VALUE_KEY = "value";
 
-    /*
-    * Method called by the client to sign up a pet nameValuePost with the atributes ValuePost to a username.
-    * Gender MUST be "Male", "Female" or "Other". Warning: case-sensitive.
-    * Birthday is a string and it follows the format "YYYY-MM-DD"
-    * @return void.
-    * */
-    public void signUpPet(String username, String nameValuePost, String sexValuePost, String
-            breedValuePost, String birthdayValuePost, double weightValuePost, String
-            pathologiesValuePost, double recKcalValuePost, int washFreqPost) {
-        TaskManager taskManager = new TaskManager();
+    /**
+     * Creates a pet entry in the data base for the user specified.
+     * @param username The user's username
+     * @param petName The pet's name
+     * @param gender The pet's gender
+     * @param breed The pet's breed
+     * @param birthday The pet's birthday
+     * @param weight The pet's weight
+     * @param pathologies The pet's pathologies
+     * @param recKcal The pet's recommended Kcal
+     * @param washFreq The pet's washing frequency
+     */
+    public void signUpPet(String username, String petName, String gender, String
+            breed, String birthday, double weight, String
+            pathologies, double recKcal, int washFreq) {
         Map<String, String> reqData = new HashMap<>();
         reqData.put(usernameField, username);
-        reqData.put(nameField, nameValuePost);
-        reqData.put(genderField, sexValuePost);
-        reqData.put(breedField, breedValuePost);
-        reqData.put(birthdayField, birthdayValuePost);
-        reqData.put(weightField, Double.toString(weightValuePost));
-        reqData.put(pathologiesField, pathologiesValuePost);
-        reqData.put(recommendedKcalField, Double.toString(recKcalValuePost));
-        reqData.put(washFreqField, Integer.toString(washFreqPost));
+        reqData.put(nameField, petName);
+        reqData.put(genderField, gender);
+        reqData.put(breedField, breed);
+        reqData.put(birthdayField, birthday);
+        reqData.put(weightField, Double.toString(weight));
+        reqData.put(pathologiesField, pathologies);
+        reqData.put(recommendedKcalField, Double.toString(recKcal));
+        reqData.put(washFreqField, Integer.toString(washFreq));
+        TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(0);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + username + dash + nameValuePost);
+        taskManager.execute(BASE_URL + username + dash + petName);
     }
 
-    /*
-     * Method called by the client to get a pet with the name petName from the user username.
-     * @return Json of the pet data.
-     * */
+    /**
+     * Returns the data of a pet.
+     * @param username The pet's owner
+     * @param petName The pet's name
+     * @return The pet data
+     * @throws ExecutionException When the retrieval of the pet fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
     public PetData getPet(String username, String petName) throws ExecutionException, InterruptedException {
         TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(1);
@@ -64,32 +75,33 @@ public class PetManagerClient {
         return gson.fromJson(json.toString(), PetData.class);
     }
 
-    /*
-    *Method called by the client to get all the pets of the user username.
-    * @return List of gson's corresponding to the pets.
+    /**
+     * Returns all the pets of the user.
+     * @param username The user's username
+     * @return All the pets of the user
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Pet> getAllPets(String username) throws ExecutionException, InterruptedException {
         TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(1);
         StringBuilder response = taskManager.execute(BASE_URL + username).get();
-        System.out.println("Primer string: " + response.toString());
         String jsonArray = response.substring(1, response.length() - 1);
         String[] pets = jsonArray.split(",\\{");
-        System.out.println("Segundo string: " + jsonArray);
         List<Pet> petsList = new ArrayList<>();
         Gson gson = new Gson();
         petsList.add(gson.fromJson(pets[0], Pet.class));
         for (int i = 1; i < pets.length; i++) {
             pets[i] = "{" + pets[i];
-            System.out.println("Pet " + i + ": " + pets[i]);
             petsList.add(gson.fromJson(pets[i], Pet.class));
         }
         return petsList;
     }
 
-    /*
-     *Method called by the client to delete pet petName from the user username.
-     * @return None.
+    /**
+     * Deletes a pet of the specified user.
+     * @param username The user's username
+     * @param petName The pet's name
      */
     public void deletePet(String username, String petName) {
         TaskManager taskManager = new TaskManager();
@@ -97,90 +109,106 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName);
     }
 
-    /*
-     *Method called by the client to update the Gender of the pet PetName from the user username
-     * Gender provided must be "Male", "Female" or "Other". Warning: case-sensitive.
-     * @return None
+    /**
+     * Updates de gender of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newGender The new gender for the pet
      */
     public void updateGender(String username, String petName, String newGender) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newGender);
+        reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + genderField);
     }
 
-    /*
-     *Method called by the client to update the Birthday of the pet PetName from the user username.
-     * Birthday is a string and it follows the format "YYYY-MM-DD"
-     * @return None
+    /**
+     * Updates the birthday of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newBirthday The new birthday for the pet
      */
     public void updateBirthday(String username, String petName, String newBirthday) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newBirthday);
+        reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + birthdayField);
     }
 
-    /*
-     *Method called by the client to update the Breed of the pet PetName from the user username.
-     * @return None
+    /**
+     * Updates the breed of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newBreed The new breed for the pet
      */
     public void updateBreed(String username, String petName, String newBreed) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newBreed);
+        reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + breedField);
     }
 
-    /*Method called by the client to update the Weight of the pet PetName from the user username.
-     * @return None
+    /**
+     * Updates the breed of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newWeight The new weight for the pet
      */
     public void updateWeight(String username, String petName, double newWeight) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", String.valueOf(newWeight));
+        reqData.put(VALUE_KEY, String.valueOf(newWeight));
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + weightField);
     }
 
-    /*Method called by the client to update the Pathologies of the pet PetName from the user username.
-     * @return None
+    /**
+     * Updates the pathologies of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newPathologies The new pathologies for the pet
      */
-    public void updatePathologies(String username, String petName, String newPatologies) {
+    public void updatePathologies(String username, String petName, String newPathologies) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", newPatologies);
+        reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + pathologiesField);
     }
 
-    /*Method called by the client to update the RecommendedKcal of the pet PetName from the user username.
-     * @return None
+    /**
+     * Updates the recommended Kcal for a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newKcal The new recommended Kcal for the pet
      */
     public void updateRecKcal(String username, String petName, double newKcal) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", Double.toString(newKcal));
+        reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + recommendedKcalField);
     }
 
-    /*Method called by the client to update the WashFrequency of the pet PetName from the user username.
-     * @return None
+    /**
+     * Updates the washing frequency of a pet.
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param newWashFreq The new washing frequency for the pet
      */
     public void updateWashFreq(String username, String petName, int newWashFreq) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("value", String.valueOf(newWashFreq));
+        reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + washFreqField);
