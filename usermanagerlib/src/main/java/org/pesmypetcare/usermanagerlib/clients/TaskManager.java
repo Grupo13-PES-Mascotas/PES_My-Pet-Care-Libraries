@@ -154,7 +154,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         writer.close();
     }
 
-
+    /*
+     * Method that fills the Body of a response
+     * @return void
+     */
     private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
             con.getInputStream()));
@@ -168,6 +171,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         return response;
     }
 
+    /*
+     * Method that gets the body of an error
+     * @return void
+     */
     private StringBuilder getErrorResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(
             con.getErrorStream()));
@@ -181,6 +188,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         return response;
     }
 
+    /*
+     * Method that stablishes an HTTP connection with the provided URL with the method
+     * @return void
+     */
     private HttpURLConnection getSimpleHttpUrlConnection(String targetUrl, String method) throws IOException {
         URL url = new URL(targetUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
