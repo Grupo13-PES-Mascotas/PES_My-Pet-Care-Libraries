@@ -23,7 +23,7 @@ public class PetManagerClient {
     private static String birthdayField = "birth";
     private static String breedField = "breed";
     private static String weightField = "weight";
-    private static String pathologiesField = "patologies";
+    private static String pathologiesField = "pathologies";
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
 
