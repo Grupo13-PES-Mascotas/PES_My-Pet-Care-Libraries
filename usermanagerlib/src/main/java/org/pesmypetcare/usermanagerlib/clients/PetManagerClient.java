@@ -27,6 +27,12 @@ public class PetManagerClient {
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
 
+    /*
+    * Method called by the client to sign up a pet nameValuePost with the atributes ValuePost to a username.
+    * Gender MUST be "Male", "Female" or "Other". Warning: case-sensitive.
+    * Birthday is a string and it follows the format "YYYY-MM-DD"
+    * @return void.
+    * */
     public void signUpPet(String username, String nameValuePost, String sexValuePost, String
             breedValuePost, String birthdayValuePost, double weightValuePost, String
             pathologiesValuePost, double recKcalValuePost, int washFreqPost) {
@@ -46,6 +52,10 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + nameValuePost);
     }
 
+    /*
+     * Method called by the client to get a pet with the name petName from the user username.
+     * @return Json of the pet data.
+     * */
     public PetData getPet(String username, String petName) throws ExecutionException, InterruptedException {
         TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(1);
@@ -54,6 +64,10 @@ public class PetManagerClient {
         return gson.fromJson(json.toString(), PetData.class);
     }
 
+    /*
+    *Method called by the client to get all the pets of the user username.
+    * @return List of gson's corresponding to the pets.
+     */
     public List<Pet> getAllPets(String username) throws ExecutionException, InterruptedException {
         TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(1);
@@ -73,12 +87,21 @@ public class PetManagerClient {
         return petsList;
     }
 
+    /*
+     *Method called by the client to delete pet petName from the user username.
+     * @return None.
+     */
     public void deletePet(String username, String petName) {
         TaskManager taskManager = new TaskManager();
         taskManager.setTaskId(2);
         taskManager.execute(BASE_URL + username + dash + petName);
     }
 
+    /*
+     *Method called by the client to update the Gender of the pet PetName from the user username
+     * Gender provided must be "Male", "Female" or "Other". Warning: case-sensitive.
+     * @return None
+     */
     public void updateGender(String username, String petName, String newGender) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -88,6 +111,11 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + genderField);
     }
 
+    /*
+     *Method called by the client to update the Birthday of the pet PetName from the user username.
+     * Birthday is a string and it follows the format "YYYY-MM-DD"
+     * @return None
+     */
     public void updateBirthday(String username, String petName, String newBirthday) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -97,6 +125,10 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + birthdayField);
     }
 
+    /*
+     *Method called by the client to update the Breed of the pet PetName from the user username.
+     * @return None
+     */
     public void updateBreed(String username, String petName, String newBreed) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -106,6 +138,9 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + breedField);
     }
 
+    /*Method called by the client to update the Weight of the pet PetName from the user username.
+     * @return None
+     */
     public void updateWeight(String username, String petName, double newWeight) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -115,6 +150,9 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + weightField);
     }
 
+    /*Method called by the client to update the Pathologies of the pet PetName from the user username.
+     * @return None
+     */
     public void updatePathologies(String username, String petName, String newPatologies) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -124,6 +162,9 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + pathologiesField);
     }
 
+    /*Method called by the client to update the RecommendedKcal of the pet PetName from the user username.
+     * @return None
+     */
     public void updateRecKcal(String username, String petName, double newKcal) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -133,6 +174,9 @@ public class PetManagerClient {
         taskManager.execute(BASE_URL + username + dash + petName + dash + recommendedKcalField);
     }
 
+    /*Method called by the client to update the WashFrequency of the pet PetName from the user username.
+     * @return None
+     */
     public void updateWashFreq(String username, String petName, int newWashFreq) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();

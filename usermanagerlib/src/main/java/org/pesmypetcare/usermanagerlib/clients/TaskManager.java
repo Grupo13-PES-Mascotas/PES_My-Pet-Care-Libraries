@@ -16,19 +16,34 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private int taskId;
     private JSONObject reqBody;
 
+    /*
+     *Creation class
+     */
     public TaskManager() {
         taskId = -1;
         reqBody = null;
     }
 
+    /*
+     *Sets the local taskId to a new taskId
+     */
     public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
+    /*
+     *Sets the request body to a new request body
+     */
     public void setReqBody(JSONObject reqBody) {
         this.reqBody = reqBody;
     }
 
+    /*
+     *Function automatically called once the task is created and is run with "execute"
+     * There can't be more than one task running on the same TaskManagers, but this is already
+     * managed through the ManagerClients.
+     * @return Returns a StringBuilder for the Get's. Returns nothing for the rest.
+     */
     @Override
     protected StringBuilder doInBackground(String... params) {
         StringBuilder result = new StringBuilder();
@@ -52,6 +67,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         return result;
     }
 
+    /*
+    *Function to post some info in certain url
+    * @return void
+     */
     private void doPost(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "POST");
         con.setDoOutput(true);
@@ -69,6 +88,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         }
     }
 
+    /*
+    * Method that performs the GET operation from a certain URL
+    * @return Info stored in that URL in the shape of a StringBuilder
+     */
     private StringBuilder doGet(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "GET");
         int responseCode = con.getResponseCode();
@@ -83,6 +106,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         return response;
     }
 
+    /*
+     * Method that performs the DELETE operation from a certain URL
+     * @return void
+     */
     private void doDelete(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE");
         int responseCode = con.getResponseCode();
@@ -96,6 +123,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         }
     }
 
+    /*
+     * Method that performs the PUT operation from a certain URL
+     * @return void
+     */
     private void doPut(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "PUT");
         con.setDoOutput(true);
@@ -112,6 +143,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         }
     }
 
+    /*
+     * Method that fills the Body of a request
+     * @return void
+     */
     private void writeRequestBody(HttpURLConnection con) throws IOException {
         OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
         writer.write(reqBody.toString());

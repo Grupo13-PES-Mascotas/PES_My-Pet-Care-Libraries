@@ -16,6 +16,11 @@ public class UserManagerClient {
     private final String USERS_PATH = "users/";
     private final String EMAIL_KEY = "email";
 
+    /*
+     * Method called by the client to sign up a new user.
+     * Password must contain numbers and letters
+     * @return void.
+     * */
     public void signUp(String username, String password, String email) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -26,6 +31,10 @@ public class UserManagerClient {
         taskManager.execute(BASE_URL + "signup?password=" + password);
     }
 
+    /*
+     * Method called by the client to get a user username.
+     * @return Json containint all the info of the user username.
+     * */
     public UserData getUser(String username) throws ExecutionException, InterruptedException {
         TaskManager taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
@@ -37,6 +46,10 @@ public class UserManagerClient {
         return gson.fromJson(json.toString(), UserData.class);
     }
 
+    /*
+    *Method called by the client to delete user username
+    * @return void
+     */
     public void deleteUser(String username) {
         TaskManager taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
@@ -46,6 +59,11 @@ public class UserManagerClient {
         taskManager.execute(url.toString());
     }
 
+    /*
+     *Method called by the client to update the password of the user username
+     * Password must contain numbers and letters.
+     * @return void
+     */
     public void updatePassword(String username, String newPassword) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -55,6 +73,10 @@ public class UserManagerClient {
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password");
     }
 
+    /*
+     *Method called by the client to update the Email of the user username
+     * @return void
+     */
     public void updateEmail(String username, String newEmail) {
         TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
