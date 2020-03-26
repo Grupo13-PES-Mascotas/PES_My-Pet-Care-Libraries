@@ -1,58 +1,66 @@
-package org.pesmypetcare.pes_my_pet_care_apis.usermanagerlibrary;
+package org.pesmypetcare.usermanagerlib.clients;
 
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
 import org.json.JSONObject;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
-    private static TaskManager taskManager;
-    private static String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-
-    public UserManagerClient() {
-        taskManager = TaskManager.getInstance();
-    }
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private final String USERS_PATH = "users/";
+    private final String EMAIL_KEY = "email";
 
     public void signUp(String username, String password, String email) {
+        TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
-        reqData.put("email", email);
+        reqData.put(EMAIL_KEY, email);
         taskManager.setTaskId(0);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + "signup?password=" + password);
     }
 
-    public String getUser(String username) throws ExecutionException, InterruptedException {
+    public UserData getUser(String username) throws ExecutionException, InterruptedException {
+        TaskManager taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
-        url.append("users/").append(username);
+        url.append(USERS_PATH).append(username);
         taskManager.setTaskId(1);
-        StringBuilder response = taskManager.execute(url.toString()).get();
-        return response.toString();
+        StringBuilder json = taskManager.execute(url.toString()).get();
+        System.out.println("Salida string: "+ json.toString());
+        Gson gson = new Gson();
+        return gson.fromJson(json.toString(), UserData.class);
     }
 
     public void deleteUser(String username) {
+        TaskManager taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
-        url.append("users/").append(username).append("/delete");
+        url.append(USERS_PATH).append(username).append("/delete");
         System.out.println(url.toString());
         taskManager.setTaskId(2);
         taskManager.execute(url.toString());
     }
 
     public void updatePassword(String username, String newPassword) {
+        TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("password", newPassword);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + "users/" + username + "/update/password");
+        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password");
     }
 
     public void updateEmail(String username, String newEmail) {
+        TaskManager taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("email", newEmail);
+        reqData.put(EMAIL_KEY, newEmail);
         taskManager.setTaskId(3);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + "users/" + username + "/update/email");
+        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/email");
     }
 }

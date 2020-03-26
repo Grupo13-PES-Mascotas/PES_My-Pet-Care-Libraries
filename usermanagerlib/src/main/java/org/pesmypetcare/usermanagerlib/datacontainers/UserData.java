@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanagerlib;
+package org.pesmypetcare.usermanagerlib.datacontainers;
 
 
 public class UserData {

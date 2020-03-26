@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanagerlib;
+package org.pesmypetcare.usermanagerlib.clients;
 
 
 import android.os.AsyncTask;
@@ -13,15 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
-    private static TaskManager instance;
     private int taskId;
     private JSONObject reqBody;
 
-    public static TaskManager getInstance() {
-        if (instance == null) {
-            instance = new TaskManager();
-        }
-        return instance;
+    public TaskManager() {
+        taskId = -1;
+        reqBody = null;
     }
 
     public void setTaskId(int taskId) {
