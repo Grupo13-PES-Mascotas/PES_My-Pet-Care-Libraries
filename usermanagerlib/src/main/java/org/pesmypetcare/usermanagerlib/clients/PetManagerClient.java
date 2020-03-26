@@ -27,6 +27,7 @@ public class PetManagerClient {
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
     private final String VALUE_KEY = "value";
+    private TaskManager taskManager;
 
     /**
      * Creates a pet entry in the data base for the user specified.
@@ -53,7 +54,7 @@ public class PetManagerClient {
         reqData.put(pathologiesField, pathologies);
         reqData.put(recommendedKcalField, Double.toString(recKcal));
         reqData.put(washFreqField, Integer.toString(washFreq));
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         taskManager.setTaskId(0);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName);
@@ -68,7 +69,7 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public PetData getPet(String username, String petName) throws ExecutionException, InterruptedException {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         taskManager.setTaskId(1);
         StringBuilder json = taskManager.execute(BASE_URL + username + dash + petName).get();
         Gson gson = new Gson();
@@ -83,7 +84,7 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Pet> getAllPets(String username) throws ExecutionException, InterruptedException {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         taskManager.setTaskId(1);
         StringBuilder response = taskManager.execute(BASE_URL + username).get();
         String jsonArray = response.substring(1, response.length() - 1);
@@ -104,7 +105,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      */
     public void deletePet(String username, String petName) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         taskManager.setTaskId(2);
         taskManager.execute(BASE_URL + username + dash + petName);
     }
@@ -116,7 +117,7 @@ public class PetManagerClient {
      * @param newGender The new gender for the pet
      */
     public void updateGender(String username, String petName, String newGender) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(3);
@@ -131,7 +132,7 @@ public class PetManagerClient {
      * @param newBirthday The new birthday for the pet
      */
     public void updateBirthday(String username, String petName, String newBirthday) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(3);
@@ -146,7 +147,7 @@ public class PetManagerClient {
      * @param newBreed The new breed for the pet
      */
     public void updateBreed(String username, String petName, String newBreed) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(3);
@@ -161,7 +162,7 @@ public class PetManagerClient {
      * @param newWeight The new weight for the pet
      */
     public void updateWeight(String username, String petName, double newWeight) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, String.valueOf(newWeight));
         taskManager.setTaskId(3);
@@ -176,7 +177,7 @@ public class PetManagerClient {
      * @param newPathologies The new pathologies for the pet
      */
     public void updatePathologies(String username, String petName, String newPathologies) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(3);
@@ -191,7 +192,7 @@ public class PetManagerClient {
      * @param newKcal The new recommended Kcal for the pet
      */
     public void updateRecKcal(String username, String petName, double newKcal) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(3);
@@ -206,7 +207,7 @@ public class PetManagerClient {
      * @param newWashFreq The new washing frequency for the pet
      */
     public void updateWashFreq(String username, String petName, int newWashFreq) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
         taskManager.setTaskId(3);

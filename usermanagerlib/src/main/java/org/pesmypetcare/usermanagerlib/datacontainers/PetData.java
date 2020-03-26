@@ -70,8 +70,8 @@ public class PetData {
     @Override
     public String toString() {
         return "{"
-            + "gender=" + gender +
-            ", breed='" + breed + '\''
+            + "gender=" + gender
+            + ", breed='" + breed + '\''
             + ", birth=" + birth
             + ", weight=" + weight
             + ", pathologies='" + pathologies + '\''

@@ -14,6 +14,7 @@ public class UserManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String USERS_PATH = "users/";
     private final String EMAIL_KEY = "email";
+    private TaskManager taskManager;
 
     /*
      * Method called by the client to sign up a new user.
@@ -21,7 +22,7 @@ public class UserManagerClient {
      * @return void.
      * */
     public void signUp(String username, String password, String email) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
         reqData.put(EMAIL_KEY, email);
@@ -35,7 +36,7 @@ public class UserManagerClient {
      * @return Json containint all the info of the user username.
      * */
     public UserData getUser(String username) throws ExecutionException, InterruptedException {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username);
         taskManager.setTaskId(1);
@@ -49,7 +50,7 @@ public class UserManagerClient {
     * @return void
      */
     public void deleteUser(String username) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username).append("/delete");
         taskManager.setTaskId(2);
@@ -62,7 +63,7 @@ public class UserManagerClient {
      * @return void
      */
     public void updatePassword(String username, String newPassword) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("password", newPassword);
         taskManager.setTaskId(3);
@@ -75,7 +76,7 @@ public class UserManagerClient {
      * @return void
      */
     public void updateEmail(String username, String newEmail) {
-        TaskManager taskManager = new TaskManager();
+        taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(EMAIL_KEY, newEmail);
         taskManager.setTaskId(3);
