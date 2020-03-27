@@ -16,11 +16,12 @@ public class UserManagerClient {
     private final String EMAIL_KEY = "email";
     private TaskManager taskManager;
 
-    /*
+    /**
      * Method called by the client to sign up a new user.
-     * Password must contain numbers and letters
-     * @return void.
-     * */
+     * @param username The username of the new user
+     * @param password The password of the new user
+     * @param email The email of the new user
+     */
     public void signUp(String username, String password, String email) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -31,10 +32,13 @@ public class UserManagerClient {
         taskManager.execute(BASE_URL + "signup?password=" + password);
     }
 
-    /*
-     * Method called by the client to get a user username.
-     * @return Json containint all the info of the user username.
-     * */
+    /**
+     * Method called by the client to get a user.
+     * @param username The username of which we want the information
+     * @return Json that contains all the info of the user
+     * @throws ExecutionException When the retrieval of the user fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
     public UserData getUser(String username) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
@@ -45,9 +49,9 @@ public class UserManagerClient {
         return gson.fromJson(json.toString(), UserData.class);
     }
 
-    /*
-    *Method called by the client to delete user username
-    * @return void
+    /**
+     * Method called by the client to delete user.
+     * @param username The username of which we want to delete
      */
     public void deleteUser(String username) {
         taskManager = new TaskManager();
@@ -57,10 +61,10 @@ public class UserManagerClient {
         taskManager.execute(url.toString());
     }
 
-    /*
-     *Method called by the client to update the password of the user username
-     * Password must contain numbers and letters.
-     * @return void
+    /**
+     * Method called by the client to update the user's password.
+     * @param username The username of which we want to update
+     * @param newPassword The new value of password
      */
     public void updatePassword(String username, String newPassword) {
         taskManager = new TaskManager();
@@ -71,9 +75,10 @@ public class UserManagerClient {
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password");
     }
 
-    /*
-     *Method called by the client to update the Email of the user username
-     * @return void
+    /**
+     *  Method called by the client to update the user's email.
+     * @param username The username of which we want to update
+     * @param newEmail The new value of email
      */
     public void updateEmail(String username, String newEmail) {
         taskManager = new TaskManager();
