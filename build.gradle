@@ -1,31 +1,29 @@
-plugins {
-    id 'java'
-    id 'java-library'
-    id 'jacoco'
-}
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-group 'org.pesmypetcare'
-version '1.0'
+buildscript {
 
-sourceCompatibility = 1.8
+    repositories {
+        google()
+        jcenter()
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.13'
-}
-
-jacoco {
-    toolVersion = '0.8.5'
-}
-
-jacocoTestReport {
-    dependsOn 'test'
-    reports {
-        xml.enabled true
-        csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
     }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.1'
+
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
