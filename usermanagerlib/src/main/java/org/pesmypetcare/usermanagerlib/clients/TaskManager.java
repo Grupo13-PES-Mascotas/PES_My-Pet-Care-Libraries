@@ -143,23 +143,23 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         writer.close();
     }
 
-    /**
-     * The method to get the response of the request.
-     * @param con The HttpURLConnection where the request comes from.
-     * @return Return the body of the response.
-     * @throws IOException When Input or Outpul fails
-     */
+     /**
+      * The method to get the response of the request.
+      * @param con The HttpURLConnection where the request comes from.
+      * @return Return the body of the response.
+      * @throws IOException When Input or Outpul fails
+      */
      private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
-     BufferedReader in = new BufferedReader(new InputStreamReader(
-     con.getInputStream()));
-     String inputLine;
-     StringBuilder response = new StringBuilder();
+         BufferedReader in = new BufferedReader(new InputStreamReader(
+         con.getInputStream()));
+         String inputLine;
+         StringBuilder response = new StringBuilder();
 
-     while ((inputLine = in.readLine()) != null) {
-     response.append(inputLine);
-     }
-     in.close();
-     return response;
+         while ((inputLine = in.readLine()) != null) {
+             response.append(inputLine);
+         }
+         in.close();
+         return response;
      }
 
     /**
@@ -179,7 +179,3 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         return con;
     }
 }
-
-
-
-
