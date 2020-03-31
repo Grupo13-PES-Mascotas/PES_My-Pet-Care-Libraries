@@ -13,12 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
-    private int taskId;
+    private String taskId;
     private JSONObject reqBody;
 
 
     protected TaskManager() {
-        taskId = -1;
+        taskId = "";
         reqBody = new JSONObject();
     }
 
@@ -26,7 +26,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * Set parameter taskId to identify the http request.
      * @param taskId The parameter to identify it
      */
-    protected void setTaskId(int taskId) {
+    protected void setTaskId(String taskId) {
         this.taskId = taskId;
     }
 
@@ -44,13 +44,13 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         StringBuilder result = new StringBuilder();
         try {
             switch (taskId) {
-                case 0:
+                case "POST":
                     doPost(params[0]);
                     break;
-                case 1:
+                case "GET":
                     result = doGet(params[0]);
                     break;
-                case 2:
+                case "DELETE":
                     doDelete(params[0]);
                     break;
                 default:
@@ -71,7 +71,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private void doPost(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "POST");
         con.setDoOutput(true);
-        writeRequestBody(con);
+        writeRequestBodyIfNotEmpty(con);
 
         int responseCode = con.getResponseCode();
         System.out.println("POST Response Code :: " + responseCode);
@@ -88,6 +88,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      */
     private StringBuilder doGet(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "GET");
+        writeRequestBodyIfNotEmpty(con);
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
         StringBuilder response = new StringBuilder();
@@ -107,6 +108,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      */
     private void doDelete(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE");
+        writeRequestBodyIfNotEmpty(con);
         int responseCode = con.getResponseCode();
         System.out.println("DELETE Response Code :: " + responseCode);
         if (responseCode != HttpURLConnection.HTTP_OK) {
@@ -122,7 +124,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private void doPut(String targetUrl) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "PUT");
         con.setDoOutput(true);
-        writeRequestBody(con);
+        writeRequestBodyIfNotEmpty(con);
 
         int responseCode = con.getResponseCode();
         System.out.println("PUT Response Code :: " + responseCode);
@@ -136,11 +138,13 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * @param con The HttpURLConnection where the request goes.
      * @throws IOException When Input or Outpul fails
      */
-    private void writeRequestBody(HttpURLConnection con) throws IOException {
-        OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
-        writer.write(reqBody.toString());
-        writer.flush();
-        writer.close();
+    private void writeRequestBodyIfNotEmpty(HttpURLConnection con) throws IOException {
+        if (0 != reqBody.length()) {
+            OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+            writer.write(reqBody.toString());
+            writer.flush();
+            writer.close();
+        }
     }
 
     /**

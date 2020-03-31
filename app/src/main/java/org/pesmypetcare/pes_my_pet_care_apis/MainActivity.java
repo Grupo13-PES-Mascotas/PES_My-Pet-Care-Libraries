@@ -6,6 +6,7 @@ import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
-        try {
+        /*try {
             List<Pet> pets = manager.getAllPets("Albert");
             System.out.println(pets);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        //UserManagerClient client = new UserManagerClient();
+        UserManagerClient client = new UserManagerClient();
         /*client.signUp("santi", "123456", "santi@gmail.com");
         System.out.println("Pasado signup");*/
         /*try {
@@ -65,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         /*client.deleteUser("kayle");
         client.updateEmail("alvaro", "nuevoEMail@mail.com");
         client.updatePassword("alvaro", "newpassword123456");*/
+        /*String test = "Hello World";
+        client.saveProfileImage("user", test.getBytes());*/
+        try {
+            byte[] result = client.downloadProfileImage("user");
+            System.out.println(new String(result, "UTF-8"));
+        } catch (ExecutionException | InterruptedException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }
 

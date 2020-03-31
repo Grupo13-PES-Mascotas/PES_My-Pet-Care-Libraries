@@ -27,6 +27,7 @@ public class PetManagerClient {
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
     private final String VALUE_KEY = "value";
+    private final String PUT = "PUT";
     private TaskManager taskManager;
 
     /**
@@ -55,7 +56,7 @@ public class PetManagerClient {
         reqData.put(recommendedKcalField, Double.toString(recKcal));
         reqData.put(washFreqField, Integer.toString(washFreq));
         taskManager = new TaskManager();
-        taskManager.setTaskId(0);
+        taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName);
     }
@@ -70,7 +71,7 @@ public class PetManagerClient {
      */
     public PetData getPet(String username, String petName) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
-        taskManager.setTaskId(1);
+        taskManager.setTaskId("GET");
         StringBuilder json = taskManager.execute(BASE_URL + username + dash + petName).get();
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), PetData.class);
@@ -85,7 +86,7 @@ public class PetManagerClient {
      */
     public List<Pet> getAllPets(String username) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
-        taskManager.setTaskId(1);
+        taskManager.setTaskId("GET");
         StringBuilder response = taskManager.execute(BASE_URL + username).get();
         String jsonArray = response.substring(1, response.length() - 1);
         String[] pets = jsonArray.split(",\\{");
@@ -106,7 +107,7 @@ public class PetManagerClient {
      */
     public void deletePet(String username, String petName) {
         taskManager = new TaskManager();
-        taskManager.setTaskId(2);
+        taskManager.setTaskId("DELETE");
         taskManager.execute(BASE_URL + username + dash + petName);
     }
 
@@ -120,7 +121,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newGender);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + genderField);
     }
@@ -135,7 +136,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newBirthday);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + birthdayField);
     }
@@ -150,7 +151,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newBreed);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + breedField);
     }
@@ -165,7 +166,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, String.valueOf(newWeight));
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + weightField);
     }
@@ -180,7 +181,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newPathologies);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + pathologiesField);
     }
@@ -195,7 +196,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, Double.toString(newKcal));
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + recommendedKcalField);
     }
@@ -210,7 +211,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + username + dash + petName + dash + washFreqField);
     }

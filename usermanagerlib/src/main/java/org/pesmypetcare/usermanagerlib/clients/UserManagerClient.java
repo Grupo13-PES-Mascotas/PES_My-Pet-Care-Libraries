@@ -11,9 +11,13 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "http://10.4.41.170:8081/";
     private final String USERS_PATH = "users/";
+    private final String STORAGE_PATH = "storage/";
     private final String EMAIL_KEY = "email";
+    private final String PUT = "PUT";
+    private final String GET = "GET";
     private TaskManager taskManager;
 
     /**
@@ -27,7 +31,7 @@ public class UserManagerClient {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
         reqData.put(EMAIL_KEY, email);
-        taskManager.setTaskId(0);
+        taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + "signup?password=" + password);
     }
@@ -43,7 +47,7 @@ public class UserManagerClient {
         taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username);
-        taskManager.setTaskId(1);
+        taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(url.toString()).get();
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), UserData.class);
@@ -57,7 +61,7 @@ public class UserManagerClient {
         taskManager = new TaskManager();
         StringBuilder url = new StringBuilder(BASE_URL);
         url.append(USERS_PATH).append(username).append("/delete");
-        taskManager.setTaskId(2);
+        taskManager.setTaskId("DELETE");
         taskManager.execute(url.toString());
     }
 
@@ -70,7 +74,7 @@ public class UserManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("password", newPassword);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password");
     }
@@ -84,8 +88,30 @@ public class UserManagerClient {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(EMAIL_KEY, newEmail);
-        taskManager.setTaskId(3);
+        taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/email");
+    }
+
+    public void saveProfileImage(String userId, byte[] image) {
+        taskManager = new TaskManager();
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("uid", userId);
+        reqData.put("imgName", "profile-image");
+        reqData.put("img", image);
+        taskManager.setTaskId(PUT);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + STORAGE_PATH + "/image");
+    }
+
+    public byte[] downloadProfileImage(String userId) throws ExecutionException, InterruptedException {
+        taskManager = new TaskManager();
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("path", userId);
+        reqData.put("imageName", "profile-image");
+        taskManager.setTaskId(GET);
+        taskManager.setReqBody(new JSONObject(reqData));
+        StringBuilder json = taskManager.execute(BASE_URL + STORAGE_PATH + "/image").get();
+        return json.toString().getBytes();
     }
 }
