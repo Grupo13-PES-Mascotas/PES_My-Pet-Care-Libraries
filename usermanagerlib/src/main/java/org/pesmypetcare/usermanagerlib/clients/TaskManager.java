@@ -45,16 +45,16 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         try {
             switch (taskId) {
                 case "POST":
-                    doPost(params[0]);
+                    doPost(params[0], params[1]);
                     break;
                 case "GET":
-                    result = doGet(params[0]);
+                    result = doGet(params[0], params[1]);
                     break;
                 case "DELETE":
-                    doDelete(params[0]);
+                    doDelete(params[0], params[1]);
                     break;
                 default:
-                    doPut(params[0]);
+                    doPut(params[0], params[1]);
                     break;
             }
         } catch (IOException e) {
@@ -66,10 +66,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * Make the POST request to URL specified.
      * @param targetUrl The URL where the request goes.
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output fails
      */
-    private void doPost(String targetUrl) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "POST");
+    private void doPost(String targetUrl, String token) throws IOException {
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "POST", token);
         con.setDoOutput(true);
         writeRequestBodyIfNotEmpty(con);
 
@@ -84,17 +84,16 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * Make the GET request to URL specified.
      * @param targetUrl The URL where the request goes.
      * @return The request body.
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output fails
      */
-    private StringBuilder doGet(String targetUrl) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "GET");
-        writeRequestBodyIfNotEmpty(con);
+    private StringBuilder doGet(String targetUrl, String token) throws IOException {
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "GET", token);
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
         StringBuilder response = new StringBuilder();
         if (responseCode == HttpURLConnection.HTTP_OK) {
             response = getResponseBody(con);
-            System.out.println(response.toString());
+            System.out.println("Response: " + response.toString());
         } else {
             System.out.println("GET request not worked");
         }
@@ -104,10 +103,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * Make the DELETE request to URL specified.
      * @param targetUrl The URL where the request goes.
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output fails
      */
-    private void doDelete(String targetUrl) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE");
+    private void doDelete(String targetUrl, String token) throws IOException {
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE", token);
         writeRequestBodyIfNotEmpty(con);
         int responseCode = con.getResponseCode();
         System.out.println("DELETE Response Code :: " + responseCode);
@@ -119,10 +118,11 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * Make the PUT request to URL specified.
      * @param targetUrl The URL where the request goes.
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output
+     * fails
      */
-    private void doPut(String targetUrl) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "PUT");
+    private void doPut(String targetUrl, String token) throws IOException {
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "PUT", token);
         con.setDoOutput(true);
         writeRequestBodyIfNotEmpty(con);
 
@@ -136,7 +136,8 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * The method to write requests.
      * @param con The HttpURLConnection where the request goes.
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output
+     * fails
      */
     private void writeRequestBodyIfNotEmpty(HttpURLConnection con) throws IOException {
         if (0 != reqBody.length()) {
@@ -151,7 +152,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     * The method to get the response of the request.
     * @param con The HttpURLConnection where the request comes from.
     * @return Return the body of the response.
-    * @throws IOException When Input or Outpul fails
+    * @throws IOException When input or output fails
     */
     private StringBuilder getResponseBody(HttpURLConnection con) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -170,15 +171,17 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * @param targetUrl The URL where we make the connection
      * @param method The type of request
      * @return Returns the connection made
-     * @throws IOException When Input or Outpul fails
+     * @throws IOException When input or output fails
      */
-    private HttpURLConnection getSimpleHttpUrlConnection(String targetUrl, String method) throws IOException {
+    private HttpURLConnection getSimpleHttpUrlConnection(String targetUrl, String method,
+                                                         String token) throws IOException {
         URL url = new URL(targetUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(method);
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
         con.setRequestProperty("Accept-Language", "UTF-8");
+        con.setRequestProperty("token", token);
         return con;
     }
 }

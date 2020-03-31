@@ -7,6 +7,7 @@ import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -66,12 +67,17 @@ public class MainActivity extends AppCompatActivity {
         /*client.deleteUser("kayle");
         client.updateEmail("alvaro", "nuevoEMail@mail.com");
         client.updatePassword("alvaro", "newpassword123456");*/
-        /*String test = "Hello World";
-        client.saveProfileImage("user", test.getBytes());*/
+        String test = "Hello World";
+        /*client.saveProfileImage("myAccessToken", "user", test.getBytes());*/
+        /*try {
+            byte[] result = client.downloadProfileImage("myAccessToken", "user");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        //manager.saveProfileImage("myAccessToken", "user", "Linux", test.getBytes());
         try {
-            byte[] result = client.downloadProfileImage("user");
-            System.out.println(new String(result, "UTF-8"));
-        } catch (ExecutionException | InterruptedException | UnsupportedEncodingException e) {
+            manager.downloadProfileImage("myAccessToken", "user", "Linux");
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
