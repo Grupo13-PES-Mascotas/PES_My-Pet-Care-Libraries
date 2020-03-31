@@ -15,8 +15,6 @@ import java.util.concurrent.ExecutionException;
 
 public class PetManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private final String PETS_PATH = "pet/";
-    private final String IMAGES_PATH = "storage/image/";
     private static String usernameField = "username";
     private static String nameField = "name";
     private static String genderField = "gender";
@@ -26,6 +24,8 @@ public class PetManagerClient {
     private static String pathologiesField = "pathologies";
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
+    private final String PETS_PATH = "pet/";
+    private final String IMAGES_PATH = "storage/image/";
     private final String VALUE_KEY = "value";
     private final String PUT = "PUT";
     private final String GET = "GET";

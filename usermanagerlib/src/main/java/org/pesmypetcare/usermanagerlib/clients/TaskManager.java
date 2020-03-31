@@ -13,6 +13,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
+    private final String POST = "POST";
+    private final String GET = "GET";
+    private final String DELETE = "DELETE";
     private String taskId;
     private JSONObject reqBody;
 
@@ -44,13 +47,13 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         StringBuilder result = new StringBuilder();
         try {
             switch (taskId) {
-                case "POST":
+                case POST:
                     doPost(params[0], params[1]);
                     break;
-                case "GET":
+                case GET:
                     result = doGet(params[0], params[1]);
                     break;
-                case "DELETE":
+                case DELETE:
                     doDelete(params[0], params[1]);
                     break;
                 default:
@@ -69,7 +72,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * @throws IOException When input or output fails
      */
     private void doPost(String targetUrl, String token) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "POST", token);
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, POST, token);
         con.setDoOutput(true);
         writeRequestBodyIfNotEmpty(con);
 
@@ -87,7 +90,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * @throws IOException When input or output fails
      */
     private StringBuilder doGet(String targetUrl, String token) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "GET", token);
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, GET, token);
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
         StringBuilder response = new StringBuilder();
@@ -106,7 +109,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * @throws IOException When input or output fails
      */
     private void doDelete(String targetUrl, String token) throws IOException {
-        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "DELETE", token);
+        HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, DELETE, token);
         writeRequestBodyIfNotEmpty(con);
         int responseCode = con.getResponseCode();
         System.out.println("DELETE Response Code :: " + responseCode);
