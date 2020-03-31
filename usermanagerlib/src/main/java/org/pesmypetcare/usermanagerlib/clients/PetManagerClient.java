@@ -17,7 +17,6 @@ public class PetManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String PETS_PATH = "pet/";
     private final String IMAGES_PATH = "storage/image/";
-    private static String dash = "/";
     private static String usernameField = "username";
     private static String nameField = "name";
     private static String genderField = "gender";
@@ -30,6 +29,7 @@ public class PetManagerClient {
     private final String VALUE_KEY = "value";
     private final String PUT = "PUT";
     private final String GET = "GET";
+    private final String imageName = "-profile-image.png";
     private TaskManager taskManager;
 
     /**
@@ -61,7 +61,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken);
     }
 
     /**
@@ -77,7 +77,7 @@ public class PetManagerClient {
                           String petName) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName, accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken).get();
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), PetData.class);
     }
@@ -115,7 +115,7 @@ public class PetManagerClient {
     public void deletePet(String accessToken, String username, String petName) {
         taskManager = new TaskManager();
         taskManager.setTaskId("DELETE");
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken);
     }
 
     /**
@@ -131,7 +131,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + genderField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + genderField, accessToken);
     }
 
     /**
@@ -147,7 +147,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + birthdayField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + birthdayField, accessToken);
     }
 
     /**
@@ -163,7 +163,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + breedField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + breedField, accessToken);
     }
 
     /**
@@ -179,7 +179,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, String.valueOf(newWeight));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + weightField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + weightField, accessToken);
     }
 
     /**
@@ -195,7 +195,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + pathologiesField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + pathologiesField, accessToken);
     }
 
     /**
@@ -211,7 +211,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + recommendedKcalField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + recommendedKcalField, accessToken);
     }
 
     /**
@@ -227,7 +227,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + dash + petName + dash + washFreqField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + washFreqField, accessToken);
     }
 
     /**
@@ -240,8 +240,8 @@ public class PetManagerClient {
     public void saveProfileImage(String accessToken, String userId, String petName, byte[] image) {
         taskManager = new TaskManager();
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", userId + dash + "pets");
-        reqData.put("imgName", petName + "-profile-image.png");
+        reqData.put("uid", userId + "/" + "pets");
+        reqData.put("imgName", petName + imageName);
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
@@ -262,7 +262,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-            .execute(BASE_URL + IMAGES_PATH + userId + "/pets" + "?name=" + petName +"-profile-image.png", accessToken)
+            .execute(BASE_URL + IMAGES_PATH + userId + "/pets" + "?name=" + petName + imageName, accessToken)
             .get();
         return json.toString().getBytes();
     }
