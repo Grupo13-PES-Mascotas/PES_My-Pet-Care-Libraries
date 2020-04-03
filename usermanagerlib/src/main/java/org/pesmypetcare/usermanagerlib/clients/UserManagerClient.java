@@ -1,6 +1,8 @@
 package org.pesmypetcare.usermanagerlib.clients;
 
 
+import android.util.Base64;
+
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -11,7 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private final String USERS_PATH = "users/";
     private final String IMAGES_PATH = "storage/image/";
     private final String EMAIL_KEY = "email";
@@ -123,6 +126,6 @@ public class UserManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + userId + "?name=profile-image.png",
             accessToken).get();
-        return json.toString().getBytes();
+        return Base64.decode(json.toString(), Base64.DEFAULT);
     }
 }

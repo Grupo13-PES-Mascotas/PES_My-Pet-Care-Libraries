@@ -1,12 +1,16 @@
 package org.pesmypetcare.usermanagerlib.clients;
 
 
+import android.util.Base64;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +18,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static String usernameField = "username";
     private static String nameField = "name";
     private static String genderField = "gender";
@@ -240,16 +245,16 @@ public class PetManagerClient {
     public void saveProfileImage(String accessToken, String userId, String petName, byte[] image) {
         taskManager = new TaskManager();
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", userId + "/" + "pets");
+        reqData.put("uid", userId);
         reqData.put("imgName", petName + imageName);
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + IMAGES_PATH, accessToken);
+        taskManager.execute(BASE_URL + IMAGES_PATH + userId + "/pets", accessToken);
     }
 
     /**
-     * Downloads the profile image of the specified user.
+     * Downloads profile image of the specified user.
      * @param accessToken The personal access token for the account
      * @param userId The owner's unique identifier
      * @param petName The pet's name
@@ -262,8 +267,33 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-            .execute(BASE_URL + IMAGES_PATH + userId + "/pets" + "?name=" + petName + imageName, accessToken)
+            .execute(BASE_URL + IMAGES_PATH + userId + "/pets/" + petName + imageName, accessToken)
             .get();
-        return json.toString().getBytes();
+        return Base64.decode(json.toString(), Base64.DEFAULT);
+    }
+
+    /**
+     * Downloads all profile images of the user's pets.
+     * @param accessToken The personal access token for the account
+     * @param userId The owner's unique identifier
+     * @return A map with all profile images of the user's pets
+     * @throws ExecutionException When the retrieval of the user fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public Map<String, byte[]> downloadAllProfileImages(String accessToken, String userId) throws ExecutionException, InterruptedException {
+        taskManager = new TaskManager();
+        taskManager.setTaskId(GET);
+        StringBuilder json = taskManager
+            .execute(BASE_URL + IMAGES_PATH + userId + "/pets", accessToken)
+            .get();
+        Gson gson = new Gson();
+        Type mapType = new TypeToken<Map<String, String>>() {}.getType();
+        Map<String, String> response = gson.fromJson(json.toString(), mapType);
+        Map<String, byte[]> result = new HashMap<>();
+        for(String key : response.keySet()) {
+            byte[] img = Base64.decode(response.get(key), Base64.DEFAULT);
+            result.put(key, img);
+        }
+        return result;
     }
 }
