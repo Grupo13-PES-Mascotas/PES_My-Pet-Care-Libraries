@@ -31,7 +31,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * Set parameter taskId to identify the http request.
      * @param taskId The parameter to identify it
      */
-    protected void setTaskId(String taskId) {
+    public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
 
@@ -39,7 +39,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * Set parameter reqBody to write in case of POST or PUT http request.
      * @param reqBody The parameter to write it
      */
-    protected void setReqBody(JSONObject reqBody) {
+    public void setReqBody(JSONObject reqBody) {
         this.reqBody = reqBody;
     }
 

@@ -28,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = {"org.pesmypetcare.usermanagerlib.*", "android.util.Base64"})
+@PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String USERS_PATH = "users/";

@@ -29,6 +29,10 @@ android {
             testCoverageEnabled true
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 jacoco {
@@ -43,18 +47,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
-
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
-
+task jacocoTestReport(type: JacocoReport, dependsOn: ':usermanagerlib:testDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true
@@ -62,11 +64,10 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
                       'android/**/*.*', '**/*Binding.class']
-    def debugTree = fileTree(dir: "${project.rootDir}/usermanagerlib/build/intermediates/javac/debug/classes",
-        excludes: fileFilter)
-    def mainSrc = "${project.rootDir}/usermanagerlib/src/main/java"
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/main/java"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree])
-    executionData.from = files("${project.rootDir}/usermanagerlib/build/jacoco/testDebugUnitTest.exec")
+    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
 }
