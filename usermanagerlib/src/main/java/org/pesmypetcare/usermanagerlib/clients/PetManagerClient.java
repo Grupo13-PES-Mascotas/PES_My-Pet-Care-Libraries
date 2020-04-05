@@ -18,8 +18,14 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerClient {
-    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String PETS_PATH = "pet/";
+    private static final String IMAGES_PATH = "storage/image/";
+    private static final String PETS_PICTURES_PATH = "/pets/";
+    private static final String VALUE_KEY = "value";
+    private static final String PUT = "PUT";
+    private static final String GET = "GET";
+    private static final String PROFILE_IMAGE_NAME = "-profile-image.png";
     private static String usernameField = "username";
     private static String nameField = "name";
     private static String genderField = "gender";
@@ -29,13 +35,21 @@ public class PetManagerClient {
     private static String pathologiesField = "pathologies";
     private static String recommendedKcalField = "recommendedKcal";
     private static String washFreqField = "washFreq";
-    private final String PETS_PATH = "pet/";
-    private final String IMAGES_PATH = "storage/image/";
-    private final String VALUE_KEY = "value";
-    private final String PUT = "PUT";
-    private final String GET = "GET";
-    private final String imageName = "-profile-image.png";
     private TaskManager taskManager;
+
+    /**
+     * Creates a pet entry in the data base for the user specified.
+     * @param accessToken The personal access token for the account
+     * @param username The user's username
+     * @param pet The pet's name
+     */
+    public void createPet(String accessToken, String username, Pet pet) {
+        JSONObject reqJson = buildPetJson(username, pet);
+        taskManager = new TaskManager();
+        taskManager.setTaskId("POST");
+        taskManager.setReqBody(reqJson);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + pet, accessToken);
+    }
 
     /**
      * Creates a pet entry in the data base for the user specified.
@@ -50,6 +64,7 @@ public class PetManagerClient {
      * @param recKcal The pet's recommended Kcal
      * @param washFreq The pet's washing frequency
      */
+    @Deprecated
     public void createPet(String accessToken, String username, String petName, String gender, String
             breed, String birthday, double weight, String
             pathologies, double recKcal, int washFreq) {
@@ -128,8 +143,26 @@ public class PetManagerClient {
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
+     * @param field The field to update
+     * @param newValue The new field value
+     */
+    public void updateField(String accessToken, String username, String petName, String field, String newValue) {
+        taskManager = new TaskManager();
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put(VALUE_KEY, newValue);
+        taskManager.setTaskId(PUT);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + field, accessToken);
+    }
+
+    /**
+     * Updates de gender of a pet.
+     * @param accessToken The personal access token for the account
+     * @param username The pet's owner username
+     * @param petName The pet's name
      * @param newGender The new gender for the pet
      */
+    @Deprecated
     public void updateGender(String accessToken, String username, String petName, String newGender) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -146,6 +179,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newBirthday The new birthday for the pet
      */
+    @Deprecated
     public void updateBirthday(String accessToken, String username, String petName, String newBirthday) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -162,6 +196,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newBreed The new breed for the pet
      */
+    @Deprecated
     public void updateBreed(String accessToken, String username, String petName, String newBreed) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -178,6 +213,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newWeight The new weight for the pet
      */
+    @Deprecated
     public void updateWeight(String accessToken, String username, String petName, double newWeight) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -194,6 +230,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newPathologies The new pathologies for the pet
      */
+    @Deprecated
     public void updatePathologies(String accessToken, String username, String petName, String newPathologies) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -210,6 +247,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newKcal The new recommended Kcal for the pet
      */
+    @Deprecated
     public void updateRecKcal(String accessToken, String username, String petName, double newKcal) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -226,6 +264,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param newWashFreq The new washing frequency for the pet
      */
+    @Deprecated
     public void updateWashFreq(String accessToken, String username, String petName, int newWashFreq) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -246,11 +285,11 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", userId);
-        reqData.put("imgName", petName + imageName);
+        reqData.put("imgName", petName + PROFILE_IMAGE_NAME);
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + IMAGES_PATH + userId + "/pets", accessToken);
+        taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken);
     }
 
     /**
@@ -267,7 +306,7 @@ public class PetManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-            .execute(BASE_URL + IMAGES_PATH + userId + "/pets/" + petName + imageName, accessToken)
+            .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH + petName + PROFILE_IMAGE_NAME, accessToken)
             .get();
         return Base64.decode(json.toString(), Base64.DEFAULT);
     }
@@ -280,20 +319,42 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public Map<String, byte[]> downloadAllProfileImages(String accessToken, String userId) throws ExecutionException, InterruptedException {
+    public Map<String, byte[]> downloadAllProfileImages(String accessToken,
+                                                        String userId) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-            .execute(BASE_URL + IMAGES_PATH + userId + "/pets", accessToken)
+            .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
             .get();
         Gson gson = new Gson();
-        Type mapType = new TypeToken<Map<String, String>>() {}.getType();
+        Type mapType = new TypeToken<Map<String, String>>() { }.getType();
         Map<String, String> response = gson.fromJson(json.toString(), mapType);
         Map<String, byte[]> result = new HashMap<>();
-        for(String key : response.keySet()) {
+        for (String key : response.keySet()) {
             byte[] img = Base64.decode(response.get(key), Base64.DEFAULT);
             result.put(key, img);
         }
         return result;
+    }
+
+    /**
+     * Creates de pet's json object.
+     * @param owner The pet's owner
+     * @param pet The pet data container
+     * @return A JSONObject with te required data to make the request
+     */
+    private JSONObject buildPetJson(String owner, Pet pet) {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put(usernameField, owner);
+        reqData.put(nameField, pet.getName());
+        PetData data = pet.getBody();
+        reqData.put(genderField, data.getGender().toString());
+        reqData.put(breedField, data.getBreed());
+        reqData.put(birthdayField, data.getBirth().toString());
+        reqData.put(weightField, Double.toString(data.getWeight()));
+        reqData.put(pathologiesField, data.getPathologies());
+        reqData.put(recommendedKcalField, Double.toString(data.getRecommendedKcal()));
+        reqData.put(washFreqField, Integer.toString(data.getWashFreq()));
+        return new JSONObject(reqData);
     }
 }

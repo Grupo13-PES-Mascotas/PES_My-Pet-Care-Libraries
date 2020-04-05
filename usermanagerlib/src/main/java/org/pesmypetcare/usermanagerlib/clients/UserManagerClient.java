@@ -13,8 +13,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
-    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String USERS_PATH = "users/";
     private final String IMAGES_PATH = "storage/image/";
     private final String EMAIL_KEY = "email";
@@ -69,8 +68,25 @@ public class UserManagerClient {
      * Method called by the client to update the user's password.
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to update
+     * @param field The field to update
+     * @param newValue The new field value
+     */
+    public void updateField(String accessToken, String username, String field, String newValue) {
+        taskManager = new TaskManager();
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put(field, newValue);
+        taskManager.setTaskId(PUT);
+        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/" + field, accessToken);
+    }
+
+    /**
+     * Method called by the client to update the user's password.
+     * @param accessToken The personal access token for the account
+     * @param username The username of which we want to update
      * @param newPassword The new value of password
      */
+    @Deprecated
     public void updatePassword(String accessToken, String username, String newPassword) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
@@ -86,6 +102,7 @@ public class UserManagerClient {
      * @param username The username of which we want to update
      * @param newEmail The new value of email
      */
+    @Deprecated
     public void updateEmail(String accessToken, String username, String newEmail) {
         taskManager = new TaskManager();
         Map<String, String> reqData = new HashMap<>();
