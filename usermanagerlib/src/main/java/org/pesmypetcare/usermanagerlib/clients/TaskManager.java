@@ -19,8 +19,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private String taskId;
     private JSONObject reqBody;
 
-
-    protected TaskManager() {
+    /**
+     * Resets the task manager
+     */
+    public void resetTaskManager() {
         taskId = "";
         reqBody = new JSONObject();
     }

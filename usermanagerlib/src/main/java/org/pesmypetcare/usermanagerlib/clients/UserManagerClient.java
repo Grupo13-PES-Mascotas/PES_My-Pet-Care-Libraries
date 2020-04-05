@@ -21,6 +21,10 @@ public class UserManagerClient {
     private final String GET = "GET";
     private TaskManager taskManager;
 
+    public UserManagerClient() {
+        taskManager = new TaskManager();
+    }
+
     /**
      * Method called by the client to sign up a new user.
      * @param username The username of the new user
@@ -28,7 +32,7 @@ public class UserManagerClient {
      * @param email The email of the new user
      */
     public void signUp(String username, String password, String email) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
         reqData.put(EMAIL_KEY, email);
@@ -46,7 +50,7 @@ public class UserManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public UserData getUser(String accessToken, String username) throws ExecutionException, InterruptedException {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
         Gson gson = new Gson();
@@ -59,7 +63,7 @@ public class UserManagerClient {
      * @param username The username of which we want to delete
      */
     public void deleteUser(String accessToken, String username) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
         taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken);
     }
@@ -72,7 +76,7 @@ public class UserManagerClient {
      * @param newValue The new field value
      */
     public void updateField(String accessToken, String username, String field, String newValue) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(field, newValue);
         taskManager.setTaskId(PUT);
@@ -88,7 +92,7 @@ public class UserManagerClient {
      */
     @Deprecated
     public void updatePassword(String accessToken, String username, String newPassword) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("password", newPassword);
         taskManager.setTaskId(PUT);
@@ -104,7 +108,7 @@ public class UserManagerClient {
      */
     @Deprecated
     public void updateEmail(String accessToken, String username, String newEmail) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(EMAIL_KEY, newEmail);
         taskManager.setTaskId(PUT);
@@ -119,7 +123,7 @@ public class UserManagerClient {
      * @param image The image to save
      */
     public void saveProfileImage(String accessToken, String userId, byte[] image) {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", userId);
         reqData.put("imgName", "profile-image.png");
@@ -139,7 +143,7 @@ public class UserManagerClient {
      */
     public byte[] downloadProfileImage(String accessToken,
                                        String userId) throws ExecutionException, InterruptedException {
-        taskManager = new TaskManager();
+        taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + userId + "?name=profile-image.png",
             accessToken).get();
