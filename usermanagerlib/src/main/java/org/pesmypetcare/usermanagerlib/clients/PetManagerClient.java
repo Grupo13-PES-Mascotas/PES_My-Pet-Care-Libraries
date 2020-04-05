@@ -25,6 +25,7 @@ public class PetManagerClient {
     private static final String VALUE_KEY = "value";
     private static final String PUT = "PUT";
     private static final String GET = "GET";
+    private static final String POST = "POST";
     private static final String PROFILE_IMAGE_NAME = "-profile-image.png";
     private static String usernameField = "username";
     private static String nameField = "name";
@@ -46,7 +47,7 @@ public class PetManagerClient {
     public void createPet(String accessToken, String username, Pet pet) {
         JSONObject reqJson = buildPetJson(username, pet);
         taskManager = new TaskManager();
-        taskManager.setTaskId("POST");
+        taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         taskManager.execute(BASE_URL + PETS_PATH + username + "/" + pet, accessToken);
     }
@@ -79,7 +80,7 @@ public class PetManagerClient {
         reqData.put(recommendedKcalField, Double.toString(recKcal));
         reqData.put(washFreqField, Integer.toString(washFreq));
         taskManager = new TaskManager();
-        taskManager.setTaskId("POST");
+        taskManager.setTaskId(POST);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken);
     }
