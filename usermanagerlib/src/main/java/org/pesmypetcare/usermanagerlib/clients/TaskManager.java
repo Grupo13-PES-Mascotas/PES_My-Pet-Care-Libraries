@@ -20,7 +20,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private JSONObject reqBody;
 
     /**
-     * Resets the task manager
+     * Resets the task manager.
      */
     public void resetTaskManager() {
         taskId = "";
@@ -70,7 +70,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
      * Make the POST request to URL specified.
-     * @param targetUrl The URL where the request goes.
+     * @param targetUrl The URL where the request goes
      * @throws IOException When input or output fails
      */
     private void doPost(String targetUrl, String token) throws IOException {
@@ -87,8 +87,8 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
      * Make the GET request to URL specified.
-     * @param targetUrl The URL where the request goes.
-     * @return The request body.
+     * @param targetUrl The URL where the request goes
+     * @return The request body
      * @throws IOException When input or output fails
      */
     private StringBuilder doGet(String targetUrl, String token) throws IOException {
@@ -107,7 +107,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
      * Make the DELETE request to URL specified.
-     * @param targetUrl The URL where the request goes.
+     * @param targetUrl The URL where the request goes
      * @throws IOException When input or output fails
      */
     private void doDelete(String targetUrl, String token) throws IOException {
@@ -122,7 +122,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
      * Make the PUT request to URL specified.
-     * @param targetUrl The URL where the request goes.
+     * @param targetUrl The URL where the request goes
      * @throws IOException When input or output
      * fails
      */
@@ -140,7 +140,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
      * The method to write requests.
-     * @param con The HttpURLConnection where the request goes.
+     * @param con The HttpURLConnection where the request goes
      * @throws IOException When input or output
      * fails
      */
@@ -155,7 +155,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
 
     /**
     * The method to get the response of the request.
-    * @param con The HttpURLConnection where the request comes from.
+    * @param con The HttpURLConnection where the request comes from
     * @return Return the body of the response.
     * @throws IOException When input or output fails
     */

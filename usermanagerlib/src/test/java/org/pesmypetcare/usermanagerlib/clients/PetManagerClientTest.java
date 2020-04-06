@@ -162,12 +162,17 @@ public class PetManagerClientTest {
     }
 
     @Test
-    public void updateField() {
+    public void updateField() throws IllegalArgumentException{
         client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName + "/" + BIRTH_FIELD, ACCESS_TOKEN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldThrowAnExceptionWhenWrongType() throws IllegalArgumentException {
+        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23");
     }
 
     @Test

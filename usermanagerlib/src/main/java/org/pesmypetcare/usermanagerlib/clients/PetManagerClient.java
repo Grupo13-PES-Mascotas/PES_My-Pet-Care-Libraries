@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
@@ -18,6 +19,13 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class PetManagerClient {
+    public static final String GENDER = "gender";
+    public static final String BIRTH = "birth";
+    public static final String BREED = "breed";
+    public static final String WEIGHT = "weight";
+    public static final String PATHOLOGIES = "pathologies";
+    public static final String RECOMMENDED_KCAL = "recommendedKcal";
+    public static final String WASH_FREQ = "washFreq";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private static final String PETS_PATH = "pet/";
     private static final String IMAGES_PATH = "storage/image/";
@@ -29,13 +37,6 @@ public class PetManagerClient {
     private static final String POST = "POST";
     private static String usernameField = "username";
     private static String nameField = "name";
-    private static String genderField = "gender";
-    private static String birthdayField = "birth";
-    private static String breedField = "breed";
-    private static String weightField = "weight";
-    private static String pathologiesField = "pathologies";
-    private static String recommendedKcalField = "recommendedKcal";
-    private static String washFreqField = "washFreq";
     private TaskManager taskManager;
     private final Gson gson;
 
@@ -78,13 +79,13 @@ public class PetManagerClient {
         Map<String, String> reqData = new HashMap<>();
         reqData.put(usernameField, username);
         reqData.put(nameField, petName);
-        reqData.put(genderField, gender);
-        reqData.put(breedField, breed);
-        reqData.put(birthdayField, birthday);
-        reqData.put(weightField, Double.toString(weight));
-        reqData.put(pathologiesField, pathologies);
-        reqData.put(recommendedKcalField, Double.toString(recKcal));
-        reqData.put(washFreqField, Integer.toString(washFreq));
+        reqData.put(GENDER, gender);
+        reqData.put(BREED, breed);
+        reqData.put(BIRTH, birthday);
+        reqData.put(WEIGHT, Double.toString(weight));
+        reqData.put(PATHOLOGIES, pathologies);
+        reqData.put(RECOMMENDED_KCAL, Double.toString(recKcal));
+        reqData.put(WASH_FREQ, Integer.toString(washFreq));
         taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(new JSONObject(reqData));
@@ -151,9 +152,11 @@ public class PetManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      */
-    public void updateField(String accessToken, String username, String petName, String field, String newValue) {
+    public void updateField(String accessToken, String username, String petName, String field, Object newValue)
+        throws IllegalArgumentException{
         taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
+        checkCorrectType(field, newValue);
+        Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
@@ -174,7 +177,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + genderField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + GENDER, accessToken);
     }
 
     /**
@@ -191,7 +194,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + birthdayField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BIRTH, accessToken);
     }
 
     /**
@@ -208,7 +211,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + breedField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BREED, accessToken);
     }
 
     /**
@@ -225,7 +228,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, String.valueOf(newWeight));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + weightField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + WEIGHT, accessToken);
     }
 
     /**
@@ -242,7 +245,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + pathologiesField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + PATHOLOGIES, accessToken);
     }
 
     /**
@@ -259,7 +262,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + recommendedKcalField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + RECOMMENDED_KCAL, accessToken);
     }
 
     /**
@@ -276,7 +279,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + washFreqField, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + WASH_FREQ, accessToken);
     }
 
     /**
@@ -349,13 +352,46 @@ public class PetManagerClient {
      */
     private JSONObject buildPetJson(PetData petData) {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put(genderField, petData.getGender().toString());
-        reqData.put(breedField, petData.getBreed());
-        reqData.put(birthdayField, petData.getBirth());
-        reqData.put(weightField, Double.toString(petData.getWeight()));
-        reqData.put(pathologiesField, petData.getPathologies());
-        reqData.put(recommendedKcalField, Double.toString(petData.getRecommendedKcal()));
-        reqData.put(washFreqField, Integer.toString(petData.getWashFreq()));
+        reqData.put(GENDER, petData.getGender().toString());
+        reqData.put(BREED, petData.getBreed());
+        reqData.put(BIRTH, petData.getBirth());
+        reqData.put(WEIGHT, Double.toString(petData.getWeight()));
+        reqData.put(PATHOLOGIES, petData.getPathologies());
+        reqData.put(RECOMMENDED_KCAL, Double.toString(petData.getRecommendedKcal()));
+        reqData.put(WASH_FREQ, Integer.toString(petData.getWashFreq()));
         return new JSONObject(reqData);
+    }
+
+    /**
+     * Checks that the new value is of the correct type.
+     * @param field The field to update
+     * @param newValue The new value
+     */
+    private void checkCorrectType(String field, Object newValue) throws IllegalArgumentException {
+        switch (field) {
+            case BIRTH:
+            case PATHOLOGIES:
+            case BREED:
+                if (!(newValue instanceof String)) {
+                    throw new IllegalArgumentException();
+                }
+                break;
+            case GENDER:
+                if (!(newValue instanceof GenderType)) {
+                    throw new IllegalArgumentException();
+                }
+                break;
+            case WEIGHT:
+            case RECOMMENDED_KCAL:
+                if (!(newValue instanceof Double)) {
+                    throw new IllegalArgumentException();
+                }
+                break;
+            default:
+                if (!(newValue instanceof Integer)) {
+                    throw new IllegalArgumentException();
+                }
+                break;
+        }
     }
 }

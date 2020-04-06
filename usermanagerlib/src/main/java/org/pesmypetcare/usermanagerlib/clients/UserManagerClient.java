@@ -13,10 +13,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private final String USERS_PATH = "users/";
     private final String IMAGES_PATH = "storage/image/";
-    private final String EMAIL_KEY = "email";
     private final String PUT = "PUT";
     private final String GET = "GET";
     private TaskManager taskManager;
@@ -35,7 +36,7 @@ public class UserManagerClient {
         taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
-        reqData.put(EMAIL_KEY, email);
+        reqData.put(EMAIL, email);
         taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + "signup?password=" + password, "");
@@ -94,7 +95,7 @@ public class UserManagerClient {
     public void updatePassword(String accessToken, String username, String newPassword) {
         taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("password", newPassword);
+        reqData.put(PASSWORD, newPassword);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password", accessToken);
@@ -110,7 +111,7 @@ public class UserManagerClient {
     public void updateEmail(String accessToken, String username, String newEmail) {
         taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put(EMAIL_KEY, newEmail);
+        reqData.put(EMAIL, newEmail);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + USERS_PATH + username + "/update/email", accessToken);

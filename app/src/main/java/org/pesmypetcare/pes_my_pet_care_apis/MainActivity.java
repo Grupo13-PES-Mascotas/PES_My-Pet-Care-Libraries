@@ -1,17 +1,11 @@
 package org.pesmypetcare.pes_my_pet_care_apis;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 150, 2);*/
         //Date myDate = new Date(2012, 03, 14);
 
+        double kcal = 15.2;
+        manager.updateField("token", "john", "Laika", PetManagerClient.RECOMMENDED_KCAL, kcal);
         /*manager.updateGender("john", "Tristan", "Male");
         manager.updateBreed("john", "Tristan", "Pastor Alemán");
         manager.updateWeight("john", "Tristan", 12.4);
