@@ -36,7 +36,7 @@ public class MealManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getDate().toString());
+        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getDate());
     }
 
     /**
@@ -48,7 +48,7 @@ public class MealManagerClient {
     public void deleteByDate(String owner, String petName, Date date) {
         taskManager = new TaskManager();
         taskManager.setTaskId(DELETE);
-        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date.toString());
+        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date);
     }
 
     /**
@@ -72,7 +72,7 @@ public class MealManagerClient {
     public MealData getMealData(String owner, String petName, Date date) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date.toString()).get();
+        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date).get();
         return gson.fromJson(json.toString(), MealData.class);
     }
 
@@ -136,7 +136,7 @@ public class MealManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date.toString() + "/" + field);
+        taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date + "/" + field);
     }
 
 

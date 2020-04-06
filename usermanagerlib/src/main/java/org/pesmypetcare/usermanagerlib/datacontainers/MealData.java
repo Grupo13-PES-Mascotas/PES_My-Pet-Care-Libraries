@@ -12,6 +12,11 @@ public class MealData {
     private String mealName;
     private Double kcal;
 
+    public MealData(String mealName, double kcal) {
+        this.mealName = mealName;
+        this.kcal = kcal;
+    }
+
     /**
      * Returns the meal name
      * @return Meal name

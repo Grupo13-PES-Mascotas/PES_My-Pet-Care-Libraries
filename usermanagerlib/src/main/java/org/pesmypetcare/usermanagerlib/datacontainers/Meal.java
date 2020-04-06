@@ -7,6 +7,11 @@ public class Meal {
     private Date date;
     private MealData body;
 
+    public Meal(Date date, MealData body) {
+        this.date = date;
+        this.body = body;
+    }
+
     /**
      * Returns the meal date
      * @return Meal date
