@@ -130,6 +130,9 @@ public class PetManagerClient {
         taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username, accessToken).get();
+        if (response.length() <= 2) {
+            return new ArrayList<>();
+        }
         String jsonArray = response.substring(1, response.length() - 1);
         String[] pets = jsonArray.split(",\\{");
         List<Pet> petsList = new ArrayList<>();
