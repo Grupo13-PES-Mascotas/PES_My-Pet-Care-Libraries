@@ -30,7 +30,9 @@ public class DateTime implements Comparable<DateTime> {
     private int minutes;
     private int seconds;
 
-    public DateTime(){}
+    public DateTime() {
+
+    }
 
     public DateTime(String dateTime) {
         this.year = Integer.parseInt(dateTime.substring(0, LEAP_YEAR_FREQ));

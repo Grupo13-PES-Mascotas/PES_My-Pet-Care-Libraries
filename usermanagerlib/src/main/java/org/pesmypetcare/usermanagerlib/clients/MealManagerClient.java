@@ -115,7 +115,7 @@ public class MealManagerClient {
         StringBuilder response =
             taskManager.execute(BASE_URL + owner + "/" + petName + "/between/" + initialDate + "/" + finalDate).get();
         List<Meal> mealList = new ArrayList<>();
-        if (response.length() > 2){
+        if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
             String[] meals = jsonArray.split(",\\{");
             mealList.add(GSON.fromJson(meals[0], Meal.class));
