@@ -63,7 +63,8 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void signUp() {
+    public void signUp() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         client.signUp(USERNAME, PASSWORD, EMAIL);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("POST");
@@ -97,7 +98,8 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void deleteUser() {
+    public void deleteUser() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         client.deleteUser(ACCESS_TOKEN, USERNAME);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("DELETE");
@@ -105,7 +107,8 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void updateField() {
+    public void updateField() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("PUT");
@@ -114,7 +117,8 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void saveProfileImage() {
+    public void saveProfileImage() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("PUT");

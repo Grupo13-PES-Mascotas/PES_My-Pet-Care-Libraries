@@ -51,12 +51,13 @@ public class PetManagerClient {
      * @param username The user's username
      * @param pet The pet's name
      */
-    public void createPet(String accessToken, String username, Pet pet) {
+    public void createPet(String accessToken, String username, Pet pet)
+        throws ExecutionException, InterruptedException {
         JSONObject reqJson = buildPetJson(pet.getBody());
         taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + pet.getName(), accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + pet.getName(), accessToken).get();
     }
 
     /**
@@ -138,10 +139,11 @@ public class PetManagerClient {
      * @param username The user's username
      * @param petName The pet's name
      */
-    public void deletePet(String accessToken, String username, String petName) {
+    public void deletePet(String accessToken, String username, String petName)
+        throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken).get();
     }
 
     /**
@@ -152,14 +154,15 @@ public class PetManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      */
-    public void updateField(String accessToken, String username, String petName, String field, Object newValue) {
+    public void updateField(String accessToken, String username, String petName, String field, Object newValue)
+        throws ExecutionException, InterruptedException {
         checkCorrectType(field, newValue);
         taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + field, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + field, accessToken).get();
     }
 
     /**
@@ -288,7 +291,8 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param image The image to save
      */
-    public void saveProfileImage(String accessToken, String userId, String petName, byte[] image) {
+    public void saveProfileImage(String accessToken, String userId, String petName, byte[] image)
+        throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", userId);
@@ -296,7 +300,7 @@ public class PetManagerClient {
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken);
+        taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken).get();
     }
 
     /**
@@ -367,7 +371,7 @@ public class PetManagerClient {
      * @param newValue The new value
      * @throws IllegalArgumentException When an invalid field value is passed
      */
-    private void checkCorrectType(String field, Object newValue) throws IllegalArgumentException {
+    private void checkCorrectType(String field, Object newValue) {
         if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES))
             && !(newValue instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");

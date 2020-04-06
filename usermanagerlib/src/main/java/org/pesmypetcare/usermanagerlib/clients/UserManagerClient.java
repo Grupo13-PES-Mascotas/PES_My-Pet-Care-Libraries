@@ -32,14 +32,14 @@ public class UserManagerClient {
      * @param password The password of the new user
      * @param email The email of the new user
      */
-    public void signUp(String username, String password, String email) {
+    public void signUp(String username, String password, String email) throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
         reqData.put(EMAIL, email);
         taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + "signup?password=" + password, "");
+        taskManager.execute(BASE_URL + "signup?password=" + password, "").get();
     }
 
     /**
@@ -63,10 +63,10 @@ public class UserManagerClient {
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to delete
      */
-    public void deleteUser(String accessToken, String username) {
+    public void deleteUser(String accessToken, String username) throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken);
+        taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken).get();
     }
 
     /**
@@ -76,13 +76,14 @@ public class UserManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      */
-    public void updateField(String accessToken, String username, String field, String newValue) {
+    public void updateField(String accessToken, String username, String field, String newValue)
+        throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(field, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/" + field, accessToken);
+        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/" + field, accessToken).get();
     }
 
     /**
@@ -123,7 +124,8 @@ public class UserManagerClient {
      * @param userId The user unique identifier
      * @param image The image to save
      */
-    public void saveProfileImage(String accessToken, String userId, byte[] image) {
+    public void saveProfileImage(String accessToken, String userId, byte[] image)
+        throws ExecutionException, InterruptedException {
         taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", userId);
@@ -131,7 +133,7 @@ public class UserManagerClient {
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + IMAGES_PATH, accessToken);
+        taskManager.execute(BASE_URL + IMAGES_PATH, accessToken).get();
     }
 
     /**
