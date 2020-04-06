@@ -133,4 +133,18 @@ public class UserManagerClientTest {
         verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN);
         assertEquals("Should return the profile image of the user", image, response);
     }
+
+    @Test(expected = ExecutionException.class)
+    public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        willThrow(ExecutionException.class).given(taskManager).get();
+        client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
+    }
+
+    @Test(expected = InterruptedException.class)
+    public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
+        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        willThrow(InterruptedException.class).given(taskManager).get();
+        client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
+    }
 }

@@ -1,11 +1,12 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class PetData {
     private GenderType gender;
     private String breed;
-    private Date birth;
+    private String birth;
     private Double weight;
     private String pathologies;
     private Double recommendedKcal;
@@ -47,7 +48,7 @@ public class PetData {
      * The method that returns the pet birth.
      * @return The pet's birth
      */
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
@@ -55,7 +56,7 @@ public class PetData {
      * The method that set the pet birth.
      * @param birth The pet's birth
      */
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
@@ -123,6 +124,7 @@ public class PetData {
         this.washFreq = washFreq;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{"
@@ -134,5 +136,19 @@ public class PetData {
             + ", recommendedKcal=" + recommendedKcal
             + ", washFreq=" + washFreq
             + '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof PetData) {
+            return ((PetData) obj).getBirth().equals(this.getBirth()) &&
+                ((PetData) obj).getBreed().equals(this.getBreed()) &&
+                ((PetData) obj).getGender() == this.getGender() &&
+                ((PetData) obj).getPathologies().equals(this.getPathologies()) &&
+                ((PetData) obj).getRecommendedKcal().equals(this.getRecommendedKcal()) &&
+                ((PetData) obj).getWashFreq() == this.getWashFreq() &&
+                ((PetData) obj).getWeight().equals(this.getWeight());
+        }
+        return false;
     }
 }
