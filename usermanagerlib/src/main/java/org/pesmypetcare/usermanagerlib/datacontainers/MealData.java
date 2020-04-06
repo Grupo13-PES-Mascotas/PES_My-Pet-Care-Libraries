@@ -18,7 +18,7 @@ public class MealData {
     }
 
     /**
-     * Returns the meal name
+     * Returns the meal name.
      * @return Meal name
      */
     public String getMealName() {
@@ -26,7 +26,7 @@ public class MealData {
     }
 
     /**
-     * Sets a new meal name
+     * Sets a new meal name.
      * @param mealName New meal name
      */
     public void setMealName(String mealName) {
@@ -34,7 +34,7 @@ public class MealData {
     }
 
     /**
-     * Returns the amount of kcalories
+     * Returns the amount of kcalories.
      * @return Amount of kcalories
      */
     public Double getKcal() {
@@ -42,7 +42,7 @@ public class MealData {
     }
 
     /**
-     * Sets a new amount of kcalories
+     * Sets a new amount of kcalories.
      * @param kcal Amount of kcalories
      */
     public void setKcal(Double kcal) {

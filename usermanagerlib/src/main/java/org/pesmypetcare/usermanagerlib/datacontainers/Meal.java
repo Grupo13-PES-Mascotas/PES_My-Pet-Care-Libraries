@@ -13,7 +13,7 @@ public class Meal {
     }
 
     /**
-     * Returns the meal date
+     * Returns the meal date.
      * @return Meal date
      */
     public Date getDate() {
@@ -21,7 +21,7 @@ public class Meal {
     }
 
     /**
-     * Sets a new meal date
+     * Sets a new meal date.
      * @param date Meal date
      */
     public void setDate(Date date) {
@@ -29,7 +29,7 @@ public class Meal {
     }
 
     /**
-     * Returns the Meal Data
+     * Returns the Meal Data.
      * @return Meal Data
      */
     public MealData getBody() {
@@ -37,7 +37,7 @@ public class Meal {
     }
 
     /**
-     * Sets a new Meal Data
+     * Sets a new Meal Data.
      * @param body Meal Data
      */
     public void setBody(MealData body) {
@@ -58,7 +58,7 @@ public class Meal {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Meal) {
             return ((Meal) obj).getDate().equals(this.getDate())
-                && ((Meal) obj).getBody()==(this.getBody());
+                && ((Meal) obj).getBody() == (this.getBody());
         }
         return false;
     }

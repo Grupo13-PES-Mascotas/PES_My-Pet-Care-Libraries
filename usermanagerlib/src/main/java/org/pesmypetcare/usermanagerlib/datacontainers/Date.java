@@ -11,7 +11,7 @@ public class Date {
     private int seconds;
 
     /**
-     * Constructs a Date with the specified parameters
+     * Constructs a Date with the specified parameters.
      * @param year Year
      * @param month Month
      * @param day Day
@@ -30,7 +30,7 @@ public class Date {
 
     @NonNull
     @Override
-    public String toString(){
+    public String toString() {
         return year + "-" + month + "-" + day + "T" + hour + ":" + minutes + ":" + seconds;
     }
 }
