@@ -97,12 +97,11 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, GET, token);
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
-        StringBuilder response;
+        StringBuilder response = null;
         if (responseCode == HttpURLConnection.HTTP_OK) {
             response = getResponseBody(con);
             System.out.println("Response: " + response.toString());
         } else {
-            response = null;
             System.out.println("GET request not worked");
         }
         return response;

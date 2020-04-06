@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
-        /*try {
-            List<Pet> pets = manager.getAllPets("token", "santi");
+        try {
+            List<Pet> pets = manager.getAllPets("token", "alvaro");
             System.out.println(pets);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
 
         UserManagerClient client = new UserManagerClient();
         /*client.signUp("santi", "123456", "santi@gmail.com");

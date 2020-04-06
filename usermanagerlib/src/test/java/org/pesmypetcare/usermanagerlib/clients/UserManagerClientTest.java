@@ -39,6 +39,7 @@ public class UserManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
     private static final String GET = "GET";
+    private static final String PUT = "PUT";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final int expectedResponseCode = 200;
     private StringBuilder json;
@@ -119,7 +120,7 @@ public class UserManagerClientTest {
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("PUT");
+        verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/update/" + EMAIL_FIELD, ACCESS_TOKEN);
     }
@@ -131,7 +132,7 @@ public class UserManagerClientTest {
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("PUT");
+        verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + IMAGES_PATH, ACCESS_TOKEN);
     }

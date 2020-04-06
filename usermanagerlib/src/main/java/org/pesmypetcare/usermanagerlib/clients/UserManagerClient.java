@@ -173,6 +173,6 @@ public class UserManagerClient {
         if (json != null) {
             return Base64.decode(json.toString(), Base64.DEFAULT);
         }
-        return null;
+        return new byte[0];
     }
 }

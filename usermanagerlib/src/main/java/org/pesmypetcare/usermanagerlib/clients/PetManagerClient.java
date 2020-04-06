@@ -133,7 +133,6 @@ public class PetManagerClient {
         String jsonArray = response.substring(1, response.length() - 1);
         String[] pets = jsonArray.split(",\\{");
         List<Pet> petsList = new ArrayList<>();
-        System.out.println(pets[0]);
         petsList.add(gson.fromJson(pets[0], Pet.class));
         for (int i = 1; i < pets.length; i++) {
             pets[i] = "{" + pets[i];
