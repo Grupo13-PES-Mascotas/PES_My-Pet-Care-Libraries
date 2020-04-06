@@ -51,8 +51,10 @@ public class UserData {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof UserData)
-            return ((UserData)obj).getEmail().equals(this.email) && ((UserData)obj).getUsername().equals(this.username);
+        if (obj instanceof UserData) {
+            return ((UserData) obj).getEmail().equals(this.email)
+                && ((UserData) obj).getUsername().equals(this.username);
+        }
         return false;
     }
 }

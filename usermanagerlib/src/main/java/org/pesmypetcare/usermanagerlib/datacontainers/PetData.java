@@ -141,13 +141,13 @@ public class PetData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof PetData) {
-            return ((PetData) obj).getBirth().equals(this.getBirth()) &&
-                ((PetData) obj).getBreed().equals(this.getBreed()) &&
-                ((PetData) obj).getGender() == this.getGender() &&
-                ((PetData) obj).getPathologies().equals(this.getPathologies()) &&
-                ((PetData) obj).getRecommendedKcal().equals(this.getRecommendedKcal()) &&
-                ((PetData) obj).getWashFreq() == this.getWashFreq() &&
-                ((PetData) obj).getWeight().equals(this.getWeight());
+            return ((PetData) obj).getBirth().equals(this.getBirth())
+                && ((PetData) obj).getBreed().equals(this.getBreed())
+                && ((PetData) obj).getGender() == this.getGender()
+                && ((PetData) obj).getPathologies().equals(this.getPathologies())
+                && ((PetData) obj).getRecommendedKcal().equals(this.getRecommendedKcal())
+                && ((PetData) obj).getWashFreq() == this.getWashFreq()
+                && ((PetData) obj).getWeight().equals(this.getWeight());
         }
         return false;
     }

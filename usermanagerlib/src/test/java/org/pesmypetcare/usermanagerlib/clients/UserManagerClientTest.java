@@ -31,13 +31,14 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private final String USERS_PATH = "users/";
-    private final String IMAGES_PATH = "storage/image/";
+    private static final String USERS_PATH = "users/";
+    private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "123456";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
+    private static final String GET = "GET";
     private StringBuilder json;
     private UserData expected;
     private byte[] image;
@@ -72,25 +73,25 @@ public class UserManagerClientTest {
 
     @Test
     public void getUser() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         UserData response = client.getUser(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
-        verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN);
         assertEquals("Should return the user data", expected, response);
+        verify(taskManager).resetTaskManager();
+        verify(taskManager).setTaskId(GET);
+        verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.getUser(ACCESS_TOKEN, USERNAME);
     }
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.getUser(ACCESS_TOKEN, USERNAME);
     }
@@ -105,7 +106,7 @@ public class UserManagerClientTest {
 
     @Test
     public void updateField() {
-        client.updateField(ACCESS_TOKEN,USERNAME, EMAIL_FIELD, "user01@email.com");
+        client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("PUT");
         verify(taskManager).setReqBody(isA(JSONObject.class));
@@ -123,27 +124,27 @@ public class UserManagerClientTest {
 
     @Test
     public void downloadProfileImage() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         mockStatic(Base64.class);
         given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN);
         assertEquals("Should return the profile image of the user", image, response);
+        verify(taskManager).resetTaskManager();
+        verify(taskManager).setTaskId(GET);
+        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
     }
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
     }

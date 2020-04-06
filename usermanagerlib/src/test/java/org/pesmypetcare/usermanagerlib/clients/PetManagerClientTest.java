@@ -42,12 +42,17 @@ public class PetManagerClientTest {
     private static final String USERNAME = "user";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String BIRTH_FIELD = "birth";
+    private static final String GET = "GET";
+    private static final String PUT = "PUT";
+    private final double recommendedKcal = 2.5;
+    private final double weight = 45.3;
     private StringBuilder json;
     private StringBuilder jsonAllPets;
     private Pet pet;
     private PetData expectedPetData;
     private List<Pet> petList;
     private byte[] image;
+    private String petName;
 
     @Mock
     private TaskManager taskManager;
@@ -57,7 +62,6 @@ public class PetManagerClientTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    private String petName;
 
     @Before
     public void setUp() {
@@ -73,8 +77,8 @@ public class PetManagerClientTest {
             + "  \"washFreq\": \"3\"\n"
             + "}");
 
-        jsonAllPets = new StringBuilder("[{\n" +
-            "  \"name\": \"Linux\",\n"
+        jsonAllPets = new StringBuilder("[{\n"
+            + "  \"name\": \"Linux\",\n"
             + "  \"body\": {\n"
             + "    \"gender\": \"Male\",\n"
             + "    \"breed\": \"Golden Retriever\",\n"
@@ -104,10 +108,10 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         PetData response = client.getPet(ACCESS_TOKEN, USERNAME, petName);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName, ACCESS_TOKEN);
         assertEquals("Should return the pet data", expectedPetData, response);
+        verify(taskManager).resetTaskManager();
+        verify(taskManager).setTaskId(GET);
+        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
@@ -129,10 +133,10 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(jsonAllPets);
         List<Pet> response = client.getAllPets(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME, ACCESS_TOKEN);
         assertEquals("Should return all the pets data", petList, response);
+        verify(taskManager).resetTaskManager();
+        verify(taskManager).setTaskId(GET);
+        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
@@ -159,9 +163,9 @@ public class PetManagerClientTest {
 
     @Test
     public void updateField() {
-        client.updateField(ACCESS_TOKEN,USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
+        client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
         verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("PUT");
+        verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName + "/" + BIRTH_FIELD, ACCESS_TOKEN);
     }
@@ -170,7 +174,7 @@ public class PetManagerClientTest {
     public void saveProfileImage() {
         client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
         verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("PUT");
+        verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH, ACCESS_TOKEN);
     }
@@ -182,11 +186,11 @@ public class PetManagerClientTest {
         mockStatic(Base64.class);
         given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
+        assertEquals("Should return the pet's profile picture", image, response);
         verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
+        verify(taskManager).setTaskId(GET);
         verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH + petName
             + PROFILE_IMAGE_NAME, ACCESS_TOKEN);
-        assertEquals("Should return the pet's profile picture", image, response);
     }
 
     @Test(expected = ExecutionException.class)
@@ -212,21 +216,21 @@ public class PetManagerClientTest {
             + "}");
         Map<String, byte[]> expected = new HashMap<>();
         expected.put("Linux", image);
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(responseJson);
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
         Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("GET");
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH, ACCESS_TOKEN);
         assertEquals("Should return the all pets profile pictures", expected, response);
+        verify(taskManager).resetTaskManager();
+        verify(taskManager).setTaskId(GET);
+        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionFails()
         throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
     }
@@ -234,7 +238,7 @@ public class PetManagerClientTest {
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionInterrupted()
         throws ExecutionException, InterruptedException {
-        given(taskManager.execute(anyString(),anyString())).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
     }
@@ -247,9 +251,9 @@ public class PetManagerClientTest {
         expectedPetData.setGender(GenderType.Male);
         expectedPetData.setBirth("2020-02-13T10:30:00");
         expectedPetData.setPathologies("");
-        expectedPetData.setRecommendedKcal(2.5);
+        expectedPetData.setRecommendedKcal(recommendedKcal);
         expectedPetData.setWashFreq(3);
-        expectedPetData.setWeight(45.3);
+        expectedPetData.setWeight(weight);
         pet.setBody(expectedPetData);
     }
 }
