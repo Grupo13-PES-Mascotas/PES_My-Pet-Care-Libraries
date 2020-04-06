@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Meal {
-    private Date date;
+    private String date;
     private MealData body;
 
-    public Meal(Date date, MealData body) {
+    public Meal(String date, MealData body) {
         this.date = date;
         this.body = body;
     }
@@ -16,7 +16,7 @@ public class Meal {
      * Returns the meal date.
      * @return Meal date
      */
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -24,7 +24,7 @@ public class Meal {
      * Sets a new meal date.
      * @param date Meal date
      */
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -49,7 +49,7 @@ public class Meal {
     @Override
     public String toString() {
         return "{"
-            + "name='" + date.toString() + '\''
+            + "name='" + date + '\''
             + ", body=" + body
             + '}';
     }

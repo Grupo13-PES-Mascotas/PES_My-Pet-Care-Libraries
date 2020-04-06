@@ -3,7 +3,7 @@ package org.pesmypetcare.usermanagerlib.clients;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.pesmypetcare.usermanagerlib.datacontainers.Date;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
 
@@ -21,7 +21,7 @@ public class MealManagerClient {
     private static final int GET = 1;
     private static final int DELETE = 2;
     private static final int PUT = 3;
-    private static final Gson GSON = new Gson();
+    private static Gson GSON = new Gson();
     private TaskManager taskManager;
 
 
@@ -45,7 +45,7 @@ public class MealManagerClient {
      * @param petName Name of the pet
      * @param date Date the meal was eaten
      */
-    public void deleteByDate(String owner, String petName, Date date) {
+    public void deleteByDate(String owner, String petName, DateTime date) {
         taskManager = new TaskManager();
         taskManager.setTaskId(DELETE);
         taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date);
@@ -69,7 +69,7 @@ public class MealManagerClient {
      * @param date Date the meal was eaten
      * @return The MealData identified by the data
      */
-    public MealData getMealData(String owner, String petName, Date date) throws ExecutionException,
+    public MealData getMealData(String owner, String petName, DateTime date) throws ExecutionException,
         InterruptedException {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
@@ -87,13 +87,15 @@ public class MealManagerClient {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName).get();
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] meals = jsonArray.split(",\\{");
         List<Meal> mealList = new ArrayList<>();
-        mealList.add(GSON.fromJson(meals[0], Meal.class));
-        for (int i = 0; i < meals.length; i++) {
-            meals[i] = "{" + meals[i];
-            mealList.add(GSON.fromJson(meals[i], Meal.class));
+        if (response.length() > 2) {
+            String jsonArray = response.substring(1, response.length() - 1);
+            String[] meals = jsonArray.split(",\\{");
+            mealList.add(GSON.fromJson(meals[0], Meal.class));
+            for (int i = 1; i < meals.length; i++) {
+                meals[i] = "{" + meals[i];
+                mealList.add(GSON.fromJson(meals[i], Meal.class));
+            }
         }
         return mealList;
     }
@@ -106,19 +108,21 @@ public class MealManagerClient {
      * @param finalDate Final Date
      * @return The List containing all the meals eaten by the pet in the specified time
      */
-    public List<Meal> getAllMealsBetween(String owner, String petName, String initialDate,
-                                                 String finalDate) throws ExecutionException, InterruptedException {
+    public List<Meal> getAllMealsBetween(String owner, String petName, DateTime initialDate,
+                                                 DateTime finalDate) throws ExecutionException, InterruptedException {
         taskManager = new TaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response =
-            taskManager.execute(BASE_URL + owner + "/" + petName + "/" + initialDate + "/" + finalDate).get();
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] meals = jsonArray.split(",\\{");
+            taskManager.execute(BASE_URL + owner + "/" + petName + "/between/" + initialDate + "/" + finalDate).get();
         List<Meal> mealList = new ArrayList<>();
-        mealList.add(GSON.fromJson(meals[0], Meal.class));
-        for (int i = 0; i < meals.length; i++) {
-            meals[i] = "{" + meals[i];
-            mealList.add(GSON.fromJson(meals[i], Meal.class));
+        if (response.length() > 2){
+            String jsonArray = response.substring(1, response.length() - 1);
+            String[] meals = jsonArray.split(",\\{");
+            mealList.add(GSON.fromJson(meals[0], Meal.class));
+            for (int i = 1; i < meals.length; i++) {
+                meals[i] = "{" + meals[i];
+                mealList.add(GSON.fromJson(meals[i], Meal.class));
+            }
         }
         return mealList;
     }
@@ -131,7 +135,7 @@ public class MealManagerClient {
      * @param field Name of the field to update
      * @param value Value the field will have
      */
-    public void updateMealField(String owner, String petName, Date date, String field, Object value) {
+    public void updateMealField(String owner, String petName, DateTime date, String field, Object value) {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
         taskManager = new TaskManager();
