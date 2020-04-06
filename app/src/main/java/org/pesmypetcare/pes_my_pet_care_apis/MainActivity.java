@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
         PetManagerClient manager = new PetManagerClient();
 
-        //pending issue: la washfreq se pone a 0...
         /*manager.createPet("toke", "santi", "Tristana", "Female", "Husky Siberiano",
                 "2016-03-30", 13.4, "Coronavirus",
                 150, 2);*/
@@ -25,8 +24,13 @@ public class MainActivity extends AppCompatActivity {
                 150, 2);*/
         //Date myDate = new Date(2012, 03, 14);
 
-        double kcal = 15.2;
-        manager.updateField("token", "john", "Laika", PetManagerClient.RECOMMENDED_KCAL, kcal);
+        /*double kcal = 15.2;
+        try {
+            int i = manager.updateField("token", "john", "Laika", PetManagerClient.RECOMMENDED_KCAL, kcal);
+            System.out.println(i);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }*/
         /*manager.updateGender("john", "Tristan", "Male");
         manager.updateBreed("john", "Tristan", "Pastor Alemán");
         manager.updateWeight("john", "Tristan", 12.4);
@@ -62,9 +66,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }*/
-        /*client.deleteUser("kayle");
-        client.updateEmail("alvaro", "nuevoEMail@mail.com");
-        client.updatePassword("alvaro", "newpassword123456");*/
+        /*try {
+            client.updateField("token", "john", UserManagerClient.EMAIL, "email@mail.com");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        //client.deleteUser("kayle");
+        //client.updateEmail("token", "alvaro", "nuevoEMail@mail.com");
+        //client.updatePassword("alvaro", "newpassword123456");
         String test = "Hello World";
         //client.saveProfileImage("myAccessToken", "santi", test.getBytes());
         /*try {

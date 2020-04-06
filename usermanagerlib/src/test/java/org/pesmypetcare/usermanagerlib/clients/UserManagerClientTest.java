@@ -39,6 +39,8 @@ public class UserManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
     private static final String GET = "GET";
+    private static final StringBuilder STATUS_OK = new StringBuilder("200");
+    private final int expectedResponseCode = 200;
     private StringBuilder json;
     private UserData expected;
     private byte[] image;
@@ -65,7 +67,9 @@ public class UserManagerClientTest {
     @Test
     public void signUp() throws ExecutionException, InterruptedException {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        client.signUp(USERNAME, PASSWORD, EMAIL);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.signUp(USERNAME, PASSWORD, EMAIL);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("POST");
         verify(taskManager).setReqBody(isA(JSONObject.class));
@@ -100,7 +104,9 @@ public class UserManagerClientTest {
     @Test
     public void deleteUser() throws ExecutionException, InterruptedException {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        client.deleteUser(ACCESS_TOKEN, USERNAME);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("DELETE");
         verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/delete", ACCESS_TOKEN);
@@ -109,7 +115,9 @@ public class UserManagerClientTest {
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("PUT");
         verify(taskManager).setReqBody(isA(JSONObject.class));
@@ -119,7 +127,9 @@ public class UserManagerClientTest {
     @Test
     public void saveProfileImage() throws ExecutionException, InterruptedException {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("PUT");
         verify(taskManager).setReqBody(isA(JSONObject.class));

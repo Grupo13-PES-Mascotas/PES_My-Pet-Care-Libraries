@@ -50,16 +50,16 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         try {
             switch (taskId) {
                 case POST:
-                    doPost(params[0], params[1]);
+                    result = doPost(params[0], params[1]);
                     break;
                 case GET:
                     result = doGet(params[0], params[1]);
                     break;
                 case DELETE:
-                    doDelete(params[0], params[1]);
+                    result = doDelete(params[0], params[1]);
                     break;
                 default:
-                    doPut(params[0], params[1]);
+                    result = doPut(params[0], params[1]);
                     break;
             }
         } catch (IOException e) {
@@ -71,9 +71,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * Make the POST request to URL specified.
      * @param targetUrl The URL where the request goes
+     * @return The response code
      * @throws IOException When input or output fails
      */
-    private void doPost(String targetUrl, String token) throws IOException {
+    private StringBuilder doPost(String targetUrl, String token) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, POST, token);
         con.setDoOutput(true);
         writeRequestBodyIfNotEmpty(con);
@@ -83,23 +84,25 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         if (responseCode != HttpURLConnection.HTTP_OK) {
             System.out.println("POST request not worked");
         }
+        return new StringBuilder().append(responseCode);
     }
 
     /**
      * Make the GET request to URL specified.
      * @param targetUrl The URL where the request goes
-     * @return The request body
+     * @return The response body or the response code if it fails
      * @throws IOException When input or output fails
      */
     private StringBuilder doGet(String targetUrl, String token) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, GET, token);
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
-        StringBuilder response = new StringBuilder();
+        StringBuilder response;
         if (responseCode == HttpURLConnection.HTTP_OK) {
             response = getResponseBody(con);
             System.out.println("Response: " + response.toString());
         } else {
+            response = null;
             System.out.println("GET request not worked");
         }
         return response;
@@ -108,9 +111,10 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     /**
      * Make the DELETE request to URL specified.
      * @param targetUrl The URL where the request goes
+     * @return The response code
      * @throws IOException When input or output fails
      */
-    private void doDelete(String targetUrl, String token) throws IOException {
+    private StringBuilder doDelete(String targetUrl, String token) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, DELETE, token);
         writeRequestBodyIfNotEmpty(con);
         int responseCode = con.getResponseCode();
@@ -118,15 +122,16 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         if (responseCode != HttpURLConnection.HTTP_OK) {
             System.out.println("DELETE request not worked");
         }
+        return new StringBuilder().append(responseCode);
     }
 
     /**
      * Make the PUT request to URL specified.
      * @param targetUrl The URL where the request goes
-     * @throws IOException When input or output
-     * fails
+     * @return The response code
+     * @throws IOException When input or output fails
      */
-    private void doPut(String targetUrl, String token) throws IOException {
+    private StringBuilder doPut(String targetUrl, String token) throws IOException {
         HttpURLConnection con = getSimpleHttpUrlConnection(targetUrl, "PUT", token);
         con.setDoOutput(true);
         writeRequestBodyIfNotEmpty(con);
@@ -136,6 +141,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
         if (responseCode != HttpURLConnection.HTTP_OK) {
             System.out.println("PUT request not worked");
         }
+        return new StringBuilder().append(responseCode);
     }
 
     /**
