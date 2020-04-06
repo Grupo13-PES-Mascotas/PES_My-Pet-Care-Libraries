@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 150, 2);*/
         //Date myDate = new Date(2012, 03, 14);
 
-        /*manager.updateGender("john", "Tristan", "Male");
+        /*zmanager.updateGender("john", "Tristan", "Male");
         manager.updateBreed("john", "Tristan", "Pastor Alemán");
         manager.updateWeight("john", "Tristan", 12.4);
         manager.updateBirthday("john", "Tristan", "2015-01-23");
