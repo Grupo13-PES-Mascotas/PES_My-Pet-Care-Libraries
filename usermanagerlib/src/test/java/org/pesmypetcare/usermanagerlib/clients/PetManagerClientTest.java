@@ -171,8 +171,8 @@ public class PetManagerClientTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowAnExceptionWhenWrongType() throws IllegalArgumentException {
-        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23");
+    public void shouldThrowAnExceptionWhenWrongType() {
+        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
     }
 
     @Test

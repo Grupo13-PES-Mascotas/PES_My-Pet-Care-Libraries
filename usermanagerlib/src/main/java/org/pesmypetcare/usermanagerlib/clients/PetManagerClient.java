@@ -152,10 +152,9 @@ public class PetManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      */
-    public void updateField(String accessToken, String username, String petName, String field, Object newValue)
-        throws IllegalArgumentException{
-        taskManager.resetTaskManager();
+    public void updateField(String accessToken, String username, String petName, String field, Object newValue) {
         checkCorrectType(field, newValue);
+        taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
@@ -366,32 +365,18 @@ public class PetManagerClient {
      * Checks that the new value is of the correct type.
      * @param field The field to update
      * @param newValue The new value
+     * @throws IllegalArgumentException When an invalid field value is passed
      */
     private void checkCorrectType(String field, Object newValue) throws IllegalArgumentException {
-        switch (field) {
-            case BIRTH:
-            case PATHOLOGIES:
-            case BREED:
-                if (!(newValue instanceof String)) {
-                    throw new IllegalArgumentException();
-                }
-                break;
-            case GENDER:
-                if (!(newValue instanceof GenderType)) {
-                    throw new IllegalArgumentException();
-                }
-                break;
-            case WEIGHT:
-            case RECOMMENDED_KCAL:
-                if (!(newValue instanceof Double)) {
-                    throw new IllegalArgumentException();
-                }
-                break;
-            default:
-                if (!(newValue instanceof Integer)) {
-                    throw new IllegalArgumentException();
-                }
-                break;
+        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES))
+            && !(newValue instanceof String)) {
+            throw new IllegalArgumentException("New value must be a String");
+        } else if ((field.equals(WEIGHT) || field.equals(RECOMMENDED_KCAL)) && !(newValue instanceof Double)) {
+            throw new IllegalArgumentException("New value must be a Double");
+        } else if (field.equals(GENDER) && !(newValue instanceof GenderType)) {
+            throw new IllegalArgumentException("New value must be a GenderType");
+        } else if (field.equals(WASH_FREQ) && !(newValue instanceof Integer)) {
+            throw new IllegalArgumentException("New value must be an Integer");
         }
     }
 }
