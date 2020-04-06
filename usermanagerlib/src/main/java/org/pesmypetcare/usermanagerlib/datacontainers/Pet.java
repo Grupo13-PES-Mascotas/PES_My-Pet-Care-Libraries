@@ -1,5 +1,8 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class Pet {
     private String name;
     private PetData body;
@@ -36,11 +39,20 @@ public class Pet {
         this.body = body;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{"
             + "name='" + name + '\''
             + ", body=" + body
             + '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof Pet) {
+            return ((Pet) obj).getName().equals(this.getName()) && ((Pet) obj).getBody().equals(this.getBody());
+        }
+        return false;
     }
 }

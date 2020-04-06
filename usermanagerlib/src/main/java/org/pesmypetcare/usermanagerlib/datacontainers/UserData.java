@@ -1,6 +1,9 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class UserData {
     private String username;
     private String email;
@@ -37,11 +40,21 @@ public class UserData {
         this.email = email;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "{"
             + "username='" + username + '\''
             + ", email='" + email + '\''
             + '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof UserData) {
+            return ((UserData) obj).getEmail().equals(this.email)
+                && ((UserData) obj).getUsername().equals(this.username);
+        }
+        return false;
     }
 }
