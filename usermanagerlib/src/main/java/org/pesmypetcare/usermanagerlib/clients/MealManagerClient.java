@@ -17,10 +17,10 @@ public class MealManagerClient {
     public static final String MEALNAME = "mealName";
     public static final String KCAL = "kcal";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/meal/";
-    private static final int POST = 0;
-    private static final int GET = 1;
-    private static final int DELETE = 2;
-    private static final int PUT = 3;
+    private static final String POST = "POST";
+    private static final String GET = "GET";
+    private static final String DELETE = "DELETE";
+    private static final String PUT = "PUT";
     private static Gson GSON = new Gson();
     private TaskManager taskManager;
 
