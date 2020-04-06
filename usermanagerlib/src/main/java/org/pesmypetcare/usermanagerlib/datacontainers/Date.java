@@ -10,15 +10,6 @@ public class Date {
     private int minutes;
     private int seconds;
 
-    /**
-     * Constructs a Date with the specified parameters.
-     * @param year Year
-     * @param month Month
-     * @param day Day
-     * @param hour Hour
-     * @param minutes Minutes
-     * @param seconds Seconds
-     */
     public Date(int year, int month, int day, int hour, int minutes, int seconds) {
         this.year = year;
         this.month = month;
