@@ -16,10 +16,10 @@ public class UserManagerClient {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private final String USERS_PATH = "users/";
-    private final String IMAGES_PATH = "storage/image/";
-    private final String PUT = "PUT";
-    private final String GET = "GET";
+    private static final String USERS_PATH = "users/";
+    private static final String IMAGES_PATH = "storage/image/";
+    private static final String PUT = "PUT";
+    private static final String GET = "GET";
     private TaskManager taskManager;
 
     public UserManagerClient() {
@@ -36,7 +36,7 @@ public class UserManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int signUp(String username, String password, String email) throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
         reqData.put(EMAIL, email);
@@ -55,7 +55,7 @@ public class UserManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public UserData getUser(String accessToken, String username) throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
         if (json != null) {
@@ -74,7 +74,7 @@ public class UserManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int deleteUser(String accessToken, String username) throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
         StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken).get();
         return Integer.parseInt(response.toString());
@@ -92,7 +92,7 @@ public class UserManagerClient {
      */
     public int updateField(String accessToken, String username, String field, String newValue)
         throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(field, newValue);
         taskManager.setTaskId(PUT);
@@ -110,7 +110,7 @@ public class UserManagerClient {
      */
     @Deprecated
     public void updatePassword(String accessToken, String username, String newPassword) {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(PASSWORD, newPassword);
         taskManager.setTaskId(PUT);
@@ -126,7 +126,7 @@ public class UserManagerClient {
      */
     @Deprecated
     public void updateEmail(String accessToken, String username, String newEmail) {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(EMAIL, newEmail);
         taskManager.setTaskId(PUT);
@@ -145,7 +145,7 @@ public class UserManagerClient {
      */
     public int saveProfileImage(String accessToken, String userId, byte[] image)
         throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", userId);
         reqData.put("imgName", "profile-image.png");
@@ -166,7 +166,7 @@ public class UserManagerClient {
      */
     public byte[] downloadProfileImage(String accessToken,
                                        String userId) throws ExecutionException, InterruptedException {
-        taskManager.resetTaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + userId + "?name=profile-image.png",
             accessToken).get();

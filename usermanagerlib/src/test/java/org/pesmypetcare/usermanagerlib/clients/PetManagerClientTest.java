@@ -98,6 +98,7 @@ public class PetManagerClientTest {
 
     @Test
     public void createPet() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.createPet(ACCESS_TOKEN, USERNAME, pet);
@@ -110,6 +111,7 @@ public class PetManagerClientTest {
 
     @Test
     public void getPet() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         PetData response = client.getPet(ACCESS_TOKEN, USERNAME, petName);
@@ -121,6 +123,7 @@ public class PetManagerClientTest {
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.getPet(ACCESS_TOKEN, USERNAME, petName);
@@ -128,6 +131,7 @@ public class PetManagerClientTest {
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.getPet(ACCESS_TOKEN, USERNAME, petName);
@@ -135,6 +139,7 @@ public class PetManagerClientTest {
 
     @Test
     public void getAllPets() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(jsonAllPets);
         List<Pet> response = client.getAllPets(ACCESS_TOKEN, USERNAME);
@@ -146,6 +151,7 @@ public class PetManagerClientTest {
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.getAllPets(ACCESS_TOKEN, USERNAME);
@@ -153,6 +159,7 @@ public class PetManagerClientTest {
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.getAllPets(ACCESS_TOKEN, USERNAME);
@@ -160,6 +167,7 @@ public class PetManagerClientTest {
 
     @Test
     public void deletePet() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deletePet(ACCESS_TOKEN, USERNAME, petName);
@@ -171,6 +179,7 @@ public class PetManagerClientTest {
 
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
@@ -183,11 +192,13 @@ public class PetManagerClientTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
     }
 
     @Test
     public void saveProfileImage() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
@@ -200,6 +211,7 @@ public class PetManagerClientTest {
 
     @Test
     public void downloadProfileImage() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         mockStatic(Base64.class);
@@ -215,6 +227,7 @@ public class PetManagerClientTest {
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenDownloadExecutionFails()
         throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
@@ -223,6 +236,7 @@ public class PetManagerClientTest {
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenDownloadExecutionInterrupted()
         throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
@@ -235,6 +249,7 @@ public class PetManagerClientTest {
             + "}");
         Map<String, byte[]> expected = new HashMap<>();
         expected.put(petName, image);
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(responseJson);
         mockStatic(Base64.class);
@@ -249,6 +264,7 @@ public class PetManagerClientTest {
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionFails()
         throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
@@ -257,6 +273,7 @@ public class PetManagerClientTest {
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionInterrupted()
         throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);

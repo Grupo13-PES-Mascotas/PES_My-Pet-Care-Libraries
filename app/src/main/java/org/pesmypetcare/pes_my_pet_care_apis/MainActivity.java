@@ -4,16 +4,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
-
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
-import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
-
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 
 import java.util.concurrent.ExecutionException;
 
@@ -26,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         MealManagerClient manager = new MealManagerClient();
 
-        DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
+        /*DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
         try {
             dateTime = new DateTime(2017,7,5,13,50,12);
         } catch (InvalidFormatException e) {
@@ -44,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         MealData mealData = new MealData("Mis Asparagus", 55);
-        Meal meal = new Meal(dateTime.toString(), mealData);
+        Meal meal = new Meal(dateTime.toString(), mealData);*/
 
 
         // TESTS MEAL
@@ -132,6 +124,12 @@ public class MainActivity extends AppCompatActivity {
         }
          */
         UserManagerClient client = new UserManagerClient();
+        try {
+            client.getUser("token", "santi");
+            client.getUser("token", "santi");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         /*client.signUp("santi", "123456", "santi@gmail.com");
         System.out.println("Pasado signup");*/
         /*try {

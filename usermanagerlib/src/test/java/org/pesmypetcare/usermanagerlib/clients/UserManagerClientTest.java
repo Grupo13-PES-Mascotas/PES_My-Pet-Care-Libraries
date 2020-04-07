@@ -67,11 +67,11 @@ public class UserManagerClientTest {
 
     @Test
     public void signUp() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.signUp(USERNAME, PASSWORD, EMAIL);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("POST");
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + "signup?password=" + PASSWORD, "");
@@ -79,17 +79,18 @@ public class UserManagerClientTest {
 
     @Test
     public void getUser() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         UserData response = client.getUser(ACCESS_TOKEN, USERNAME);
         assertEquals("Should return the user data", expected, response);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId(GET);
         verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.getUser(ACCESS_TOKEN, USERNAME);
@@ -97,6 +98,7 @@ public class UserManagerClientTest {
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.getUser(ACCESS_TOKEN, USERNAME);
@@ -104,22 +106,22 @@ public class UserManagerClientTest {
 
     @Test
     public void deleteUser() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId("DELETE");
         verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/delete", ACCESS_TOKEN);
     }
 
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/update/" + EMAIL_FIELD, ACCESS_TOKEN);
@@ -127,11 +129,11 @@ public class UserManagerClientTest {
 
     @Test
     public void saveProfileImage() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
         verify(taskManager).execute(BASE_URL + IMAGES_PATH, ACCESS_TOKEN);
@@ -139,19 +141,20 @@ public class UserManagerClientTest {
 
     @Test
     public void downloadProfileImage() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         mockStatic(Base64.class);
         given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
         assertEquals("Should return the profile image of the user", image, response);
-        verify(taskManager).resetTaskManager();
         verify(taskManager).setTaskId(GET);
         verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
     public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
@@ -159,6 +162,7 @@ public class UserManagerClientTest {
 
     @Test(expected = InterruptedException.class)
     public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
         client.downloadProfileImage(ACCESS_TOKEN, USERNAME);

@@ -24,6 +24,10 @@ public class MealManagerClient {
     private static Gson GSON = new Gson();
     private TaskManager taskManager;
 
+    public MealManagerClient() {
+        taskManager = new TaskManager();
+    }
+
 
     /**
      * Creates a meal eaten by a pet on the database.
@@ -33,7 +37,7 @@ public class MealManagerClient {
      */
     public void createMeal(String owner, String petName, Meal meal) {
         JSONObject reqJson = meal.getBody().buildMealJson();
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getDate());
@@ -46,7 +50,7 @@ public class MealManagerClient {
      * @param date Date the meal was eaten
      */
     public void deleteByDate(String owner, String petName, DateTime date) {
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date);
     }
@@ -57,7 +61,7 @@ public class MealManagerClient {
      * @param petName Name of the pet
      */
     public void deleteAllMeals(String owner, String petName) {
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         taskManager.execute(BASE_URL + owner + "/" + petName);
     }
@@ -71,7 +75,7 @@ public class MealManagerClient {
      */
     public MealData getMealData(String owner, String petName, DateTime date) throws ExecutionException,
         InterruptedException {
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date).get();
         return GSON.fromJson(json.toString(), MealData.class);
@@ -84,7 +88,7 @@ public class MealManagerClient {
      * @return The List containing all the meals from the pet
      */
     public List<Meal> getAllMealData(String owner, String petName) throws ExecutionException, InterruptedException {
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName).get();
         List<Meal> mealList = new ArrayList<>();
@@ -110,7 +114,7 @@ public class MealManagerClient {
      */
     public List<Meal> getAllMealsBetween(String owner, String petName, DateTime initialDate,
                                                  DateTime finalDate) throws ExecutionException, InterruptedException {
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response =
             taskManager.execute(BASE_URL + owner + "/" + petName + "/between/" + initialDate + "/" + finalDate).get();
@@ -138,7 +142,7 @@ public class MealManagerClient {
     public void updateMealField(String owner, String petName, DateTime date, String field, Object value) {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
-        taskManager = new TaskManager();
+        taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date + "/" + field);
