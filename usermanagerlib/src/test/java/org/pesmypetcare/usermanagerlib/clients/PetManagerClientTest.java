@@ -220,7 +220,7 @@ public class PetManagerClientTest {
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
         Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
-        assertEquals("Should return the all pets profile pictures", expected, response);
+        assertEquals("Should return all the pets profile pictures", expected, response);
     }
 
     @Test(expected = ExecutionException.class)
