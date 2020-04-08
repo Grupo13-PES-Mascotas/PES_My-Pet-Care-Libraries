@@ -58,7 +58,7 @@ public class Meal {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Meal) {
             return ((Meal) obj).getDate().equals(this.getDate())
-                && ((Meal) obj).getBody() == (this.getBody());
+                && ((Meal) obj).getBody().equals(this.getBody());
         }
         return false;
     }

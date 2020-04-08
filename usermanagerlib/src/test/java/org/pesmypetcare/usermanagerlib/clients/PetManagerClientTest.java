@@ -2,7 +2,6 @@ package org.pesmypetcare.usermanagerlib.clients;
 
 import android.util.Base64;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,25 +24,16 @@ import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class PetManagerClientTest {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String PETS_PATH = "pet/";
-    private static final String IMAGES_PATH = "storage/image/";
-    private static final String PETS_PICTURES_PATH = "/pets/";
-    private static final String PROFILE_IMAGE_NAME = "-profile-image.png";
     private static final String USERNAME = "user";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String BIRTH_FIELD = "birth";
-    private static final String GET = "GET";
-    private static final String PUT = "PUT";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final double recommendedKcal = 2.5;
     private final double weight = 45.3;
@@ -103,10 +93,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.createPet(ACCESS_TOKEN, USERNAME, pet);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("POST");
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + pet.getName(), ACCESS_TOKEN);
     }
 
     @Test
@@ -116,9 +102,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(json);
         PetData response = client.getPet(ACCESS_TOKEN, USERNAME, petName);
         assertEquals("Should return the pet data", expectedPetData, response);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
@@ -144,9 +127,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllPets);
         List<Pet> response = client.getAllPets(ACCESS_TOKEN, USERNAME);
         assertEquals("Should return all the pets data", petList, response);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
@@ -172,9 +152,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deletePet(ACCESS_TOKEN, USERNAME, petName);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId("DELETE");
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName, ACCESS_TOKEN);
     }
 
     @Test
@@ -184,10 +161,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(PUT);
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + PETS_PATH + USERNAME + "/" + petName + "/" + BIRTH_FIELD, ACCESS_TOKEN);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -203,10 +176,6 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(PUT);
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH, ACCESS_TOKEN);
     }
 
     @Test
@@ -218,10 +187,6 @@ public class PetManagerClientTest {
         given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
         assertEquals("Should return the pet's profile picture", image, response);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH + petName
-            + PROFILE_IMAGE_NAME, ACCESS_TOKEN);
     }
 
     @Test(expected = ExecutionException.class)
@@ -255,10 +220,7 @@ public class PetManagerClientTest {
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
         Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
-        assertEquals("Should return the all pets profile pictures", expected, response);
-        verify(taskManager).resetTaskManager();
-        verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + PETS_PICTURES_PATH, ACCESS_TOKEN);
+        assertEquals("Should return all the pets profile pictures", expected, response);
     }
 
     @Test(expected = ExecutionException.class)
