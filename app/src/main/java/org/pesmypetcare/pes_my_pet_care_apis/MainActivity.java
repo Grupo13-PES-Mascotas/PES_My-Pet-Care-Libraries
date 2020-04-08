@@ -5,7 +5,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
+import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
+import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
 
@@ -16,9 +19,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // TESTS MEAL
+        /*
         MealManagerClient manager = new MealManagerClient();
 
-        /*DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
+        DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
         try {
             dateTime = new DateTime(2017,7,5,13,50,12);
         } catch (InvalidFormatException e) {
@@ -36,10 +41,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         MealData mealData = new MealData("Mis Asparagus", 55);
-        Meal meal = new Meal(dateTime.toString(), mealData);*/
+        Meal meal = new Meal(dateTime.toString(), mealData);
 
+        try {
+            manager.updateMealField("accessToken","john", "Laika", dateTime,
+                MealManagerClient.MEALNAME, "Malacoton");
+            System.out.println("Update done");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
 
-        // TESTS MEAL
+        // TESTS PET
 
         //manager.createMeal("john", "Laika", meal);
         //manager.deleteByDate("john", "Laika", dateTime);
@@ -123,6 +138,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
          */
+
+
+        // TESTS USER
+
+        /*
         UserManagerClient client = new UserManagerClient();
         try {
             client.getUser("token", "santi");
@@ -145,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         //client.deleteUser("kayle");
         //client.updateEmail("token", "alvaro", "nuevoEMail@mail.com");
         //client.updatePassword("alvaro", "newpassword123456");
-        String test = "Hello World";
+        //String test = "Hello World";
         //client.saveProfileImage("myAccessToken", "santi", test.getBytes());
         /*try {
             byte[] result = client.downloadProfileImage("myAccessToken", "santi");
