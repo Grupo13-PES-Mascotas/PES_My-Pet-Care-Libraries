@@ -31,6 +31,7 @@ public class MealManagerClient {
 
     /**
      * Creates a meal eaten by a pet on the database.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
      * @param meal The meal entity that contains the attributes of the meal eaten by the pet
@@ -51,6 +52,7 @@ public class MealManagerClient {
 
     /**
      * Deletes the pet with the specified owner and name from the database.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
      * @param date Date the meal was eaten
@@ -68,6 +70,7 @@ public class MealManagerClient {
 
     /**
      * Deletes all the meals of the specified pet from database.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
      * @return The response code
@@ -84,6 +87,7 @@ public class MealManagerClient {
 
     /**
      * Gets a meal identified by its pet and date.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
      * @param date Date the meal was eaten
@@ -99,6 +103,7 @@ public class MealManagerClient {
 
     /**
      * Gets the data from all the specified meals from the database identified by its pet.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
      * @return The List containing all the meals from the pet
@@ -123,6 +128,7 @@ public class MealManagerClient {
 
     /**
      * Gets the data from all the meals eaten by the pet between the initial and final date not including them.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
      * @param initialDate Initial Date
@@ -151,6 +157,7 @@ public class MealManagerClient {
 
     /**
      * Updates the meal's field.
+     * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
      * @param date Date the meal was eaten
