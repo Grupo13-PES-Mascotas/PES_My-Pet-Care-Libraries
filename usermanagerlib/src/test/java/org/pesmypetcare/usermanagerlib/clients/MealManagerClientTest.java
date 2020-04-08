@@ -53,7 +53,7 @@ public class MealManagerClientTest {
         date2 = new DateTime("2021-02-13T10:30:00");
         field = "kcal";
         value = 60.0;
-        mealData = new MealData("Ultra Asparagus",54);
+        mealData = new MealData("Ultra Asparagus", 54);
         meal = new Meal(date.toString(), mealData);
         mealList = new ArrayList<>();
         mealList.add(meal);

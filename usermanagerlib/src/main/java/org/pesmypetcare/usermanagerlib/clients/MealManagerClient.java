@@ -180,10 +180,12 @@ public class MealManagerClient {
      * @throws IllegalArgumentException When an invalid field value is passed
      */
     private void checkCorrectType(String field, Object value) {
-        if (field.equals(MEALNAME) && !(value instanceof String))
+        if (field.equals(MEALNAME) && !(value instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
-        if (field.equals(KCAL) && !(value instanceof Double))
+        }
+        if (field.equals(KCAL) && !(value instanceof Double)) {
             throw new IllegalArgumentException("New value must be a Double");
+        }
 
     }
 
