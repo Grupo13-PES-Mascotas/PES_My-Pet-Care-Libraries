@@ -15,7 +15,8 @@ import java.util.concurrent.ExecutionException;
 public class UserManagerClient {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PUT = "PUT";
@@ -39,10 +40,11 @@ public class UserManagerClient {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put("username", username);
+        reqData.put("password", password);
         reqData.put(EMAIL, email);
         taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + "signup?password=" + password, "").get();
+        StringBuilder response = taskManager.execute(BASE_URL + "signup", "").get();
         return Integer.parseInt(response.toString());
     }
 
@@ -66,7 +68,7 @@ public class UserManagerClient {
     }
 
     /**
-     * Method called by the client to delete user.
+     * Method called by the client to delete user completely.
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to delete
      * @return The response code
@@ -77,6 +79,23 @@ public class UserManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
         StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken).get();
+        return Integer.parseInt(response.toString());
+    }
+
+    /**
+     * Method called by the client to delete user from database.
+     * @param accessToken The personal access token for the account
+     * @param username The username of which we want to delete
+     * @return The response code
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public int deleteUserFromDatabase(String accessToken, String username)
+        throws ExecutionException, InterruptedException {
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId("DELETE");
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "/delete?db=true",
+            accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -137,17 +156,17 @@ public class UserManagerClient {
     /**
      * Saves the image given as the profile image.
      * @param accessToken The personal access token for the account
-     * @param userId The user unique identifier
+     * @param username The user's username
      * @param image The image to save
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int saveProfileImage(String accessToken, String userId, byte[] image)
+    public int saveProfileImage(String accessToken, String username, byte[] image)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", userId);
+        reqData.put("uid", username);
         reqData.put("imgName", "profile-image.png");
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
@@ -159,16 +178,16 @@ public class UserManagerClient {
     /**
      * Downloads the profile image of the specified user.
      * @param accessToken The personal access token for the account
-     * @param userId The user unique identifier
+     * @param username The user's username
      * @return The profile image as a byte array
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public byte[] downloadProfileImage(String accessToken,
-                                       String userId) throws ExecutionException, InterruptedException {
+                                       String username) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + userId + "?name=profile-image.png",
+        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + username + "?name=profile-image.png",
             accessToken).get();
         if (json != null) {
             return Base64.decode(json.toString(), Base64.DEFAULT);

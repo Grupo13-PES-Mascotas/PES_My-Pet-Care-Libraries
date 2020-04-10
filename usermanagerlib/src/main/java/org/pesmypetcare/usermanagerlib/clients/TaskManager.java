@@ -149,7 +149,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * fails
      */
     private void writeRequestBodyIfNotEmpty(HttpURLConnection con) throws IOException {
-        if (0 != reqBody.length()) {
+        if (null != reqBody) {
             OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
             writer.write(reqBody.toString());
             writer.flush();

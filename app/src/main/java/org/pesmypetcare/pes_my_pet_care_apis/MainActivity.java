@@ -1,14 +1,11 @@
 package org.pesmypetcare.pes_my_pet_care_apis;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
-import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 
 import java.util.concurrent.ExecutionException;
 
@@ -18,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView text = findViewById(R.id.Hello_text);
 
         // TESTS MEAL
         /*
@@ -142,11 +140,15 @@ public class MainActivity extends AppCompatActivity {
 
         // TESTS USER
 
-        /*
+
         UserManagerClient client = new UserManagerClient();
         try {
-            client.getUser("token", "santi");
-            client.getUser("token", "santi");
+            System.out.println(client.getUser("token", "santi"));
+            //client.getUser("token", "santi");
+            //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
+            //int code = client.deleteUserFromDatabase("token", "Caudillo");
+            /*System.out.println(code);
+            text.setText(String.valueOf(code));*/
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
