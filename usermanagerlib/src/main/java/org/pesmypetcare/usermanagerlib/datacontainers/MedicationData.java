@@ -75,7 +75,7 @@ public class MedicationData {
      * Creates a meal json object.
      * @return A JSON Object with the meal data
      */
-    public JSONObject buildMealJson() {
+    public JSONObject buildMedicationJson() {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("quantity", String.valueOf(quantity));
         reqData.put("duration", String.valueOf(duration));
