@@ -4,15 +4,19 @@ package org.pesmypetcare.usermanagerlib.clients;
 import android.util.Base64;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 public class UserManagerClient {
+    public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
@@ -29,23 +33,41 @@ public class UserManagerClient {
 
     /**
      * Method called by the client to sign up a new user.
-     * @param username The username of the new user
-     * @param password The password of the new user
-     * @param email The email of the new user
+     * @param uid The user's unique identifier
+     * @param data The user data object that contains the user's username, email and password
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int signUp(String username, String password, String email) throws ExecutionException, InterruptedException {
+    public int createUser(String uid, UserData data) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put("username", username);
-        reqData.put("password", password);
-        reqData.put(EMAIL, email);
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("uid", uid);
+        reqData.put("user", data);
         taskManager.setTaskId("POST");
         taskManager.setReqBody(new JSONObject(reqData));
         StringBuilder response = taskManager.execute(BASE_URL + "signup", "").get();
         return Integer.parseInt(response.toString());
+    }
+
+    /**
+     * Checks if a username is already in use.
+     * @param username The username to check
+     * @return True if the username is already in use
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public boolean usernameAlreadyExists(String username) throws ExecutionException, InterruptedException {
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId(GET);
+        StringBuilder json = taskManager.execute(BASE_URL + "usernames?username=" + username, "").get();
+        if (json != null) {
+            Gson gson = new Gson();
+            Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
+            Map<String, Boolean> response = gson.fromJson(json.toString(), mapType);
+            return Objects.requireNonNull(response.get("exists"));
+        }
+        return true;
     }
 
     /**
@@ -78,7 +100,7 @@ public class UserManagerClient {
     public int deleteUser(String accessToken, String username) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "/delete", accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -94,7 +116,7 @@ public class UserManagerClient {
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "/delete?db=true",
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "?db=true",
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -116,8 +138,7 @@ public class UserManagerClient {
         reqData.put(field, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder result = taskManager.execute(BASE_URL + USERS_PATH + username + "/update/" + field,
-            accessToken).get();
+        StringBuilder result = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
         return Integer.parseInt(result.toString());
     }
 

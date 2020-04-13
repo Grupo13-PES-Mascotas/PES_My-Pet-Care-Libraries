@@ -17,9 +17,12 @@ import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -35,6 +38,7 @@ public class UserManagerClientTest {
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";
+    private static final String UID = "312eeAD";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "123456";
     private static final String ACCESS_TOKEN = "my-token";
@@ -43,7 +47,9 @@ public class UserManagerClientTest {
     private static final String PUT = "PUT";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final int expectedResponseCode = 200;
+    private UserData user;
     private StringBuilder json;
+    private StringBuilder responseJson;
     private UserData expected;
     private byte[] image;
 
@@ -57,11 +63,12 @@ public class UserManagerClientTest {
 
     @Before
     public void setUp() {
-        json = new StringBuilder("{\n"
-            + "  \"username\": \"user\",\n"
-            + "  \"email\": \"user@email.com\"\n"
-            + "}");
         Gson gson = new Gson();
+        user = new UserData(USERNAME, EMAIL, PASSWORD);
+        json = new StringBuilder(gson.toJson(user));
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("exists", true);
+        responseJson = new StringBuilder(gson.toJson(map));
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();
     }
@@ -71,10 +78,19 @@ public class UserManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(BASE_URL + "signup", "")).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.signUp(USERNAME, PASSWORD, EMAIL);
+        int responseCode = client.createUser(UID, user);
         verify(taskManager).setTaskId("POST");
         verify(taskManager).setReqBody(isA(JSONObject.class));
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void usernameAlreadyExists() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + "usernames?username=" + USERNAME, "")).willReturn(taskManager);
+        given(taskManager.get()).willReturn(responseJson);
+        boolean response = client.usernameAlreadyExists(USERNAME);
+        assertTrue("Should return true when username exists", response);
     }
 
     @Test
@@ -106,7 +122,7 @@ public class UserManagerClientTest {
     @Test
     public void deleteUser() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "/delete", ACCESS_TOKEN)).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
         verify(taskManager).setTaskId("DELETE");
@@ -116,7 +132,7 @@ public class UserManagerClientTest {
     @Test
     public void deleteUserFromDatabase() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "/delete?db=true", ACCESS_TOKEN))
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "?db=true", ACCESS_TOKEN))
             .willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUserFromDatabase(ACCESS_TOKEN, USERNAME);
@@ -127,7 +143,7 @@ public class UserManagerClientTest {
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "/update/" + EMAIL_FIELD, ACCESS_TOKEN))
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN))
             .willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
