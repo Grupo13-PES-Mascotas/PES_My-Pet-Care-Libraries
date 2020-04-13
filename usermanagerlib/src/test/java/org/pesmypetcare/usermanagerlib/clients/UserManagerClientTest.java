@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -74,7 +75,7 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void signUp() throws ExecutionException, InterruptedException {
+    public void signUp() throws ExecutionException, InterruptedException, JSONException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(BASE_URL + "signup", "")).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);

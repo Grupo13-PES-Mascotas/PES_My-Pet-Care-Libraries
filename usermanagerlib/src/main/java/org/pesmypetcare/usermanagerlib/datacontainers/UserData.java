@@ -4,6 +4,9 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserData {
     private String username;
     private String email;
@@ -67,6 +70,19 @@ public class UserData {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * Creates a user data JSONObject.
+     * @return The JSONObject for the user data
+     * @throws JSONException Thrown to indicate a problem with the JSON API
+     */
+    public JSONObject toJson() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("username", username);
+        json.put("email", email);
+        json.put("password", password);
+        return json;
     }
 
     @NonNull

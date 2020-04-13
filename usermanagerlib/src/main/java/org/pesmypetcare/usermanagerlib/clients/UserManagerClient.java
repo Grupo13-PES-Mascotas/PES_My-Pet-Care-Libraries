@@ -6,6 +6,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
@@ -26,9 +27,11 @@ public class UserManagerClient {
     private static final String PUT = "PUT";
     private static final String GET = "GET";
     private TaskManager taskManager;
+    private Gson gson;
 
     public UserManagerClient() {
         taskManager = new TaskManager();
+        gson = new Gson();
     }
 
     /**
@@ -39,13 +42,14 @@ public class UserManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int createUser(String uid, UserData data) throws ExecutionException, InterruptedException {
+    public int createUser(String uid, UserData data) throws ExecutionException, InterruptedException, JSONException {
         taskManager = taskManager.resetTaskManager();
-        Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", uid);
-        reqData.put("user", data);
+        JSONObject reqBody = new JSONObject();
+        reqBody.put("uid", uid);
+        reqBody.put("user", data.toJson());
+        System.out.println(reqBody);
         taskManager.setTaskId("POST");
-        taskManager.setReqBody(new JSONObject(reqData));
+        taskManager.setReqBody(reqBody);
         StringBuilder response = taskManager.execute(BASE_URL + "signup", "").get();
         return Integer.parseInt(response.toString());
     }
@@ -62,7 +66,6 @@ public class UserManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + "usernames?username=" + username, "").get();
         if (json != null) {
-            Gson gson = new Gson();
             Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
             Map<String, Boolean> response = gson.fromJson(json.toString(), mapType);
             return Objects.requireNonNull(response.get("exists"));

@@ -6,6 +6,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.concurrent.ExecutionException;
 
@@ -142,8 +143,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         UserManagerClient client = new UserManagerClient();
+        UserData user = new UserData("santi2", "santi@mail.com", "123455678");
         try {
-            System.out.println(client.getUser("token", "santi"));
+            /*if (!client.usernameAlreadyExists("santi")) {
+                client.createUser("8jzc2Kbz46PWdIb2UMavsLO02UF3", user);
+            }*/
+            //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
+            //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
+            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            client.deleteUserFromDatabase("token", "santi2");
+            //System.out.println(client.getUser("token", "santi"));
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
