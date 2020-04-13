@@ -76,15 +76,15 @@ public class UserManagerClient {
     /**
      * Method called by the client to get a user.
      * @param accessToken The personal access token for the account
-     * @param username The username of which we want the information
+     * @param uid The user uid of which we want the information
      * @return Json that contains all the info of the user
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public UserData getUser(String accessToken, String username) throws ExecutionException, InterruptedException {
+    public UserData getUser(String accessToken, String uid) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + USERS_PATH + uid, accessToken).get();
         if (json != null) {
             Gson gson = new Gson();
             return gson.fromJson(json.toString(), UserData.class);
@@ -95,31 +95,31 @@ public class UserManagerClient {
     /**
      * Method called by the client to delete user completely.
      * @param accessToken The personal access token for the account
-     * @param username The username of which we want to delete
+     * @param uid The user uid of which we want to delete
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteUser(String accessToken, String username) throws ExecutionException, InterruptedException {
+    public int deleteUser(String accessToken, String uid) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Method called by the client to delete user from database.
      * @param accessToken The personal access token for the account
-     * @param username The username of which we want to delete
+     * @param uid The user uid of which we want to delete
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteUserFromDatabase(String accessToken, String username)
+    public int deleteUserFromDatabase(String accessToken, String uid)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + username + "?db=true",
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid + "?db=true",
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -180,17 +180,17 @@ public class UserManagerClient {
     /**
      * Saves the image given as the profile image.
      * @param accessToken The personal access token for the account
-     * @param username The user's username
+     * @param uid The user's uid
      * @param image The image to save
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int saveProfileImage(String accessToken, String username, byte[] image)
+    public int saveProfileImage(String accessToken, String uid, byte[] image)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", username);
+        reqData.put("uid", uid);
         reqData.put("imgName", "profile-image.png");
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
@@ -202,16 +202,16 @@ public class UserManagerClient {
     /**
      * Downloads the profile image of the specified user.
      * @param accessToken The personal access token for the account
-     * @param username The user's username
+     * @param uid The user's uid
      * @return The profile image as a byte array
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public byte[] downloadProfileImage(String accessToken,
-                                       String username) throws ExecutionException, InterruptedException {
+                                       String uid) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + username + "?name=profile-image.png",
+        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + uid + "?name=profile-image.png",
             accessToken).get();
         if (json != null) {
             return Base64.decode(json.toString(), Base64.DEFAULT);

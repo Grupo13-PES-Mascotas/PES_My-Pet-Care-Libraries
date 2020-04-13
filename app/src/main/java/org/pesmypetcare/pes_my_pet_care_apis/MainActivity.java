@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
@@ -143,22 +144,23 @@ public class MainActivity extends AppCompatActivity {
 
 
         UserManagerClient client = new UserManagerClient();
-        UserData user = new UserData("santi2", "santi@mail.com", "123455678");
+        UserData user = new UserData("santi", "santi@mail.com", "123455678");
         try {
-            /*if (!client.usernameAlreadyExists("santi")) {
-                client.createUser("8jzc2Kbz46PWdIb2UMavsLO02UF3", user);
-            }*/
+            if (!client.usernameAlreadyExists("santi")) {
+                client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
+            }
             //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
             //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
             //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
-            client.deleteUserFromDatabase("token", "santi2");
+            //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
+            //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //System.out.println(client.getUser("token", "santi"));
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
             /*System.out.println(code);
             text.setText(String.valueOf(code));*/
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }
         /*client.signUp("santi", "123456", "santi@gmail.com");
