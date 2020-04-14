@@ -46,6 +46,7 @@ public class UserManagerClientTest {
     private static final String EMAIL_FIELD = "email";
     private static final String GET = "GET";
     private static final String PUT = "PUT";
+    private static final String DELETE = "DELETE";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final int expectedResponseCode = 200;
     private UserData user;
@@ -126,7 +127,7 @@ public class UserManagerClientTest {
         given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId("DELETE");
+        verify(taskManager).setTaskId(DELETE);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
     }
 
@@ -137,7 +138,7 @@ public class UserManagerClientTest {
             .willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUserFromDatabase(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId("DELETE");
+        verify(taskManager).setTaskId(DELETE);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
     }
 

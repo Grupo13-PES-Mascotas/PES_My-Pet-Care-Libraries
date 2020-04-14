@@ -212,14 +212,14 @@ public class PetManagerClientTest {
         StringBuilder responseJson = new StringBuilder("{\n"
             + "  \"Linux\": \"encodedImg\"\n"
             + "}");
-        Map<String, byte[]> expected = new HashMap<>();
-        expected.put(petName, image);
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(responseJson);
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
         Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
+        Map<String, byte[]> expected = new HashMap<>();
+        expected.put(petName, image);
         assertEquals("Should return all the pets profile pictures", expected, response);
     }
 

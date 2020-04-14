@@ -26,6 +26,8 @@ public class UserManagerClient {
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PUT = "PUT";
     private static final String GET = "GET";
+    private static final String DELETE = "DELETE";
+    private static final String UID_FIELD = "uid";
     private TaskManager taskManager;
     private Gson gson;
 
@@ -45,7 +47,7 @@ public class UserManagerClient {
     public int createUser(String uid, UserData data) throws ExecutionException, InterruptedException, JSONException {
         taskManager = taskManager.resetTaskManager();
         JSONObject reqBody = new JSONObject();
-        reqBody.put("uid", uid);
+        reqBody.put(UID_FIELD, uid);
         reqBody.put("user", data.toJson());
         System.out.println(reqBody);
         taskManager.setTaskId("POST");
@@ -102,7 +104,7 @@ public class UserManagerClient {
      */
     public int deleteUser(String accessToken, String uid) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId("DELETE");
+        taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid, accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -118,7 +120,7 @@ public class UserManagerClient {
     public int deleteUserFromDatabase(String accessToken, String uid)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId("DELETE");
+        taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid + "?db=true",
             accessToken).get();
         return Integer.parseInt(response.toString());
@@ -190,7 +192,7 @@ public class UserManagerClient {
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put("uid", uid);
+        reqData.put(UID_FIELD, uid);
         reqData.put("imgName", "profile-image.png");
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
