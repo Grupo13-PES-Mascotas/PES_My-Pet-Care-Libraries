@@ -34,8 +34,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
-    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";
