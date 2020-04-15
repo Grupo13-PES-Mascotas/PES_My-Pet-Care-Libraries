@@ -1,14 +1,13 @@
 package org.pesmypetcare.pes_my_pet_care_apis;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
-import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.json.JSONException;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.concurrent.ExecutionException;
 
@@ -18,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView text = findViewById(R.id.Hello_text);
 
         // TESTS MEAL
         /*
@@ -142,12 +142,25 @@ public class MainActivity extends AppCompatActivity {
 
         // TESTS USER
 
-        /*
+
         UserManagerClient client = new UserManagerClient();
+        UserData user = new UserData("santi", "santi@mail.com", "123455678");
         try {
-            client.getUser("token", "santi");
-            client.getUser("token", "santi");
-        } catch (ExecutionException | InterruptedException e) {
+            if (!client.usernameAlreadyExists("santi")) {
+                client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
+            }
+            //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
+            //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
+            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
+            //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
+            //System.out.println(client.getUser("token", "santi"));
+            //client.getUser("token", "santi");
+            //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
+            //int code = client.deleteUserFromDatabase("token", "Caudillo");
+            /*System.out.println(code);
+            text.setText(String.valueOf(code));*/
+        } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }
         /*client.signUp("santi", "123456", "santi@gmail.com");

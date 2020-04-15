@@ -4,6 +4,7 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,9 +18,12 @@ import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
@@ -30,19 +34,24 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";
+    private static final String UID = "312eeAD";
     private static final String USERNAME = "user";
     private static final String PASSWORD = "123456";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
     private static final String GET = "GET";
     private static final String PUT = "PUT";
+    private static final String DELETE = "DELETE";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final int expectedResponseCode = 200;
+    private UserData user;
     private StringBuilder json;
+    private StringBuilder responseJson;
     private UserData expected;
     private byte[] image;
 
@@ -56,36 +65,44 @@ public class UserManagerClientTest {
 
     @Before
     public void setUp() {
-        json = new StringBuilder("{\n"
-            + "  \"username\": \"user\",\n"
-            + "  \"email\": \"user@email.com\"\n"
-            + "}");
         Gson gson = new Gson();
+        user = new UserData(USERNAME, EMAIL, PASSWORD);
+        json = new StringBuilder(gson.toJson(user));
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("exists", true);
+        responseJson = new StringBuilder(gson.toJson(map));
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();
     }
 
     @Test
-    public void signUp() throws ExecutionException, InterruptedException {
+    public void signUp() throws ExecutionException, InterruptedException, JSONException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + "signup", "")).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.signUp(USERNAME, PASSWORD, EMAIL);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        int responseCode = client.createUser(UID, user);
         verify(taskManager).setTaskId("POST");
         verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + "signup?password=" + PASSWORD, "");
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void usernameAlreadyExists() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + "usernames?username=" + USERNAME, "")).willReturn(taskManager);
+        given(taskManager.get()).willReturn(responseJson);
+        boolean response = client.usernameAlreadyExists(USERNAME);
+        assertTrue("Should return true when username exists", response);
     }
 
     @Test
     public void getUser() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         UserData response = client.getUser(ACCESS_TOKEN, USERNAME);
-        assertEquals("Should return the user data", expected, response);
         verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN);
+        assertEquals("Should return the user data", expected, response);
     }
 
     @Test(expected = ExecutionException.class)
@@ -107,49 +124,58 @@ public class UserManagerClientTest {
     @Test
     public void deleteUser() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
+        verify(taskManager).setTaskId(DELETE);
         assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-        verify(taskManager).setTaskId("DELETE");
-        verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/delete", ACCESS_TOKEN);
+    }
+
+    @Test
+    public void deleteUserFromDatabase() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "?db=true", ACCESS_TOKEN))
+            .willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteUserFromDatabase(ACCESS_TOKEN, USERNAME);
+        verify(taskManager).setTaskId(DELETE);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
     }
 
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN))
+            .willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + USERS_PATH + USERNAME + "/update/" + EMAIL_FIELD, ACCESS_TOKEN);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
     }
 
     @Test
     public void saveProfileImage() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + IMAGES_PATH, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
         verify(taskManager).setTaskId(PUT);
         verify(taskManager).setReqBody(isA(JSONObject.class));
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH, ACCESS_TOKEN);
+        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
     }
 
     @Test
     public void downloadProfileImage() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN))
+            .willReturn(taskManager);
         given(taskManager.get()).willReturn(json);
         mockStatic(Base64.class);
         given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
-        assertEquals("Should return the profile image of the user", image, response);
         verify(taskManager).setTaskId(GET);
-        verify(taskManager).execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN);
+        assertEquals("Should return the profile image of the user", image, response);
     }
 
     @Test(expected = ExecutionException.class)
