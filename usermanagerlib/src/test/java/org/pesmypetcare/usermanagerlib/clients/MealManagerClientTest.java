@@ -59,7 +59,7 @@ public class MealManagerClientTest {
         mealList.add(meal);
         jsonMealData = new StringBuilder("{\n"
             + "      \"mealName\": \"Ultra Asparagus\",\n"
-            + "      \"kcal\": 54.\n"
+            + "      \"kcal\": 54\n"
             + "    }\n");
         jsonAllMeals = new StringBuilder("[\n"
             + "{\n"

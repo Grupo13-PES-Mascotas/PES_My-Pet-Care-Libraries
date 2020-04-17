@@ -11,6 +11,9 @@ import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

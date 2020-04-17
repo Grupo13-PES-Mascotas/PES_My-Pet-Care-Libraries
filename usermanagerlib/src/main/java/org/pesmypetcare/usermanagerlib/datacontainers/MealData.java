@@ -8,6 +8,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Marc Simó
+ */
 public class MealData {
     private String mealName;
     private Double kcal;

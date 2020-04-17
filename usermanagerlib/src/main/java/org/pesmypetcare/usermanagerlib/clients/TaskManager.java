@@ -12,6 +12,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * @author Oriol Catalán
+ */
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private final String POST = "POST";
     private final String GET = "GET";

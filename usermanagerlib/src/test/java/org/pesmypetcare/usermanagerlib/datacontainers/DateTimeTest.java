@@ -7,6 +7,9 @@ import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @author Marc Simó
+ */
 public class DateTimeTest {
     private DateTime dateTime;
     private DateTime dateTime2;

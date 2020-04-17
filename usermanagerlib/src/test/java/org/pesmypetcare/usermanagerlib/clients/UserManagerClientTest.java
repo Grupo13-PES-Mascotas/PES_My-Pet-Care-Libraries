@@ -31,6 +31,9 @@ import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
+/**
+ * @author Santiago Del Rey
+ */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {

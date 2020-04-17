@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Oriol Catalán
+ */
 public class UserManagerClient {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";

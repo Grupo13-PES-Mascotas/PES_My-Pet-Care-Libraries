@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class UserData {
     private String username;
     private String email;
