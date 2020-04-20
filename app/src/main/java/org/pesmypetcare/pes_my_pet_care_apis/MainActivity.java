@@ -213,11 +213,12 @@ public class MainActivity extends AppCompatActivity {
                 tags.add("empo");
                 tags.add("empotrador");
                 GroupData data = new GroupData("Me aburro", "iw2VHtSHeoZohD3dAWRafXnb5x42","2020-04-20", "Hola", tags);
-                System.out.println("HELLOOOOOOO");
                 try {
                     //System.out.println(groupManager.createGroup(data));
                     //System.out.println(groupManager.deleteGroup("Me aburro"));
-                    System.out.println(groupManager.getGroup("Huskies Love"));
+                    //System.out.println(groupManager.getGroup("Huskies Love"));
+                    System.out.println(groupManager.updateField("Empo", "name", "Huskies Love"));
+                    System.out.println(groupManager.updateGroupTags("Huskies Love", null, null));
                 } catch (MyPetCareException e) {
                     e.printStackTrace();
                 }
