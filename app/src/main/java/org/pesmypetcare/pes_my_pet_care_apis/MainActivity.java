@@ -5,11 +5,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
+import org.pesmypetcare.communitymanager.MyPetCareException;
+import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.managers.GroupManager;
 
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Santiago Del Rey
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        UserManagerClient client = new UserManagerClient();
+        /*UserManagerClient client = new UserManagerClient();
         UserData user = new UserData("santi", "santi@mail.com", "123455678");
         try {
             if (!client.usernameAlreadyExists("santi")) {
@@ -161,11 +162,11 @@ public class MainActivity extends AppCompatActivity {
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
-            /*System.out.println(code);
-            text.setText(String.valueOf(code));*/
+            *//*System.out.println(code);
+            text.setText(String.valueOf(code));*//*
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         /*client.signUp("santi", "123456", "santi@gmail.com");
         System.out.println("Pasado signup");*/
         /*try {
@@ -202,6 +203,27 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }*/
+
+        //TEST GROUPS
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GroupManager groupManager = new GroupManager();
+                List<String> tags = new ArrayList<>();
+                tags.add("empo");
+                tags.add("empotrador");
+                GroupData data = new GroupData("Me aburro", "iw2VHtSHeoZohD3dAWRafXnb5x42","2020-04-20", "Hola", tags);
+                System.out.println("HELLOOOOOOO");
+                try {
+                    //System.out.println(groupManager.createGroup(data));
+                    //System.out.println(groupManager.deleteGroup("Me aburro"));
+                    System.out.println(groupManager.getGroup("Huskies Love"));
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
 }
 
