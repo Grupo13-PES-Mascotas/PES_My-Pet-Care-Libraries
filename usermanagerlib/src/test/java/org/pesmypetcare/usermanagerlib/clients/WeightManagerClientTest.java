@@ -23,6 +23,11 @@ public class WeightManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final int STATUS_OK_INT = 200;
+    private static final String LINE_JUMP = "{\n";
+    private static final String LINE_JUMP2 = "    }\n";
+    private static final String WEIGHT_VALUE = "      \"weight\": 5.4\n";
+    private static final String CODE_OK = "Should return response code 200";
+    private static final String CODE_RETURN = "Should return a weight data list";
 
     private String owner;
     private String petName;
@@ -31,7 +36,6 @@ public class WeightManagerClientTest {
     private List<Weight> weightList;
     private DateTime date;
     private DateTime date2;
-    private String field;
     private Double value;
     private StringBuilder jsonWeightData;
     private StringBuilder jsonAllWeights;
@@ -51,21 +55,20 @@ public class WeightManagerClientTest {
         petName = "Kawaguchi";
         date = new DateTime("2020-02-13T10:30:00");
         date2 = new DateTime("2021-02-13T10:30:00");
-        field = "kcal";
-        value = 60.0;
+        value = 1.0;
         weightData = new WeightData(5.4);
         weight = new Weight(weightData);
         weightList = new ArrayList<>();
         weightList.add(weight);
-        jsonWeightData = new StringBuilder("{\n"
-            + "      \"weight\": 5.4\n"
-            + "    }\n");
+        jsonWeightData = new StringBuilder(LINE_JUMP
+            + WEIGHT_VALUE
+            + LINE_JUMP2);
         jsonAllWeights = new StringBuilder("[\n"
-            + "{\n"
+            + LINE_JUMP
             + "    \"date\": \"2020-02-13T10:30:00\",\n"
             + "    \"body\": {\n"
-            + "      \"weight\": 5.4\n"
-            + "    }\n"
+            + WEIGHT_VALUE
+            + LINE_JUMP2
             + "  }"
             + "   \n"
             + "]");
@@ -78,7 +81,7 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.createWeight(ACCESS_TOKEN, owner, petName, weight, date);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(CODE_OK, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -89,7 +92,7 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteByDate(ACCESS_TOKEN, owner, petName, date);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(CODE_OK, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -99,7 +102,7 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteAllWeight(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(CODE_OK, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -119,7 +122,7 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllWeights);
 
         List<Weight> response = client.getAllWeightData(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return a weight data list", response, weightList);
+        assertEquals(CODE_RETURN, response, weightList);
     }
 
     @Test
@@ -129,7 +132,7 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllWeights);
 
         List<Weight> response = client.getAllWeightsBetween(ACCESS_TOKEN, owner, petName, date, date2);
-        assertEquals("Should return a weight data list", response, weightList);
+        assertEquals(CODE_RETURN, response, weightList);
     }
 
     @Test
@@ -138,6 +141,6 @@ public class WeightManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateWeightField(ACCESS_TOKEN, owner, petName, date, value);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(CODE_OK, STATUS_OK_INT, responseCode);
     }
 }

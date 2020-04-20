@@ -19,7 +19,10 @@ public class WeightManagerClient {
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
-    private static Gson GSON = new Gson();
+    private static final String SLASH = "/";
+    private static final String BRACKET = "{";
+    private static final String BRACKET_SLASH = ",\\{";
+    private static final Gson GSON = new Gson();
     private TaskManager taskManager;
 
     public WeightManagerClient() {
@@ -44,7 +47,7 @@ public class WeightManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date,
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -63,7 +66,7 @@ public class WeightManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date,
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
                 accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -81,7 +84,7 @@ public class WeightManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName,
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName,
                 accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -98,7 +101,7 @@ public class WeightManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date,
+        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
                 accessToken).get();
         return GSON.fromJson(json.toString(), WeightData.class);
     }
@@ -114,15 +117,15 @@ public class WeightManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName,
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName,
                 accessToken).get();
         List<Weight> weightList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] weights = jsonArray.split(",\\{");
+            String[] weights = jsonArray.split(BRACKET_SLASH);
             weightList.add(GSON.fromJson(weights[0], Weight.class));
             for (int i = 1; i < weights.length; i++) {
-                weights[i] = "{" + weights[i];
+                weights[i] = BRACKET + weights[i];
                 weightList.add(GSON.fromJson(weights[i], Weight.class));
             }
         }
@@ -144,15 +147,15 @@ public class WeightManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/between/"
-                        + initialDate + "/" + finalDate, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + "/between/"
+                        + initialDate + SLASH + finalDate, accessToken).get();
         List<Weight> weightList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] weights = jsonArray.split(",\\{");
+            String[] weights = jsonArray.split(BRACKET_SLASH);
             weightList.add(GSON.fromJson(weights[0], Weight.class));
             for (int i = 1; i < weights.length; i++) {
-                weights[i] = "{" + weights[i];
+                weights[i] = BRACKET + weights[i];
                 weightList.add(GSON.fromJson(weights[i], Weight.class));
             }
         }
@@ -178,7 +181,7 @@ public class WeightManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date,
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
