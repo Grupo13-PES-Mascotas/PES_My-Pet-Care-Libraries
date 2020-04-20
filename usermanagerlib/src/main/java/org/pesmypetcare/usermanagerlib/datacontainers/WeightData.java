@@ -24,18 +24,10 @@ public class WeightData {
     }
 
     /**
-     * Sets a new value of weight.
-     * @param weight Value of the new weight
-     */
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    /**
      * Creates a weight json object.
      * @return A JSON Object with the weight data
      */
-    public JSONObject buildMealJson() {
+    public JSONObject buildWeightJson() {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("weight", Double.toString(weight));
         return new JSONObject(reqData);

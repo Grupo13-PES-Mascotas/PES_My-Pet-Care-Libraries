@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class WeightManagerClient {
-    public static final String WEIGHTNAME = "weightName";
-    public static final String WEIGHT = "weight";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/weight/";
     private static final String POST = "POST";
     private static final String GET = "GET";
@@ -42,7 +40,7 @@ public class WeightManagerClient {
      */
     public int createWeight(String accessToken, String owner, String petName, Weight weight,
                             DateTime date) throws ExecutionException, InterruptedException {
-        JSONObject reqJson = weight.getBody().buildMealJson();
+        JSONObject reqJson = weight.getBody().buildWeightJson();
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
@@ -110,7 +108,7 @@ public class WeightManagerClient {
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
-     * @return The List containing all the meals from the pet
+     * @return The List containing all the weights from the pet
      */
     public List<Weight> getAllWeightData(String accessToken, String owner, String petName)
             throws ExecutionException, InterruptedException {
@@ -139,7 +137,7 @@ public class WeightManagerClient {
      * @param petName Name of the pet
      * @param initialDate Initial Date
      * @param finalDate Final Date
-     * @return The List containing all the meals eaten by the pet in the specified time
+     * @return The List containing all the weights eaten by the pet in the specified time
      */
     public List<Weight> getAllWeightsBetween(String accessToken, String owner, String petName,
                                              DateTime initialDate, DateTime finalDate)
@@ -172,7 +170,7 @@ public class WeightManagerClient {
      * @throws ExecutionException When the update fails
      * @throws InterruptedException When the update is interrupted
      */
-    public int updateMealField(String accessToken, String owner, String petName, DateTime date,
+    public int updateWeightField(String accessToken, String owner, String petName, DateTime date,
                                Object value) throws ExecutionException, InterruptedException {
         checkCorrectType(value);
         Map<String, Object> reqData = new HashMap<>();

@@ -109,35 +109,35 @@ public class WeightManagerClientTest {
         given(taskManager.get()).willReturn(jsonWeightData);
 
         WeightData response = client.getWeightData(ACCESS_TOKEN, owner, petName, date);
-        assertEquals("Should return meal data", response, weightData);
+        assertEquals("Should return weight data", response, weightData);
     }
 
     @Test
-    public void getAllMealData() throws ExecutionException, InterruptedException {
+    public void getAllWeightData() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(jsonAllWeights);
 
         List<Weight> response = client.getAllWeightData(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return a meal data list", response, weightList);
+        assertEquals("Should return a weight data list", response, weightList);
     }
 
     @Test
-    public void getAllMealsBetween() throws ExecutionException, InterruptedException {
+    public void getAllWeightsBetween() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(jsonAllWeights);
 
         List<Weight> response = client.getAllWeightsBetween(ACCESS_TOKEN, owner, petName, date, date2);
-        assertEquals("Should return a meal data list", response, weightList);
+        assertEquals("Should return a weight data list", response, weightList);
     }
 
     @Test
-    public void updateMealField() throws ExecutionException, InterruptedException {
+    public void updateWeightField() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateMealField(ACCESS_TOKEN, owner, petName, date, value);
+        int responseCode = client.updateWeightField(ACCESS_TOKEN, owner, petName, date, value);
         assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
     }
 }

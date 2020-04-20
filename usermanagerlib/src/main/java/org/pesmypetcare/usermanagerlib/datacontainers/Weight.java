@@ -18,15 +18,6 @@ public class Weight {
         return body;
     }
 
-    /**
-     * Sets a new Weight Data.
-     * @param body Weight Data
-     */
-    public void setBody(WeightData body) {
-        this.body = body;
-    }
-
-
     @NonNull
     @Override
     public String toString() {
