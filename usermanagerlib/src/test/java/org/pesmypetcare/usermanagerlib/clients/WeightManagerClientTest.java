@@ -25,9 +25,12 @@ public class WeightManagerClientTest {
     private static final int STATUS_OK_INT = 200;
     private static final String LINE_JUMP = "{\n";
     private static final String LINE_JUMP2 = "    }\n";
-    private static final String WEIGHT_VALUE = "      \"weight\": 5.4\n";
+    private static final String WEIGHT_VALUE = "      \"weight\": 2.0\n";
     private static final String CODE_OK = "Should return response code 200";
     private static final String CODE_RETURN = "Should return a weight data list";
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     private String owner;
     private String petName;
@@ -46,9 +49,6 @@ public class WeightManagerClientTest {
     @InjectMocks
     private WeightManagerClient client = new WeightManagerClient();
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @Before
     public void setUp() {
         owner = "Manolo";
@@ -56,7 +56,7 @@ public class WeightManagerClientTest {
         date = new DateTime("2020-02-13T10:30:00");
         date2 = new DateTime("2021-02-13T10:30:00");
         value = 1.0;
-        weightData = new WeightData(5.4);
+        weightData = new WeightData(2.0);
         weight = new Weight(weightData);
         weightList = new ArrayList<>();
         weightList.add(weight);
