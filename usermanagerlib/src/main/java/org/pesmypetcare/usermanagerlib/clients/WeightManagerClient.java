@@ -96,6 +96,8 @@ public class WeightManagerClient {
      * @param petName Name of the pet
      * @param date Date the weight was created
      * @return The WeightData identified by the data
+     * @throws ExecutionException When the deletion fails
+     * @throws InterruptedException When the deletion is interrupted
      */
     public WeightData getWeightData(String accessToken, String owner, String petName, DateTime date)
             throws ExecutionException, InterruptedException {
@@ -112,6 +114,8 @@ public class WeightManagerClient {
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
      * @return The List containing all the weights from the pet
+     * @throws ExecutionException When the deletion fails
+     * @throws InterruptedException When the deletion is interrupted
      */
     public List<Weight> getAllWeightData(String accessToken, String owner, String petName)
             throws ExecutionException, InterruptedException {
@@ -141,6 +145,8 @@ public class WeightManagerClient {
      * @param initialDate Initial Date
      * @param finalDate Final Date
      * @return The List containing all the weights eaten by the pet in the specified time
+     * @throws ExecutionException When the deletion fails
+     * @throws InterruptedException When the deletion is interrupted
      */
     public List<Weight> getAllWeightsBetween(String accessToken, String owner, String petName,
                                              DateTime initialDate, DateTime finalDate)
@@ -174,8 +180,7 @@ public class WeightManagerClient {
      * @throws InterruptedException When the update is interrupted
      */
     public int updateWeightField(String accessToken, String owner, String petName, DateTime date,
-                               Object value) throws ExecutionException, InterruptedException {
-        checkCorrectType(value);
+                               Double value) throws ExecutionException, InterruptedException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
         taskManager = taskManager.resetTaskManager();
@@ -185,18 +190,5 @@ public class WeightManagerClient {
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
-
-    /**
-     * Checks that the new value is of the correct type.
-     * @param value The new value
-     * @throws IllegalArgumentException When an invalid field value is passed
-     */
-    private void checkCorrectType(Object value) {
-        if (!(value instanceof Double)) {
-            throw new IllegalArgumentException("New value must be a Double");
-        }
-
-    }
-
 
 }
