@@ -4,28 +4,46 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Medication {
-    private String dateName;
+    private String date;
+    private String name;
     private MedicationData body;
 
-    public Medication(String dateName, MedicationData body) {
-        this.dateName = dateName;
+    public Medication(String date, String name, MedicationData body) {
+        this.date = date;
+        this.name = name;
         this.body = body;
     }
 
     /**
-     * Returns the dateName of the Medication
-     * @return Meal date
+     * Returns the date of the Medication
+     * @return Medication date
      */
-    public String getDateName() {
-        return this.dateName;
+    public String getDate() {
+        return this.date;
     }
 
     /**
-     * Sets a new dateName.
-     * @param dateName medication date+Name
+     * Returns the name of the Medication
+     * @return Meadication name
      */
-    public void setDateName(String dateName) {
-        this.dateName = dateName;
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets a new date
+     * @param date medication date
+     */
+    public void setDate (String date) {
+        this.date = date;
+    }
+
+    /**
+     * Sets a new name
+     * @param name medication name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -44,18 +62,12 @@ public class Medication {
         this.body = body;
     }
 
-    public String[] getDateNameSeparated(){ return this.dateName.split("%"); }
-
-    public String joinDateName(String date, String Name){ return date + '%' + Name; }
-
-
     @NonNull
     @Override
     public String toString() {
-        String[] aux = this.getDateNameSeparated();
         return "{"
-                + "date='" + aux[0] + '\''
-                + "name='" + aux[1] + '\''
+                + "date='" + this.date + '\''
+                + "name='" + this.name + '\''
                 + ", body=" + body
                 + '}';
     }
@@ -63,7 +75,8 @@ public class Medication {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Medication) {
-            return ((Medication) obj).getDateName().equals(this.getDateName())
+            return ((Medication) obj).getDate().equals(this.getDate())
+                    && ((Medication) obj).getName().equals(this.getName())
                     && ((Medication) obj).getBody().equals(this.getBody());
         }
         return false;

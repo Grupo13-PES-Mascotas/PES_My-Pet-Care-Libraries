@@ -25,6 +25,7 @@ public class MedicationManagerClient {
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
+    private static final String dash = "/";
     private static Gson GSON = new Gson();
     private TaskManager taskManager;
 
@@ -43,14 +44,15 @@ public class MedicationManagerClient {
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int createMedication(String accessToken, String owner, String petName, Medication Medication) throws ExecutionException,
+    public int createMedication(String accessToken, String owner, String petName, Medication Medication)
+            throws ExecutionException,
             InterruptedException {
         JSONObject reqJson = Medication.getBody().buildMedicationJson();
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + Medication.getDateName(),
-                accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName + dash
+                        + Medication.getDate() + dash + Medication.getName(), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -65,16 +67,14 @@ public class MedicationManagerClient {
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public int deleteByDate(String accessToken, String owner, String petName, DateTime date, String name) throws ExecutionException,
+    public int deleteByDateName(String accessToken, String owner, String petName, DateTime date, String name)
+            throws ExecutionException,
             InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + joinDateName(date, name), accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName + dash
+                + date + dash + name, accessToken).get();
         return Integer.parseInt(response.toString());
-    }
-
-    private String joinDateName(DateTime date, String name) {
-        return date + "%" + name;
     }
 
     /**
@@ -86,11 +86,12 @@ public class MedicationManagerClient {
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public int deleteAllMedications(String accessToken, String owner, String petName) throws ExecutionException,
+    public int deleteAllMedications(String accessToken, String owner, String petName)
+            throws ExecutionException,
             InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -103,11 +104,13 @@ public class MedicationManagerClient {
      * @param name name of the Medication consumed
      * @return The MedicationData identified by the data
      */
-    public MedicationData getMedicationData(String accessToken, String owner, String petName, DateTime date, String name) throws
-            ExecutionException, InterruptedException {
+    public MedicationData getMedicationData(String accessToken, String owner, String petName,
+                                            DateTime date, String name)
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + joinDateName(date, name), accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + owner + dash + petName + dash
+                + date + dash + name, accessToken).get();
         return GSON.fromJson(json.toString(), MedicationData.class);
     }
 
@@ -118,11 +121,12 @@ public class MedicationManagerClient {
      * @param petName Name of the pet
      * @return The List containing all the Medications from the pet
      */
-    public List<Medication> getAllMedicationData(String accessToken, String owner, String petName) throws ExecutionException,
+    public List<Medication> getAllMedicationData(String accessToken, String owner, String petName)
+            throws ExecutionException,
             InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName, accessToken).get();
         List<Medication> MedicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -145,13 +149,14 @@ public class MedicationManagerClient {
      * @param finalDate Final Date
      * @return The List containing all the Medications eaten by the pet in the specified time
      */
-    public List<Medication> getAllMedicationsBetween(String accessToken, String owner, String petName, DateTime initialDate,
+    public List<Medication> getAllMedicationsBetween(String accessToken, String owner, String petName,
+                                                     DateTime initialDate,
                                          DateTime finalDate) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response =
-                taskManager.execute(BASE_URL + owner + "/" + petName + "/between/" + initialDate + "/" + finalDate,
-                        accessToken).get();
+                taskManager.execute(BASE_URL + owner + dash + petName + "/between/" + initialDate + dash
+                                + finalDate, accessToken).get();
         List<Medication> MedicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -178,16 +183,17 @@ public class MedicationManagerClient {
      * @throws ExecutionException When the update fails
      * @throws InterruptedException When the update is interrupted
      */
-    public int updateMedicationField(String accessToken, String owner, String petName, DateTime date, String name,
-                                     String field,  Object value) throws ExecutionException, InterruptedException {
+    public int updateMedicationField(String accessToken, String owner, String petName, DateTime date,
+                                     String name, String field,  Object value)
+            throws ExecutionException, InterruptedException {
         checkCorrectType(field, value);
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + joinDateName(date, name) + "/"
-                        + field, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName + dash
+                + date + dash + name + dash + field, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 

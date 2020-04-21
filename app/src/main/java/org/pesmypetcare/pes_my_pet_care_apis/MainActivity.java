@@ -5,9 +5,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
+import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
+import org.pesmypetcare.usermanagerlib.datacontainers.Medication;
+import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
@@ -19,6 +22,80 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TEST MEDICATION//
+        MedicationManagerClient manager = new MedicationManagerClient();
+
+        DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
+        try {
+            dateTime = new DateTime(2017,1,5,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            dateTime1 = new DateTime(2016,12,25,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            dateTime2 = new DateTime(2017,1,4,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        String medName = "Milucosomolazina";
+        String medName2 = "Antizin";
+        MedicationData medData = new MedicationData(6, 2,1);
+        Medication med = new Medication(dateTime.toString(), medName, medData);
+        MedicationData medData2 = new MedicationData(1, 1,5);
+        Medication med2 = new Medication(dateTime2.toString(), medName2, medData2);
+
+        try {
+            manager.createMedication("accessToken","john", "Laika", med);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+/*
+        try {
+            manager.getMedicationData("accessToken","john", "Laika", dateTime, "Ibuprofen");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.createMedication("accessToken","john", "Laika", med2);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.getAllMedicationData("accessToken","john", "Laika");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.getAllMedicationsBetween("accessToken","john", "Laika", dateTime1, dateTime2);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.updateMedicationField("accessToken","john", "Laika", dateTime, medName,
+                    "periodicity", 5);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.deleteByDateName("accessToken", "john", "Laika", dateTime, medName);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            manager.deleteAllMedications("accessToken", "john", "Laika");
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
         // TESTS MEAL
         /*
         MealManagerClient manager = new MealManagerClient();
