@@ -123,6 +123,7 @@ public class GoogleCalendarManagerClient {
         taskManager.setTaskId(GET);
         taskManager.setReqBody(reqJson);
         StringBuilder json = taskManager.execute(BASE_URL + "/event/" + owner + "/" + petName, accessToken).get();
+        System.out.println(json);
         return GSON.fromJson(json.toString(), EventData.class);
     }
 

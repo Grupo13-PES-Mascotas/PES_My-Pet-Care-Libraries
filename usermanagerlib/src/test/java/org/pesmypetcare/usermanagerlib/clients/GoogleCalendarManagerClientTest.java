@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -52,7 +53,10 @@ public class GoogleCalendarManagerClientTest {
         date2 = DateTime.Builder.buildFullString("2020-02-13T12:30:00");
         eventId = "eventId";
         eventData = new EventData("eventId", "My summary", "My location",
-            "My description", EventData.BANANA, 80, 14, date, date2);
+            "My description", EventData.BANANA, 80, 14,
+            date.toString(), date2.toString());
+        eventDataList = new ArrayList<>();
+        eventDataList.add(eventData);
         jsonEventData = new StringBuilder("{\n"
             + "  \"id\": \"eventId\",\n"
             + "  \"summary\":\"My summary\",\n"

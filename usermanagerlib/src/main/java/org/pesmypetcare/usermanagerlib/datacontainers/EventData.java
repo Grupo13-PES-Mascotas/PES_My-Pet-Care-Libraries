@@ -5,10 +5,13 @@ import androidx.annotation.Nullable;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -35,13 +38,15 @@ public class EventData {
     private String color;
     private Integer emailReminderMinutes;
     private Integer repetitionInterval;
-    private DateTime startDate;
-    private DateTime endDate;
+    private String startDate;
+    private String endDate;
 
     public EventData() { }
 
     public EventData(String id, String summary, String location, String description, String color,
-                     Integer emailReminderMinutes, Integer repetitionInterval, DateTime startDate, DateTime endDate) {
+                     Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
+        checkCorrectDateFormat(startDate);
+        checkCorrectDateFormat(endDate);
         checkCorrectColor(color);
         this.id = id;
         this.summary = summary;
@@ -111,19 +116,21 @@ public class EventData {
         this.repetitionInterval = repetitionInterval;
     }
 
-    public DateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(String startDate) {
+        checkCorrectDateFormat(startDate);
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(String endDate) {
+        checkCorrectDateFormat(endDate);
         this.endDate = endDate;
     }
 
@@ -140,6 +147,20 @@ public class EventData {
     }
 
     /**
+     * Checks that a date value has the correct format for an event
+     * @param date Value of the date to check
+     */
+    private void checkCorrectDateFormat(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        sdf.setLenient(false);
+        try {
+            Date javaDate = sdf.parse(date);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Google Calendar Event Date must follow the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
+        }
+    }
+
+    /**
      * Creates a meal json object.
      * @return A JSON Object with the meal data
      */
@@ -152,8 +173,8 @@ public class EventData {
         reqData.put("color", color);
         reqData.put("emailReminderMinutes", Integer.toString(emailReminderMinutes));
         reqData.put("repetitionInterval", Integer.toString(repetitionInterval));
-        reqData.put("startDate", startDate.toString());
-        reqData.put("endDate", endDate.toString());
+        reqData.put("startDate", startDate);
+        reqData.put("endDate", endDate);
         return new JSONObject(reqData);
     }
 
