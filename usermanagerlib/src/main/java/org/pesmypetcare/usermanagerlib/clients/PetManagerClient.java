@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Oriol Catalán
+ */
 public class PetManagerClient {
     public static final String GENDER = "gender";
     public static final String BIRTH = "birth";

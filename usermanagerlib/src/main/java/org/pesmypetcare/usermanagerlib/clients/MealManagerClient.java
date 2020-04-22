@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Marc Simó
+ */
 public class MealManagerClient {
     public static final String MEALNAME = "mealName";
     public static final String KCAL = "kcal";

@@ -3,6 +3,9 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * @author Marc Simó
+ */
 public class Meal {
     private String date;
     private MealData body;

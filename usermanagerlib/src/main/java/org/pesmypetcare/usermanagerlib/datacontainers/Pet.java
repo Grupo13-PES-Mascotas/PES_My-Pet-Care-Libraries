@@ -3,6 +3,9 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class Pet {
     private String name;
     private PetData body;

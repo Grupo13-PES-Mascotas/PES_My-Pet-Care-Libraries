@@ -12,6 +12,9 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * @author Oriol Catalán
+ */
 public class TaskManager extends AsyncTask<String, String, StringBuilder> {
     private final String POST = "POST";
     private final String GET = "GET";
@@ -149,7 +152,7 @@ public class TaskManager extends AsyncTask<String, String, StringBuilder> {
      * fails
      */
     private void writeRequestBodyIfNotEmpty(HttpURLConnection con) throws IOException {
-        if (0 != reqBody.length()) {
+        if (null != reqBody) {
             OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
             writer.write(reqBody.toString());
             writer.flush();

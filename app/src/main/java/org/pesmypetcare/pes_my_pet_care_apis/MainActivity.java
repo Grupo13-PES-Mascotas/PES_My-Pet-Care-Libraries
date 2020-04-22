@@ -1,101 +1,27 @@
 package org.pesmypetcare.pes_my_pet_care_apis;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.MealManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
-import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Medication;
-import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
+import org.json.JSONException;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView text = findViewById(R.id.Hello_text);
 
-        //TEST MEDICATION//
-        MedicationManagerClient manager = new MedicationManagerClient();
-
-        DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
-        try {
-            dateTime = new DateTime(2017,1,5,13,50,12);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-        try {
-            dateTime1 = new DateTime(2016,12,25,13,50,12);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-        try {
-            dateTime2 = new DateTime(2017,1,4,13,50,12);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-        String medName = "Milucosomolazina";
-        String medName2 = "Antizin";
-        MedicationData medData = new MedicationData(6, 2,1);
-        Medication med = new Medication(dateTime.toString(), medName, medData);
-        MedicationData medData2 = new MedicationData(1, 1,5);
-        Medication med2 = new Medication(dateTime2.toString(), medName2, medData2);
-
-        try {
-            manager.createMedication("accessToken","john", "Laika", med);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-/*
-        try {
-            manager.getMedicationData("accessToken","john", "Laika", dateTime, "Ibuprofen");
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.createMedication("accessToken","john", "Laika", med2);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.getAllMedicationData("accessToken","john", "Laika");
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.getAllMedicationsBetween("accessToken","john", "Laika", dateTime1, dateTime2);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.updateMedicationField("accessToken","john", "Laika", dateTime, medName,
-                    "periodicity", 5);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.deleteByDateName("accessToken", "john", "Laika", dateTime, medName);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            manager.deleteAllMedications("accessToken", "john", "Laika");
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
         // TESTS MEAL
         /*
         MealManagerClient manager = new MealManagerClient();
@@ -219,12 +145,25 @@ public class MainActivity extends AppCompatActivity {
 
         // TESTS USER
 
-        /*
+
         UserManagerClient client = new UserManagerClient();
+        UserData user = new UserData("santi", "santi@mail.com", "123455678");
         try {
-            client.getUser("token", "santi");
-            client.getUser("token", "santi");
-        } catch (ExecutionException | InterruptedException e) {
+            if (!client.usernameAlreadyExists("santi")) {
+                client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
+            }
+            //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
+            //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
+            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
+            //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
+            //System.out.println(client.getUser("token", "santi"));
+            //client.getUser("token", "santi");
+            //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
+            //int code = client.deleteUserFromDatabase("token", "Caudillo");
+            /*System.out.println(code);
+            text.setText(String.valueOf(code));*/
+        } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }
         /*client.signUp("santi", "123456", "santi@gmail.com");
