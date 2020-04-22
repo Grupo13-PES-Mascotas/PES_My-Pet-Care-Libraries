@@ -162,7 +162,7 @@ public class EventData {
     }
 
     /**
-     * Creates a meal json object.
+     * Creates an event json object.
      * @return A JSON Object with the meal data
      */
     public JSONObject buildJson() {
