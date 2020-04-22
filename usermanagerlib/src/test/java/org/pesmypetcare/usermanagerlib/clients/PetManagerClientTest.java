@@ -39,7 +39,6 @@ public class PetManagerClientTest {
     private static final String BIRTH_FIELD = "birth";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final double recommendedKcal = 2.5;
-    private final double weight = 45.3;
     private final int expectedResponseCode = 200;
     private StringBuilder json;
     private StringBuilder jsonAllPets;
@@ -68,8 +67,8 @@ public class PetManagerClientTest {
             + "  \"birth\": \"2020-02-13T10:30:00\",\n"
             + "  \"weight\": \"45.3\",\n"
             + "  \"pathologies\": \"\",\n"
-            + "  \"recommendedKcal\": \"2.5\",\n"
-            + "  \"washFreq\": \"3\"\n"
+            + "  \"needs\": \"\",\n"
+            + "  \"recommendedKcal\": \"2.5\"\n"
             + "}");
 
         jsonAllPets = new StringBuilder("[{\n"
@@ -78,10 +77,9 @@ public class PetManagerClientTest {
             + "    \"gender\": \"Male\",\n"
             + "    \"breed\": \"Golden Retriever\",\n"
             + "    \"birth\": \"2020-02-13T10:30:00\",\n"
-            + "    \"weight\": \"45.3\",\n"
             + "    \"pathologies\": \"\",\n"
-            + "    \"recommendedKcal\": \"2.5\",\n"
-            + "    \"washFreq\": \"3\"\n"
+            + "    \"needs\": \"\",\n"
+            + "    \"recommendedKcal\": \"2.5\"\n"
             + "  }\n"
             + "}]");
         petList = new ArrayList<>();
@@ -95,7 +93,8 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.createPet(ACCESS_TOKEN, USERNAME, pet);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        assertEquals("Should return response code 200", expectedResponseCode,
+                responseCode);
     }
 
     @Test
@@ -108,7 +107,8 @@ public class PetManagerClientTest {
     }
 
     @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException, InterruptedException {
+    public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException,
+            InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
@@ -116,7 +116,8 @@ public class PetManagerClientTest {
     }
 
     @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException, InterruptedException {
+    public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException,
+            InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
@@ -133,7 +134,8 @@ public class PetManagerClientTest {
     }
 
     @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
+    public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException,
+            InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(ExecutionException.class).given(taskManager).get();
@@ -141,7 +143,8 @@ public class PetManagerClientTest {
     }
 
     @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
+    public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException,
+            InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         willThrow(InterruptedException.class).given(taskManager).get();
@@ -154,7 +157,8 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deletePet(ACCESS_TOKEN, USERNAME, petName);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        assertEquals("Should return response code 200", expectedResponseCode,
+                responseCode);
     }
 
     @Test
@@ -162,14 +166,18 @@ public class PetManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
+                "2019-02-13T10:30:00");
+        assertEquals("Should return response code 200", expectedResponseCode,
+                responseCode);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException, InterruptedException {
+    public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException,
+            InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
+        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL,
+                "23.3");
     }
 
     @Test
@@ -178,7 +186,8 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        assertEquals("Should return response code 200", expectedResponseCode,
+                responseCode);
     }
 
     @Test
@@ -252,9 +261,8 @@ public class PetManagerClientTest {
         expectedPetData.setGender(GenderType.Male);
         expectedPetData.setBirth("2020-02-13T10:30:00");
         expectedPetData.setPathologies("");
+        expectedPetData.setNeeds("");
         expectedPetData.setRecommendedKcal(recommendedKcal);
-        expectedPetData.setWashFreq(3);
-        expectedPetData.setWeight(weight);
         pet.setBody(expectedPetData);
     }
 }

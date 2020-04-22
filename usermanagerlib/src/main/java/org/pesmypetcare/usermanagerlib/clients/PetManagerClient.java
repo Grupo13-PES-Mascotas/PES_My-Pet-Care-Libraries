@@ -25,10 +25,9 @@ public class PetManagerClient {
     public static final String GENDER = "gender";
     public static final String BIRTH = "birth";
     public static final String BREED = "breed";
-    public static final String WEIGHT = "weight";
     public static final String PATHOLOGIES = "pathologies";
     public static final String RECOMMENDED_KCAL = "recommendedKcal";
-    public static final String WASH_FREQ = "washFreq";
+    public static final String NEEDS = "needs";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private static final String PETS_PATH = "pet/";
     private static final String IMAGES_PATH = "storage/image/";
@@ -62,8 +61,8 @@ public class PetManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + pet.getName(),
-            accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/" +
+                        pet.getName(), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -75,25 +74,22 @@ public class PetManagerClient {
      * @param gender The pet's gender
      * @param breed The pet's breed
      * @param birthday The pet's birthday
-     * @param weight The pet's weight
+     * @param needs The pet's needs
      * @param pathologies The pet's pathologies
      * @param recKcal The pet's recommended Kcal
-     * @param washFreq The pet's washing frequency
      */
     @Deprecated
     public void createPet(String accessToken, String username, String petName, String gender, String
-            breed, String birthday, double weight, String
-            pathologies, double recKcal, int washFreq) {
+            breed, String birthday, String needs, String pathologies, double recKcal) {
         Map<String, String> reqData = new HashMap<>();
         reqData.put(usernameField, username);
         reqData.put(nameField, petName);
         reqData.put(GENDER, gender);
         reqData.put(BREED, breed);
         reqData.put(BIRTH, birthday);
-        reqData.put(WEIGHT, Double.toString(weight));
         reqData.put(PATHOLOGIES, pathologies);
+        reqData.put(NEEDS, needs);
         reqData.put(RECOMMENDED_KCAL, Double.toString(recKcal));
-        reqData.put(WASH_FREQ, Integer.toString(washFreq));
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(new JSONObject(reqData));
@@ -113,7 +109,8 @@ public class PetManagerClient {
                           String petName) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName,
+                accessToken).get();
         if (json != null) {
             return GSON.fromJson(json.toString(), PetData.class);
         }
@@ -128,10 +125,12 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Pet> getAllPets(String accessToken, String username) throws ExecutionException, InterruptedException {
+    public List<Pet> getAllPets(String accessToken, String username) throws ExecutionException,
+            InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username,
+                accessToken).get();
         if (response.length() <= 2) {
             return new ArrayList<>();
         }
@@ -159,7 +158,8 @@ public class PetManagerClient {
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken)
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/"
+                + petName, accessToken)
             .get();
         return Integer.parseInt(response.toString());
     }
@@ -175,7 +175,8 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int updateField(String accessToken, String username, String petName, String field, Object newValue)
+    public int updateField(String accessToken, String username, String petName, String field,
+                           Object newValue)
         throws ExecutionException, InterruptedException {
         checkCorrectType(field, newValue);
         taskManager = taskManager.resetTaskManager();
@@ -183,7 +184,8 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + field,
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/"
+                        + petName + "/" + field,
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -196,13 +198,15 @@ public class PetManagerClient {
      * @param newGender The new gender for the pet
      */
     @Deprecated
-    public void updateGender(String accessToken, String username, String petName, String newGender) {
+    public void updateGender(String accessToken, String username, String petName,
+                             String newGender) {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + GENDER, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + GENDER,
+                accessToken);
     }
 
     /**
@@ -213,13 +217,15 @@ public class PetManagerClient {
      * @param newBirthday The new birthday for the pet
      */
     @Deprecated
-    public void updateBirthday(String accessToken, String username, String petName, String newBirthday) {
+    public void updateBirthday(String accessToken, String username, String petName,
+                               String newBirthday) {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BIRTH, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BIRTH,
+                accessToken);
     }
 
     /**
@@ -236,7 +242,8 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BREED, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BREED,
+                accessToken);
     }
 
     /**
@@ -244,16 +251,17 @@ public class PetManagerClient {
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newWeight The new weight for the pet
+     * @param newNeed The new need for the pet
      */
     @Deprecated
-    public void updateWeight(String accessToken, String username, String petName, double newWeight) {
+    public void updateNeeds(String accessToken, String username, String petName, String newNeed) {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, String.valueOf(newWeight));
+        reqData.put(VALUE_KEY, String.valueOf(newNeed));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + WEIGHT, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + NEEDS,
+                accessToken);
     }
 
     /**
@@ -264,13 +272,15 @@ public class PetManagerClient {
      * @param newPathologies The new pathologies for the pet
      */
     @Deprecated
-    public void updatePathologies(String accessToken, String username, String petName, String newPathologies) {
+    public void updatePathologies(String accessToken, String username, String petName,
+                                  String newPathologies) {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + PATHOLOGIES, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + PATHOLOGIES,
+                accessToken);
     }
 
     /**
@@ -287,24 +297,8 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + RECOMMENDED_KCAL, accessToken);
-    }
-
-    /**
-     * Updates the washing frequency of a pet.
-     * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
-     * @param petName The pet's name
-     * @param newWashFreq The new washing frequency for the pet
-     */
-    @Deprecated
-    public void updateWashFreq(String accessToken, String username, String petName, int newWashFreq) {
-        taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, String.valueOf(newWashFreq));
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + WASH_FREQ, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/"
+                + RECOMMENDED_KCAL, accessToken);
     }
 
     /**
@@ -326,8 +320,8 @@ public class PetManagerClient {
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH,
-            accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + IMAGES_PATH + userId
+                        + PETS_PICTURES_PATH, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -341,12 +335,13 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public byte[] downloadProfileImage(String accessToken,
-                                       String userId, String petName) throws ExecutionException, InterruptedException {
+                                       String userId, String petName)
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-            .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH + petName + PROFILE_IMAGE_NAME, accessToken)
-            .get();
+            .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH + petName
+                    + PROFILE_IMAGE_NAME, accessToken).get();
         return Base64.decode(json.toString(), Base64.DEFAULT);
     }
 
@@ -358,8 +353,8 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public Map<String, byte[]> downloadAllProfileImages(String accessToken,
-                                                        String userId) throws ExecutionException, InterruptedException {
+    public Map<String, byte[]> downloadAllProfileImages(String accessToken, String userId)
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
@@ -386,10 +381,9 @@ public class PetManagerClient {
         reqData.put(GENDER, petData.getGender().toString());
         reqData.put(BREED, petData.getBreed());
         reqData.put(BIRTH, petData.getBirth());
-        reqData.put(WEIGHT, Double.toString(petData.getWeight()));
+        reqData.put(NEEDS, petData.getNeeds());
         reqData.put(PATHOLOGIES, petData.getPathologies());
         reqData.put(RECOMMENDED_KCAL, Double.toString(petData.getRecommendedKcal()));
-        reqData.put(WASH_FREQ, Integer.toString(petData.getWashFreq()));
         return new JSONObject(reqData);
     }
 
@@ -400,15 +394,13 @@ public class PetManagerClient {
      * @throws IllegalArgumentException When an invalid field value is passed
      */
     private void checkCorrectType(String field, Object newValue) {
-        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES))
-            && !(newValue instanceof String)) {
+        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES)
+                || field.equals(NEEDS)) && !(newValue instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
-        } else if ((field.equals(WEIGHT) || field.equals(RECOMMENDED_KCAL)) && !(newValue instanceof Double)) {
+        } else if (field.equals(RECOMMENDED_KCAL) && !(newValue instanceof Double)) {
             throw new IllegalArgumentException("New value must be a Double");
         } else if (field.equals(GENDER) && !(newValue instanceof GenderType)) {
             throw new IllegalArgumentException("New value must be a GenderType");
-        } else if (field.equals(WASH_FREQ) && !(newValue instanceof Integer)) {
-            throw new IllegalArgumentException("New value must be an Integer");
         }
     }
 }

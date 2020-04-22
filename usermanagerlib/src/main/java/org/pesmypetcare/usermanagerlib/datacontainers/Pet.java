@@ -54,7 +54,8 @@ public class Pet {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Pet) {
-            return ((Pet) obj).getName().equals(this.getName()) && ((Pet) obj).getBody().equals(this.getBody());
+            return ((Pet) obj).getName().equals(this.getName()) && ((Pet) obj).getBody().
+                    equals(this.getBody());
         }
         return false;
     }
