@@ -61,19 +61,18 @@ public class MedicationManagerClient {
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
-     * @param date Date the Medication was eaten
+     * @param date Date the Medication was taken
      * @param name Name of the medication consumed
      * @return The response code
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
     public int deleteByDateName(String accessToken, String owner, String petName, DateTime date, String name)
-            throws ExecutionException,
-            InterruptedException {
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName + dash
-                + date + dash + name, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + dash + petName + dash + date + dash
+                + name, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -155,8 +154,8 @@ public class MedicationManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response =
-                taskManager.execute(BASE_URL + owner + dash + petName + "/between/" + initialDate + dash
-                                + finalDate, accessToken).get();
+                taskManager.execute(BASE_URL + owner + dash + petName + "/between/" + initialDate
+                        + dash + finalDate, accessToken).get();
         List<Medication> MedicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
