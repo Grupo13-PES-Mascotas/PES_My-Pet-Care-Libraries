@@ -21,7 +21,7 @@ public class GoogleCalendarManagerClient {
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
-    private static Gson GSON = new Gson();
+    private static Gson gson = new Gson();
     private TaskManager taskManager;
 
     public GoogleCalendarManagerClient() {
@@ -80,10 +80,10 @@ public class GoogleCalendarManagerClient {
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
             String[] events = jsonArray.split(",\\{");
-            eventList.add(GSON.fromJson(events[0], EventData.class));
+            eventList.add(gson.fromJson(events[0], EventData.class));
             for (int i = 1; i < events.length; i++) {
                 events[i] = "{" + events[i];
-                eventList.add(GSON.fromJson(events[i], EventData.class));
+                eventList.add(gson.fromJson(events[i], EventData.class));
             }
         }
         return eventList;
@@ -129,7 +129,7 @@ public class GoogleCalendarManagerClient {
         taskManager.setTaskId(GET);
         taskManager.setReqBody(reqJson);
         StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
-        return GSON.fromJson(response.toString(), EventData.class);
+        return gson.fromJson(response.toString(), EventData.class);
     }
 
     /**
