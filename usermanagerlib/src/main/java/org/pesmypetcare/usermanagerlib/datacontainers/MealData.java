@@ -56,7 +56,7 @@ public class MealData {
      * Creates a meal json object.
      * @return A JSON Object with the meal data
      */
-    public JSONObject buildMealJson() {
+    public JSONObject buildJson() {
         Map<String, String> reqData = new HashMap<>();
         reqData.put("mealName", mealName);
         reqData.put("kcal", Double.toString(kcal));

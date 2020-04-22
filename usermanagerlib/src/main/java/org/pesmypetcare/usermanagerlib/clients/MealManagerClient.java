@@ -44,7 +44,7 @@ public class MealManagerClient {
      */
     public int createMeal(String accessToken, String owner, String petName, Meal meal) throws ExecutionException,
         InterruptedException {
-        JSONObject reqJson = meal.getBody().buildMealJson();
+        JSONObject reqJson = meal.getBody().buildJson();
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);

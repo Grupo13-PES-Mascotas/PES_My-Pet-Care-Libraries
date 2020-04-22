@@ -5,6 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
 import org.json.JSONException;
 import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
@@ -27,7 +30,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
 
+
+        // TESTS GOOGLE CALENDAR
+/*
+        GoogleCalendarManagerClient manager = new GoogleCalendarManagerClient();
+
+        DateTime dateTime = null, dateTime1 = null;
+        try {
+            dateTime = DateTime.Builder.build(2020,4,24,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            dateTime1 = DateTime.Builder.build(2020,4,24,17,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+
+        EventData eventData = new EventData("eventid", "My Second Event",
+            "A really pretty Location", "Nice event", EventData.BASIL, 50,
+            4, dateTime.toString(), dateTime1.toString());
+
+
+        try {
+            System.out.println(manager.getAllEventsFromCalendar("ya29.a0Ae4lvC03arvXYkQsKjUuSwa-V4H1T4Ixcl2MG-duXJaN" +
+                    "G12l6jpcpNjEPBs2tH1QsZhOII_x9cC2U5j1yHhIsEsUoM3cd36r9aizqB1W9mOC-iPWwUiwdqG7uYVxdcVN1SgU0eFpOP" +
+                    "MNJfsNzDZXWeR3EECadDJbsUM",
+                "john", "Laika"));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+*/
 //TEST MEDICATION//
+        /*
         MedicationManagerClient manager = new MedicationManagerClient();
 
         DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
@@ -38,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             dateTime1 = new DateTime(2016,12,25,13,50,12);
+          
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -112,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
+
 
         // TESTS MEAL
         /*
@@ -236,7 +274,9 @@ public class MainActivity extends AppCompatActivity {
 
         // TESTS USER
 
+
 /*
+
         UserManagerClient client = new UserManagerClient();
         UserData user = new UserData("santi", "santi@mail.com", "123455678");
         try {

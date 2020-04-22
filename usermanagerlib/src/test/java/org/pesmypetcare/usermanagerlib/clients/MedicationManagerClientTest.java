@@ -53,8 +53,8 @@ public class MedicationManagerClientTest {
         owner = "Manolo";
         petName = "Kawaguchi";
         name = "Ibuprofeno";
-        date = new DateTime("2020-02-13T10:30:00");
-        date2 = new DateTime("2021-02-13T10:30:00");
+        date = DateTime.Builder.buildFullString("2020-02-13T10:30:00");
+        date2 = DateTime.Builder.buildFullString("2021-02-13T10:30:00");
         field = "quantity";
         value = 60.0;
         medicationData = new MedicationData(0.0, 2, 3);
