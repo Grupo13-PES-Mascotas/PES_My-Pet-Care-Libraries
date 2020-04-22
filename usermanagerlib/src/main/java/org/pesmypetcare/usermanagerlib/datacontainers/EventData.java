@@ -45,6 +45,8 @@ public class EventData {
 
     public EventData(String id, String summary, String location, String description, String color,
                      Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
+        checkCorrectDateFormat(startDate);
+        checkCorrectDateFormat(endDate);
         checkCorrectColor(color);
         this.id = id;
         this.summary = summary;
@@ -55,8 +57,6 @@ public class EventData {
         this.repetitionInterval = repetitionInterval;
         this.startDate = DateTime.Builder.buildFullString(startDate).toString();
         this.endDate = DateTime.Builder.buildFullString(startDate).toString();
-        checkCorrectDateFormat(startDate);
-        checkCorrectDateFormat(endDate);
     }
 
     public String getId() {
@@ -156,8 +156,8 @@ public class EventData {
         try {
             Date javaDate = sdf.parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Google Calendar Event Date must follow" +
-                " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
+            throw new IllegalArgumentException("Google Calendar Event Date must follow"
+                + " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
         }
     }
 
