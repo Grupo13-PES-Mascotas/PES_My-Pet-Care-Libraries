@@ -23,6 +23,8 @@ public class MedicationManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final int STATUS_OK_INT = 200;
+    private static String SHOULD_BE_200 = "Should return response code 200";
+    private static String SHOULD_RETURN_MED_LIST = "Should return medication data list";
 
     private String owner;
     private String petName;
@@ -40,11 +42,11 @@ public class MedicationManagerClientTest {
     @Mock
     private TaskManager taskManager;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
-
     @InjectMocks
     private MedicationManagerClient client = new MedicationManagerClient();
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() {
@@ -85,7 +87,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.createMedication(ACCESS_TOKEN, owner, petName, medication);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_BE_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -96,7 +98,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteByDateName(ACCESS_TOKEN, owner, petName, date, name);
-        assertEquals("Should return response code 200 too", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_BE_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -106,7 +108,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteAllMedications(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return response code 200 again", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_BE_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -126,7 +128,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllMedications);
 
         List<Medication> response = client.getAllMedicationData(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return one Medication data list", response, medicationList);
+        assertEquals(SHOULD_RETURN_MED_LIST, response, medicationList);
     }
 
     @Test
@@ -136,7 +138,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllMedications);
 
         List<Medication> response = client.getAllMedicationsBetween(ACCESS_TOKEN, owner, petName, date, date2);
-        assertEquals("Should return another Medication data list", response, medicationList);
+        assertEquals(SHOULD_RETURN_MED_LIST, response, medicationList);
     }
 
     @Test
@@ -145,6 +147,6 @@ public class MedicationManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateMedicationField(ACCESS_TOKEN, owner, petName, date, name, field, value);
-        assertEquals("Should return response code 200 yet again", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_BE_200, STATUS_OK_INT, responseCode);
     }
 }

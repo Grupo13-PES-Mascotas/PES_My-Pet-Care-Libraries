@@ -24,6 +24,7 @@ public class MedicationManagerClient {
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
     private static final String DASH = "/";
+    private static final String ERR_INTEGER = "New value must be an Integer";
     private static Gson gson = new Gson();
     private TaskManager taskManager;
 
@@ -100,6 +101,8 @@ public class MedicationManagerClient {
      * @param date Date the Medication was eaten.
      * @param name name of the Medication consumed.
      * @return The MedicationData identified by the data.
+     * @throws ExecutionException When the retrieval fails.
+     * @throws InterruptedException When the retrieval is interrupted.
      */
     public MedicationData getMedicationData(String accessToken, String owner, String petName,
                                             DateTime date, String name)
@@ -116,6 +119,8 @@ public class MedicationManagerClient {
      * @param accessToken The personal access token for the account.
      * @param owner Username of the owner of the pets.
      * @param petName Name of the pet.
+     * @throws ExecutionException When the retrieval fails.
+     * @throws InterruptedException When the retrieval is interrupted.
      * @return The List containing all the Medications from the pet
      */
     public List<Medication> getAllMedicationData(String accessToken, String owner, String petName)
@@ -144,6 +149,8 @@ public class MedicationManagerClient {
      * @param petName Name of the pet.
      * @param initialDate Initial Date.
      * @param finalDate Final Date.
+     * @throws ExecutionException When the retrieval fails.
+     * @throws InterruptedException When the retrieval is interrupted.
      * @return The List containing all the Medications eaten by the pet in the specified time.
      */
     public List<Medication> getAllMedicationsBetween(String accessToken, String owner, String petName,
@@ -205,10 +212,10 @@ public class MedicationManagerClient {
             throw new IllegalArgumentException("New value must be a Double");
         }
         if (field.equals(DURATION) && !(value instanceof Integer)) {
-            throw new IllegalArgumentException("New value must be an Integer");
+            throw new IllegalArgumentException(ERR_INTEGER);
         }
         if (field.equals(PERIODICITY) && !(value instanceof Integer)) {
-            throw new IllegalArgumentException("New value must be another Integer");
+            throw new IllegalArgumentException(ERR_INTEGER);
         }
     }
 }
