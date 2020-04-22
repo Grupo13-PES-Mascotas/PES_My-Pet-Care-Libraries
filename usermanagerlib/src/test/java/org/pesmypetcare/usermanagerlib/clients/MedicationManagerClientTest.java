@@ -27,9 +27,9 @@ public class MedicationManagerClientTest {
     private String owner;
     private String petName;
     private String name;
-    private MedicationData MedicationData;
-    private Medication Medication;
-    private List<Medication> MedicationList;
+    private MedicationData medicationData;
+    private Medication medication;
+    private List<Medication> medicationList;
     private DateTime date;
     private DateTime date2;
     private String field;
@@ -55,10 +55,10 @@ public class MedicationManagerClientTest {
         date2 = new DateTime("2021-02-13T10:30:00");
         field = "quantity";
         value = 60.0;
-        MedicationData = new MedicationData(0.0, 2, 3);
-        Medication = new Medication(date.toString(), name, MedicationData);
-        MedicationList = new ArrayList<>();
-        MedicationList.add(Medication);
+        medicationData = new MedicationData(0.0, 2, 3);
+        medication = new Medication(date.toString(), name, medicationData);
+        medicationList = new ArrayList<>();
+        medicationList.add(medication);
         jsonMedicationData = new StringBuilder("{\n"
                 + "      \"quantity\": \"0.0\",\n"
                 + "      \"duration\": \"2\",\n"
@@ -84,7 +84,7 @@ public class MedicationManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
 
-        int responseCode = client.createMedication(ACCESS_TOKEN, owner, petName, Medication);
+        int responseCode = client.createMedication(ACCESS_TOKEN, owner, petName, medication);
         assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
     }
 
@@ -96,7 +96,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteByDateName(ACCESS_TOKEN, owner, petName, date, name);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals("Should return response code 200 too", STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteAllMedications(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals("Should return response code 200 again", STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(jsonMedicationData);
 
         MedicationData response = client.getMedicationData(ACCESS_TOKEN, owner, petName, date, name);
-        assertEquals("Should return Medication data", response, MedicationData);
+        assertEquals("Should return Medication data", response, medicationData);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllMedications);
 
         List<Medication> response = client.getAllMedicationData(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return a Medication data list", response, MedicationList);
+        assertEquals("Should return one Medication data list", response, medicationList);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class MedicationManagerClientTest {
         given(taskManager.get()).willReturn(jsonAllMedications);
 
         List<Medication> response = client.getAllMedicationsBetween(ACCESS_TOKEN, owner, petName, date, date2);
-        assertEquals("Should return a Medication data list", response, MedicationList);
+        assertEquals("Should return another Medication data list", response, medicationList);
     }
 
     @Test
@@ -145,6 +145,6 @@ public class MedicationManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateMedicationField(ACCESS_TOKEN, owner, petName, date, name, field, value);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals("Should return response code 200 yet again", STATUS_OK_INT, responseCode);
     }
 }

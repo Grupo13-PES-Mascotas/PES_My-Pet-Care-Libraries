@@ -38,7 +38,7 @@ public class MedicationData {
 
     /**
      * Returns the number of days of this medication.
-     * @return Amount of days
+     * @return Amount of days.
      */
     public int getDuration() {
         return this.duration;
@@ -46,7 +46,7 @@ public class MedicationData {
 
     /**
      * Sets a new amount of days of this medication.
-     * @param inDuration Amount of kcalories
+     * @param inDuration Amount of kcalories.
      */
     public void setDuration(int inDuration) {
         this.duration = inDuration;
@@ -55,15 +55,15 @@ public class MedicationData {
 
     /**
      * Returns the number of times this medication needs to be administered per day
-     * @return periodicity
+     * @return New periodicity.
      */
     public int getPeriodicity() {
         return this.periodicity;
     }
 
     /**
-     * Sets a new periodicity for the medication
-     * @param inPeriodicity Amount of kcalories
+     * Sets a new periodicity for the medication.
+     * @param inPeriodicity New periodicity.
      */
     public void setPeriodicity(int inPeriodicity) {
         this.periodicity = inPeriodicity;
@@ -73,7 +73,7 @@ public class MedicationData {
 
     /**
      * Creates a meal json object.
-     * @return A JSON Object with the meal data
+     * @return A JSON Object with the meal data.
      */
     public JSONObject buildMedicationJson() {
         Map<String, String> reqData = new HashMap<>();
@@ -97,8 +97,8 @@ public class MedicationData {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof MedicationData) {
             return ((MedicationData) obj).getQuantity() == this.getQuantity()
-                    && ((MedicationData) obj).getDuration() == this.getDuration() &&
-                    ((MedicationData) obj).getPeriodicity() == this.getPeriodicity();
+                    && ((MedicationData) obj).getDuration() == this.getDuration()
+                    && ((MedicationData) obj).getPeriodicity() == this.getPeriodicity();
         }
         return false;
     }

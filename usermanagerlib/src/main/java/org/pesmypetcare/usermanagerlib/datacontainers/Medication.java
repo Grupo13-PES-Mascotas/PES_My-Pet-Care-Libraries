@@ -34,7 +34,7 @@ public class Medication {
      * Sets a new date
      * @param date medication date
      */
-    public void setDate (String date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
