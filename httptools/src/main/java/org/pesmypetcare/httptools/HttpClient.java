@@ -1,4 +1,4 @@
-package org.pesmypetcare.communitymanager;
+package org.pesmypetcare.httptools;
 
 import java.io.IOException;
 import java.io.OutputStream;

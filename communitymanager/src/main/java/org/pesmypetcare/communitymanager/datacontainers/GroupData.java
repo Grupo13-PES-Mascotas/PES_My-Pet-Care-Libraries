@@ -1,6 +1,9 @@
 package org.pesmypetcare.communitymanager.datacontainers;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Santiago Del Rey
@@ -12,10 +15,11 @@ public class GroupData {
     private String icon;
     private String description;
     private List<String> tags;
+    private Map<String, String> members;
 
-    public GroupData(String name, String creatorUid, String creationDate, String description, List<String> tags) {
+    public GroupData(String name, String creator, String creationDate, String description, List<String> tags) {
         this.name = name;
-        this.creator = creatorUid;
+        this.creator = creator;
         this.creationDate = creationDate;
         this.description = description;
         this.tags = tags;
@@ -49,7 +53,7 @@ public class GroupData {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    private void setIcon(String icon) {
         this.icon = icon;
     }
 
@@ -69,6 +73,15 @@ public class GroupData {
         this.tags = tags;
     }
 
+    public Map<String, String> getMembers() {
+        return members;
+    }
+
+    private void setMembers(Map<String, String> members) {
+        this.members = members;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "GroupData{" +
@@ -78,6 +91,7 @@ public class GroupData {
             ", icon='" + icon + '\'' +
             ", description='" + description + '\'' +
             ", tags=" + tags +
+            ", members=" + members +
             '}';
     }
 }

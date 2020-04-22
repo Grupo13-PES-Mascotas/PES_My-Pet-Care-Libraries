@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * @author Santiago Del Rey
  */
@@ -14,6 +16,8 @@ public class UserData {
     private String username;
     private String email;
     private String password;
+
+    private List<String> groupSubscriptions;
 
     /**
      * Creates a UserData object with the specified username, email and password.
@@ -25,6 +29,13 @@ public class UserData {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public UserData(String username, String email, String password, List<String> groupSubscriptions) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.groupSubscriptions = groupSubscriptions;
     }
 
     /**
@@ -88,14 +99,23 @@ public class UserData {
         return json;
     }
 
+    public List<String> getGroupSubscriptions() {
+        return groupSubscriptions;
+    }
+
+    public void setGroupSubscriptions(List<String> groupSubscriptions) {
+        this.groupSubscriptions = groupSubscriptions;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return "{"
-            + "username='" + username + '\''
-            + ", email='" + email + '\''
-            + ", password='" + password + '\''
-            + '}';
+        return "UserData{" +
+            "username='" + username + '\'' +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", groupSubscriptions=" + groupSubscriptions +
+            '}';
     }
 
     @Override
@@ -103,7 +123,8 @@ public class UserData {
         if (obj instanceof UserData) {
             return ((UserData) obj).getUsername().equals(this.username)
                 && ((UserData) obj).getEmail().equals(this.email)
-                && ((UserData) obj).getPassword().equals(this.password);
+                && ((UserData) obj).getPassword().equals(this.password)
+                && ((UserData) obj).getGroupSubscriptions().equals(this.groupSubscriptions);
         }
         return false;
     }

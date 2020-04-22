@@ -5,9 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.MyPetCareException;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.managers.GroupManager;
+import org.pesmypetcare.httptools.MyPetCareException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -212,16 +212,33 @@ public class MainActivity extends AppCompatActivity {
                 List<String> tags = new ArrayList<>();
                 tags.add("empo");
                 tags.add("empotrador");
-                GroupData data = new GroupData("Me aburro", "iw2VHtSHeoZohD3dAWRafXnb5x42","2020-04-20", "Hola", tags);
+                String groupName = "Prueba 1";
+                GroupData data = new GroupData(groupName, "santi","2020-04-20", "Hola", tags);
                 try {
-                    //System.out.println(groupManager.createGroup(data));
-                    //System.out.println(groupManager.deleteGroup("Me aburro"));
-                    //System.out.println(groupManager.getGroup("Huskies Love"));
-                    System.out.println(groupManager.updateField("Empo", "name", "Huskies Love"));
-                    System.out.println(groupManager.updateGroupTags("Huskies Love", null, null));
+                    groupManager.createGroup(data);
+                    groupManager.deleteGroup(groupName);
+                    groupManager.createGroup(data);
+                    System.out.println("Print 1: " + groupManager.getGroup(groupName));
+                    System.out.println("Print 2: " + groupManager.getAllGroups());
+                    System.out.println("Print 3: " + groupManager.getAllTags());
+                    System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
+                    groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
+                    groupManager.updateField(groupName, "name", "Probando Cosas");
+                    tags.remove("empo");
+                    List<String> tags2 = new ArrayList<>();
+                    tags2.add("doraimio");
+                    groupManager.updateGroupTags("Probando Cosas", tags, tags2);
+                    groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
+                    System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                    groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
+                    System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                    System.out.println("Print 7: " + groupManager.getAllGroups());
+                    System.out.println("Print 8: " + groupManager.getAllTags());
+                    groupManager.deleteGroup("Probando Cosas");
                 } catch (MyPetCareException e) {
                     e.printStackTrace();
                 }
+                System.out.println("ACABADO");
             }
         });
         thread.start();

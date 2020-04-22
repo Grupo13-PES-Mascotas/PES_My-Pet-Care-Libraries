@@ -1,4 +1,4 @@
-package org.pesmypetcare.communitymanager;
+package org.pesmypetcare.httptools;
 
 import org.json.JSONArray;
 import org.json.JSONException;

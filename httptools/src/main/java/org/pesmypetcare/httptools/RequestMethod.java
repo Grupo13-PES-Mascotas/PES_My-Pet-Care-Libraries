@@ -1,4 +1,4 @@
-package org.pesmypetcare.communitymanager;
+package org.pesmypetcare.httptools;
 
 /**
  * @author Santiago Del Rey

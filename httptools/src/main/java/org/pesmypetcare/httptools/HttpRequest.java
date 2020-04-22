@@ -1,4 +1,4 @@
-package org.pesmypetcare.communitymanager;
+package org.pesmypetcare.httptools;
 
 import java.util.Arrays;
 import java.util.Map;
