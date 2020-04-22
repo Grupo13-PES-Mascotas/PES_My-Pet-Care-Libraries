@@ -25,13 +25,12 @@ public class GoogleCalendarManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final int STATUS_OK_INT = 200;
+    private static final String SHOULD_RETURN_200 = "Should return response code 200";
 
     private String owner;
     private String petName;
     private EventData eventData;
     private List<EventData> eventDataList;
-    private DateTime date;
-    private DateTime date2;
     private String eventId;
     private StringBuilder jsonEventData;
     private StringBuilder jsonAllEvents;
@@ -49,8 +48,8 @@ public class GoogleCalendarManagerClientTest {
     public void setUp() {
         owner = "Manolo";
         petName = "Kawaguchi";
-        date = DateTime.Builder.buildFullString("2020-02-13T10:30:00");
-        date2 = DateTime.Builder.buildFullString("2020-02-13T12:30:00");
+        DateTime date = DateTime.Builder.buildFullString("2020-02-13T10:30:00");
+        DateTime date2 = DateTime.Builder.buildFullString("2020-02-13T12:30:00");
         eventId = "eventId";
         eventData = new EventData("eventId", "My summary", "My location",
             "My description", EventData.BANANA, 80, 14,
@@ -92,7 +91,7 @@ public class GoogleCalendarManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.createSecondaryCalendar(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_RETURN_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -102,7 +101,7 @@ public class GoogleCalendarManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteSecondaryCalendar(ACCESS_TOKEN, owner, petName);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_RETURN_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -122,7 +121,7 @@ public class GoogleCalendarManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.createEvent(ACCESS_TOKEN, owner, petName, eventData);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_RETURN_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -143,7 +142,7 @@ public class GoogleCalendarManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.updateEvent(ACCESS_TOKEN, owner, petName, eventData);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_RETURN_200, STATUS_OK_INT, responseCode);
     }
 
     @Test
@@ -153,6 +152,6 @@ public class GoogleCalendarManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
 
         int responseCode = client.deleteEvent(ACCESS_TOKEN, owner, petName, eventId);
-        assertEquals("Should return response code 200", STATUS_OK_INT, responseCode);
+        assertEquals(SHOULD_RETURN_200, STATUS_OK_INT, responseCode);
     }
 }

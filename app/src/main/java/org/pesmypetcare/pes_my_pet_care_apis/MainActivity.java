@@ -5,12 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
 import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
-import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.concurrent.ExecutionException;
@@ -27,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.Hello_text);
 
         // TESTS GOOGLE CALENDAR
-
+/*
         GoogleCalendarManagerClient manager = new GoogleCalendarManagerClient();
 
         DateTime dateTime = null, dateTime1 = null;
@@ -48,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            System.out.println(manager.getEvent("ya29.a0Ae4lvC03arvXYkQsKjUuSwa-V4H1T4Ixcl2MG-duXJaNG12l" +
-                    "6jpcpNjEPBs2tH1QsZhOII_x9cC2U5j1yHhIsEsUoM3cd36r9aizqB1W9mOC-iPWwUiwdqG7uYVxdcVN1SgU0eFpOPMNJf" +
-                    "sNzDZXWeR3EECadDJbsUM",
-                "john", "Laika", eventData.getId()));
+            System.out.println(manager.getAllEventsFromCalendar("ya29.a0Ae4lvC03arvXYkQsKjUuSwa-V4H1T4Ixcl2MG-duXJaN" +
+                    "G12l6jpcpNjEPBs2tH1QsZhOII_x9cC2U5j1yHhIsEsUoM3cd36r9aizqB1W9mOC-iPWwUiwdqG7uYVxdcVN1SgU0eFpOP" +
+                    "MNJfsNzDZXWeR3EECadDJbsUM",
+                "john", "Laika"));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
-
+*/
         // TESTS MEAL
         /*
         MealManagerClient manager = new MealManagerClient();

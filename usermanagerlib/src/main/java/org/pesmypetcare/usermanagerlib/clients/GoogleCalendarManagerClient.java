@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class GoogleCalendarManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/calendar/";
+    private static final String EVENT = "event/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
@@ -28,7 +29,7 @@ public class GoogleCalendarManagerClient {
     }
 
     /**
-     * Creates a Secondary Google Calendar in the account specified by the accessToken
+     * Creates a Secondary Google Calendar in the account specified by the accessToken.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar is created for
@@ -45,7 +46,7 @@ public class GoogleCalendarManagerClient {
     }
 
     /**
-     * Deletes a Secondary Google Calendar in the account specified by the accessToken
+     * Deletes a Secondary Google Calendar in the account specified by the accessToken.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -62,7 +63,7 @@ public class GoogleCalendarManagerClient {
     }
 
     /**
-     * Returns all Calendar Events from a specified Calendar
+     * Returns all Calendar Events from a specified Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -89,7 +90,7 @@ public class GoogleCalendarManagerClient {
     }
 
     /**
-     * Creates an Event in a specified Google Calendar
+     * Creates an Event in a specified Google Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -104,12 +105,12 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
-     * Retrieves an Event in a specified Google Calendar
+     * Retrieves an Event in a specified Google Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -118,6 +119,7 @@ public class GoogleCalendarManagerClient {
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
+    @Deprecated
     public EventData getEvent(String accessToken, String owner, String petName, String eventId)
         throws ExecutionException, InterruptedException {
         Map<String, String> reqData = new HashMap<>();
@@ -126,12 +128,12 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         taskManager.setReqBody(reqJson);
-        StringBuilder json = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
-        return GSON.fromJson(json.toString(), EventData.class);
+        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
+        return GSON.fromJson(response.toString(), EventData.class);
     }
 
     /**
-     * Updates an Event in a specified Google Calendar
+     * Updates an Event in a specified Google Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -146,12 +148,12 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
-     * Deletes an Event in a specified Google Calendar
+     * Deletes an Event in a specified Google Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
@@ -168,7 +170,7 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName , accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 }

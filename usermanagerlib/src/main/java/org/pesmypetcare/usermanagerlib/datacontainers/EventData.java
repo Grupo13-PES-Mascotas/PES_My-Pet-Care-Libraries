@@ -45,10 +45,6 @@ public class EventData {
 
     public EventData(String id, String summary, String location, String description, String color,
                      Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
-        checkCorrectDateFormat(startDate);
-        checkCorrectDateFormat(endDate);
-        DateTime date = DateTime.Builder.buildFullString(startDate);
-        System.out.println(date.toString());
         checkCorrectColor(color);
         this.id = id;
         this.summary = summary;
@@ -57,8 +53,10 @@ public class EventData {
         this.color = color;
         this.emailReminderMinutes = emailReminderMinutes;
         this.repetitionInterval = repetitionInterval;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = DateTime.Builder.buildFullString(startDate).toString();
+        this.endDate = DateTime.Builder.buildFullString(startDate).toString();
+        checkCorrectDateFormat(startDate);
+        checkCorrectDateFormat(endDate);
     }
 
     public String getId() {
@@ -138,7 +136,7 @@ public class EventData {
 
     /**
      * Checks that the color value is amongst the possible ones (LAVENDER, SAGE, GRAPE, FLAMINGO, BANANA, TANGERINE,
-     * PEACKOCK, GRAPHITE, BLUEBERRY, BASIL or TOMATE)
+     * PEACKOCK, GRAPHITE, BLUEBERRY, BASIL or TOMATE).
      * @param color Value of the color to check
      */
     private void checkCorrectColor(String color) {
@@ -149,7 +147,7 @@ public class EventData {
     }
 
     /**
-     * Checks that a date value has the correct format for an event
+     * Checks that a date value has the correct format for an event.
      * @param date Value of the date to check
      */
     private void checkCorrectDateFormat(String date) {
@@ -158,7 +156,8 @@ public class EventData {
         try {
             Date javaDate = sdf.parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Google Calendar Event Date must follow the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
+            throw new IllegalArgumentException("Google Calendar Event Date must follow" +
+                " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
         }
     }
 
