@@ -156,8 +156,8 @@ public class KcalAverageManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName +
-                "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
+                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
         List<KcalAverage> kcalAverageList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -190,8 +190,8 @@ public class KcalAverageManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH +
-                        date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
