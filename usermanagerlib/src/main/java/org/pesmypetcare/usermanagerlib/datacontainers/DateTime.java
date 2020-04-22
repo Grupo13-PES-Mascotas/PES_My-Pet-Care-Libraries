@@ -7,6 +7,7 @@ import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Marc Simó
@@ -26,6 +27,7 @@ public class DateTime implements Comparable<DateTime> {
     private static final int FIRST_TWO_DIGITS = 10;
     private static final int WEEK_DAYS = 7;
     private static final String FULL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
     private static final String DATE_TIME_SEPARATOR = "T";
     private static final int DATE = 0;
     private static final int TIME = 1;
@@ -49,7 +51,7 @@ public class DateTime implements Comparable<DateTime> {
     private int minutes;
     private int seconds;
 
-    public DateTime(int year, int month, int day, int hour, int minutes, int seconds) throws InvalidFormatException {
+    private DateTime(int year, int month, int day, int hour, int minutes, int seconds) throws InvalidFormatException {
         this.year = year;
         this.month = month;
         this.day = day;
@@ -61,13 +63,13 @@ public class DateTime implements Comparable<DateTime> {
         }
     }
 
-    public DateTime(String dateTime) {
+    private DateTime(String dateTime) {
         String[] dateTimeParts = dateTime.split(DATE_TIME_SEPARATOR);
         readDate(dateTimeParts[DATE]);
         readTime(dateTimeParts[TIME]);
     }
 
-    public DateTime(String dateTime, boolean isFull) {
+    private DateTime(String dateTime, boolean isFull) {
         if (isFull) {
             String[] dateTimeParts = dateTime.split(DATE_TIME_SEPARATOR);
             readDate(dateTimeParts[DATE]);
@@ -299,7 +301,7 @@ public class DateTime implements Comparable<DateTime> {
     public static boolean isLastWeek(String dateTime) {
         boolean result = false;
         DateTime dateToCheck = new DateTime(dateTime);
-        DateTime currentDate = DateTime.getCurrentDate();
+        DateTime currentDate = DateTime.getCurrentDateTime();
         for (int i = 0; i <= WEEK_DAYS && !result; ++i) {
             if (isSameDay(dateToCheck, currentDate)) {
                 result = true;
@@ -322,14 +324,25 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Get the current date.
-     * @return The current
+     * Get the current date in full format.
+     * @return The current date
      */
-    private static DateTime getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat(FULL_DATE_FORMAT);
+    public static DateTime getCurrentDateTime() {
+        DateFormat dateFormat = new SimpleDateFormat(FULL_DATE_FORMAT, Locale.getDefault());
         Date date = new Date();
         String strData = dateFormat.format(date);
-        return new DateTime(strData);
+        return new DateTime(strData, true);
+    }
+
+    /**
+     * Get the current date in simple format
+     * @return The current date
+     */
+    public static DateTime getCurrentDate() {
+        DateFormat dateFormat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
+        Date date = new Date();
+        String strData = dateFormat.format(date);
+        return new DateTime(strData, false);
     }
 
     @NonNull
