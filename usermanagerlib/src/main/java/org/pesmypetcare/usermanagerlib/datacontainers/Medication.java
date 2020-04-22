@@ -15,32 +15,32 @@ public class Medication {
     }
 
     /**
-     * Returns the date of the Medication
-     * @return Medication date
+     * Returns the date of the Medication.
+     * @return Medication date.
      */
     public String getDate() {
         return this.date;
     }
 
     /**
-     * Returns the name of the Medication
-     * @return Meadication name
+     * Returns the name of the Medication.
+     * @return Meadication name.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Sets a new date
-     * @param date medication date
+     * Sets a new date.
+     * @param date medication date.
      */
     public void setDate(String date) {
         this.date = date;
     }
 
     /**
-     * Sets a new name
-     * @param name medication name
+     * Sets a new name.
+     * @param name medication name.
      */
     public void setName(String name) {
         this.name = name;
@@ -48,7 +48,7 @@ public class Medication {
 
     /**
      * Returns the Medication Data.
-     * @return Medication Data
+     * @return Medication Data.
      */
     public MedicationData getBody() {
         return body;
@@ -56,7 +56,7 @@ public class Medication {
 
     /**
      * Sets a new Medication Data.
-     * @param body Medication Data
+     * @param body Medication Data.
      */
     public void setBody(MedicationData body) {
         this.body = body;
