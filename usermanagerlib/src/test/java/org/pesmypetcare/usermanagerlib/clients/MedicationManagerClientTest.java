@@ -40,11 +40,11 @@ public class MedicationManagerClientTest {
     @Mock
     private TaskManager taskManager;
 
-    @InjectMocks
-    private MedicationManagerClient client = new MedicationManagerClient();
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @InjectMocks
+    private MedicationManagerClient client = new MedicationManagerClient();
 
     @Before
     public void setUp() {
