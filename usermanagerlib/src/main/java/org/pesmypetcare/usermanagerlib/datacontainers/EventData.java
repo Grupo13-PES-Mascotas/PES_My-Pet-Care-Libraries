@@ -47,6 +47,8 @@ public class EventData {
                      Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
         checkCorrectDateFormat(startDate);
         checkCorrectDateFormat(endDate);
+        DateTime date = DateTime.Builder.buildFullString(startDate);
+        System.out.println(date.toString());
         checkCorrectColor(color);
         this.id = id;
         this.summary = summary;

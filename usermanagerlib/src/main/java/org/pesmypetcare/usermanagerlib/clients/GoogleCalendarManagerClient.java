@@ -23,6 +23,10 @@ public class GoogleCalendarManagerClient {
     private static Gson GSON = new Gson();
     private TaskManager taskManager;
 
+    public GoogleCalendarManagerClient() {
+        taskManager = new TaskManager();
+    }
+
     /**
      * Creates a Secondary Google Calendar in the account specified by the accessToken
      * @param accessToken oauth2 token needed to access the Google Calendar
@@ -100,7 +104,7 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "/event/" + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -122,8 +126,7 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         taskManager.setReqBody(reqJson);
-        StringBuilder json = taskManager.execute(BASE_URL + "/event/" + owner + "/" + petName, accessToken).get();
-        System.out.println(json);
+        StringBuilder json = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
         return GSON.fromJson(json.toString(), EventData.class);
     }
 
@@ -143,7 +146,7 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "/event/" + owner + "/" + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -165,7 +168,7 @@ public class GoogleCalendarManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + "/event/" + owner + "/" + petName , accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + "event/" + owner + "/" + petName , accessToken).get();
         return Integer.parseInt(response.toString());
     }
 }
