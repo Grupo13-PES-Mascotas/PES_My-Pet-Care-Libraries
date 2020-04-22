@@ -37,6 +37,7 @@ public class PetManagerClient {
     private static final String PUT = "PUT";
     private static final String GET = "GET";
     private static final String POST = "POST";
+    private static final String SLASH = "/";
     private static String usernameField = "username";
     private static String nameField = "name";
     private final Gson GSON = new Gson();
@@ -61,8 +62,8 @@ public class PetManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/" +
-                        pet.getName(), accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+                + pet.getName(), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -93,7 +94,7 @@ public class PetManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName, accessToken);
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName, accessToken);
     }
 
     /**
@@ -109,7 +110,7 @@ public class PetManagerClient {
                           String petName) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName,
+        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName,
                 accessToken).get();
         if (json != null) {
             return GSON.fromJson(json.toString(), PetData.class);
@@ -158,7 +159,7 @@ public class PetManagerClient {
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId("DELETE");
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/"
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
                 + petName, accessToken)
             .get();
         return Integer.parseInt(response.toString());
@@ -184,8 +185,8 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + "/"
-                        + petName + "/" + field,
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+                        + petName + SLASH + field,
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -205,7 +206,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newGender);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + GENDER,
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + GENDER,
                 accessToken);
     }
 
@@ -224,7 +225,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBirthday);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BIRTH,
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + BIRTH,
                 accessToken);
     }
 
@@ -242,7 +243,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newBreed);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + BREED,
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + BREED,
                 accessToken);
     }
 
@@ -260,7 +261,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, String.valueOf(newNeed));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + NEEDS,
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + NEEDS,
                 accessToken);
     }
 
@@ -279,7 +280,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/" + PATHOLOGIES,
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + PATHOLOGIES,
                 accessToken);
     }
 
@@ -297,7 +298,7 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, Double.toString(newKcal));
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + "/" + petName + "/"
+        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH
                 + RECOMMENDED_KCAL, accessToken);
     }
 
@@ -394,8 +395,8 @@ public class PetManagerClient {
      * @throws IllegalArgumentException When an invalid field value is passed
      */
     private void checkCorrectType(String field, Object newValue) {
-        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES)
-                || field.equals(NEEDS)) && !(newValue instanceof String)) {
+        if ((field.equals(BIRTH) || field.equals(BREED) || (field.equals(PATHOLOGIES)
+                || field.equals(NEEDS))) && !(newValue instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
         } else if (field.equals(RECOMMENDED_KCAL) && !(newValue instanceof Double)) {
             throw new IllegalArgumentException("New value must be a Double");

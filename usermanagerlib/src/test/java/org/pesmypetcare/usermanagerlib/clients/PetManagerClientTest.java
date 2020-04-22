@@ -37,6 +37,7 @@ public class PetManagerClientTest {
     private static final String USERNAME = "user";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String BIRTH_FIELD = "birth";
+    private static final String CODE_OK = "Should return response code 200";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private final double recommendedKcal = 2.5;
     private final int expectedResponseCode = 200;
@@ -93,7 +94,7 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.createPet(ACCESS_TOKEN, USERNAME, pet);
-        assertEquals("Should return response code 200", expectedResponseCode,
+        assertEquals(CODE_OK, expectedResponseCode,
                 responseCode);
     }
 
@@ -157,7 +158,7 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deletePet(ACCESS_TOKEN, USERNAME, petName);
-        assertEquals("Should return response code 200", expectedResponseCode,
+        assertEquals(CODE_OK, expectedResponseCode,
                 responseCode);
     }
 
@@ -168,7 +169,7 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
                 "2019-02-13T10:30:00");
-        assertEquals("Should return response code 200", expectedResponseCode,
+        assertEquals(CODE_OK, expectedResponseCode,
                 responseCode);
     }
 
@@ -186,7 +187,7 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
-        assertEquals("Should return response code 200", expectedResponseCode,
+        assertEquals(CODE_OK, expectedResponseCode,
                 responseCode);
     }
 
