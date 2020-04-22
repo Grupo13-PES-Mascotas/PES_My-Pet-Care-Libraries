@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
 */
 //TEST MEDICATION//
+        /*
         MedicationManagerClient manager = new MedicationManagerClient();
 
         DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
