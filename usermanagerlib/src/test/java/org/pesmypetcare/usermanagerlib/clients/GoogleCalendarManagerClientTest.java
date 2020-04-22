@@ -48,12 +48,10 @@ public class GoogleCalendarManagerClientTest {
     public void setUp() {
         owner = "Manolo";
         petName = "Kawaguchi";
-        DateTime date = DateTime.Builder.buildFullString("2020-02-13T10:30:00");
-        DateTime date2 = DateTime.Builder.buildFullString("2020-02-13T12:30:00");
         eventId = "eventId";
         eventData = new EventData("eventId", "My summary", "My location",
             "My description", EventData.BANANA, 80, 14,
-            date.toString(), date2.toString());
+            "2020-02-13T10:30:00", "2020-02-13T12:30:00");
         eventDataList = new ArrayList<>();
         eventDataList.add(eventData);
         jsonEventData = new StringBuilder("{\n"

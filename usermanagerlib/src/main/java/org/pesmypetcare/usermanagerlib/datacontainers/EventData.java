@@ -56,7 +56,7 @@ public class EventData {
         this.emailReminderMinutes = emailReminderMinutes;
         this.repetitionInterval = repetitionInterval;
         this.startDate = DateTime.Builder.buildFullString(startDate).toString();
-        this.endDate = DateTime.Builder.buildFullString(startDate).toString();
+        this.endDate = DateTime.Builder.buildFullString(endDate).toString();
     }
 
     public String getId() {
