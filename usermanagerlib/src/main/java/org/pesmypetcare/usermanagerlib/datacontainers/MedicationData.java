@@ -22,15 +22,15 @@ public class MedicationData {
 
     /**
      * Returns the quantity.
-     * @return Quantity of the medication
+     * @return Quantity of the medication.
      */
     public double getQuantity() {
         return quantity;
     }
 
     /**
-     * Sets a new quantity
-     * @param inQuantity New meal name
+     * Sets a new quantity.
+     * @param inQuantity New meal name.
      */
     public void setMedicationQuantity(double inQuantity) {
         this.quantity = inQuantity;
@@ -54,7 +54,7 @@ public class MedicationData {
 
 
     /**
-     * Returns the number of times this medication needs to be administered per day
+     * Returns the number of times this medication needs to be administered per day.
      * @return New periodicity.
      */
     public int getPeriodicity() {

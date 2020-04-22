@@ -24,7 +24,7 @@ public class MedicationManagerClient {
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
     private static final String DASH = "/";
-    private static Gson GSON = new Gson();
+    private static Gson gson = new Gson();
     private TaskManager taskManager;
 
     public MedicationManagerClient() {
@@ -108,7 +108,7 @@ public class MedicationManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + owner + DASH + petName + DASH
                 + date + DASH + name, accessToken).get();
-        return GSON.fromJson(json.toString(), MedicationData.class);
+        return gson.fromJson(json.toString(), MedicationData.class);
     }
 
     /**
@@ -128,10 +128,10 @@ public class MedicationManagerClient {
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
             String[] Medications = jsonArray.split(",\\{");
-            medicationList.add(GSON.fromJson(Medications[0], Medication.class));
+            medicationList.add(gson.fromJson(Medications[0], Medication.class));
             for (int i = 1; i < Medications.length; i++) {
                 Medications[i] = "{" + Medications[i];
-                medicationList.add(GSON.fromJson(Medications[i], Medication.class));
+                medicationList.add(gson.fromJson(Medications[i], Medication.class));
             }
         }
         return medicationList;
@@ -154,17 +154,17 @@ public class MedicationManagerClient {
         StringBuilder response =
                 taskManager.execute(BASE_URL + owner + DASH + petName + "/between/" + initialDate
                         + DASH + finalDate, accessToken).get();
-        List<Medication> MedicationList = new ArrayList<>();
+        List<Medication> medicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
             String[] Medications = jsonArray.split(",\\{");
-            MedicationList.add(GSON.fromJson(Medications[0], Medication.class));
+            medicationList.add(gson.fromJson(Medications[0], Medication.class));
             for (int i = 1; i < Medications.length; i++) {
                 Medications[i] = "{" + Medications[i];
-                MedicationList.add(GSON.fromJson(Medications[i], Medication.class));
+                medicationList.add(gson.fromJson(Medications[i], Medication.class));
             }
         }
-        return MedicationList;
+        return medicationList;
     }
 
     /**
