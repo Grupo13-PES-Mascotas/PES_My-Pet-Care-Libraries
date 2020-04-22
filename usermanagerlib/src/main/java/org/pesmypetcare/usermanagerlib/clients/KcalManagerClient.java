@@ -47,8 +47,8 @@ public class KcalManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH +
-                        date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -66,8 +66,8 @@ public class KcalManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH +
-                        date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -153,8 +153,8 @@ public class KcalManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName +
-                "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
+                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
         List<Kcal> kcalList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -186,8 +186,8 @@ public class KcalManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH +
-                        date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 

@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.KcalAverage;
-import org.pesmypetcare.usermanagerlib.datacontainers.KcalAverageData;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWash;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqWashData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-public class KcalAverageManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/kcalAverage/";
+public class FreqWashManagerClient {
+    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/freqWash/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
@@ -25,40 +25,39 @@ public class KcalAverageManagerClient {
     private static final Gson GSON = new Gson();
     private TaskManager taskManager;
 
-    public KcalAverageManagerClient() {
+    public FreqWashManagerClient() {
         taskManager = new TaskManager();
     }
 
 
     /**
-     * Creates a kcalAverage of a pet on the database.
+     * Creates a freqWash of a pet on the database.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
-     * @param kcalAverage The kcalAverage entity that contains the attributes of the kcalAverage
+     * @param freqWash The freqWash entity that contains the attributes of the freqWash
      * @param date The date of creation
      * @return The response code
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int createKcalAverage(String accessToken, String owner, String petName,
-                                 KcalAverage kcalAverage, DateTime date)
-            throws ExecutionException, InterruptedException {
-        JSONObject reqJson = kcalAverage.getBody().buildKcalAverageJson();
+    public int createFreqWash(String accessToken, String owner, String petName, FreqWash freqWash,
+                            DateTime date) throws ExecutionException, InterruptedException {
+        JSONObject reqJson = freqWash.getBody().buildFreqWashJson();
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                + date, accessToken).get();
+                        + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
-     * Deletes the pet's kcalAverage with the specified owner and name from the database.
+     * Deletes the pet's freqWash with the specified owner and name from the database.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
-     * @param date Date the kcalAverage was created
+     * @param date Date the freqWash was created
      * @return The response code
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
@@ -68,12 +67,12 @@ public class KcalAverageManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                + date, accessToken).get();
+                        + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
-     * Deletes all the kcalAverages of the specified pet from database.
+     * Deletes all the freqWashs of the specified pet from database.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
@@ -81,7 +80,7 @@ public class KcalAverageManagerClient {
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public int deleteAllKcalAverage(String accessToken, String owner, String petName)
+    public int deleteAllFreqWash(String accessToken, String owner, String petName)
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
@@ -91,107 +90,105 @@ public class KcalAverageManagerClient {
     }
 
     /**
-     * Gets a kcalAverage identified by its pet and date.
+     * Gets a freqWash identified by its pet and date.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
-     * @param date Date the kcalAverage was created
-     * @return The KcalAverageData identified by the data
+     * @param date Date the freqWash was created
+     * @return The FreqWashData identified by the data
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public KcalAverageData getKcalAverageData(String accessToken, String owner, String petName,
-                                              DateTime date)
+    public FreqWashData getFreqWashData(String accessToken, String owner, String petName,
+                                        DateTime date)
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
                 accessToken).get();
-        return GSON.fromJson(json.toString(), KcalAverageData.class);
+        return GSON.fromJson(json.toString(), FreqWashData.class);
     }
 
     /**
-     * Gets the data from all the specified kcalAverages from the database identified by its pet.
+     * Gets the data from all the specified freqWashs from the database identified by its pet.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
-     * @return The List containing all the kcalAverages from the pet
+     * @return The List containing all the freqWashs from the pet
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public List<KcalAverage> getAllKcalAverageData(String accessToken, String owner, String petName)
+    public List<FreqWash> getAllFreqWashData(String accessToken, String owner, String petName)
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName,
                 accessToken).get();
-        List<KcalAverage> kcalAverageList = new ArrayList<>();
+        List<FreqWash> freqWashList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] kcalAverages = jsonArray.split(BRACKET_SLASH);
-            kcalAverageList.add(GSON.fromJson(kcalAverages[0], KcalAverage.class));
-            for (int i = 1; i < kcalAverages.length; i++) {
-                kcalAverages[i] = BRACKET + kcalAverages[i];
-                kcalAverageList.add(GSON.fromJson(kcalAverages[i], KcalAverage.class));
+            String[] freqWashs = jsonArray.split(BRACKET_SLASH);
+            freqWashList.add(GSON.fromJson(freqWashs[0], FreqWash.class));
+            for (int i = 1; i < freqWashs.length; i++) {
+                freqWashs[i] = BRACKET + freqWashs[i];
+                freqWashList.add(GSON.fromJson(freqWashs[i], FreqWash.class));
             }
         }
-        return kcalAverageList;
+        return freqWashList;
     }
 
     /**
-     * Gets the data from all the kcalAverages of the pet between the initial and final
+     * Gets the data from all the freqWashs of the pet between the initial and final
      * date not including them.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pets
      * @param petName Name of the pet
      * @param initialDate Initial Date
      * @param finalDate Final Date
-     * @return The List containing all the kcalAverages eaten by the pet in the specified time
+     * @return The List containing all the freqWashs eaten by the pet in the specified time
      * @throws ExecutionException When the deletion fails
      * @throws InterruptedException When the deletion is interrupted
      */
-    public List<KcalAverage> getAllKcalAveragesBetween(String accessToken, String owner,
-                                                       String petName, DateTime initialDate,
-                                                       DateTime finalDate)
+    public List<FreqWash> getAllFreqWashsBetween(String accessToken, String owner, String petName,
+                                             DateTime initialDate, DateTime finalDate)
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName +
-                "/between/" + initialDate + SLASH + finalDate, accessToken).get();
-        List<KcalAverage> kcalAverageList = new ArrayList<>();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
+                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+        List<FreqWash> freqWashList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] kcalAverages = jsonArray.split(BRACKET_SLASH);
-            kcalAverageList.add(GSON.fromJson(kcalAverages[0], KcalAverage.class));
-            for (int i = 1; i < kcalAverages.length; i++) {
-                kcalAverages[i] = BRACKET + kcalAverages[i];
-                kcalAverageList.add(GSON.fromJson(kcalAverages[i], KcalAverage.class));
+            String[] freqWashs = jsonArray.split(BRACKET_SLASH);
+            freqWashList.add(GSON.fromJson(freqWashs[0], FreqWash.class));
+            for (int i = 1; i < freqWashs.length; i++) {
+                freqWashs[i] = BRACKET + freqWashs[i];
+                freqWashList.add(GSON.fromJson(freqWashs[i], FreqWash.class));
             }
         }
-        return kcalAverageList;
+        return freqWashList;
     }
 
     /**
-     * Updates the kcalAverage's value.
+     * Updates the freqWash's value.
      * @param accessToken The personal access token for the account
      * @param owner Username of the owner of the pet
      * @param petName Name of the pet
-     * @param date Date the kcalAverage was created
-     * @param value Value the kcalAverage will have
+     * @param date Date the freqWash was created
+     * @param value Value the freqWash will have
      * @return The response code
      * @throws ExecutionException When the update fails
      * @throws InterruptedException When the update is interrupted
      */
-    public int updateKcalAverageField(String accessToken, String owner, String petName,
-                                      DateTime date, Double value)
-            throws ExecutionException, InterruptedException {
+    public int updateFreqWashField(String accessToken, String owner, String petName, DateTime date,
+                               Double value) throws ExecutionException, InterruptedException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH +
-                        date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                        + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
