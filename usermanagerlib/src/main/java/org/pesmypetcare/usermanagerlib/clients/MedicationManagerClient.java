@@ -127,11 +127,11 @@ public class MedicationManagerClient {
         List<Medication> medicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] Medications = jsonArray.split(",\\{");
-            medicationList.add(gson.fromJson(Medications[0], Medication.class));
-            for (int i = 1; i < Medications.length; i++) {
-                Medications[i] = "{" + Medications[i];
-                medicationList.add(gson.fromJson(Medications[i], Medication.class));
+            String[] medications = jsonArray.split(",\\{");
+            medicationList.add(gson.fromJson(medications[0], Medication.class));
+            for (int i = 1; i < medications.length; i++) {
+                medications[i] = "{" + medications[i];
+                medicationList.add(gson.fromJson(medications[i], Medication.class));
             }
         }
         return medicationList;
@@ -157,11 +157,11 @@ public class MedicationManagerClient {
         List<Medication> medicationList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
-            String[] Medications = jsonArray.split(",\\{");
-            medicationList.add(gson.fromJson(Medications[0], Medication.class));
-            for (int i = 1; i < Medications.length; i++) {
-                Medications[i] = "{" + Medications[i];
-                medicationList.add(gson.fromJson(Medications[i], Medication.class));
+            String[] medications = jsonArray.split(",\\{");
+            medicationList.add(gson.fromJson(medications[0], Medication.class));
+            for (int i = 1; i < medications.length; i++) {
+                medications[i] = "{" + medications[i];
+                medicationList.add(gson.fromJson(medications[i], Medication.class));
             }
         }
         return medicationList;
