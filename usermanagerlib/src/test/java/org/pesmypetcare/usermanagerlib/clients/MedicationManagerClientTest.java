@@ -23,8 +23,8 @@ public class MedicationManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final int STATUS_OK_INT = 200;
-    private static String SHOULD_BE_200 = "Should return response code 200";
-    private static String SHOULD_RETURN_MED_LIST = "Should return medication data list";
+    private static final String SHOULD_BE_200 = "Should return response code 200";
+    private static final String SHOULD_RETURN_MED_LIST = "Should return medication data list";
 
     private String owner;
     private String petName;
