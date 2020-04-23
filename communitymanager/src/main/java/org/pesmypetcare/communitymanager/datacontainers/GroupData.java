@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Santiago Del Rey
@@ -17,10 +18,9 @@ public class GroupData {
     private List<String> tags;
     private Map<String, String> members;
 
-    public GroupData(String name, String creator, String creationDate, String description, List<String> tags) {
+    public GroupData(String name, String creator, String description, List<String> tags) {
         this.name = name;
         this.creator = creator;
-        this.creationDate = creationDate;
         this.description = description;
         this.tags = tags;
     }
@@ -45,7 +45,7 @@ public class GroupData {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    private void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -79,6 +79,25 @@ public class GroupData {
 
     private void setMembers(Map<String, String> members) {
         this.members = members;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GroupData groupData = (GroupData) o;
+        return Objects.equals(getName(), groupData.getName()) &&
+            Objects.equals(getCreator(), groupData.getCreator()) &&
+            Objects.equals(getCreationDate(), groupData.getCreationDate()) &&
+            Objects.equals(getIcon(), groupData.getIcon()) &&
+            Objects.equals(getDescription(), groupData.getDescription()) &&
+            Objects.equals(getTags(), groupData.getTags()) &&
+            Objects.equals(getMembers(), groupData.getMembers());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getCreator(), getCreationDate(), getIcon(), getDescription(), getTags(), getMembers());
     }
 
     @NonNull

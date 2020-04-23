@@ -5,20 +5,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
-import org.json.JSONException;
-import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Medication;
-import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
-import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
-
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Santiago Del Rey
  */
@@ -275,8 +261,8 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        UserManagerClient client = new UserManagerClient();
-        UserData user = new UserData("santi", "santi@mail.com", "123455678");
+        //UserManagerClient client = new UserManagerClient();
+        //UserData user = new UserData("santi", "santi@mail.com", "123455678");
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
