@@ -183,7 +183,7 @@ public class KcalAverageManagerClient {
      * @throws InterruptedException When the update is interrupted
      */
     public int updateKcalAverageField(String accessToken, String owner, String petName,
-                                      DateTime date, Double value)
+                                      DateTime date, double value)
             throws ExecutionException, InterruptedException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);

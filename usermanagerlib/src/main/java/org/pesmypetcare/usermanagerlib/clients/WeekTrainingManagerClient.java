@@ -184,7 +184,7 @@ public class WeekTrainingManagerClient {
      * @throws InterruptedException When the update is interrupted
      */
     public int updateWeekTrainingField(String accessToken, String owner, String petName,
-                                       DateTime date, Double value)
+                                       DateTime date, double value)
             throws ExecutionException, InterruptedException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);

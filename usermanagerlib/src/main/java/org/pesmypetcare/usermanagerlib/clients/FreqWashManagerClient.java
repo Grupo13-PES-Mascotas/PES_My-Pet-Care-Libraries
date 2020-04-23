@@ -181,7 +181,7 @@ public class FreqWashManagerClient {
      * @throws InterruptedException When the update is interrupted
      */
     public int updateFreqWashField(String accessToken, String owner, String petName, DateTime date,
-                               Double value) throws ExecutionException, InterruptedException {
+                               double value) throws ExecutionException, InterruptedException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("value", value);
         taskManager = taskManager.resetTaskManager();
