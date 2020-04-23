@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             dateTime1 = new DateTime(2016,12,25,13,50,12);
-          
+
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -275,31 +275,29 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-/*
-
         UserManagerClient client = new UserManagerClient();
         UserData user = new UserData("santi", "santi@mail.com", "123455678");
-        try {
+        /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
             }
             //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
             //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
-            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            client.updateField("token", "santi", UserManagerClient.USERNAME, "Santiago");
             //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //System.out.println(client.getUser("token", "santi"));
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
-            /*System.out.println(code);
-            text.setText(String.valueOf(code));*/
-        //} catch (ExecutionException | InterruptedException | JSONException e) {
-         //   e.printStackTrace();
-        //}
+            System.out.println(code);
+            text.setText(String.valueOf(code));
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }*/
         /*client.signUp("santi", "123456", "santi@gmail.com");
-        System.out.println("Pasado signup");*/
-        /*try {
+        System.out.println("Pasado signup");
+        try {
             System.out.println("MAIN: " + client.getUser("kayle"));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -333,6 +331,45 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }*/
+
+        //TEST GROUPS
+        /*Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GroupManager groupManager = new GroupManager();
+                List<String> tags = new ArrayList<>();
+                tags.add("empo");
+                tags.add("empotrador");
+                String groupName = "Prueba 1";
+                GroupData data = new GroupData(groupName, "santi","2020-04-20", "Hola", tags);
+                try {
+                    groupManager.createGroup(data);
+                    groupManager.deleteGroup(groupName);
+                    groupManager.createGroup(data);
+                    System.out.println("Print 1: " + groupManager.getGroup(groupName));
+                    System.out.println("Print 2: " + groupManager.getAllGroups());
+                    System.out.println("Print 3: " + groupManager.getAllTags());
+                    System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
+                    groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
+                    groupManager.updateField(groupName, "name", "Probando Cosas");
+                    tags.remove("empo");
+                    List<String> tags2 = new ArrayList<>();
+                    tags2.add("doraimio");
+                    groupManager.updateGroupTags("Probando Cosas", tags, tags2);
+                    groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
+                    System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                    groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
+                    System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                    System.out.println("Print 7: " + groupManager.getAllGroups());
+                    System.out.println("Print 8: " + groupManager.getAllTags());
+                    groupManager.deleteGroup("Probando Cosas");
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("ACABADO");
+            }
+        });
+        thread.start();*/
     }
 }
 
