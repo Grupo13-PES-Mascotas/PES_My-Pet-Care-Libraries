@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +17,6 @@ public class UserData {
     private String username;
     private String email;
     private String password;
-
     private List<String> groupSubscriptions;
 
     /**
@@ -29,6 +29,7 @@ public class UserData {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.groupSubscriptions = new ArrayList<>();
     }
 
     public UserData(String username, String email, String password, List<String> groupSubscriptions) {
@@ -86,6 +87,14 @@ public class UserData {
         this.password = password;
     }
 
+    public List<String> getGroupSubscriptions() {
+        return groupSubscriptions;
+    }
+
+    public void setGroupSubscriptions(List<String> groupSubscriptions) {
+        this.groupSubscriptions = groupSubscriptions;
+    }
+
     /**
      * Creates a user data JSONObject.
      * @return The JSONObject for the user data
@@ -97,14 +106,6 @@ public class UserData {
         json.put("email", email);
         json.put("password", password);
         return json;
-    }
-
-    public List<String> getGroupSubscriptions() {
-        return groupSubscriptions;
-    }
-
-    public void setGroupSubscriptions(List<String> groupSubscriptions) {
-        this.groupSubscriptions = groupSubscriptions;
     }
 
     @NonNull

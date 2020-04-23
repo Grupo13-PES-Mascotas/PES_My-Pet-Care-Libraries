@@ -5,12 +5,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.datacontainers.GroupData;
-import org.pesmypetcare.communitymanager.managers.GroupManager;
-import org.pesmypetcare.httptools.MyPetCareException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
+import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
 
 /**
  * @author Santiago Del Rey
@@ -147,29 +143,29 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        /*UserManagerClient client = new UserManagerClient();
+        UserManagerClient client = new UserManagerClient();
         UserData user = new UserData("santi", "santi@mail.com", "123455678");
-        try {
-            if (!client.usernameAlreadyExists("santi")) {
+        /*try {
+            *//*if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
-            }
+            }*//*
             //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
             //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
-            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            client.updateField("token", "santi", UserManagerClient.USERNAME, "Santiago");
             //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //System.out.println(client.getUser("token", "santi"));
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
-            *//*System.out.println(code);
-            text.setText(String.valueOf(code));*//*
-        } catch (ExecutionException | InterruptedException | JSONException e) {
+            //System.out.println(code);
+            //text.setText(String.valueOf(code));
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }*/
         /*client.signUp("santi", "123456", "santi@gmail.com");
-        System.out.println("Pasado signup");*/
-        /*try {
+        System.out.println("Pasado signup");
+        try {
             System.out.println("MAIN: " + client.getUser("kayle"));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -205,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        Thread thread = new Thread(new Runnable() {
+        /*Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 GroupManager groupManager = new GroupManager();
@@ -241,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("ACABADO");
             }
         });
-        thread.start();
+        thread.start();*/
     }
 }
 
