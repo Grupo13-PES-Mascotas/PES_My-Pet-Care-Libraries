@@ -5,6 +5,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.communitymanager.datacontainers.ForumData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
+import org.pesmypetcare.httptools.MyPetCareException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Santiago Del Rey
  */
@@ -319,10 +327,10 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        /*Thread thread = new Thread(new Runnable() {
+        /*Thread thread = new Thread(() {
             @Override
             public void run() {
-                GroupManager groupManager = new GroupManager();
+                GroupManagerClient groupManager = new GroupManagerClient();
                 List<String> tags = new ArrayList<>();
                 tags.add("empo");
                 tags.add("empotrador");
@@ -356,6 +364,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         thread.start();*/
+        //TEST FORUMS
+        Thread thread = new Thread(() -> {
+            ForumManagerClient forumManager = new ForumManagerClient();
+            List<String> tags = new ArrayList<>();
+            tags.add("PES");
+            String groupName1 = "Ansiano";
+            String groupName2 = "Prueba 1";
+            String forumName = "Vamos que nos vamos";
+            String forumName2 = "Pues no nos vamos";
+            ForumData forum = new ForumData(forumName, "santi", tags);
+            ForumData forum2 = new ForumData("Marc me aburro", "santi", tags);
+            MessageData message = new MessageData("santi", "Buenas noches señores");
+            try {
+                //forumManager.createForum(groupName1, form);
+                //forumManager.deleteForum(groupName2, forumName);
+                //forumManager.createForum(groupName1, forum2);
+                //System.out.println(forumManager.getForum(groupName1, forumName));
+                //System.out.println(forumManager.getAllForums(groupName1));
+                //forumManager.updateName(groupName1, forumName, forumName2);
+                //forumManager.updateTags(groupName1, forumName2, tags, null);
+                //forumManager.postMessage("token", groupName1, forumName2, message);
+                forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("FIN");
+        });
+        thread.start();
     }
 }
 

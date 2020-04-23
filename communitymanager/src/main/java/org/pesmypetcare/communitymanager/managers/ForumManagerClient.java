@@ -61,7 +61,7 @@ public class ForumManagerClient {
      */
     public ForumData getForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("forum", parentGroup);
+        params[0] = new HttpParameter("forum", forumName);
         HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
         return gson.fromJson(response.asString(), ForumData.class);
     }
@@ -73,7 +73,7 @@ public class ForumManagerClient {
      * @return All data of the forums belonging to the group
      * @throws MyPetCareException When the request fails
      */
-    public List<ForumData> getAllForum(String groupName) throws MyPetCareException {
+    public List<ForumData> getAllForums(String groupName) throws MyPetCareException {
         HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + HttpParameter.encode(groupName), null, null, null);
         Type listType = TypeToken.getParameterized(List.class, ForumData.class).getType();
         return gson.fromJson(response.asString(), listType);

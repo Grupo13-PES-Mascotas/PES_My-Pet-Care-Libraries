@@ -35,4 +35,28 @@ jobs:
       with:
         name: usermanagerlib-release.aar
         path: ./usermanagerlib/build/outputs/aar
+
+    - name: Run communitymanager tests
+      run: ./gradlew :communitymanager:test
+
+    - name: Build communitymanager
+      run: ./gradlew :communitymanager:assembleRelease
+
+    - name: Upload communitymanager
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: communitymanager-release.aar
+        path: ./communitymanager/build/outputs/aar
+
+    - name: Run httptools tests
+      run: ./gradlew :httptools:test
+
+    - name: Build httptools
+      run: ./gradlew :httptools:assembleRelease
+
+    - name: Upload httptools
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: httptools-release.aar
+        path: ./httptools/build/outputs/aar
       
