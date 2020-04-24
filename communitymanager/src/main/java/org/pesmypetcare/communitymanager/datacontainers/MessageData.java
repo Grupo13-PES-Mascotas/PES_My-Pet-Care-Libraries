@@ -9,6 +9,7 @@ import java.util.Objects;
  * @author Santiago Del Rey
  */
 public class MessageData {
+    @NonNull
     private String creator;
     private String publicationDate;
     private String text;
@@ -16,16 +17,17 @@ public class MessageData {
     private boolean banned;
     private List<String> likedBy;
 
-    public MessageData(String creator, String text) {
+    public MessageData(@NonNull String creator, String text) {
         this.creator = creator;
         this.text = text;
     }
 
+    @NonNull
     public String getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(@NonNull String creator) {
         this.creator = creator;
     }
 
@@ -75,7 +77,7 @@ public class MessageData {
         if (o == null || getClass() != o.getClass()) return false;
         MessageData that = (MessageData) o;
         return isBanned() == that.isBanned() &&
-            Objects.equals(getCreator(), that.getCreator()) &&
+            getCreator().equals(that.getCreator()) &&
             Objects.equals(getPublicationDate(), that.getPublicationDate()) &&
             Objects.equals(getText(), that.getText()) &&
             Objects.equals(getImagePath(), that.getImagePath()) &&

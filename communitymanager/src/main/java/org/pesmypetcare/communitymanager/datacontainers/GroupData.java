@@ -10,7 +10,9 @@ import java.util.Objects;
  * @author Santiago Del Rey
  */
 public class GroupData {
+    @NonNull
     private String name;
+    @NonNull
     private String creator;
     private String creationDate;
     private String icon;
@@ -18,26 +20,28 @@ public class GroupData {
     private List<String> tags;
     private Map<String, String> members;
 
-    public GroupData(String name, String creator, String description, List<String> tags) {
+    public GroupData(@NonNull String name, @NonNull String creator, String description, List<String> tags) {
         this.name = name;
         this.creator = creator;
         this.description = description;
         this.tags = tags;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
+    @NonNull
     public String getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(@NonNull String creator) {
         this.creator = creator;
     }
 
@@ -86,8 +90,8 @@ public class GroupData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupData groupData = (GroupData) o;
-        return Objects.equals(getName(), groupData.getName()) &&
-            Objects.equals(getCreator(), groupData.getCreator()) &&
+        return getName().equals(groupData.getName()) &&
+            getCreator().equals(groupData.getCreator()) &&
             Objects.equals(getCreationDate(), groupData.getCreationDate()) &&
             Objects.equals(getIcon(), groupData.getIcon()) &&
             Objects.equals(getDescription(), groupData.getDescription()) &&

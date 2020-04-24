@@ -9,30 +9,34 @@ import java.util.Objects;
  * @author Santiago Del Rey
  */
 public class ForumData {
+    @NonNull
     private String name;
+    @NonNull
     private String creator;
     private String creationDate;
     private List<String> tags;
 
-    public ForumData(String name, String creator, List<String> tags) {
+    public ForumData(@NonNull String name, @NonNull String creator, List<String> tags) {
         this.name = name;
         this.creator = creator;
         this.tags = tags;
     }
 
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@NonNull String name) {
         this.name = name;
     }
 
+    @NonNull
     public String getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(@NonNull String creator) {
         this.creator = creator;
     }
 
@@ -57,8 +61,8 @@ public class ForumData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ForumData forumData = (ForumData) o;
-        return Objects.equals(getName(), forumData.getName()) &&
-            Objects.equals(getCreator(), forumData.getCreator()) &&
+        return getName().equals(forumData.getName()) &&
+            getCreator().equals(forumData.getCreator()) &&
             Objects.equals(getCreationDate(), forumData.getCreationDate()) &&
             Objects.equals(getTags(), forumData.getTags());
     }
