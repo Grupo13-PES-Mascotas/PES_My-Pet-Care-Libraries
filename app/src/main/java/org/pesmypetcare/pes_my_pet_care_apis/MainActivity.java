@@ -5,20 +5,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.usermanagerlib.clients.GoogleCalendarManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.EventData;
-import org.json.JSONException;
-import org.pesmypetcare.usermanagerlib.clients.MedicationManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.UserManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.Medication;
-import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
-import org.pesmypetcare.usermanagerlib.datacontainers.UserData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
-
-import java.util.concurrent.ExecutionException;
-
 /**
  * @author Santiago Del Rey
  */
@@ -68,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
         try {
-            dateTime = new DateTime(2017,1,5,13,50,12);
+            dateTime = DateTime.Builder.buildFullString(2017,1,5,13,50,12);
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }

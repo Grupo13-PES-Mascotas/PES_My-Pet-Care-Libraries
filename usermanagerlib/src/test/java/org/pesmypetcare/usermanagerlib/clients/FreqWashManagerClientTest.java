@@ -53,8 +53,8 @@ public class FreqWashManagerClientTest {
     public void setUp() {
         owner = "Manolo";
         petName = "Kawaguchi";
-        date = new DateTime("2020-02-13T10:30:00");
-        date2 = new DateTime("2021-02-13T10:30:00");
+        date = DateTime.Builder.buildFullString("2020-02-13T10:30:00");
+        date2 = DateTime.Builder.buildFullString("2021-02-13T10:30:00");
         value = 1.0;
         freqWashData = new FreqWashData(2.0);
         freqWash = new FreqWash(freqWashData);
