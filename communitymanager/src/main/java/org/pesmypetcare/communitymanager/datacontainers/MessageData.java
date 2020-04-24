@@ -9,7 +9,6 @@ import java.util.Objects;
  * @author Santiago Del Rey
  */
 public class MessageData {
-    @NonNull
     private String creator;
     private String publicationDate;
     private String text;
@@ -17,12 +16,13 @@ public class MessageData {
     private boolean banned;
     private List<String> likedBy;
 
+    public MessageData() { }
+
     public MessageData(@NonNull String creator, String text) {
         this.creator = creator;
         this.text = text;
     }
 
-    @NonNull
     public String getCreator() {
         return creator;
     }

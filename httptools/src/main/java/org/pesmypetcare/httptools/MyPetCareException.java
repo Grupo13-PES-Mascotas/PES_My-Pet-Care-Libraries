@@ -20,7 +20,7 @@ public class MyPetCareException extends Exception {
     public MyPetCareException(String message, HttpResponse res) {
         this(message);
         response = res;
-        this.statusCode = res.getStatusCode();
+        statusCode = res.getStatusCode();
     }
 
     public MyPetCareException(String message, Exception cause, int statusCode) {
