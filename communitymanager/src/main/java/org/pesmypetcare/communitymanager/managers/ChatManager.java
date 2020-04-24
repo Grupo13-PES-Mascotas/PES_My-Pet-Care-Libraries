@@ -40,7 +40,6 @@ public class ChatManager {
                     DocumentSnapshot groupDoc = task.getResult();
                     if (groupDoc.exists()) {
                         groupId = (String) groupDoc.get("group");
-                        System.out.println("ANTES DEL GET FORUM");
                         try {
                             getForumId(group, forum, mutableData);
                         } catch (ChatException e) {
@@ -65,8 +64,6 @@ public class ChatManager {
                 DocumentSnapshot forumDoc = task.getResult();
                 if (forumDoc.exists()) {
                     forumId = (String) forumDoc.get("forum");
-                    System.out.println("Group: " + groupId);
-                    System.out.println("Forum: " + forumId);
                     try {
                         createListener(mutableData);
                     } catch (ChatException e) {
@@ -100,7 +97,6 @@ public class ChatManager {
                 } else if (queryDocumentSnapshots != null) {
                     int i = 0;
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        System.out.println("HOLA " + i++);
                         if (documentSnapshot.exists()) {
                             mutableData.setValue(documentSnapshot.toObject(MessageData.class));
                         }
