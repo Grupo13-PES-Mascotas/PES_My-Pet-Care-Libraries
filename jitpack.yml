@@ -1,0 +1,2 @@
+before_install:
+   - ./.github/scripts/decrypt_key.sh
