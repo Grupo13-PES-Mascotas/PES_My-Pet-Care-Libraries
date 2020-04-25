@@ -1,5 +1,5 @@
-rootProject.name='PES_My-Pet-Care_APIs'
+rootProject.name='PES_My-Pet-Care_Libraries'
 include ':app'
-include ':usermanagerlib'
+include ':usermanager'
 include ':communitymanager'
 include ':httptools'
