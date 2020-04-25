@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.pesmypetcare.pes_my_pet_care_apis"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
