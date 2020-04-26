@@ -1,5 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'jacoco'
+
+group='com.github.Grupo13-PES-Mascotas'
 
 android {
     compileSdkVersion 29
@@ -8,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 2
-        versionName "2.0"
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -29,18 +32,16 @@ android {
             testCoverageEnabled true
         }
     }
+    lintOptions {
+        abortOnError false
+    }
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-}
-
-jacoco {
-    toolVersion '0.8.5'
-}
-
-tasks.withType(Test) {
-    jacoco.includeNoLocationClasses = true
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+    }
 }
 
 dependencies {
@@ -53,8 +54,42 @@ dependencies {
     testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
 }
 
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+/*task classesJar(type: Jar) {
+    from "$buildDir/intermediates/classes/release"
+}*/
+
+artifacts {
+    //archives classesJar
+    archives javadocJar
+    archives sourcesJar
+}
+
+jacoco {
+    toolVersion '0.8.5'
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
 //TODO: Add all modules to report
-task jacocoTestReport(type: JacocoReport, dependsOn: ':usermanager:testDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: ':usermanagerlib:testDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true

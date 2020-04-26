@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         DateTime dateTime = null, dateTime1 = null, dateTime2 = null;
         try {
-            dateTime = new DateTime(2017,1,5,13,50,12);
+            dateTime = DateTime.Builder.buildFullString(2017,1,5,13,50,12);
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
