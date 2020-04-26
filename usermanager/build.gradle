@@ -84,7 +84,7 @@ tasks.withType(Test) {
 }
 
 //TODO: Add all modules to report
-task jacocoTestReport(type: JacocoReport, dependsOn: ':usermanagerlib:testDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: ':usermanager:testDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true
