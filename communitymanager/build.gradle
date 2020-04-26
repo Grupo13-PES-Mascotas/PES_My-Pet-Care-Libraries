@@ -1,6 +1,9 @@
 apply plugin: 'com.android.library'
-apply plugin: 'jacoco'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'jacoco'
+
+group='com.github.Grupo13-PES-Mascotas'
 
 android {
     compileSdkVersion 29
