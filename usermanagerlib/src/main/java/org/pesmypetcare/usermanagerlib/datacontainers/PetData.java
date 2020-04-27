@@ -1,15 +1,18 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
-import java.util.Date;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class PetData {
     private GenderType gender;
     private String breed;
-    private Date birth;
-    private Double weight;
+    private String birth;
     private String pathologies;
+    private String needs;
     private Double recommendedKcal;
-    private int washFreq;
 
     /**
      * The method that returns the pet gender.
@@ -47,7 +50,7 @@ public class PetData {
      * The method that returns the pet birth.
      * @return The pet's birth
      */
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
@@ -55,24 +58,24 @@ public class PetData {
      * The method that set the pet birth.
      * @param birth The pet's birth
      */
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
     /**
-     * The method that returns the pet weight.
-     * @return The pet's weight
+     * The method that returns the pet needs.
+     * @return The pet's needs
      */
-    public Double getWeight() {
-        return weight;
+    public String getNeeds() {
+        return needs;
     }
 
     /**
-     * The method that set the pet weight.
-     * @param weight The pet's weight
+     * The method that set the pet needs.
+     * @param needs The pet's needs
      */
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setNeeds(String needs) {
+        this.needs = needs;
     }
 
     /**
@@ -107,32 +110,29 @@ public class PetData {
         this.recommendedKcal = recommendedKcal;
     }
 
-    /**
-     * The method that returns the pet wash frequency.
-     * @return The pet's wash frequency
-     */
-    public int getWashFreq() {
-        return washFreq;
-    }
-
-    /**
-     * The method that set the pet wash frequency.
-     * @param washFreq The pet's wash frequency
-     */
-    public void setWashFreq(int washFreq) {
-        this.washFreq = washFreq;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "{"
             + "gender=" + gender
             + ", breed='" + breed + '\''
             + ", birth=" + birth
-            + ", weight=" + weight
             + ", pathologies='" + pathologies + '\''
+            + ", needs='" + needs + '\''
             + ", recommendedKcal=" + recommendedKcal
-            + ", washFreq=" + washFreq
             + '}';
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof PetData) {
+            return ((PetData) obj).getBirth().equals(this.getBirth())
+                && ((PetData) obj).getBreed().equals(this.getBreed())
+                && ((PetData) obj).getGender() == this.getGender()
+                && ((PetData) obj).getPathologies().equals(this.getPathologies())
+                && ((PetData) obj).getRecommendedKcal().equals(this.getRecommendedKcal())
+                && ((PetData) obj).getNeeds().equals(this.getNeeds());
+        }
+        return false;
     }
 }
