@@ -21,9 +21,11 @@ import java.util.Map;
  */
 public class ForumManagerClient {
     private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private HttpClient httpClient;
     private final Gson gson;
 
     public ForumManagerClient() {
+        httpClient = new HttpClient();
         gson = new Gson();
     }
 
@@ -35,7 +37,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void createForum(String parentGroup, ForumData forum) throws MyPetCareException {
-        new HttpClient().request(RequestMethod.POST, BASE_URL + HttpParameter.encode(parentGroup), null, null, gson.toJson(forum));
+        httpClient.request(RequestMethod.POST, BASE_URL + HttpParameter.encode(parentGroup), null, null, gson.toJson(forum));
     }
 
     /**
@@ -48,7 +50,7 @@ public class ForumManagerClient {
     public void deleteForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("forum", forumName);
-        new HttpClient().request(RequestMethod.DELETE, BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
+        httpClient.request(RequestMethod.DELETE, BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
     }
 
     /**
@@ -62,7 +64,7 @@ public class ForumManagerClient {
     public ForumData getForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("forum", forumName);
-        HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
+        HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
         return gson.fromJson(response.asString(), ForumData.class);
     }
 
@@ -74,7 +76,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public List<ForumData> getAllForums(String groupName) throws MyPetCareException {
-        HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + HttpParameter.encode(groupName), null, null, null);
+        HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + HttpParameter.encode(groupName), null, null, null);
         Type listType = TypeToken.getParameterized(List.class, ForumData.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -93,7 +95,7 @@ public class ForumManagerClient {
         params[0] = new HttpParameter("newName", newName);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        new HttpClient().request(RequestMethod.PUT, BASE_URL + group + "/" + forum, params, null, null);
+        httpClient.request(RequestMethod.PUT, BASE_URL + group + "/" + forum, params, null, null);
     }
 
     /**
@@ -111,7 +113,7 @@ public class ForumManagerClient {
         newValue.put("new", newTags);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        new HttpClient().request(RequestMethod.PUT, BASE_URL + "/tags/" + group + "/" + forum, null, null, gson.toJson(newValue));
+        httpClient.request(RequestMethod.PUT, BASE_URL + "/tags/" + group + "/" + forum, null, null, gson.toJson(newValue));
     }
 
     /**
@@ -128,7 +130,7 @@ public class ForumManagerClient {
         headers.put("token", token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        new HttpClient().request(RequestMethod.POST, BASE_URL + group + "/" + forum, null, headers, gson.toJson(message));
+        httpClient.request(RequestMethod.POST, BASE_URL + group + "/" + forum, null, headers, gson.toJson(message));
     }
 
     /**
@@ -149,6 +151,6 @@ public class ForumManagerClient {
         params[1] = new HttpParameter("date", date);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        new HttpClient().request(RequestMethod.DELETE, BASE_URL + group + "/" + forum, params, headers, null);
+        httpClient.request(RequestMethod.DELETE, BASE_URL + group + "/" + forum, params, headers, null);
     }
 }

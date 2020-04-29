@@ -1,5 +1,7 @@
 package org.pesmypetcare.httptools;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,11 +92,11 @@ public class HttpResponse {
         if (json == null) {
             try {
                 json = new JSONObject(asString());
-            } catch (JSONException jsone) {
+            } catch (JSONException jsonEx) {
                 if (responseAsString == null) {
-                    throw new MyPetCareException(jsone.getMessage(), jsone);
+                    throw new MyPetCareException(jsonEx.getMessage(), jsonEx);
                 } else {
-                    throw new MyPetCareException(jsone.getMessage() + ":" + this.responseAsString, jsone);
+                    throw new MyPetCareException(jsonEx.getMessage() + ":" + this.responseAsString, jsonEx);
                 }
             } finally {
                 connection.disconnect();
@@ -107,8 +109,8 @@ public class HttpResponse {
         if (jsonArray == null) {
             try {
                 jsonArray = new JSONArray(asString());
-            } catch (JSONException jsone) {
-                throw new MyPetCareException(jsone.getMessage(), jsone);
+            } catch (JSONException jsonEx) {
+                throw new MyPetCareException(jsonEx.getMessage(), jsonEx);
             } finally {
                 connection.disconnect();
             }
@@ -116,6 +118,7 @@ public class HttpResponse {
         return jsonArray;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "HttpResponse{" +

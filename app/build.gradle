@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "org.pesmypetcare.pes_my_pet_care_apis"
@@ -43,7 +43,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation 'com.github.Grupo13-PES-Mascotas.PES_My-Pet-Care-Libraries:communitymanager:feature~feature_forums_content_CRUD-SNAPSHOT'
+    implementation project(path: ':usermanager')
+    implementation project(path: ':communitymanager')
+    implementation project(path: ':httptools')
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'

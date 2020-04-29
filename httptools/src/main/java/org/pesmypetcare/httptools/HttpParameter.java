@@ -2,6 +2,7 @@ package org.pesmypetcare.httptools;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 /**
  * @author Santiago Del Rey
@@ -23,6 +24,14 @@ public class HttpParameter {
     public HttpParameter(String name, boolean value) {
         this.name = name;
         this.value = String.valueOf(value);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     /**
@@ -72,5 +81,29 @@ public class HttpParameter {
             }
         }
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        HttpParameter that = (HttpParameter) o;
+
+        if (!Objects.equals(getName(), that.getName())) {
+            return false;
+        }
+        return Objects.equals(getValue(), that.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
+        return result;
     }
 }
