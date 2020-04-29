@@ -17,7 +17,7 @@ public class HttpClient {
         return handleRequest(new HttpRequest(method, url, params, headers, body));
     }
 
-        public HttpResponse handleRequest(HttpRequest req) throws MyPetCareException {
+    public HttpResponse handleRequest(HttpRequest req) throws MyPetCareException {
         HttpResponse res = null;
         int responseCode = -1;
         try {

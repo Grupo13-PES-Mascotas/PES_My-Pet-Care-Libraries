@@ -14,6 +14,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.pesmypetcare.httptools.HttpClient;
+import org.pesmypetcare.httptools.HttpParameter;
+import org.pesmypetcare.httptools.HttpResponse;
+import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.RequestMethod;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -25,11 +30,14 @@ import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
@@ -57,7 +65,10 @@ public class UserManagerClientTest {
     private StringBuilder responseJson;
     private UserData expected;
     private byte[] image;
+    private Gson gson;
 
+    @Mock
+    private HttpClient httpClient;
     @Mock
     private TaskManager taskManager;
 
@@ -68,12 +79,9 @@ public class UserManagerClientTest {
 
     @Before
     public void setUp() {
-        Gson gson = new Gson();
+        gson = new Gson();
         user = new UserData(USERNAME, EMAIL, PASSWORD);
         json = new StringBuilder(gson.toJson(user));
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("exists", true);
-        responseJson = new StringBuilder(gson.toJson(map));
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();
     }
@@ -90,10 +98,13 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void usernameAlreadyExists() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + "usernames?username=" + USERNAME, "")).willReturn(taskManager);
-        given(taskManager.get()).willReturn(responseJson);
+    public void usernameAlreadyExists() throws  MyPetCareException {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("exists", true);
+        String json = gson.toJson(map);
+        given(httpResponse.asString()).willReturn(json);
         boolean response = client.usernameAlreadyExists(USERNAME);
         assertTrue("Should return true when username exists", response);
     }

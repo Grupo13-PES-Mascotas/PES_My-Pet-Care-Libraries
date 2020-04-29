@@ -38,10 +38,12 @@ public class UserManagerClient {
     private static final String DELETE = "DELETE";
     private static final String UID_FIELD = "uid";
     private TaskManager taskManager;
+    private HttpClient httpClient;
     private Gson gson;
 
     public UserManagerClient() {
         taskManager = new TaskManager();
+        httpClient = new HttpClient();
         gson = new Gson();
     }
 
@@ -74,7 +76,7 @@ public class UserManagerClient {
     public boolean usernameAlreadyExists(String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("username", username);
-        HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + "usernames", params, null, null);
+        HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "usernames", params, null, null);
         Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
         Map<String, Boolean> map = gson.fromJson(response.asString(), mapType);
         return Objects.requireNonNull(map.get("exists"));
