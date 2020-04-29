@@ -8,6 +8,11 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.pesmypetcare.httptools.HttpClient;
+import org.pesmypetcare.httptools.HttpParameter;
+import org.pesmypetcare.httptools.HttpResponse;
+import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.RequestMethod;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
@@ -25,6 +30,7 @@ public class UserManagerClient {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PUT = "PUT";
@@ -63,19 +69,15 @@ public class UserManagerClient {
      * Checks if a username is already in use.
      * @param username The username to check
      * @return True if the username is already in use
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public boolean usernameAlreadyExists(String username) throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + "usernames?username=" + username, "").get();
-        if (json != null) {
-            Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
-            Map<String, Boolean> response = gson.fromJson(json.toString(), mapType);
-            return Objects.requireNonNull(response.get("exists"));
-        }
-        return true;
+    public boolean usernameAlreadyExists(String username) throws MyPetCareException {
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("username", username);
+        HttpResponse response = new HttpClient().request(RequestMethod.GET, BASE_URL + "usernames", params, null, null);
+        Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
+        Map<String, Boolean> map = gson.fromJson(response.asString(), mapType);
+        return Objects.requireNonNull(map.get("exists"));
     }
 
     /**

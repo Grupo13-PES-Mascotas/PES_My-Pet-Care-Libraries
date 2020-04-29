@@ -5,13 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.datacontainers.ForumData;
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
-import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 /**
  * @author Santiago Del Rey
@@ -269,8 +265,8 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        //UserManagerClient client = new UserManagerClient();
-        //UserData user = new UserData("santi", "santi@mail.com", "123455678");
+        UserManagerClient client = new UserManagerClient();
+        UserData user = new UserData("santi", "santi@mail.com", "123455678");
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
@@ -289,9 +285,17 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }*/
-        /*client.signUp("santi", "123456", "santi@gmail.com");
-        System.out.println("Pasado signup");
-        try {
+        Thread thread = new Thread(() -> {
+            try {
+                System.out.println(client.usernameAlreadyExists("Apint"));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Pasado");
+        });
+        thread.start();
+        //System.out.println(client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user));
+        /*try {
             System.out.println("MAIN: " + client.getUser("kayle"));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -365,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();*/
         //TEST FORUMS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("PES");
@@ -391,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("FIN");
         });
-        thread.start();
+        thread.start();*/
     }
 }
 
