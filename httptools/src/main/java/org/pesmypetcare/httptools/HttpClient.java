@@ -40,7 +40,7 @@ public class HttpClient {
             responseCode = con.getResponseCode();
             res = new HttpResponse(con);
             if (responseCode != 200) {
-                throw new MyPetCareException(res.toString(), res);
+                throw new MyPetCareException(res.asString(), res);
             }
         } catch (IOException e) {
             if (BuildConfig.DEBUG) {
