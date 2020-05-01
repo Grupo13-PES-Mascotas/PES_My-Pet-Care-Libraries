@@ -20,7 +20,7 @@ public class HttpClient {
     public HttpResponse request(RequestMethod method, String url, HttpParameter[] params,
                                 Map<String, String> headers, String body) throws MyPetCareException {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "Request done");
+            Log.i(TAG, "Request started");
         }
         return handleRequest(new HttpRequest(method, url, params, headers, body));
     }
@@ -29,7 +29,7 @@ public class HttpClient {
         HttpResponse res;
         int responseCode = -1;
         if (BuildConfig.DEBUG) {
-            Log.e(TAG, "Start request " + new Gson().toJson(req));
+            Log.i(TAG, "Start request: " + new Gson().toJson(req));
         }
         try {
             HttpURLConnection con = (HttpURLConnection) new URL(req.getUrl()).openConnection();

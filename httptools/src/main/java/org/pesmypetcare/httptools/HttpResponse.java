@@ -1,5 +1,7 @@
 package org.pesmypetcare.httptools;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -17,6 +19,7 @@ import java.nio.charset.StandardCharsets;
  * @author Santiago Del Rey
  */
 public class HttpResponse {
+    private static final String TAG = "HttpResponse";
     private int statusCode;
 
     private HttpURLConnection connection;
@@ -54,6 +57,9 @@ public class HttpResponse {
             BufferedReader br = null;
             InputStream stream = null;
             try {
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "Start reading response");
+                }
                 stream = asStream();
                 if (null == stream) {
                     return null;
@@ -68,21 +74,33 @@ public class HttpResponse {
                 stream.close();
                 consumed = true;
             } catch (IOException ioe) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, ioe.getMessage(), ioe);
+                }
                 throw new MyPetCareException(ioe.getMessage(), ioe);
             } finally {
                 if (stream != null) {
                     try {
                         stream.close();
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "InputStream closed");
+                        }
                     } catch (IOException ignore) {
                     }
                 }
                 if (br != null) {
                     try {
                         br.close();
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "BufferedReader closed");
+                        }
                     } catch (IOException ignore) {
                     }
                 }
                 connection.disconnect();
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "Connection closed in asString() call");
+                }
             }
         }
         return responseAsString;
@@ -94,12 +112,21 @@ public class HttpResponse {
                 json = new JSONObject(asString());
             } catch (JSONException jsonEx) {
                 if (responseAsString == null) {
+                    if (BuildConfig.DEBUG) {
+                        Log.e(TAG, jsonEx.getMessage(), jsonEx);
+                    }
                     throw new MyPetCareException(jsonEx.getMessage(), jsonEx);
                 } else {
-                    throw new MyPetCareException(jsonEx.getMessage() + ":" + this.responseAsString, jsonEx);
+                    if (BuildConfig.DEBUG) {
+                        Log.e(TAG, jsonEx.getMessage() + " : " + this.responseAsString, jsonEx);
+                    }
+                    throw new MyPetCareException(jsonEx.getMessage() + " : " + this.responseAsString, jsonEx);
                 }
             } finally {
                 connection.disconnect();
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "Connection closed in asJSONObject() call");
+                }
             }
         }
         return json;
@@ -110,9 +137,15 @@ public class HttpResponse {
             try {
                 jsonArray = new JSONArray(asString());
             } catch (JSONException jsonEx) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, jsonEx.getMessage(), jsonEx);
+                }
                 throw new MyPetCareException(jsonEx.getMessage(), jsonEx);
             } finally {
                 connection.disconnect();
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "Connection closed in asJSONArray() call");
+                }
             }
         }
         return jsonArray;

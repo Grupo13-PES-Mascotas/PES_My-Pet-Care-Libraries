@@ -5,9 +5,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
-import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
-import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Santiago Del Rey
@@ -265,8 +268,8 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        UserManagerClient client = new UserManagerClient();
-        UserData user = new UserData("santi", "santi@mail.com", "123455678");
+        //UserManagerClient client = new UserManagerClient();
+        //UserData user = new UserData("santi", "santi@mail.com", "123455678");
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }*/
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             try {
                 System.out.println(client.usernameAlreadyExists("Apint"));
             } catch (MyPetCareException e) {
@@ -293,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("Pasado");
         });
-        thread.start();
+        thread.start();*/
         //System.out.println(client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user));
         /*try {
             System.out.println("MAIN: " + client.getUser("kayle"));
@@ -331,43 +334,40 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        /*Thread thread = new Thread(() {
-            @Override
-            public void run() {
-                GroupManagerClient groupManager = new GroupManagerClient();
-                List<String> tags = new ArrayList<>();
-                tags.add("empo");
-                tags.add("empotrador");
-                String groupName = "Prueba 1";
-                GroupData data = new GroupData(groupName, "santi","2020-04-20", "Hola", tags);
-                try {
-                    groupManager.createGroup(data);
-                    groupManager.deleteGroup(groupName);
-                    groupManager.createGroup(data);
-                    System.out.println("Print 1: " + groupManager.getGroup(groupName));
-                    System.out.println("Print 2: " + groupManager.getAllGroups());
-                    System.out.println("Print 3: " + groupManager.getAllTags());
-                    System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
-                    groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
-                    groupManager.updateField(groupName, "name", "Probando Cosas");
-                    tags.remove("empo");
-                    List<String> tags2 = new ArrayList<>();
-                    tags2.add("doraimio");
-                    groupManager.updateGroupTags("Probando Cosas", tags, tags2);
-                    groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
-                    System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
-                    groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
-                    System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
-                    System.out.println("Print 7: " + groupManager.getAllGroups());
-                    System.out.println("Print 8: " + groupManager.getAllTags());
-                    groupManager.deleteGroup("Probando Cosas");
-                } catch (MyPetCareException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("ACABADO");
+        Thread thread = new Thread(() -> {
+            GroupManagerClient groupManager = new GroupManagerClient();
+            List<String> tags = new ArrayList<>();
+            tags.add("empo");
+            tags.add("empotrador");
+            String groupName = "Prueba 14";
+            GroupData data = new GroupData(groupName, "santi","", tags);
+            try {
+                groupManager.createGroup(data);
+                /*groupManager.deleteGroup(groupName);
+                groupManager.createGroup(data);
+                System.out.println("Print 1: " + groupManager.getGroup(groupName));
+                System.out.println("Print 2: " + groupManager.getAllGroups());
+                System.out.println("Print 3: " + groupManager.getAllTags());
+                System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
+                groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
+                groupManager.updateField(groupName, "name", "Probando Cosas");
+                tags.remove("empo");
+                List<String> tags2 = new ArrayList<>();
+                tags2.add("doraimio");
+                groupManager.updateGroupTags("Probando Cosas", tags, tags2);
+                groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
+                System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
+                System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                System.out.println("Print 7: " + groupManager.getAllGroups());
+                System.out.println("Print 8: " + groupManager.getAllTags());
+                groupManager.deleteGroup("Probando Cosas");*/
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
             }
+            System.out.println("ACABADO");
         });
-        thread.start();*/
+        thread.start();
         //TEST FORUMS
         /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
