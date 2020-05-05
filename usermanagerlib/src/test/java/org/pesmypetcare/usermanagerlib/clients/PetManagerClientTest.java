@@ -41,16 +41,20 @@ public class PetManagerClientTest {
     private static final String BIRTH_FIELD = "birth";
     private static final String CODE_OK = "Should return response code 200";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
-    private final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
-    private final String NEEDS_EXAMPLE = "None of your business";
+    private static final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
+    private static final String date1 = "1990-01-08T15:20:30";
+    private static final String date2 = "1995-01-08T15:20:30";
+    private static final String NEEDS_EXAMPLE = "None of your business";
     private final int expectedResponseCode = 200;
     private StringBuilder json;
     private StringBuilder jsonAllPets;
     private StringBuilder recKcalJson;
     private StringBuilder needsJson;
     private StringBuilder mealsFieldCollectionJson;
+    private StringBuilder mealsFieldCollectionElementJson;
     private List<PetCollectionField> petCollectionFieldList;
     private PetCollectionFieldData petCollectionFieldData;
+    private Map<String, Object> collectionElementBody;
     private Pet pet;
     private PetData expectedPetData;
     private List<Pet> petList;
@@ -120,17 +124,23 @@ public class PetManagerClientTest {
             "    \"key\": \"1998-01-08T15:20:30\"\n" +
             "  }\n" +
             "]");
-        Map<String, Object> aux = new HashMap<>();
-        aux.put("kcal", 85.44);
-        aux.put("mealName", "Tortilla");
+        mealsFieldCollectionElementJson = new StringBuilder(
+            "{\n" +
+                "  \"kcal\": 85.44,\n" +
+                "  \"mealName\": \"Tortilla\"\n" +
+                "}"
+        );
+        collectionElementBody = new HashMap<>();
+        collectionElementBody.put("kcal", 85.44);
+        collectionElementBody.put("mealName", "Tortilla");
         petCollectionFieldData = new PetCollectionFieldData();
-        petCollectionFieldData.setBody(aux);
+        petCollectionFieldData.setBody(collectionElementBody);
         petCollectionFieldList = new ArrayList<>();
         PetCollectionField petCollectionField = new PetCollectionField();
         petCollectionField.setBody(petCollectionFieldData);
-        petCollectionField.setKey("1990-01-08T15:20:30");
+        petCollectionField.setKey(date1);
         petCollectionFieldList.add(petCollectionField);
-        petCollectionField.setKey("1995-01-08T15:20:30");
+        petCollectionField.setKey(date2);
         petCollectionFieldList.add(petCollectionField);
         petCollectionField.setKey("1998-01-08T15:20:30");
         petCollectionFieldList.add(petCollectionField);
@@ -271,45 +281,50 @@ public class PetManagerClientTest {
     public void getFieldCollectionElementsBetweenKeys() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
-        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+        given(taskManager.get()).willReturn(mealsFieldCollectionJson);
+        List<PetCollectionField> response = client.getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME,
+            petName, PetData.MEALS, date1, date2);
+        assertEquals("Should return a meals list with elements between the keys", petCollectionFieldList,
+            response);
     }
 
     @Test
     public void addFieldCollectionElement() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
-        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1,
+            collectionElementBody);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
 
     @Test
     public void deleteFieldCollectionElement() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
-        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
 
     @Test
     public void updateFieldCollectionElement() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
-        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1,
+            collectionElementBody);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
 
     @Test
     public void getFieldCollectionElement() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
-        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+        given(taskManager.get()).willReturn(mealsFieldCollectionElementJson);
+        Map<String, Object> response = client.getFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS,
+            date1);
+        assertEquals("Should return the specified element", collectionElementBody, response);
     }
 
     @Test

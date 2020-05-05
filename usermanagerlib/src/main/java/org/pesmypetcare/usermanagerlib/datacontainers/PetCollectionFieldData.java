@@ -11,6 +11,7 @@ import java.util.Map;
 public class PetCollectionFieldData {
     private Map<String, Object> body;
 
+    /*
     public PetCollectionFieldData() { }
 
     public PetCollectionFieldData(Map<String, Object> body) {
@@ -23,7 +24,7 @@ public class PetCollectionFieldData {
         for (int i = 0; i < args.length; i+=2) {
             body.put((String) args[i], args[i+1]);
         }
-    }
+    }*/
 
     public Map<String, Object> getBody() {
         return body;
