@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import javax.xml.transform.Source;
+
 /**
  * @author Oriol Catalán
  */
@@ -180,8 +182,13 @@ public class PetManagerClient {
         PetData.checkSimpleField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        return taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
                 + petName + "/simple/" + field, accessToken).get();
+        String[] split = response.toString().split("\"");
+        if (split.length == 3) {
+            return Double.parseDouble(split[2].split(":")[1].split("}")[0]);
+        }
+        return response.toString().split("\"")[3];
     }
 
     /**
@@ -252,6 +259,8 @@ public class PetManagerClient {
         String jsonArray = response.substring(1, response.length() - 1);
         String[] objectArray = jsonArray.split(",\\{");
         List<PetCollectionField> result = new ArrayList<>();
+        System.out.println(jsonArray);
+        for (String a:objectArray) System.out.println(a);
         result.add(GSON.fromJson(objectArray[0], PetCollectionField.class));
         for (int i = 1; i < objectArray.length; i++) {
             objectArray[i] = "{" + objectArray[i];

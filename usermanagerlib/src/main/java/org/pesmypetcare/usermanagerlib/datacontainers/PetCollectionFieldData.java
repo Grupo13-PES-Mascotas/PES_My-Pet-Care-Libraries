@@ -11,6 +11,20 @@ import java.util.Map;
 public class PetCollectionFieldData {
     private Map<String, Object> body;
 
+    public PetCollectionFieldData() { }
+
+    public PetCollectionFieldData(Map<String, Object> body) {
+        this.body = body;
+    }
+
+    public PetCollectionFieldData(Object... args) {
+        if (args.length%2 != 0) throw new IllegalArgumentException("PetCollectionFieldData constructor passed "
+            + "arguments are not valid");
+        for (int i = 0; i < args.length; i+=2) {
+            body.put((String) args[i], args[i+1]);
+        }
+    }
+
     public Map<String, Object> getBody() {
         return body;
     }
