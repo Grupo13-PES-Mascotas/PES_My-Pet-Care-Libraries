@@ -167,7 +167,7 @@ public class PetManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
+        int responseCode = client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
                 "2019-02-13T10:30:00");
         assertEquals(CODE_OK, expectedResponseCode,
                 responseCode);
@@ -177,7 +177,7 @@ public class PetManagerClientTest {
     public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException,
             InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL,
+        client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL,
                 "23.3");
     }
 

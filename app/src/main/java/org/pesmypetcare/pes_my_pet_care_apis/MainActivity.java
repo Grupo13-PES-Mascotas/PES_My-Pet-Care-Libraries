@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-*/
+
 //TEST MEDICATION//
         /*
         MedicationManagerClient manager = new MedicationManagerClient();

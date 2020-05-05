@@ -9,6 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONObject;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
+import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionField;
+import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionFieldData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.lang.reflect.Type;
@@ -37,9 +39,9 @@ public class PetManagerClient {
     private static final String PUT = "PUT";
     private static final String GET = "GET";
     private static final String POST = "POST";
+    private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
-    private static String usernameField = "username";
-    private static String nameField = "name";
+    private static final String NAME_FIELD = "name";
     private final Gson GSON = new Gson();
     private TaskManager taskManager;
 
@@ -58,7 +60,7 @@ public class PetManagerClient {
      */
     public int createPet(String accessToken, String username, Pet pet)
         throws ExecutionException, InterruptedException {
-        JSONObject reqJson = buildPetJson(pet.getBody());
+        JSONObject reqJson = Pet.buildPetJsonObject(pet.getBody());
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
@@ -83,8 +85,7 @@ public class PetManagerClient {
     public void createPet(String accessToken, String username, String petName, String gender, String
             breed, String birthday, String needs, String pathologies, double recKcal) {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put(usernameField, username);
-        reqData.put(nameField, petName);
+        reqData.put(NAME_FIELD, petName);
         reqData.put(GENDER, gender);
         reqData.put(BREED, breed);
         reqData.put(BIRTH, birthday);
@@ -158,11 +159,29 @@ public class PetManagerClient {
     public int deletePet(String accessToken, String username, String petName)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId("DELETE");
+        taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName, accessToken)
-            .get();
+                + petName, accessToken).get();
         return Integer.parseInt(response.toString());
+    }
+
+    /**
+     * Gets the value for the specified field of the pet on the database.
+     * @param accessToken The personal access token for the account
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param field Name of the field to retrieve the value from
+     * @return The value from the field on the database
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public Object getSimpleField(String accessToken, String username, String petName, String field)
+        throws ExecutionException, InterruptedException {
+        PetData.checkSimpleField(field);
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId(GET);
+        return taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+                + petName + "/simple/" + field, accessToken).get();
     }
 
     /**
@@ -176,130 +195,195 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int updateField(String accessToken, String username, String petName, String field,
-                           Object newValue)
+    public int updateSimpleField(String accessToken, String username, String petName, String field,
+                                 Object newValue)
         throws ExecutionException, InterruptedException {
-        checkCorrectType(field, newValue);
+        PetData.checkSimpleFieldAndValues(field, newValue);
         taskManager = taskManager.resetTaskManager();
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                        + petName + SLASH + field,
-            accessToken).get();
+                        + petName + "/simple/" + field, accessToken).get();
+        return Integer.parseInt(response.toString());
+    }
+
+
+    /**
+     * Deletes the map for the specified field of the pet on the database.
+     * @param accessToken The personal access token for the account
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param field Name of the field to delete
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public int deleteFieldCollection(String accessToken, String username, String petName, String field)
+        throws ExecutionException, InterruptedException {
+        PetData.checkCollectionField(field);
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId(DELETE);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
-     * Updates de gender of a pet.
+     * Gets the elements for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newGender The new gender for the pet
+     * @param field Name of the field to retrieve
+     * @return The elements from the field on the database
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updateGender(String accessToken, String username, String petName,
-                             String newGender) {
+    public List<PetCollectionField> getFieldCollection(String accessToken, String username, String petName,
+                                                        String field) throws ExecutionException, InterruptedException {
+        PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, newGender);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + GENDER,
-                accessToken);
+        taskManager.setTaskId(GET);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field, accessToken).get();
+        if (response.length() <= 2) {
+            return new ArrayList<>();
+        }
+        String jsonArray = response.substring(1, response.length() - 1);
+        String[] objectArray = jsonArray.split(",\\{");
+        List<PetCollectionField> result = new ArrayList<>();
+        result.add(GSON.fromJson(objectArray[0], PetCollectionField.class));
+        for (int i = 1; i < objectArray.length; i++) {
+            objectArray[i] = "{" + objectArray[i];
+            result.add(GSON.fromJson(objectArray[i], PetCollectionField.class));
+        }
+        return result;
     }
 
     /**
-     * Updates the birthday of a pet.
+     * Gets all the elements between the keys from the database for the specified field.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newBirthday The new birthday for the pet
+     * @param field Name of the field
+     * @param key1 Start key (This one included)
+     * @param key2 End Key (This one included)
+     * @return The elements between the keys
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updateBirthday(String accessToken, String username, String petName,
-                               String newBirthday) {
+    public List<PetCollectionField> getFieldCollectionElementsBetweenKeys(String accessToken, String username,
+                                                                           String petName, String field,
+                                                                           String key1, String key2)
+        throws ExecutionException, InterruptedException {
+        PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, newBirthday);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + BIRTH,
-                accessToken);
+        taskManager.setTaskId(GET);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field + SLASH + key1 + SLASH + key2, accessToken).get();
+        if (response.length() <= 2) {
+            return new ArrayList<>();
+        }
+        String jsonArray = response.substring(1, response.length() - 1);
+        String[] objectArray = jsonArray.split(",\\{");
+        List<PetCollectionField> result = new ArrayList<>();
+        result.add(GSON.fromJson(objectArray[0], PetCollectionField.class));
+        for (int i = 1; i < objectArray.length; i++) {
+            objectArray[i] = "{" + objectArray[i];
+            result.add(GSON.fromJson(objectArray[i], PetCollectionField.class));
+        }
+        return result;
     }
 
     /**
-     * Updates the breed of a pet.
+     * Adds an element to the map for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newBreed The new breed for the pet
+     * @param field Name of the field
+     * @param key Key of the new element to be added
+     * @param body Element to be added
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updateBreed(String accessToken, String username, String petName, String newBreed) {
+    public int addFieldCollectionElement(String accessToken, String username, String petName, String field,
+                                          String key, Map<String, Object> body)
+        throws ExecutionException, InterruptedException {
+        PetData.checkCollectionKeyAndBody(field, key, body);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, newBreed);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + BREED,
-                accessToken);
+        taskManager.setTaskId(POST);
+        taskManager.setReqBody(new JSONObject(body));
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        return Integer.parseInt(response.toString());
     }
 
     /**
-     * Updates the breed of a pet.
+     * Deletes an element from the map for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newNeed The new need for the pet
+     * @param field Name of the field
+     * @param key Key of the element to delete
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updateNeeds(String accessToken, String username, String petName, String newNeed) {
+    public int deleteFieldCollectionElement(String accessToken, String username, String petName,
+                                             String field, String key) throws ExecutionException, InterruptedException {
+        PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, String.valueOf(newNeed));
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + NEEDS,
-                accessToken);
+        taskManager.setTaskId(DELETE);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        return Integer.parseInt(response.toString());
     }
 
     /**
-     * Updates the pathologies of a pet.
+     * Updates an element from the map for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newPathologies The new pathologies for the pet
+     * @param field Name of the field
+     * @param key Key of the element to update
+     * @param body Update of the element
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updatePathologies(String accessToken, String username, String petName,
-                                  String newPathologies) {
+    public int updateFieldCollectionElement(String accessToken, String username, String petName, String field,
+                                             String key, Map<String, Object> body)
+        throws ExecutionException, InterruptedException {
+        PetData.checkCollectionKeyAndBody(field, key, body);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, newPathologies);
         taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH + PATHOLOGIES,
-                accessToken);
+        taskManager.setReqBody(new JSONObject(body));
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        return Integer.parseInt(response.toString());
     }
 
     /**
-     * Updates the recommended Kcal for a pet.
+     * Gets an element from the map for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param newKcal The new recommended Kcal for the pet
+     * @param field Name of the field
+     * @param key Key of the element
+     * @return Element assigned to the key
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
      */
-    @Deprecated
-    public void updateRecKcal(String accessToken, String username, String petName, double newKcal) {
+    public Map<String, Object> getFieldCollectionElement(String accessToken, String username, String petName,
+                                                         String field, String key)
+        throws ExecutionException, InterruptedException {
+        PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(VALUE_KEY, Double.toString(newKcal));
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName + SLASH
-                + RECOMMENDED_KCAL, accessToken);
+        taskManager.setTaskId(GET);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        if (response != null) {
+            return GSON.fromJson(response.toString(), PetCollectionFieldData.class).getBody();
+        }
+        return null;
     }
 
     /**
@@ -370,38 +454,5 @@ public class PetManagerClient {
             result.put(key, img);
         }
         return result;
-    }
-
-    /**
-     * Creates the pet's json object.
-     * @param petData The pet data container
-     * @return A JSONObject with te required data to make the request
-     */
-    private JSONObject buildPetJson(PetData petData) {
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(GENDER, petData.getGender().toString());
-        reqData.put(BREED, petData.getBreed());
-        reqData.put(BIRTH, petData.getBirth());
-        reqData.put(NEEDS, petData.getNeeds());
-        reqData.put(PATHOLOGIES, petData.getPathologies());
-        reqData.put(RECOMMENDED_KCAL, Double.toString(petData.getRecommendedKcal()));
-        return new JSONObject(reqData);
-    }
-
-    /**
-     * Checks that the new value is of the correct type.
-     * @param field The field to update
-     * @param newValue The new value
-     * @throws IllegalArgumentException When an invalid field value is passed
-     */
-    private void checkCorrectType(String field, Object newValue) {
-        if ((field.equals(BIRTH) || field.equals(BREED) || (field.equals(PATHOLOGIES)
-                || field.equals(NEEDS))) && !(newValue instanceof String)) {
-            throw new IllegalArgumentException("New value must be a String");
-        } else if (field.equals(RECOMMENDED_KCAL) && !(newValue instanceof Double)) {
-            throw new IllegalArgumentException("New value must be a Double");
-        } else if (field.equals(GENDER) && !(newValue instanceof GenderType)) {
-            throw new IllegalArgumentException("New value must be a GenderType");
-        }
     }
 }
