@@ -2,11 +2,11 @@ package org.pesmypetcare.usermanagerlib.clients;
 
 import com.google.gson.Gson;
 
+import org.pesmypetcare.usermanagerlib.datacontainers.Exercise;
+import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Training;
-import org.pesmypetcare.usermanagerlib.datacontainers.TrainingData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Wash;
 import org.pesmypetcare.usermanagerlib.datacontainers.WashData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
@@ -118,45 +118,45 @@ public class PetCollectionsManagerClient {
     }
 
     /**
-     * Gets the data from all the specified trainings from the database identified by its pet.
+     * Gets the data from all the specified exercises from the database identified by its pet.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @return The List containing all the trainings from the pet
+     * @return The List containing all the exercises from the pet
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Training> getAllTrainings(String accessToken, String username, String petName)
+    public List<Exercise> getAllExercises(String accessToken, String username, String petName)
         throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-            + petName + "/collection/trainings", accessToken).get();
+            + petName + "/collection/exercises", accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
         String[] objectArray = splitResponse(response);
-        List<Training> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Training.class));
+        List<Exercise> result = new ArrayList<>();
+        result.add(GSON.fromJson(objectArray[0], Exercise.class));
         for (int i = 1; i < objectArray.length; i++) {
             objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Training.class));
+            result.add(GSON.fromJson(objectArray[i], Exercise.class));
         }
         return result;
     }
 
     /**
-     * Gets the data from all the trainings done by the pet between the initial and final date including both of them.
+     * Gets the data from all the exercises done by the pet between the initial and final date including both of them.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
-     * @return The trainings between the dates
+     * @return The exercises between the dates
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Training> getTrainingsBetween(String accessToken, String username, String petName, String key1,
+    public List<Exercise> getExercisesBetween(String accessToken, String username, String petName, String key1,
                                            String key2)
         throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
@@ -164,39 +164,39 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-            + petName + "/collection/trainings/" + key1 + SLASH + key2, accessToken).get();
+            + petName + "/collection/exercises/" + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
         String[] objectArray = splitResponse(response);
-        List<Training> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Training.class));
+        List<Exercise> result = new ArrayList<>();
+        result.add(GSON.fromJson(objectArray[0], Exercise.class));
         for (int i = 1; i < objectArray.length; i++) {
             objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Training.class));
+            result.add(GSON.fromJson(objectArray[i], Exercise.class));
         }
         return result;
     }
 
     /**
-     * Gets a training identified by its pet and date.
+     * Gets a exercise identified by its pet and date.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
-     * @param key Date the training was done
-     * @return The TrainingData identified by its pet and date.
+     * @param key Date the exercise was done
+     * @return The ExerciseData identified by its pet and date.
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public TrainingData getTraining(String accessToken, String username, String petName, String key)
+    public ExerciseData getExercise(String accessToken, String username, String petName, String key)
         throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-            + petName + "/collection/trainings/" + key, accessToken).get();
+            + petName + "/collection/exercises/" + key, accessToken).get();
         if (response != null) {
-            return GSON.fromJson(response.toString(), TrainingData.class);
+            return GSON.fromJson(response.toString(), ExerciseData.class);
         }
         return null;
     }

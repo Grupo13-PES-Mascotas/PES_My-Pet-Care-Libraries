@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity {
                 dateTime1.toString(), dateTime2.toString()));
             System.out.println(extraManager.getMeal("token", "Manolo", "Santiago",
                 dateTime4.toString()));
-            System.out.println(extraManager.getAllTrainings("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getTrainingsBetween("token", "Manolo", "Santiago",
+            System.out.println(extraManager.getAllExercises("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getExercisesBetween("token", "Manolo", "Santiago",
                 dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getTraining("token", "Manolo", "Santiago",
+            System.out.println(extraManager.getExercise("token", "Manolo", "Santiago",
                 dateTime4.toString()));
             System.out.println(extraManager.getAllWashes("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getWashesBetween("token", "Manolo", "Santiago",

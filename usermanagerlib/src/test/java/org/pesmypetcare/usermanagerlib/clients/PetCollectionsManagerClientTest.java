@@ -8,10 +8,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.pesmypetcare.usermanagerlib.datacontainers.Exercise;
+import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Training;
-import org.pesmypetcare.usermanagerlib.datacontainers.TrainingData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Wash;
 import org.pesmypetcare.usermanagerlib.datacontainers.WashData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
@@ -45,8 +45,8 @@ public class PetCollectionsManagerClientTest {
     private MealData mealData;
     private StringBuilder valueCollectionJson;
     private StringBuilder valueDataJson;
-    private List<Training> trainingCollectionList;
-    private TrainingData trainingData;
+    private List<Exercise> exerciseCollectionList;
+    private ExerciseData exerciseData;
     private List<Wash> washCollectionList;
     private WashData washData;
     private List<Weight> weightCollectionList;
@@ -120,11 +120,11 @@ public class PetCollectionsManagerClientTest {
             + " \"value\": 54\n"
             + "}"
         );
-        trainingData = new TrainingData(54);
-        trainingCollectionList = new ArrayList<>();
-        trainingCollectionList.add(new Training(DATE_1, trainingData));
-        trainingCollectionList.add(new Training(DATE_2, trainingData));
-        trainingCollectionList.add(new Training(DATE_3, trainingData));
+        exerciseData = new ExerciseData(54);
+        exerciseCollectionList = new ArrayList<>();
+        exerciseCollectionList.add(new Exercise(DATE_1, exerciseData));
+        exerciseCollectionList.add(new Exercise(DATE_2, exerciseData));
+        exerciseCollectionList.add(new Exercise(DATE_3, exerciseData));
         washData = new WashData(54);
         washCollectionList = new ArrayList<>();
         washCollectionList.add(new Wash(DATE_1, washData));
@@ -165,30 +165,30 @@ public class PetCollectionsManagerClientTest {
     }
 
     @Test
-    public void getAllTrainings() throws ExecutionException, InterruptedException {
+    public void getAllExercises() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueCollectionJson);
-        List<Training> response = client.getAllTrainings(ACCESS_TOKEN, USERNAME, PET_NAME);
-        assertEquals("Should return a list", trainingCollectionList, response);
+        List<Exercise> response = client.getAllExercises(ACCESS_TOKEN, USERNAME, PET_NAME);
+        assertEquals("Should return a list", exerciseCollectionList, response);
     }
 
     @Test
-    public void getTrainingsBetween() throws ExecutionException, InterruptedException {
+    public void getExercisesBetween() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueCollectionJson);
-        List<Training> response = client.getTrainingsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
-        assertEquals("Should return a list", trainingCollectionList, response);
+        List<Exercise> response = client.getExercisesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        assertEquals("Should return a list", exerciseCollectionList, response);
     }
 
     @Test
-    public void getTrainings() throws ExecutionException, InterruptedException {
+    public void getExercises() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueDataJson);
-        TrainingData response = client.getTraining(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
-        assertEquals("Should return the specified element", trainingData, response);
+        ExerciseData response = client.getExercise(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        assertEquals("Should return the specified element", exerciseData, response);
     }
 
     @Test
