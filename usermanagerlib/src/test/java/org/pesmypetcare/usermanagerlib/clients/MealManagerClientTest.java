@@ -63,7 +63,7 @@ public class MealManagerClientTest {
             + "    }\n");
         jsonAllMeals = new StringBuilder("[\n"
             + "{\n"
-            + "    \"date\": \"2020-02-13T10:30:00\",\n"
+            + "    \"key\": \"2020-02-13T10:30:00\",\n"
             + "    \"body\": {\n"
             + "      \"mealName\": \"Ultra Asparagus\",\n"
             + "      \"kcal\": 54\n"
