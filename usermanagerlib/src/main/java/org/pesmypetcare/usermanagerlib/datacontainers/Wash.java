@@ -11,7 +11,7 @@ public class Wash {
     private WashData body;
 
     /**
-     * Wash constructor from date and wash data
+     * Wash constructor from date and wash data.
      * @param key date value
      * @param body wash data
      */

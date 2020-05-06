@@ -11,7 +11,7 @@ public class Training {
     private TrainingData body;
 
     /**
-     * Training constructor from date and training duration
+     * Training constructor from date and training duration.
      * @param key date value
      * @param body training data
      */

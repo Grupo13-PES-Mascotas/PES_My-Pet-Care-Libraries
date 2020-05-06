@@ -23,13 +23,13 @@ import java.util.concurrent.ExecutionException;
 public class PetCollectionsManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private static final String PETS_PATH = "pet/";
-    private final Gson GSON = new Gson();
-    private TaskManager taskManager;
     private static final String PUT = "PUT";
     private static final String GET = "GET";
     private static final String POST = "POST";
     private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
+    private final Gson GSON = new Gson();
+    private TaskManager taskManager;
 
     public PetCollectionsManagerClient() {
         taskManager = new TaskManager();

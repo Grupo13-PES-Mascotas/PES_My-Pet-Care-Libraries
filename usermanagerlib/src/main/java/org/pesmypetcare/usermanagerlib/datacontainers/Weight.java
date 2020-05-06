@@ -11,7 +11,7 @@ public class Weight {
     private WeightData body;
 
     /**
-     * Weight constructor from date and weight data
+     * Weight constructor from date and weight data.
      * @param key date value
      * @param body weight data
      */
