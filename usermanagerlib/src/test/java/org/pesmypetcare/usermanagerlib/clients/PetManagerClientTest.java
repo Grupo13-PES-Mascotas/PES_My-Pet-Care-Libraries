@@ -41,8 +41,8 @@ public class PetManagerClientTest {
     private static final String CODE_OK = "Should return response code 200";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
-    private static final String date1 = "1990-01-08T15:20:30";
-    private static final String date2 = "1995-01-08T15:20:30";
+    private static final String DATE_1 = "1990-01-08T15:20:30";
+    private static final String DATE_2 = "1995-01-08T15:20:30";
     private static final String NEEDS_EXAMPLE = "None of your business";
     private final int expectedResponseCode = 200;
     private StringBuilder json;
@@ -98,35 +98,33 @@ public class PetManagerClientTest {
         needsJson = new StringBuilder("{\n"
             + "  \"needs\": \"None of your business\"\n"
             + "}");
-        mealsFieldCollectionJson = new StringBuilder(
-            "[\n" +
-                "  {\n" +
-                "    \"body\": {\n" +
-            "      \"kcal\": 85.44,\n" +
-            "      \"mealName\": \"Tortilla\"\n" +
-            "    },\n" +
-            "    \"key\": \"1990-01-08T15:20:30\"\n" +
-            "  }\n" +
-            "  ,{\n" +
-            "    \"body\": {\n" +
-            "      \"kcal\": 85.44,\n" +
-            "      \"mealName\": \"Tortilla\"\n" +
-            "    },\n" +
-            "    \"key\": \"1995-01-08T15:20:30\"\n" +
-            "  }\n" +
-            "  ,{\n" +
-            "    \"body\": {\n" +
-            "      \"kcal\": 85.44,\n" +
-            "      \"mealName\": \"Tortilla\"\n" +
-            "    },\n" +
-            "    \"key\": \"1998-01-08T15:20:30\"\n" +
-            "  }\n" +
-            "]");
-        mealsFieldCollectionElementJson = new StringBuilder(
-            "{\n" +
-                "  \"kcal\": 85.44,\n" +
-                "  \"mealName\": \"Tortilla\"\n" +
-                "}"
+        mealsFieldCollectionJson = new StringBuilder("[\n"
+                + "  {\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1990-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "  ,{\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1995-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "  ,{\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1998-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "]");
+        mealsFieldCollectionElementJson = new StringBuilder("{\n"
+                + "  \"kcal\": 85.44,\n"
+                + "  \"mealName\": \"Tortilla\"\n"
+                + "}"
         );
         collectionElementBody = new HashMap<>();
         collectionElementBody.put("kcal", 85.44);
@@ -276,7 +274,7 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(mealsFieldCollectionJson);
         List<PetCollectionField> response = client.getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME,
-            petName, PetData.MEALS, date1, date2);
+            petName, PetData.MEALS, DATE_1, DATE_2);
         assertEquals("Should return a meals list with elements between the keys", petCollectionFieldList,
             response);
     }
@@ -286,7 +284,7 @@ public class PetManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1,
+        int responseCode = client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
             collectionElementBody);
         assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
@@ -296,7 +294,7 @@ public class PetManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1);
+        int responseCode = client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
         assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
 
@@ -305,7 +303,7 @@ public class PetManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, date1,
+        int responseCode = client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
             collectionElementBody);
         assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
@@ -316,7 +314,7 @@ public class PetManagerClientTest {
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(mealsFieldCollectionElementJson);
         Map<String, Object> response = client.getFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS,
-            date1);
+            DATE_1);
         assertEquals("Should return the specified element", collectionElementBody, response);
     }
 

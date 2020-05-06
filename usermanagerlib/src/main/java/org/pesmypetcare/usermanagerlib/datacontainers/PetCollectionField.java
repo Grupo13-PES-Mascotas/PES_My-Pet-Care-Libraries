@@ -47,8 +47,8 @@ public class PetCollectionField {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof PetCollectionField) {
-            return ((PetCollectionField) obj).getKey().equals(this.getKey()) &&
-                ((PetCollectionField) obj).getBody().equals(this.getBody());
+            return ((PetCollectionField) obj).getKey().equals(this.getKey())
+                && ((PetCollectionField) obj).getBody().equals(this.getBody());
         }
         return false;
     }
