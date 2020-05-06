@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
@@ -28,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
         TextView text = findViewById(R.id.Hello_text);
 
         // TESTS PET
-        /*
+
         PetManagerClient manager = new PetManagerClient();
+        PetCollectionsManagerClient extraManager = new PetCollectionsManagerClient();
 
         DateTime dateTime1 = null, dateTime2 = null, dateTime3 = null, dateTime4 = null;
 
@@ -87,15 +89,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
-  /*
 
+/*
         Map<String, Object> body = new HashMap<>();
-        body.put("kcal", 32.2);
-        body.put("mealName", "I can't remember it");
+
+        // body.put("kcal", 32.2);
+        // body.put("mealName", "I can't remember it");
+
+        //body.put("value", 54);
         // Pet collection functions
         try {
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo", "Santiago", PetData.MEALS,
-            // dateTime4.toString(), body));
+            System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+                "Santiago", PetData.TRAININGS, dateTime4.toString(), body));
             //System.out.println(manager.deleteFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime4.toString()));
             //System.out.println(manager.updateFieldCollectionElement("token", "Manolo",
@@ -114,6 +119,34 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
+
+        // Pet family friendly retrieval functions
+
+        try {
+            System.out.println(extraManager.getAllMeals("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getMealsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getMeal("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+            System.out.println(extraManager.getAllTrainings("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getTrainingsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getTraining("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+            System.out.println(extraManager.getAllWashes("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getWashesBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getWash("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+            System.out.println(extraManager.getAllWeights("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getWeightsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getWeight("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
         // TESTS GOOGLE CALENDAR
 /*

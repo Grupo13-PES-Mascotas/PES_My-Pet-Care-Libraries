@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import java.util.Map;
 
 /**
- * @author Santiago Del Rey
+ * @author Marc Simó
  */
 public class PetData {
     public static final String MEALS = "meals";

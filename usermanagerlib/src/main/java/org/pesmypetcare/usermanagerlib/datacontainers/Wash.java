@@ -6,44 +6,49 @@ import androidx.annotation.Nullable;
 /**
  * @author Marc Simó
  */
-public class Meal {
+public class Wash {
     private String key;
-    private MealData body;
+    private WashData body;
 
-    public Meal(String date, MealData body) {
-        this.key = date;
+    /**
+     * Wash constructor from date and wash data
+     * @param key date value
+     * @param body wash data
+     */
+    public Wash(String key, WashData body) {
+        this.key = key;
         this.body = body;
     }
 
     /**
-     * Returns the meal date.
-     * @return Meal date
+     * Returns the date.
+     * @return Date
      */
     public String getDate() {
         return key;
     }
 
     /**
-     * Sets a new meal date.
-     * @param date Meal date
+     * Sets a new Date.
+     * @param date Date
      */
     public void setDate(String date) {
         this.key = date;
     }
 
     /**
-     * Returns the Meal Data.
-     * @return Meal Data
+     * Returns the wash data
+     * @return Wash data
      */
-    public MealData getBody() {
+    public WashData getBody() {
         return body;
     }
 
     /**
-     * Sets a new Meal Data.
-     * @param body Meal Data
+     * Sets a new wash data
+     * @param body Wash data
      */
-    public void setBody(MealData body) {
+    public void setBody(WashData body) {
         this.body = body;
     }
 
@@ -59,9 +64,9 @@ public class Meal {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Meal) {
-            return ((Meal) obj).getDate().equals(this.getDate())
-                && ((Meal) obj).getBody().equals(this.getBody());
+        if (obj instanceof Wash) {
+            return ((Wash) obj).getDate().equals(this.getDate())
+                && ((Wash) obj).getBody().equals(this.getBody());
         }
         return false;
     }

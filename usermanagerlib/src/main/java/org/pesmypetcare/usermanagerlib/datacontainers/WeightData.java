@@ -3,41 +3,31 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * @author Marc Simó
+ */
 public class WeightData {
-    private Double weight;
+    private Integer weight;
 
-    public WeightData(double weight) {
+    public WeightData() { }
+
+    public WeightData(Integer weight) {
         this.weight = weight;
     }
 
-    /**
-     * Returns the value of the weight.
-     * @return value of the weight
-     */
-    public Double getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    /**
-     * Creates a weight json object.
-     * @return A JSON Object with the weight data
-     */
-    public JSONObject buildWeightJson() {
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put("weight", Double.toString(weight));
-        return new JSONObject(reqData);
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "{"
-            + ", weight=" + weight
+            + " weight = " + weight
             + '}';
     }
 

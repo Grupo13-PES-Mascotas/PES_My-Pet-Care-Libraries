@@ -215,6 +215,16 @@ public class PetManagerClientTest {
     }
 
     @Test
+    public void deleteAllPets() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteAllPets(ACCESS_TOKEN, USERNAME);
+        assertEquals(CODE_OK, expectedResponseCode,
+            responseCode);
+    }
+
+    @Test
     public void getSimpleFieldDouble() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);

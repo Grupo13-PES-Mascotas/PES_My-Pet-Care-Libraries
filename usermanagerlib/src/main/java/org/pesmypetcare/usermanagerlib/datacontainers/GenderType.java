@@ -1,7 +1,7 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
 /**
- * @author Santiago Del Rey
+ * @author Marc Simó
  */
 public enum GenderType {
     Male,
