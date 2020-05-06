@@ -6,16 +6,16 @@ import androidx.annotation.Nullable;
 /**
  * @author Marc Simó
  */
-public class Weight {
+public class Training {
     private String key;
-    private WeightData body;
+    private TrainingData body;
 
     /**
-     * Weight constructor from date and weight data.
+     * Training constructor from date and training duration.
      * @param key date value
-     * @param body weight data
+     * @param body training data
      */
-    public Weight(String key, WeightData body) {
+    public Training(String key, TrainingData body) {
         this.key = key;
         this.body = body;
     }
@@ -37,18 +37,18 @@ public class Weight {
     }
 
     /**
-     * Returns the weight data.
-     * @return Weight data
+     * Returns the training data.
+     * @return training data
      */
-    public WeightData getBody() {
+    public TrainingData getBody() {
         return body;
     }
 
     /**
-     * Sets a new Weight data.
-     * @param body Weight data
+     * Sets a new training data.
+     * @param body training data
      */
-    public void setBody(WeightData body) {
+    public void setBody(TrainingData body) {
         this.body = body;
     }
 
@@ -64,9 +64,9 @@ public class Weight {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Weight) {
-            return ((Weight) obj).getDate().equals(this.getDate())
-                && ((Weight) obj).getBody().equals(this.getBody());
+        if (obj instanceof Training) {
+            return ((Training) obj).getDate().equals(this.getDate())
+                && ((Training) obj).getBody().equals(this.getBody());
         }
         return false;
     }

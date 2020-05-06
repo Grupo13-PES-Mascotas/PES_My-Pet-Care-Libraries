@@ -6,16 +6,16 @@ import androidx.annotation.Nullable;
 /**
  * @author Marc Simó
  */
-public class Weight {
+public class Wash {
     private String key;
-    private WeightData body;
+    private WashData body;
 
     /**
-     * Weight constructor from date and weight data.
+     * Wash constructor from date and wash data.
      * @param key date value
-     * @param body weight data
+     * @param body wash data
      */
-    public Weight(String key, WeightData body) {
+    public Wash(String key, WashData body) {
         this.key = key;
         this.body = body;
     }
@@ -37,18 +37,18 @@ public class Weight {
     }
 
     /**
-     * Returns the weight data.
-     * @return Weight data
+     * Returns the wash data.
+     * @return Wash data
      */
-    public WeightData getBody() {
+    public WashData getBody() {
         return body;
     }
 
     /**
-     * Sets a new Weight data.
-     * @param body Weight data
+     * Sets a new wash data.
+     * @param body Wash data
      */
-    public void setBody(WeightData body) {
+    public void setBody(WashData body) {
         this.body = body;
     }
 
@@ -64,9 +64,9 @@ public class Weight {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Weight) {
-            return ((Weight) obj).getDate().equals(this.getDate())
-                && ((Weight) obj).getBody().equals(this.getBody());
+        if (obj instanceof Wash) {
+            return ((Wash) obj).getDate().equals(this.getDate())
+                && ((Wash) obj).getBody().equals(this.getBody());
         }
         return false;
     }

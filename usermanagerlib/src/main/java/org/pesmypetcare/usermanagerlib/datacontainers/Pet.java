@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Santiago Del Rey
+ * @author Marc Simó & Santiago Del Rey
  */
 public class Pet {
     public static final String GENDER = "gender";

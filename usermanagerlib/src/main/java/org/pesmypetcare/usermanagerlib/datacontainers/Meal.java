@@ -7,11 +7,11 @@ import androidx.annotation.Nullable;
  * @author Marc Simó
  */
 public class Meal {
-    private String date;
+    private String key;
     private MealData body;
 
     public Meal(String date, MealData body) {
-        this.date = date;
+        this.key = date;
         this.body = body;
     }
 
@@ -20,7 +20,7 @@ public class Meal {
      * @return Meal date
      */
     public String getDate() {
-        return date;
+        return key;
     }
 
     /**
@@ -28,7 +28,7 @@ public class Meal {
      * @param date Meal date
      */
     public void setDate(String date) {
-        this.date = date;
+        this.key = date;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Meal {
     @Override
     public String toString() {
         return "{"
-            + "name='" + date + '\''
+            + "date='" + key + '\''
             + ", body=" + body
             + '}';
     }
