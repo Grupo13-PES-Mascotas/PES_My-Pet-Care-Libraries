@@ -50,13 +50,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/meals", accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Meal> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Meal.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -85,13 +80,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/meals/" + key1 + SLASH + key2, accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Meal> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Meal.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -139,13 +129,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/trainings", accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Training> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Training.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -175,13 +160,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/trainings/" + key1 + SLASH + key2, accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Training> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Training.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -229,13 +209,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/washes", accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Wash> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Wash.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -264,13 +239,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/washes/" + key1 + SLASH + key2, accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Wash> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Wash.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -318,13 +288,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/weights", accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Weight> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Weight.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -353,13 +318,8 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/weights/" + key1 + SLASH + key2, accessToken).get();
-        if (response == null) {
-            return new ArrayList<>();
-        } else if (response.length() <= 2) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{");
+        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        String[] objectArray = splitResponse(response);
         List<Weight> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Weight.class));
         for (int i = 1; i < objectArray.length; i++) {
@@ -390,5 +350,27 @@ public class PetCollectionsManagerClient {
             return GSON.fromJson(response.toString(), WeightData.class);
         }
         return null;
+    }
+
+    /**
+     * Splits the Json response obtained from a get collection
+     * @param response StringBuilder containing the response
+     * @return A basic array containing the response split
+     */
+    private String[] splitResponse(StringBuilder response) {
+        String jsonArray = response.substring(1, response.length() - 1);
+        return jsonArray.split(",\\{");
+    }
+
+    /**
+     * Check wether the Json response obtained is null or empty
+     * @param response Json response obtained
+     * @return True if response is null or empty, false otherwise
+     */
+    private boolean responseNullOrEmpty(StringBuilder response) {
+        if (response == null) {
+            return true;
+        }
+        return response.length() <= 2;
     }
 }
