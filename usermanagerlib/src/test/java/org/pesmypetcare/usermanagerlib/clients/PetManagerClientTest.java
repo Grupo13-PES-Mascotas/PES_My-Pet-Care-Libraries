@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionField;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionFieldData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -53,7 +52,6 @@ public class PetManagerClientTest {
     private StringBuilder mealsFieldCollectionJson;
     private StringBuilder mealsFieldCollectionElementJson;
     private List<PetCollectionField> petCollectionFieldList;
-    private PetCollectionFieldData petCollectionFieldData;
     private Map<String, Object> collectionElementBody;
     private Pet pet;
     private PetData expectedPetData;
@@ -133,17 +131,12 @@ public class PetManagerClientTest {
         collectionElementBody = new HashMap<>();
         collectionElementBody.put("kcal", 85.44);
         collectionElementBody.put("mealName", "Tortilla");
-        petCollectionFieldData = new PetCollectionFieldData();
-        petCollectionFieldData.setBody(collectionElementBody);
+
         petCollectionFieldList = new ArrayList<>();
-        PetCollectionField petCollectionField = new PetCollectionField();
-        petCollectionField.setBody(petCollectionFieldData);
-        petCollectionField.setKey(date1);
-        petCollectionFieldList.add(petCollectionField);
-        petCollectionField.setKey(date2);
-        petCollectionFieldList.add(petCollectionField);
-        petCollectionField.setKey("1998-01-08T15:20:30");
-        petCollectionFieldList.add(petCollectionField);
+        petCollectionFieldList.add(new PetCollectionField("1990-01-08T15:20:30", collectionElementBody));
+        petCollectionFieldList.add(new PetCollectionField("1995-01-08T15:20:30", collectionElementBody));
+        petCollectionFieldList.add(new PetCollectionField("1998-01-08T15:20:30", collectionElementBody));
+
         petList = new ArrayList<>();
         petList.add(pet);
         image = json.toString().getBytes();

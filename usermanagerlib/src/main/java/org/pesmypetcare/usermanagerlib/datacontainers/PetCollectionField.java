@@ -3,12 +3,21 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Map;
+
 /**
  * @author Marc Simó
  */
 public class PetCollectionField {
     private String key;
-    private PetCollectionFieldData body;
+    private Map<String, Object> body;
+
+    public PetCollectionField() { }
+
+    public PetCollectionField(String key, Map<String, Object> body) {
+        this.key = key;
+        this.body = body;
+    }
 
     public String getKey() {
         return key;
@@ -18,11 +27,11 @@ public class PetCollectionField {
         this.key = key;
     }
 
-    public PetCollectionFieldData getBody() {
+    public Map<String, Object> getBody() {
         return body;
     }
 
-    public void setBody(PetCollectionFieldData body) {
+    public void setBody(Map<String, Object> body) {
         this.body = body;
     }
 

@@ -7,10 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionField;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionFieldData;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
 
 import java.lang.reflect.Type;
@@ -19,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
-import javax.xml.transform.Source;
 
 /**
  * @author Oriol Catalán
@@ -258,9 +254,8 @@ public class PetManagerClient {
         }
         String jsonArray = response.substring(1, response.length() - 1);
         String[] objectArray = jsonArray.split(",\\{");
+
         List<PetCollectionField> result = new ArrayList<>();
-        System.out.println(jsonArray);
-        for (String a:objectArray) System.out.println(a);
         result.add(GSON.fromJson(objectArray[0], PetCollectionField.class));
         for (int i = 1; i < objectArray.length; i++) {
             objectArray[i] = "{" + objectArray[i];
@@ -390,7 +385,8 @@ public class PetManagerClient {
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/" + field + SLASH + key, accessToken).get();
         if (response != null) {
-            return GSON.fromJson(response.toString(), PetCollectionFieldData.class).getBody();
+            Type type = new TypeToken<Map<String, Object>>(){}.getType();
+            return GSON.fromJson(response.toString(), type);
         }
         return null;
     }
