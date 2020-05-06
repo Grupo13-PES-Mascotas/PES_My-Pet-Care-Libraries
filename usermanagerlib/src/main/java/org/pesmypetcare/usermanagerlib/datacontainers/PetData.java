@@ -26,6 +26,18 @@ public class PetData {
     private String needs;
     private Double recommendedKcal;
 
+    public PetData() { }
+
+    public PetData(GenderType gender, String breed, String birth, String pathologies, String needs,
+                   Double recommendedKcal) {
+        this.gender = gender;
+        this.breed = breed;
+        this.birth = birth;
+        this.pathologies = pathologies;
+        this.needs = needs;
+        this.recommendedKcal = recommendedKcal;
+    }
+
     /**
      * The method that returns the pet gender.
      * @return The pet's gender

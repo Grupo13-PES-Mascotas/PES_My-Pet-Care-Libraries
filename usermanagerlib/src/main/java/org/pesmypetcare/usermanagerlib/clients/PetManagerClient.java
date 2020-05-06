@@ -131,6 +131,9 @@ public class PetManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username,
                 accessToken).get();
+        if (response == null) {
+            return new ArrayList<>();
+        }
         if (response.length() <= 2) {
             return new ArrayList<>();
         }
@@ -184,7 +187,13 @@ public class PetManagerClient {
         if (split.length == 3) {
             return Double.parseDouble(split[2].split(":")[1].split("}")[0]);
         }
-        return response.toString().split("\"")[3];
+        if (split.length == 1) {
+            return split[0];
+        }
+        if (split.length == 5) {
+            return split[3];
+        }
+        return null;
     }
 
     /**
@@ -450,6 +459,7 @@ public class PetManagerClient {
         StringBuilder json = taskManager
             .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
             .get();
+        if (json == null) return new HashMap<>();
         Gson gson = new Gson();
         Type mapType = new TypeToken<Map<String, String>>() { }.getType();
         Map<String, String> response = gson.fromJson(json.toString(), mapType);

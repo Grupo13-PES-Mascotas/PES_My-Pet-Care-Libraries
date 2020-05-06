@@ -21,6 +21,13 @@ public class Pet {
     private String name;
     private PetData body;
 
+    public Pet() { }
+
+    public Pet(String name, PetData body) {
+        this.name = name;
+        this.body = body;
+    }
+
     /**
      * The method that returns the pet name.
      * @return The pet's name
