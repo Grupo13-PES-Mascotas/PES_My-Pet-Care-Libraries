@@ -37,7 +37,7 @@ public class Training {
     }
 
     /**
-     * Returns the training data
+     * Returns the training data.
      * @return training data
      */
     public TrainingData getBody() {
@@ -45,7 +45,7 @@ public class Training {
     }
 
     /**
-     * Sets a new training data
+     * Sets a new training data.
      * @param body training data
      */
     public void setBody(TrainingData body) {

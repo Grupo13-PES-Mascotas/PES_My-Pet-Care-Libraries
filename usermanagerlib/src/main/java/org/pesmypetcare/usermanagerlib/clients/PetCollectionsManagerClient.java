@@ -368,7 +368,7 @@ public class PetCollectionsManagerClient {
     }
 
     /**
-     * Splits the Json response obtained from a get collection
+     * Splits the Json response obtained from a get collection.
      * @param response StringBuilder containing the response
      * @return A basic array containing the response split
      */
@@ -378,7 +378,7 @@ public class PetCollectionsManagerClient {
     }
 
     /**
-     * Check wether the Json response obtained is null or empty
+     * Check wether the Json response obtained is null or empty.
      * @param response Json response obtained
      * @return True if response is null or empty, false otherwise
      */

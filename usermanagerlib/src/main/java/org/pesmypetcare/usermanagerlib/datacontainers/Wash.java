@@ -37,7 +37,7 @@ public class Wash {
     }
 
     /**
-     * Returns the wash data
+     * Returns the wash data.
      * @return Wash data
      */
     public WashData getBody() {
@@ -45,7 +45,7 @@ public class Wash {
     }
 
     /**
-     * Sets a new wash data
+     * Sets a new wash data.
      * @param body Wash data
      */
     public void setBody(WashData body) {
