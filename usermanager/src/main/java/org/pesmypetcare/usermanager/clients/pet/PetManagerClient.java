@@ -8,8 +8,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 import org.pesmypetcare.usermanager.clients.TaskManager;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetCollectionField;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
 
 import java.lang.reflect.Type;
@@ -253,7 +253,7 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<PetCollectionField> getFieldCollection(String accessToken, String username, String petName,
-                                                        String field) throws ExecutionException, InterruptedException {
+                                                       String field) throws ExecutionException, InterruptedException {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);

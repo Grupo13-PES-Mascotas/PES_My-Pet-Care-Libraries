@@ -5,12 +5,16 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Santiago Del Rey
@@ -355,8 +359,13 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        //UserManagerClient client = new UserManagerClient();
-        //UserData user = new UserData("santi", "santi@mail.com", "123455678");
+        /*UserManagerClient client = new UserManagerClient();
+        UserData user = new UserData("John Doe", "john.doe@mail.com", "123455678");
+        try {
+            client.createUser("UbmT93oVDhYlzhnh0gRN5B1RD403", user);
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }*/
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
@@ -421,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
@@ -430,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
             GroupData data = new GroupData(groupName, "santi","", tags);
             try {
                 groupManager.createGroup(data);
-                /*groupManager.deleteGroup(groupName);
+                groupManager.deleteGroup(groupName);
                 groupManager.createGroup(data);
                 System.out.println("Print 1: " + groupManager.getGroup(groupName));
                 System.out.println("Print 2: " + groupManager.getAllGroups());
@@ -448,13 +457,13 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
                 System.out.println("Print 7: " + groupManager.getAllGroups());
                 System.out.println("Print 8: " + groupManager.getAllTags());
-                groupManager.deleteGroup("Probando Cosas");*/
+                groupManager.deleteGroup("Probando Cosas");
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             System.out.println("ACABADO");
         });
-        thread.start();
+        thread.start();*/
         //TEST FORUMS
         /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();

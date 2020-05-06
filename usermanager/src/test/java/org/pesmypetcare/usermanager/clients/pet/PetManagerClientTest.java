@@ -13,7 +13,7 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionField;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetCollectionField;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanagerlib.datacontainers;
+package org.pesmypetcare.usermanager.datacontainers.pet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
