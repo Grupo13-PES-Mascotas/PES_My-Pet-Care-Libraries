@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
 import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
+import org.pesmypetcare.usermanagerlib.datacontainers.PetCollectionField;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -40,10 +41,19 @@ public class PetManagerClientTest {
     private static final String BIRTH_FIELD = "birth";
     private static final String CODE_OK = "Should return response code 200";
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
-    private final double recommendedKcal = 2.5;
+    private static final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
+    private static final String DATE_1 = "1990-01-08T15:20:30";
+    private static final String DATE_2 = "1995-01-08T15:20:30";
+    private static final String NEEDS_EXAMPLE = "None of your business";
     private final int expectedResponseCode = 200;
     private StringBuilder json;
     private StringBuilder jsonAllPets;
+    private StringBuilder recKcalJson;
+    private StringBuilder needsJson;
+    private StringBuilder mealsFieldCollectionJson;
+    private StringBuilder mealsFieldCollectionElementJson;
+    private List<PetCollectionField> petCollectionFieldList;
+    private Map<String, Object> collectionElementBody;
     private Pet pet;
     private PetData expectedPetData;
     private List<Pet> petList;
@@ -72,7 +82,6 @@ public class PetManagerClientTest {
             + "  \"needs\": \"\",\n"
             + "  \"recommendedKcal\": \"2.5\"\n"
             + "}");
-
         jsonAllPets = new StringBuilder("[{\n"
             + "  \"name\": \"Linux\",\n"
             + "  \"body\": {\n"
@@ -84,6 +93,49 @@ public class PetManagerClientTest {
             + "    \"recommendedKcal\": \"2.5\"\n"
             + "  }\n"
             + "}]");
+        recKcalJson = new StringBuilder("{\n"
+            + "  \"recommendedKcal\": 2.5\n"
+            + "}");
+        needsJson = new StringBuilder("{\n"
+            + "  \"needs\": \"None of your business\"\n"
+            + "}");
+        mealsFieldCollectionJson = new StringBuilder("[\n"
+                + "  {\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1990-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "  ,{\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1995-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "  ,{\n"
+                + "    \"body\": {\n"
+                + "      \"kcal\": 85.44,\n"
+                + "      \"mealName\": \"Tortilla\"\n"
+                + "    },\n"
+                + "    \"key\": \"1998-01-08T15:20:30\"\n"
+                + "  }\n"
+                + "]");
+        mealsFieldCollectionElementJson = new StringBuilder("{\n"
+                + "  \"kcal\": 85.44,\n"
+                + "  \"mealName\": \"Tortilla\"\n"
+                + "}"
+        );
+        collectionElementBody = new HashMap<>();
+        collectionElementBody.put("kcal", 85.44);
+        collectionElementBody.put("mealName", "Tortilla");
+
+        petCollectionFieldList = new ArrayList<>();
+        petCollectionFieldList.add(new PetCollectionField("1990-01-08T15:20:30", collectionElementBody));
+        petCollectionFieldList.add(new PetCollectionField("1995-01-08T15:20:30", collectionElementBody));
+        petCollectionFieldList.add(new PetCollectionField("1998-01-08T15:20:30", collectionElementBody));
+
         petList = new ArrayList<>();
         petList.add(pet);
         image = json.toString().getBytes();
@@ -160,26 +212,111 @@ public class PetManagerClientTest {
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deletePet(ACCESS_TOKEN, USERNAME, petName);
         assertEquals(CODE_OK, expectedResponseCode,
-                responseCode);
+            responseCode);
     }
 
     @Test
-    public void updateField() throws ExecutionException, InterruptedException {
+    public void getSimpleFieldDouble() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(recKcalJson);
+        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.RECOMMENDED_KCAL);
+        assertEquals("Should return the gender value", RECOMMENDED_KCAL_EXAMPLE, response);
+    }
+
+    @Test
+    public void getSimpleFieldString() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(needsJson);
+        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
+        assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
+    }
+
+    @Test
+    public void updateSimpleField() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
-                "2019-02-13T10:30:00");
-        assertEquals(CODE_OK, expectedResponseCode,
-                responseCode);
+        int responseCode = client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD,
+            "2019-02-13T10:30:00");
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException,
             InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        client.updateField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL,
+        client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL,
                 "23.3");
+    }
+
+    @Test
+    public void deleteFieldCollection() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void getFieldCollection() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(mealsFieldCollectionJson);
+        List<PetCollectionField> response = client.getFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
+        assertEquals("Should return a meals list", petCollectionFieldList, response);
+    }
+
+    @Test
+    public void getFieldCollectionElementsBetweenKeys() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(mealsFieldCollectionJson);
+        List<PetCollectionField> response = client.getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME,
+            petName, PetData.MEALS, DATE_1, DATE_2);
+        assertEquals("Should return a meals list with elements between the keys", petCollectionFieldList,
+            response);
+    }
+
+    @Test
+    public void addFieldCollectionElement() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
+            collectionElementBody);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void deleteFieldCollectionElement() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void updateFieldCollectionElement() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_OK);
+        int responseCode = client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
+            collectionElementBody);
+        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    }
+
+    @Test
+    public void getFieldCollectionElement() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(mealsFieldCollectionElementJson);
+        Map<String, Object> response = client.getFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS,
+            DATE_1);
+        assertEquals("Should return the specified element", collectionElementBody, response);
     }
 
     @Test
@@ -264,7 +401,7 @@ public class PetManagerClientTest {
         expectedPetData.setBirth("2020-02-13T10:30:00");
         expectedPetData.setPathologies("");
         expectedPetData.setNeeds("");
-        expectedPetData.setRecommendedKcal(recommendedKcal);
+        expectedPetData.setRecommendedKcal(RECOMMENDED_KCAL_EXAMPLE);
         pet.setBody(expectedPetData);
     }
 }

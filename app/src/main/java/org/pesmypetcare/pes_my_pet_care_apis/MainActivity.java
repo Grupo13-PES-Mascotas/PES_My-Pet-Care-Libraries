@@ -23,6 +23,93 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
 
+        // TESTS PET
+        /*
+        PetManagerClient manager = new PetManagerClient();
+
+        DateTime dateTime1 = null, dateTime2 = null, dateTime3 = null, dateTime4 = null;
+
+        try {
+            dateTime1 = DateTime.Builder.build(1996,4,24,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            dateTime2 = DateTime.Builder.build(1997,4,24,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+        try {
+            dateTime3 = DateTime.Builder.build(1998,4,24,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            dateTime4 = DateTime.Builder.build(1999,4,24,13,50,12);
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
+
+        PetData petData = new PetData(GenderType.Female, "Huskie", dateTime1.toString(), "None", "Constant attention"
+            , 84.0);
+        Pet pet = new Pet("Santiago", petData);
+/*
+        // Pet creation
+        try {
+            manager.createPet("token", "Manolo", pet);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+ */
+        // Pet simple functions
+  /*
+        try {
+            System.out.println("Start:");
+            System.out.println(manager.getPet("token", "Manolo", "Santiago"));
+            System.out.println(manager.getAllPets("token", "Manolo"));
+            //manager.deletePet("token", "Manolo", "Mentolada");
+            System.out.println(manager.getSimpleField("token", "Manolo", "Santiago",
+                Pet.BIRTH));
+            System.out.println(manager.updateSimpleField("token", "Manolo", "Santiago",
+                Pet.BIRTH, dateTime3.toString()));
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+*/
+  /*
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("kcal", 32.2);
+        body.put("mealName", "I can't remember it");
+        // Pet collection functions
+        try {
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo", "Santiago", PetData.MEALS,
+            // dateTime4.toString(), body));
+            //System.out.println(manager.deleteFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.MEALS, dateTime4.toString()));
+            //System.out.println(manager.updateFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.MEALS, dateTime2.toString(), body));
+            System.out.println(manager.getFieldCollectionElement("token", "Manolo",
+                    "Santiago", PetData.MEALS, dateTime2.toString()));
+            System.out.println(manager.getFieldCollection("token", "Manolo",
+                "Santiago", PetData.MEALS));
+            System.out.println(manager.getFieldCollectionElementsBetweenKeys("token", "Manolo",
+                "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
+            //System.out.println(manager.deleteFieldCollection("token", "Manolo",
+            //    "Santiago", PetData.MEALS));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+*/
 
         // TESTS GOOGLE CALENDAR
 /*
@@ -54,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-*/
+
 //TEST MEDICATION//
         /*
         MedicationManagerClient manager = new MedicationManagerClient();
@@ -179,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         }
         */
 
-        // TESTS PET
+        // TESTS meal
 
         //manager.createMeal("john", "Laika", meal);
         //manager.deleteByDate("john", "Laika", dateTime);
