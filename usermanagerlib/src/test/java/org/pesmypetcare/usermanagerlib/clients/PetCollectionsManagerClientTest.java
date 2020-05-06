@@ -37,7 +37,8 @@ public class PetCollectionsManagerClientTest {
     private static final String USERNAME = "user";
     private static final String PET_NAME = "Gustavo";
     private static final String DATE_1 = "1990-01-08T15:20:30";
-    private static final String DATE_2 = "1998-01-08T15:20:30";
+    private static final String DATE_2 = "1995-01-08T15:20:30";
+    private static final String DATE_3 = "1998-01-08T15:20:30";
     private StringBuilder mealCollectionJson;
     private StringBuilder mealDataJson;
     private List<Meal> mealCollectionList;
@@ -92,9 +93,9 @@ public class PetCollectionsManagerClientTest {
         );
         mealData = new MealData("Tortilla", 85.44);
         mealCollectionList = new ArrayList<>();
-        mealCollectionList.add(new Meal("1990-01-08T15:20:30", mealData));
-        mealCollectionList.add(new Meal("1995-01-08T15:20:30", mealData));
-        mealCollectionList.add(new Meal("1998-01-08T15:20:30", mealData));
+        mealCollectionList.add(new Meal(DATE_1, mealData));
+        mealCollectionList.add(new Meal(DATE_2, mealData));
+        mealCollectionList.add(new Meal(DATE_3, mealData));
         valueCollectionJson = new StringBuilder("[\n"
             + "  {\n"
             + "    \"body\": {\n"
@@ -121,19 +122,19 @@ public class PetCollectionsManagerClientTest {
         );
         trainingData = new TrainingData(54);
         trainingCollectionList = new ArrayList<>();
-        trainingCollectionList.add(new Training("1990-01-08T15:20:30", trainingData));
-        trainingCollectionList.add(new Training("1995-01-08T15:20:30", trainingData));
-        trainingCollectionList.add(new Training("1998-01-08T15:20:30", trainingData));
+        trainingCollectionList.add(new Training(DATE_1, trainingData));
+        trainingCollectionList.add(new Training(DATE_2, trainingData));
+        trainingCollectionList.add(new Training(DATE_3, trainingData));
         washData = new WashData(54);
         washCollectionList = new ArrayList<>();
-        washCollectionList.add(new Wash("1990-01-08T15:20:30", washData));
-        washCollectionList.add(new Wash("1995-01-08T15:20:30", washData));
-        washCollectionList.add(new Wash("1998-01-08T15:20:30", washData));
+        washCollectionList.add(new Wash(DATE_1, washData));
+        washCollectionList.add(new Wash(DATE_2, washData));
+        washCollectionList.add(new Wash(DATE_3, washData));
         weightData = new WeightData(54);
         weightCollectionList = new ArrayList<>();
-        weightCollectionList.add(new Weight("1990-01-08T15:20:30", weightData));
-        weightCollectionList.add(new Weight("1995-01-08T15:20:30", weightData));
-        weightCollectionList.add(new Weight("1998-01-08T15:20:30", weightData));
+        weightCollectionList.add(new Weight(DATE_1, weightData));
+        weightCollectionList.add(new Weight(DATE_2, weightData));
+        weightCollectionList.add(new Weight(DATE_3, weightData));
     }
 
     @Test
@@ -150,7 +151,7 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(mealCollectionJson);
-        List<Meal> response = client.getMealsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_2);
+        List<Meal> response = client.getMealsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", mealCollectionList, response);
     }
 
@@ -177,7 +178,7 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueCollectionJson);
-        List<Training> response = client.getTrainingsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_2);
+        List<Training> response = client.getTrainingsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", trainingCollectionList, response);
     }
 
@@ -204,7 +205,7 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueCollectionJson);
-        List<Wash> response = client.getWashesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_2);
+        List<Wash> response = client.getWashesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", washCollectionList, response);
     }
 
@@ -231,7 +232,7 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(valueCollectionJson);
-        List<Weight> response = client.getWeightsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_2);
+        List<Weight> response = client.getWeightsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", weightCollectionList, response);
     }
 
