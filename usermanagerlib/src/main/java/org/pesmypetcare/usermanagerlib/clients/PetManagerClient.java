@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
- * @author Marc Simó
+ * @author Marc Simó & Oriol Catalán
  */
 public class PetManagerClient {
     public static final String GENDER = "gender";
