@@ -7,27 +7,27 @@ import androidx.annotation.Nullable;
  * @author Marc Simó
  */
 public class TrainingData {
-    private Integer duration;
+    private Integer value;
 
     public TrainingData() { }
 
     public TrainingData(Integer duration) {
-        this.duration = duration;
+        this.value = duration;
     }
 
     public Integer getDuration() {
-        return duration;
+        return value;
     }
 
     public void setDuration(Integer duration) {
-        this.duration = duration;
+        this.value = duration;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "{"
-            + " duration = " + duration
+            + "duration = " + value
             + '}';
     }
 

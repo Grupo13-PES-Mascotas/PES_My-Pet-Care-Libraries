@@ -7,27 +7,27 @@ import androidx.annotation.Nullable;
  * @author Marc Simó
  */
 public class WeightData {
-    private Integer weight;
+    private Integer value;
 
     public WeightData() { }
 
     public WeightData(Integer weight) {
-        this.weight = weight;
+        this.value = weight;
     }
 
     public Integer getWeight() {
-        return weight;
+        return value;
     }
 
     public void setWeight(Integer weight) {
-        this.weight = weight;
+        this.value = weight;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "{"
-            + " weight = " + weight
+            + "weight = " + value
             + '}';
     }
 
