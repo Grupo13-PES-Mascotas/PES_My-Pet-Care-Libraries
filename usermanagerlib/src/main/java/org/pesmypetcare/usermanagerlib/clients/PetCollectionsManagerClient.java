@@ -1,7 +1,6 @@
 package org.pesmypetcare.usermanagerlib.clients;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.pesmypetcare.usermanagerlib.datacontainers.Meal;
 import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
@@ -50,7 +49,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/meals", accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Meal> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Meal.class));
@@ -80,7 +81,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/meals/" + key1 + SLASH + key2, accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Meal> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Meal.class));
@@ -129,7 +132,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/trainings", accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Training> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Training.class));
@@ -160,7 +165,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/trainings/" + key1 + SLASH + key2, accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Training> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Training.class));
@@ -209,7 +216,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/washes", accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Wash> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Wash.class));
@@ -239,7 +248,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/washes/" + key1 + SLASH + key2, accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Wash> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Wash.class));
@@ -288,7 +299,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/weights", accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Weight> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Weight.class));
@@ -318,7 +331,9 @@ public class PetCollectionsManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/weights/" + key1 + SLASH + key2, accessToken).get();
-        if (responseNullOrEmpty(response)) return new ArrayList<>();
+        if (responseNullOrEmpty(response)) {
+            return new ArrayList<>();
+        }
         String[] objectArray = splitResponse(response);
         List<Weight> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Weight.class));
