@@ -8,51 +8,52 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Weight {
+public class VetVisit {
     private String key;
-    private WeightData body;
+    private VetVisitData body;
 
     /**
-     * Weight constructor.
+     * VetVisit constructor.
      */
-    public Weight() { }
+    public VetVisit() { }
 
     /**
-     * Weight constructor.
-     * @param key date value
-     * @param body weight data
+     * VetVisit constructor.
+     * @param key Vet visit date
+     * @param body Vet visit data
      */
-    public Weight(String key, WeightData body) {
+    public VetVisit(String key, VetVisitData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Weight constructor.
-     * @param date Weight date
-     * @param weight Weight value
+     * VetVisit constructor.
+     * @param date Vet visit date
+     * @param reason Vet visit reason
+     * @param address Vet visit address
      */
-    public Weight(String date, Integer weight) {
+    public VetVisit(String date, String reason, String address) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new WeightData(weight);
+        this.body = new VetVisitData(reason, address);
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String date) {
-        PetData.checkDateFormat(date);
-        this.key = date;
+    public void setKey(String key) {
+        PetData.checkDateFormat(key);
+        this.key = key;
     }
 
-    public WeightData getBody() {
+    public VetVisitData getBody() {
         return body;
     }
 
-    public void setBody(WeightData body) {
+    public void setBody(VetVisitData body) {
         this.body = body;
     }
 
@@ -63,7 +64,6 @@ public class Weight {
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();
     }
-
 
     @NonNull
     @Override
@@ -76,9 +76,9 @@ public class Weight {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Weight) {
-            return ((Weight) obj).getKey().equals(this.getKey())
-                && ((Weight) obj).getBody().equals(this.getBody());
+        if (obj instanceof VetVisit) {
+            return ((VetVisit) obj).getKey().equals(this.getKey())
+                && ((VetVisit) obj).getBody().equals(this.getBody());
         }
         return false;
     }

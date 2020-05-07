@@ -5,29 +5,32 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Marc Simó
  */
 public class ExerciseData {
-    String name;
-    String description;
-    List<LatLng> coordinates;
-    String endDateTime;
+    private String name;
+    private String description;
+    private List<LatLng> coordinates;
+    private String endDateTime;
 
     /**
-     * ExerciseData constructor
+     * ExerciseData constructor.
      */
     public ExerciseData() { }
 
     /**
-     * ExerciseData constructor
+     * ExerciseData constructor.
      * @param name name
      * @param description description
      * @param endDateTime endDateTime
      */
     public ExerciseData(String name, String description, String endDateTime) {
+        PetData.checkDateFormat(endDateTime);
         this.name = name;
         this.description = description;
         this.coordinates = null;
@@ -35,13 +38,14 @@ public class ExerciseData {
     }
 
     /**
-     * ExerciseData constructor
+     * ExerciseData constructor.
      * @param name name
      * @param description description
      * @param endDateTime endDateTime
      * @param coordinates coordinates
      */
     public ExerciseData(String name, String description, String endDateTime, List<LatLng> coordinates) {
+        PetData.checkDateFormat(endDateTime);
         this.name = name;
         this.description = description;
         this.coordinates = coordinates;
@@ -80,13 +84,26 @@ public class ExerciseData {
         this.coordinates = coordinates;
     }
 
+    /**
+     * Turns the ExerciseData into a Map<String, Object>.
+     * @return Map<String, Object> containing the ExerciseData
+     */
+    public Map<String, Object> getAsMap() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("endDateTime", endDateTime);
+        response.put("name", name);
+        response.put("description", description);
+        response.put("coordinates", coordinates);
+        return response;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "{"
             + "name='" + name + '\''
-            + ", description=" + description
-            + ", endDateTime=" + endDateTime
+            + ", description='" + description + '\''
+            + ", endDateTime='" + endDateTime + '\''
             + ", coordinates=" + coordinates
             + '}';
     }

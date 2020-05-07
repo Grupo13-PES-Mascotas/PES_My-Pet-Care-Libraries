@@ -3,6 +3,9 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Marc Simó
  */
@@ -10,32 +13,34 @@ public class WeightData {
     private Integer value;
 
     /**
-     * WeigthData constructor
+     * WeigthData constructor.
      */
     public WeightData() { }
 
     /**
-     * WeightData constructor
+     * WeightData constructor.
      * @param weight new Weight value
      */
     public WeightData(Integer weight) {
         this.value = weight;
     }
 
-    /**
-     * Retrieve weight value
-     * @return weight value
-     */
-    public Integer getWeight() {
+    public Integer getValue() {
         return value;
     }
 
-    /**
-     * Set weight value
-     * @param weight weight value
-     */
-    public void setWeight(Integer weight) {
+    public void setValue(Integer weight) {
         this.value = weight;
+    }
+
+    /**
+     * Turns the WeightData into a Map<String, Object>.
+     * @return Map<String, Object> containing the WeighData
+     */
+    public Map<String, Object> getAsMap() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("value", value);
+        return response;
     }
 
     @NonNull
@@ -49,7 +54,7 @@ public class WeightData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof WeightData) {
-            return ((WeightData) obj).getWeight().equals(this.getWeight());
+            return ((WeightData) obj).getValue().equals(this.getValue());
         }
         return false;
     }

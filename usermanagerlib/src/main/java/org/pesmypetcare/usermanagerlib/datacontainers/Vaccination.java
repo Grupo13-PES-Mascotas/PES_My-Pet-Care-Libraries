@@ -8,35 +8,35 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Weight {
+public class Vaccination {
     private String key;
-    private WeightData body;
+    private VaccinationData body;
 
     /**
-     * Weight constructor.
+     * Vaccination constructor.
      */
-    public Weight() { }
+    public Vaccination() { }
 
     /**
-     * Weight constructor.
-     * @param key date value
-     * @param body weight data
+     * Vaccination constructor.
+     * @param key date
+     * @param body vaccination data
      */
-    public Weight(String key, WeightData body) {
+    public Vaccination(String key, VaccinationData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Weight constructor.
-     * @param date Weight date
-     * @param weight Weight value
+     * Vaccination constructor.
+     * @param date Vaccination date
+     * @param description Vaccination description
      */
-    public Weight(String date, Integer weight) {
+    public Vaccination(String date, String description) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new WeightData(weight);
+        this.body = new VaccinationData(description);
     }
 
     public String getKey() {
@@ -44,15 +44,15 @@ public class Weight {
     }
 
     public void setKey(String date) {
-        PetData.checkDateFormat(date);
+        PetData.checkDateFormat(key);
         this.key = date;
     }
 
-    public WeightData getBody() {
+    public VaccinationData getBody() {
         return body;
     }
 
-    public void setBody(WeightData body) {
+    public void setBody(VaccinationData body) {
         this.body = body;
     }
 
@@ -63,7 +63,6 @@ public class Weight {
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();
     }
-
 
     @NonNull
     @Override
@@ -76,9 +75,9 @@ public class Weight {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Weight) {
-            return ((Weight) obj).getKey().equals(this.getKey())
-                && ((Weight) obj).getBody().equals(this.getBody());
+        if (obj instanceof Vaccination) {
+            return ((Vaccination) obj).getKey().equals(this.getKey())
+                && ((Vaccination) obj).getBody().equals(this.getBody());
         }
         return false;
     }

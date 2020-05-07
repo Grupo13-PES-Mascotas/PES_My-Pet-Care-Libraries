@@ -3,6 +3,8 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Map;
+
 /**
  * @author Marc Simó
  */
@@ -11,45 +13,56 @@ public class Wash {
     private WashData body;
 
     /**
-     * Wash constructor from date and wash data.
+     * Wash constructor.
+     */
+    public Wash() { }
+
+    /**
+     * Wash constructor.
      * @param key date value
      * @param body wash data
      */
     public Wash(String key, WashData body) {
+        PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Returns the date.
-     * @return Date
+     * Wash constructor.
+     * @param date Wash date
+     * @param description Wash description
+     * @param duration Wash duration
      */
-    public String getDate() {
+    public Wash(String date, String description, Integer duration) {
+        PetData.checkDateFormat(date);
+        this.key = date;
+        this.body = new WashData(description, duration);
+    }
+
+    public String getKey() {
         return key;
     }
 
-    /**
-     * Sets a new Date.
-     * @param date Date
-     */
-    public void setDate(String date) {
+    public void setKey(String date) {
+        PetData.checkDateFormat(date);
         this.key = date;
     }
 
-    /**
-     * Returns the wash data.
-     * @return Wash data
-     */
     public WashData getBody() {
         return body;
     }
 
-    /**
-     * Sets a new wash data.
-     * @param body Wash data
-     */
     public void setBody(WashData body) {
         this.body = body;
+    }
+
+    /**
+     * Turns the body into a Map<String, Object>.
+     * @return Map<String, Object> containing the body
+     */
+    public Map<String, Object> getBodyAsMap() {
+        return body.getAsMap();
     }
 
 
@@ -65,7 +78,7 @@ public class Wash {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Wash) {
-            return ((Wash) obj).getDate().equals(this.getDate())
+            return ((Wash) obj).getKey().equals(this.getKey())
                 && ((Wash) obj).getBody().equals(this.getBody());
         }
         return false;

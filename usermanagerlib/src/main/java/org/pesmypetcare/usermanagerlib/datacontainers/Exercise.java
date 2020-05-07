@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,7 @@ public class Exercise {
     private ExerciseData body;
 
     /**
-     * Exercise Constructor
+     * Exercise Constructor.
      */
     public Exercise() { }
 
@@ -27,24 +26,27 @@ public class Exercise {
      * @param body exercise data
      */
     public Exercise(String key, ExerciseData body) {
+        PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Exercise constructor
+     * Exercise constructor.
      * @param startDateTime Exercise key
      * @param endDateTime body endDateTime
      * @param name body name
      * @param description body description
      */
     public Exercise(String startDateTime, String endDateTime, String name, String description) {
+        PetData.checkDateFormat(startDateTime);
+        PetData.checkDateFormat(endDateTime);
         this.key = startDateTime;
         this.body = new ExerciseData(name, description, endDateTime);
     }
 
     /**
-     * Exercise constructor
+     * Exercise constructor.
      * @param startDateTime Exercise key
      * @param endDateTime body endDateTime
      * @param name body name
@@ -53,6 +55,8 @@ public class Exercise {
      */
     public Exercise(String startDateTime, String endDateTime, String name, String description,
                     List<LatLng> coordinates) {
+        PetData.checkDateFormat(startDateTime);
+        PetData.checkDateFormat(endDateTime);
         this.key = startDateTime;
         this.body = new ExerciseData(name, description, endDateTime, coordinates);
     }
@@ -61,8 +65,9 @@ public class Exercise {
         return key;
     }
 
-    public void setKey(String date) {
-        this.key = date;
+    public void setKey(String startDateTime) {
+        PetData.checkDateFormat(startDateTime);
+        this.key = startDateTime;
     }
 
     public ExerciseData getBody() {
@@ -74,16 +79,11 @@ public class Exercise {
     }
 
     /**
-     * Turns the ExerciseData into a Map<String, Object>
-     * @return Map<String, Object> containing the ExerciseData
+     * Turns the body into a Map<String, Object>.
+     * @return Map<String, Object> containing the body
      */
     public Map<String, Object> getBodyAsMap() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("endDateTime", body.getEndDateTime());
-        response.put("name", body.getName());
-        response.put("description", body.getDescription());
-        response.put("coordinates", body.getCoordinates());
-        return response;
+        return body.getAsMap();
     }
 
     @NonNull

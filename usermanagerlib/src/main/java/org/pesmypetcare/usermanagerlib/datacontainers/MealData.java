@@ -16,7 +16,12 @@ public class MealData {
     private Double kcal;
 
     /**
-     * MealData constructor
+     * MealData constructor.
+     */
+    public MealData() { }
+
+    /**
+     * MealData constructor.
      * @param mealName mealName
      * @param kcal kcalories
      */
@@ -39,6 +44,17 @@ public class MealData {
 
     public void setKcal(Double kcal) {
         this.kcal = kcal;
+    }
+
+    /**
+     * Turns the MealData into a Map<String, Object>.
+     * @return Map<String, Object> containing the MealData
+     */
+    public Map<String, Object> getAsMap() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("mealName", mealName);
+        response.put("kcal", kcal);
+        return response;
     }
 
     /**

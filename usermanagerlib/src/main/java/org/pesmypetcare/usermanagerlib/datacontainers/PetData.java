@@ -383,7 +383,7 @@ public class PetData {
      * Checks that the string key follows the specified format.
      * @param key String to checked
      */
-    private static void checkDatePlusNameFormat(String key) {
+    public static void checkDatePlusNameFormat(String key) {
         if (!key.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}-.*")) {
             throw new IllegalArgumentException("Incorrect date plus name format");
         }
