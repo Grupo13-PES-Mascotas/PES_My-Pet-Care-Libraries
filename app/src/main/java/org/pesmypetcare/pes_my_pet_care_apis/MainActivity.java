@@ -8,9 +8,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
+import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
+import org.pesmypetcare.usermanagerlib.datacontainers.IllnessData;
+import org.pesmypetcare.usermanagerlib.datacontainers.IllnessType;
+import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
+import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
 import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
 import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
+import org.pesmypetcare.usermanagerlib.datacontainers.SeverityType;
+import org.pesmypetcare.usermanagerlib.datacontainers.Vaccination;
+import org.pesmypetcare.usermanagerlib.datacontainers.VaccinationData;
+import org.pesmypetcare.usermanagerlib.datacontainers.VetVisit;
+import org.pesmypetcare.usermanagerlib.datacontainers.VetVisitData;
+import org.pesmypetcare.usermanagerlib.datacontainers.WashData;
+import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
+import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
 import java.util.HashMap;
@@ -90,17 +103,40 @@ public class MainActivity extends AppCompatActivity {
         }
 */
 
-/*
-        Map<String, Object> body = new HashMap<>();
 
-        // body.put("kcal", 32.2);
-        // body.put("mealName", "I can't remember it");
+        ExerciseData exerciseData = new ExerciseData("Planking", "Staying horizontal over a plain surface",
+            "2000-01-08T15:20:30");
+        IllnessData illnessData = new IllnessData("2000-01-08T15:20:30", "I'm not feeling so well",
+            IllnessType.Normal, SeverityType.High);
+        MealData mealData = new MealData("Tortilla", 85.44);
+        MedicationData medicationData = new MedicationData(85.0, 45, 36);
+        VaccinationData vaccinationData = new VaccinationData("It was really pleasant");
+        VetVisitData vetVisitData = new VetVisitData("It was really pleasant", "Calle 2, pt. Avenida");
+        WashData washData = new WashData("It smelt so bad", 54);
+        WeightData weightData = new WeightData(54);
 
-        //body.put("value", 54);
         // Pet collection functions
         try {
-            System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-                "Santiago", PetData.TRAININGS, dateTime4.toString(), body));
+            System.out.println(manager.getFieldCollectionElement("token", "Manolo",
+                "Santiago", PetData.MEALS, dateTime2.toString()));
+
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.EXERCISES, dateTime1.toString(), exerciseData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.ILLNESSES, dateTime1.toString(), illnessData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.MEALS, dateTime1.toString(), mealData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.MEDICATIONS, dateTime1.toString()+"-"+"Chloroform", medicationData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.VACCINATIONS, dateTime1.toString(), vaccinationData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.VET_VISITS, dateTime1.toString(), vetVisitData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.WASHES, dateTime1.toString(), washData.getAsMap()));
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.WEIGHTS, dateTime1.toString(), weightData.getAsMap()));
+
             //System.out.println(manager.deleteFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime4.toString()));
             //System.out.println(manager.updateFieldCollectionElement("token", "Manolo",
@@ -113,31 +149,68 @@ public class MainActivity extends AppCompatActivity {
                 "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
             //System.out.println(manager.deleteFieldCollection("token", "Manolo",
             //    "Santiago", PetData.MEALS));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-*/
+
 
         // Pet family friendly retrieval functions
-
+/*
         try {
-            System.out.println(extraManager.getAllMeals("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getMealsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getMeal("token", "Manolo", "Santiago",
-                dateTime4.toString()));
+
+            System.out.println("Exercises");
             System.out.println(extraManager.getAllExercises("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getExercisesBetween("token", "Manolo", "Santiago",
                 dateTime1.toString(), dateTime2.toString()));
             System.out.println(extraManager.getExercise("token", "Manolo", "Santiago",
                 dateTime4.toString()));
+
+            System.out.println("Illnesses");
+            System.out.println(extraManager.getAllIllnesses("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getIllnessesBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getIllness("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+
+            System.out.println("Meals");
+            System.out.println(extraManager.getAllMeals("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getMealsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getMeal("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+
+
+            System.out.println("Medications");
+            System.out.println(extraManager.getAllMedications("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getMedicationsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getMedication("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+
+
+            System.out.println("Vaccinations");
+            System.out.println(extraManager.getAllVaccinations("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getVaccinationsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getVaccination("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+
+
+            System.out.println("VetVisits");
+            System.out.println(extraManager.getAllVetVisits("token", "Manolo", "Santiago"));
+            System.out.println(extraManager.getVetVisitsBetween("token", "Manolo", "Santiago",
+                dateTime1.toString(), dateTime2.toString()));
+            System.out.println(extraManager.getVetVisit("token", "Manolo", "Santiago",
+                dateTime4.toString()));
+
+            System.out.println("Washes");
             System.out.println(extraManager.getAllWashes("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getWashesBetween("token", "Manolo", "Santiago",
                 dateTime1.toString(), dateTime2.toString()));
             System.out.println(extraManager.getWash("token", "Manolo", "Santiago",
                 dateTime4.toString()));
+
+            System.out.println("Weights");
             System.out.println(extraManager.getAllWeights("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getWeightsBetween("token", "Manolo", "Santiago",
                 dateTime1.toString(), dateTime2.toString()));
@@ -146,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
+*/
 
         // TESTS GOOGLE CALENDAR
 /*

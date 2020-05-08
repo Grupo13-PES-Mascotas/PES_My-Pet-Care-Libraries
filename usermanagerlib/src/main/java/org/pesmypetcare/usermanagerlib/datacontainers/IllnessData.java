@@ -76,8 +76,8 @@ public class IllnessData {
         Map<String, Object> response = new HashMap<>();
         response.put("endDateTime", endDateTime);
         response.put("description", description);
-        response.put("type", type);
-        response.put("severity", severity);
+        response.put("type", type.name());
+        response.put("severity", severity.name());
         return response;
     }
 
