@@ -34,7 +34,6 @@ public class ExerciseData {
         PetData.checkDateFormat(endDateTime);
         this.name = name;
         this.description = description;
-        this.coordinates = null;
         this.endDateTime = endDateTime;
     }
 
@@ -47,14 +46,13 @@ public class ExerciseData {
      */
     public ExerciseData(String name, String description, String endDateTime, @NonNull List<LatLng> coordinates) {
         PetData.checkDateFormat(endDateTime);
-        Map<String, Double> point;
+        Map<String, Double> point = new HashMap<>();
         this.name = name;
         this.description = description;
         this.endDateTime = endDateTime;
         this.coordinates = new ArrayList<>();
         for (LatLng lat: coordinates) {
             if (lat != null) {
-                point = new HashMap<>();
                 point.put("latitude", lat.latitude);
                 point.put("longitude", lat.longitude);
                 this.coordinates.add(point);
@@ -94,15 +92,14 @@ public class ExerciseData {
         for (Map<String, Double> point: this.coordinates) {
             response.add(new LatLng(point.get("latitude"), point.get("longitude")));
         }
-        return  response;
+        return response;
     }
 
     public void setCoordinates(@NonNull List<LatLng> coordinates) {
-        Map<String, Double> point;
+        Map<String, Double> point = new HashMap<>();
         this.coordinates = new ArrayList<>();
         for (LatLng lat: coordinates) {
             if (lat != null) {
-                point = new HashMap<>();
                 point.put("latitude", lat.latitude);
                 point.put("longitude", lat.longitude);
                 this.coordinates.add(point);
