@@ -3,6 +3,8 @@ package org.pesmypetcare.usermanagerlib.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Map;
+
 /**
  * @author Marc Simó
  */
@@ -11,45 +13,55 @@ public class Weight {
     private WeightData body;
 
     /**
-     * Weight constructor from date and weight data.
+     * Weight constructor.
+     */
+    public Weight() { }
+
+    /**
+     * Weight constructor.
      * @param key date value
      * @param body weight data
      */
     public Weight(String key, WeightData body) {
+        PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Returns the date.
-     * @return Date
+     * Weight constructor.
+     * @param date Weight date
+     * @param weight Weight value
      */
-    public String getDate() {
+    public Weight(String date, Integer weight) {
+        PetData.checkDateFormat(date);
+        this.key = date;
+        this.body = new WeightData(weight);
+    }
+
+    public String getKey() {
         return key;
     }
 
-    /**
-     * Sets a new Date.
-     * @param date Date
-     */
-    public void setDate(String date) {
+    public void setKey(String date) {
+        PetData.checkDateFormat(date);
         this.key = date;
     }
 
-    /**
-     * Returns the weight data.
-     * @return Weight data
-     */
     public WeightData getBody() {
         return body;
     }
 
-    /**
-     * Sets a new Weight data.
-     * @param body Weight data
-     */
     public void setBody(WeightData body) {
         this.body = body;
+    }
+
+    /**
+     * Turns the body into a Map of key String and element Object.
+     * @return Body turned into map
+     */
+    public Map<String, Object> getBodyAsMap() {
+        return body.getAsMap();
     }
 
 
@@ -65,7 +77,7 @@ public class Weight {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof Weight) {
-            return ((Weight) obj).getDate().equals(this.getDate())
+            return ((Weight) obj).getKey().equals(this.getKey())
                 && ((Weight) obj).getBody().equals(this.getBody());
         }
         return false;

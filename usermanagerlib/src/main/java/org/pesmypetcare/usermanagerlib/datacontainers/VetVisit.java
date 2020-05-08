@@ -8,52 +8,52 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Wash {
+public class VetVisit {
     private String key;
-    private WashData body;
+    private VetVisitData body;
 
     /**
-     * Wash constructor.
+     * VetVisit constructor.
      */
-    public Wash() { }
+    public VetVisit() { }
 
     /**
-     * Wash constructor.
-     * @param key date value
-     * @param body wash data
+     * VetVisit constructor.
+     * @param key Vet visit date
+     * @param body Vet visit data
      */
-    public Wash(String key, WashData body) {
+    public VetVisit(String key, VetVisitData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Wash constructor.
-     * @param date Wash date
-     * @param description Wash description
-     * @param duration Wash duration
+     * VetVisit constructor.
+     * @param date Vet visit date
+     * @param reason Vet visit reason
+     * @param address Vet visit address
      */
-    public Wash(String date, String description, Integer duration) {
+    public VetVisit(String date, String reason, String address) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new WashData(description, duration);
+        this.body = new VetVisitData(reason, address);
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String date) {
-        PetData.checkDateFormat(date);
-        this.key = date;
+    public void setKey(String key) {
+        PetData.checkDateFormat(key);
+        this.key = key;
     }
 
-    public WashData getBody() {
+    public VetVisitData getBody() {
         return body;
     }
 
-    public void setBody(WashData body) {
+    public void setBody(VetVisitData body) {
         this.body = body;
     }
 
@@ -64,7 +64,6 @@ public class Wash {
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();
     }
-
 
     @NonNull
     @Override
@@ -77,9 +76,9 @@ public class Wash {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Wash) {
-            return ((Wash) obj).getKey().equals(this.getKey())
-                && ((Wash) obj).getBody().equals(this.getBody());
+        if (obj instanceof VetVisit) {
+            return ((VetVisit) obj).getKey().equals(this.getKey())
+                && ((VetVisit) obj).getBody().equals(this.getBody());
         }
         return false;
     }

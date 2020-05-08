@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "org.pesmypetcare.pes_my_pet_care_apis"
@@ -52,4 +52,5 @@ dependencies {
     androidTestUtil 'androidx.test:orchestrator:1.2.0'
     implementation project(path: ':usermanagerlib')
     implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 }

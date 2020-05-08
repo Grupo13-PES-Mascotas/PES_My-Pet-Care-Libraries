@@ -48,7 +48,7 @@ public class MealManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getDate(),
+        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getKey(),
             accessToken).get();
         return Integer.parseInt(response.toString());
     }

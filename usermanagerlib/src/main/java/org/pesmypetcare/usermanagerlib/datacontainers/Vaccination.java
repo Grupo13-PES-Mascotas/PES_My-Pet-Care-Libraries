@@ -8,36 +8,35 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Wash {
+public class Vaccination {
     private String key;
-    private WashData body;
+    private VaccinationData body;
 
     /**
-     * Wash constructor.
+     * Vaccination constructor.
      */
-    public Wash() { }
+    public Vaccination() { }
 
     /**
-     * Wash constructor.
-     * @param key date value
-     * @param body wash data
+     * Vaccination constructor.
+     * @param key date
+     * @param body vaccination data
      */
-    public Wash(String key, WashData body) {
+    public Vaccination(String key, VaccinationData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Wash constructor.
-     * @param date Wash date
-     * @param description Wash description
-     * @param duration Wash duration
+     * Vaccination constructor.
+     * @param date Vaccination date
+     * @param description Vaccination description
      */
-    public Wash(String date, String description, Integer duration) {
+    public Vaccination(String date, String description) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new WashData(description, duration);
+        this.body = new VaccinationData(description);
     }
 
     public String getKey() {
@@ -45,15 +44,15 @@ public class Wash {
     }
 
     public void setKey(String date) {
-        PetData.checkDateFormat(date);
+        PetData.checkDateFormat(key);
         this.key = date;
     }
 
-    public WashData getBody() {
+    public VaccinationData getBody() {
         return body;
     }
 
-    public void setBody(WashData body) {
+    public void setBody(VaccinationData body) {
         this.body = body;
     }
 
@@ -64,7 +63,6 @@ public class Wash {
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();
     }
-
 
     @NonNull
     @Override
@@ -77,9 +75,9 @@ public class Wash {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Wash) {
-            return ((Wash) obj).getKey().equals(this.getKey())
-                && ((Wash) obj).getBody().equals(this.getBody());
+        if (obj instanceof Vaccination) {
+            return ((Vaccination) obj).getKey().equals(this.getKey())
+                && ((Vaccination) obj).getBody().equals(this.getBody());
         }
         return false;
     }
