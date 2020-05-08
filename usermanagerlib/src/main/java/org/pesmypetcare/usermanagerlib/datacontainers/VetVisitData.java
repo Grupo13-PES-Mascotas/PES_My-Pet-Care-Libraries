@@ -45,8 +45,8 @@ public class VetVisitData {
     }
 
     /**
-     * Turns the VetVisitData into a Map<String, Object>.
-     * @return Map<String, Object> containing the VetVisitData
+     * Turns the VetVisitData into a Map of key String and element Object.
+     * @return VetVisitData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

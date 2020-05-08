@@ -69,8 +69,8 @@ public class IllnessData {
     }
 
     /**
-     * Turns the IllnessData into a Map<String, Object>.
-     * @return Map<String, Object> containing the IllnessData
+     * Turns the IllnessData into a Map of key String and element Object.
+     * @return IllnessData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

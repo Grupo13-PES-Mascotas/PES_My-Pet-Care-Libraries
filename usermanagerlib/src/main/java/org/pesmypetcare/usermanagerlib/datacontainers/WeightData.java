@@ -34,8 +34,8 @@ public class WeightData {
     }
 
     /**
-     * Turns the WeightData into a Map<String, Object>.
-     * @return Map<String, Object> containing the WeighData
+     * Turns the WeightData into a Map of key String and element Object.
+     * @return WeighData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

@@ -47,8 +47,8 @@ public class MealData {
     }
 
     /**
-     * Turns the MealData into a Map<String, Object>.
-     * @return Map<String, Object> containing the MealData
+     * Turns the MealData into a Map of key String and element Object.
+     * @return MealData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

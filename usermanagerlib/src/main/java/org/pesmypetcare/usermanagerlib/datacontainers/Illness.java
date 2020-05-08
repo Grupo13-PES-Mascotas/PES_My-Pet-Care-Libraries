@@ -63,8 +63,8 @@ public class Illness {
     }
 
     /**
-     * Turns the body into a Map<String, Object>.
-     * @return Map<String, Object> containing the body
+     * Turns the body into a Map of key String and element Object.
+     * @return Body turned into map
      */
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();

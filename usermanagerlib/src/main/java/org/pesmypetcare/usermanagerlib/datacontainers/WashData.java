@@ -45,8 +45,8 @@ public class WashData {
     }
 
     /**
-     * Turns the WashData into a Map<String, Object>.
-     * @return Map<String, Object> containing the WashData
+     * Turns the WashData into a Map of key String and element Object.
+     * @return WashData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

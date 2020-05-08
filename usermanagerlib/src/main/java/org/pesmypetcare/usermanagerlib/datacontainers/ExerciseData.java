@@ -111,8 +111,8 @@ public class ExerciseData {
     }
 
     /**
-     * Turns the ExerciseData into a Map<String, Object>.
-     * @return Map<String, Object> containing the ExerciseData
+     * Turns the ExerciseData into a Map of key String and element Object.
+     * @return ExerciseData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();

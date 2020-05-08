@@ -34,8 +34,8 @@ public class VaccinationData {
     }
 
     /**
-     * Turns the VaccinationData into a Map<String, Object>.
-     * @return Map<String, Object> containing the VaccinationData
+     * Turns the VaccinationData into a Map of key String and element Object.
+     * @return VaccinationData turned into map
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();
