@@ -498,7 +498,7 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
-     * @param key2 End date (This one not included)
+     * @param key2 End date (This one included)
      * @return The medications between the dates
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
