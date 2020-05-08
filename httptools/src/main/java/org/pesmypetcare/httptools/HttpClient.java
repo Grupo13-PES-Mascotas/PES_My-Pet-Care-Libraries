@@ -39,7 +39,7 @@ public class HttpClient {
             setBody(req, con);
             responseCode = con.getResponseCode();
             res = new HttpResponse(con);
-            if (responseCode != 200) {
+            if (responseCode != 200 && responseCode != 201 && responseCode != 204) {
                 throw new MyPetCareException(res.asString(), res);
             }
         } catch (IOException e) {

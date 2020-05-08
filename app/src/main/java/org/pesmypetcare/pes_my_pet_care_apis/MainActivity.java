@@ -9,7 +9,11 @@ import org.json.JSONException;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
+import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.util.ArrayList;
@@ -384,15 +388,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }*/
-        /*Thread thread = new Thread(() -> {
+        PetManagerClient client = new PetManagerClient();
+        Thread thread = new Thread(() -> {
             try {
-                System.out.println(client.usernameAlreadyExists("Apint"));
+                client.createPetSync("token", "santi",
+                        new Pet("Max", new PetData(GenderType.Male, "Huskie", "2020-04-09T20:34:00", null, null, null)));
             } catch (MyPetCareException e) {
+                System.out.println(e.getMessage());
                 e.printStackTrace();
             }
             System.out.println("Pasado");
         });
-        thread.start();*/
+        thread.start();
         //System.out.println(client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user));
         /*try {
             System.out.println("MAIN: " + client.getUser("kayle"));
