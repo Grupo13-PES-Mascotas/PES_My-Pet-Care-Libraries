@@ -80,9 +80,9 @@ public class MedicationData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof MedicationData) {
-            return (((MedicationData) obj).getQuantity().equals(this.getQuantity())
+            return ((MedicationData) obj).getQuantity().equals(this.getQuantity())
                 && ((MedicationData) obj).getDuration().equals(this.getDuration())
-                && ((MedicationData) obj).getPeriodicity().equals(this.getPeriodicity()));
+                && ((MedicationData) obj).getPeriodicity().equals(this.getPeriodicity());
         }
         return false;
     }

@@ -137,10 +137,10 @@ public class ExerciseData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof ExerciseData) {
-            return (((ExerciseData) obj).getName().equals(this.getName())
+            return ((ExerciseData) obj).getName().equals(this.getName())
                 && ((ExerciseData) obj).getDescription().equals(this.getDescription())
                 && ((ExerciseData) obj).getEndDateTime().equals(this.getEndDateTime())
-                && ((ExerciseData) obj).getCoordinates().equals(this.getCoordinates()));
+                && ((ExerciseData) obj).getCoordinates().equals(this.getCoordinates());
         }
         return false;
     }

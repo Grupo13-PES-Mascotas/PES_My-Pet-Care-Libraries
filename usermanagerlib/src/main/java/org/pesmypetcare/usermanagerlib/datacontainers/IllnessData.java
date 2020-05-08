@@ -95,10 +95,10 @@ public class IllnessData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof IllnessData) {
-            return (((IllnessData) obj).getEndDateTime().equals(this.getEndDateTime())
+            return ((IllnessData) obj).getEndDateTime().equals(this.getEndDateTime())
                 && ((IllnessData) obj).getDescription().equals(this.getDescription())
                 && ((IllnessData) obj).getType().equals(this.getType())
-                && ((IllnessData) obj).getSeverity().equals(this.getSeverity()));
+                && ((IllnessData) obj).getSeverity().equals(this.getSeverity());
         }
         return false;
     }

@@ -67,8 +67,8 @@ public class VetVisitData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof VetVisitData) {
-            return (((VetVisitData) obj).getReason().equals(this.getReason())
-                && ((VetVisitData) obj).getAddress().equals(this.getAddress()));
+            return ((VetVisitData) obj).getReason().equals(this.getReason())
+                && ((VetVisitData) obj).getAddress().equals(this.getAddress());
         }
         return false;
     }

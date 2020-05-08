@@ -54,7 +54,7 @@ public class VaccinationData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof VaccinationData) {
-            return (((VaccinationData) obj).getDescription().equals(this.getDescription()));
+            return ((VaccinationData) obj).getDescription().equals(this.getDescription());
         }
         return false;
     }

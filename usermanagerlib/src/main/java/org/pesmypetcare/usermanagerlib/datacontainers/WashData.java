@@ -67,8 +67,8 @@ public class WashData {
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof WashData) {
-            return (((WashData) obj).getDescription().equals(this.getDescription())
-                && ((WashData) obj).getDuration().equals(this.getDuration()));
+            return ((WashData) obj).getDescription().equals(this.getDescription())
+                && ((WashData) obj).getDuration().equals(this.getDuration());
         }
         return false;
     }
