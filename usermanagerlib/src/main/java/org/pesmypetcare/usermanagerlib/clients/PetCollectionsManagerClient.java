@@ -143,11 +143,12 @@ public class PetCollectionsManagerClient {
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
-        String[] objectArray = splitResponse(response);
+        String jsonArray = response.substring(1, response.length() - 1);
+        String[] objectArray = jsonArray.split(",\\{\"body\"");
         List<Exercise> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Exercise.class));
         for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
+            objectArray[i] = "{\"body\"" + objectArray[i];
             result.add(GSON.fromJson(objectArray[i], Exercise.class));
         }
         return result;
@@ -176,11 +177,12 @@ public class PetCollectionsManagerClient {
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
-        String[] objectArray = splitResponse(response);
+        String jsonArray = response.substring(1, response.length() - 1);
+        String[] objectArray = jsonArray.split(",\\{\"body\"");
         List<Exercise> result = new ArrayList<>();
         result.add(GSON.fromJson(objectArray[0], Exercise.class));
         for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
+            objectArray[i] = "{\"body\"" + objectArray[i];
             result.add(GSON.fromJson(objectArray[i], Exercise.class));
         }
         return result;
@@ -395,12 +397,9 @@ public class PetCollectionsManagerClient {
         }
         String[] objectArray = splitResponse(response);
         List<Illness> result = new ArrayList<>();
-        System.out.println(objectArray[0]);
         result.add(GSON.fromJson(objectArray[0], Illness.class));
         for (int i = 1; i < objectArray.length; i++) {
-            System.out.println("-----------------------------");
             objectArray[i] = "{" + objectArray[i];
-            System.out.println(objectArray[i]);
             result.add(GSON.fromJson(objectArray[i], Illness.class));
         }
         return result;
@@ -498,7 +497,7 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
-     * @param key2 End date (This one included)
+     * @param key2 End date (This one not included)
      * @return The medications between the dates
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
@@ -537,7 +536,7 @@ public class PetCollectionsManagerClient {
      */
     public MedicationData getMedication(String accessToken, String username, String petName, String key)
         throws ExecutionException, InterruptedException {
-        PetData.checkDateFormat(key);
+        PetData.checkDatePlusNameFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH

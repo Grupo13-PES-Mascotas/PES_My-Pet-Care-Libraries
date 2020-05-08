@@ -1,5 +1,7 @@
 package org.pesmypetcare.usermanagerlib.clients;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -96,22 +98,86 @@ public class PetCollectionsManagerClientTest {
         // Corregir exercise per ficar coordinates
         exerciseCollectionJson = new StringBuilder("[\n"
             + "  {\n"
-            + "    \"body\": {\n"
-            + "      \"name\": \"Planking\",\n"
-            + "      \"description\": \"Staying horizontal over a plain surface\",\n" +
-            "      \"endDateTime\": \"2000-01-08T15:20:30\",\n" +
-            "      \"coordinates\": 4\n" +
-            "    },\n"
-            + "    \"key\": \"1990-01-08T15:20:30\"\n"
+            + "    \"body\":{\n"
+            + "      \"name\":\"Planking\",\n"
+            + "      \"coordinates\":[\n"
+            + "        {\n"
+            + "          \"latitude\":84,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":34,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":21,\n"
+            + "          \"longitude\":58\n"
+            + "        }\n"
+            + "      ],\n"
+            + "      \"description\":\"Staying horizontal over a plain surface\",\n"
+            + "      \"endDateTime\":\"2000-01-08T15:20:30\"\n"
+            + "    },\n"
+            + "    \"key\":\"1990-01-08T15:20:30\"\n"
+            + "  },{\"body\":{\n"
+            + "      \"name\":\"Planking\",\n"
+            + "      \"coordinates\":[\n"
+            + "        {\n"
+            + "          \"latitude\":84,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":34,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":21,\n"
+            + "          \"longitude\":58\n"
+            + "        }\n"
+            + "      ],\n"
+            + "      \"description\":\"Staying horizontal over a plain surface\",\n"
+            + "      \"endDateTime\":\"2000-01-08T15:20:30\"\n"
+            + "    },\n"
+            + "    \"key\":\"1995-01-08T15:20:30\"\n"
+            + "  },{\"body\":{\n"
+            + "      \"name\":\"Planking\",\n"
+            + "      \"coordinates\":[\n"
+            + "        {\n"
+            + "          \"latitude\":84,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":34,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":21,\n"
+            + "          \"longitude\":58\n"
+            + "        }\n"
+            + "      ],\n"
+            + "      \"description\":\"Staying horizontal over a plain surface\",\n"
+            + "      \"endDateTime\":\"2000-01-08T15:20:30\"\n"
+            + "    },\n"
+            + "    \"key\":\"1998-01-08T15:20:30\"\n"
             + "  }\n"
             + "]");
         exerciseDataJson = new StringBuilder("{\n"
-            + "  \"kcal\": 85.44,\n"
-            + "  \"mealName\": \"Tortilla\"\n"
+            + "      \"name\":\"Planking\",\n"
+            + "      \"coordinates\":[\n"
+            + "        {\n"
+            + "          \"latitude\":84,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":34,\n"
+            + "          \"longitude\":58\n"
+            + "        },{\n"
+            + "          \"latitude\":21,\n"
+            + "          \"longitude\":58\n"
+            + "        }\n"
+            + "      ],\n"
+            + "      \"description\":\"Staying horizontal over a plain surface\",\n"
+            + "      \"endDateTime\":\"2000-01-08T15:20:30\"\n"
             + "}"
         );
+        List<LatLng> coordinates = new ArrayList<>();
+        coordinates.add(new LatLng(84, 58));
+        coordinates.add(new LatLng(34, 58));
+        coordinates.add(new LatLng(21, 58));
         exerciseData = new ExerciseData("Planking", "Staying horizontal over a plain surface",
-            "2000-01-08T15:20:30");
+            "2000-01-08T15:20:30", coordinates);
         exerciseCollectionList = new ArrayList<>();
         exerciseCollectionList.add(new Exercise(DATE_1, exerciseData));
         exerciseCollectionList.add(new Exercise(DATE_2, exerciseData));

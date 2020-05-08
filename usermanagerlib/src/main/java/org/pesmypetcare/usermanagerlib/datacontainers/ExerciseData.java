@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class ExerciseData {
     private String name;
     private String description;
-    private List<LatLng> coordinates;
+    private List<Map<String, Double>> coordinates;
     private String endDateTime;
 
     /**
@@ -44,12 +45,21 @@ public class ExerciseData {
      * @param endDateTime endDateTime
      * @param coordinates coordinates
      */
-    public ExerciseData(String name, String description, String endDateTime, List<LatLng> coordinates) {
+    public ExerciseData(String name, String description, String endDateTime, @NonNull List<LatLng> coordinates) {
         PetData.checkDateFormat(endDateTime);
+        Map<String, Double> point;
         this.name = name;
         this.description = description;
-        this.coordinates = coordinates;
         this.endDateTime = endDateTime;
+        this.coordinates = new ArrayList<>();
+        for (LatLng lat: coordinates) {
+            if (lat != null) {
+                point = new HashMap<>();
+                point.put("latitude", lat.latitude);
+                point.put("longitude", lat.longitude);
+                this.coordinates.add(point);
+            }
+        }
     }
 
     public String getName() {
@@ -77,11 +87,27 @@ public class ExerciseData {
     }
 
     public List<LatLng> getCoordinates() {
-        return coordinates;
+        if (this.coordinates == null) {
+            return null;
+        }
+        List<LatLng> response = new ArrayList<>();
+        for (Map<String, Double> point: this.coordinates) {
+            response.add(new LatLng(point.get("latitude"), point.get("longitude")));
+        }
+        return  response;
     }
 
-    public void setCoordinates(List<LatLng> coordinates) {
-        this.coordinates = coordinates;
+    public void setCoordinates(@NonNull List<LatLng> coordinates) {
+        Map<String, Double> point;
+        this.coordinates = new ArrayList<>();
+        for (LatLng lat: coordinates) {
+            if (lat != null) {
+                point = new HashMap<>();
+                point.put("latitude", lat.latitude);
+                point.put("longitude", lat.longitude);
+                this.coordinates.add(point);
+            }
+        }
     }
 
     /**

@@ -5,6 +5,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
@@ -26,7 +28,9 @@ import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
 import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -104,11 +108,16 @@ public class MainActivity extends AppCompatActivity {
 */
 
 
+        List<LatLng> coordinates = new ArrayList<>();
+        coordinates.add(new LatLng(84, 58));
+        coordinates.add(new LatLng(34, 58));
+        coordinates.add(new LatLng(21, 58));
+
         ExerciseData exerciseData = new ExerciseData("Planking", "Staying horizontal over a plain surface",
-            "2000-01-08T15:20:30");
+            "2000-01-08T15:20:30", coordinates);
         IllnessData illnessData = new IllnessData("2000-01-08T15:20:30", "I'm not feeling so well",
             IllnessType.Normal, SeverityType.High);
-        MealData mealData = new MealData("Tortilla", 85.44);
+        MealData mealData = new MealData("Tortilla", 85.45);
         MedicationData medicationData = new MedicationData(85.0, 45, 36);
         VaccinationData vaccinationData = new VaccinationData("It was really pleasant");
         VetVisitData vetVisitData = new VetVisitData("It was really pleasant", "Calle 2, pt. Avenida");
@@ -118,35 +127,36 @@ public class MainActivity extends AppCompatActivity {
         // Pet collection functions
         try {
             System.out.println(manager.getFieldCollectionElement("token", "Manolo",
-                "Santiago", PetData.MEALS, dateTime2.toString()));
+               "Santiago", PetData.MEALS, dateTime1.toString()));
+            manager.getAllPets("token", "Manolo");
 
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.EXERCISES, dateTime1.toString(), exerciseData.getAsMap()));
+            //    "Santiago", PetData.EXERCISES, dateTime4.toString(), exerciseData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.ILLNESSES, dateTime1.toString(), illnessData.getAsMap()));
+            //    "Santiago", PetData.ILLNESSES, dateTime4.toString(), illnessData.getAsMap()));
+            // System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+            //    "Santiago", PetData.MEALS, dateTime4.toString(), mealData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.MEALS, dateTime1.toString(), mealData.getAsMap()));
+            //    "Santiago", PetData.MEDICATIONS, dateTime4.toString()+"-Chloroform", medicationData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.MEDICATIONS, dateTime1.toString()+"-"+"Chloroform", medicationData.getAsMap()));
+            //    "Santiago", PetData.VACCINATIONS, dateTime4.toString(), vaccinationData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.VACCINATIONS, dateTime1.toString(), vaccinationData.getAsMap()));
+            //    "Santiago", PetData.VET_VISITS, dateTime4.toString(), vetVisitData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.VET_VISITS, dateTime1.toString(), vetVisitData.getAsMap()));
+            //    "Santiago", PetData.WASHES, dateTime4.toString(), washData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.WASHES, dateTime1.toString(), washData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.WEIGHTS, dateTime1.toString(), weightData.getAsMap()));
+            //    "Santiago", PetData.WEIGHTS, dateTime4.toString(), weightData.getAsMap()));
 
             //System.out.println(manager.deleteFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime4.toString()));
             //System.out.println(manager.updateFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime2.toString(), body));
-            System.out.println(manager.getFieldCollectionElement("token", "Manolo",
-                    "Santiago", PetData.MEALS, dateTime2.toString()));
-            System.out.println(manager.getFieldCollection("token", "Manolo",
-                "Santiago", PetData.MEALS));
-            System.out.println(manager.getFieldCollectionElementsBetweenKeys("token", "Manolo",
-                "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
+            //System.out.println(manager.getFieldCollectionElement("token", "Manolo",
+            //        "Santiago", PetData.MEALS, dateTime2.toString()));
+            //System.out.println(manager.getFieldCollection("token", "Manolo",
+            //    "Santiago", PetData.MEALS));
+            //System.out.println(manager.getFieldCollectionElementsBetweenKeys("token", "Manolo",
+            //    "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
             //System.out.println(manager.deleteFieldCollection("token", "Manolo",
             //    "Santiago", PetData.MEALS));
         } catch (ExecutionException | InterruptedException e) {
@@ -155,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Pet family friendly retrieval functions
-/*
+
         try {
 
             System.out.println("Exercises");
@@ -183,9 +193,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Medications");
             System.out.println(extraManager.getAllMedications("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getMedicationsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
+                dateTime1.toString(), dateTime3.toString()));
             System.out.println(extraManager.getMedication("token", "Manolo", "Santiago",
-                dateTime4.toString()));
+                dateTime4.toString()+"-Chloroform"));
 
 
             System.out.println("Vaccinations");
@@ -219,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-*/
+
 
         // TESTS GOOGLE CALENDAR
 /*
