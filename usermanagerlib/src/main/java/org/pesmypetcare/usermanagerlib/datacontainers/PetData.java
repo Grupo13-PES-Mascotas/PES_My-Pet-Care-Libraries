@@ -350,7 +350,7 @@ public class PetData {
     }
 
     /**
-     * Checks wether the severity value is valid or not
+     * Checks wether the severity value is valid or not.
      * @param severity Severity value
      */
     private static void checkSeverityValue(String severity) {
@@ -360,7 +360,7 @@ public class PetData {
     }
 
     /**
-     * Checks wether type value is valid or not
+     * Checks wether type value is valid or not.
      * @param type Type value
      */
     private static void checkTypeValue(String type) {

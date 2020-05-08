@@ -85,6 +85,10 @@ public class ExerciseData {
         this.endDateTime = endDateTime;
     }
 
+    /**
+     * Gets the exercise coordinates as a LatLng list.
+     * @return List containing the coordinates
+     */
     public List<LatLng> getCoordinates() {
         if (this.coordinates == null) {
             return null;
@@ -96,6 +100,10 @@ public class ExerciseData {
         return response;
     }
 
+    /**
+     * Sets the exercise coordinates.
+     * @param coordinates Coordinates values
+     */
     public void setCoordinates(@NonNull List<LatLng> coordinates) {
         Map<String, Double> point;
         this.coordinates = new ArrayList<>();

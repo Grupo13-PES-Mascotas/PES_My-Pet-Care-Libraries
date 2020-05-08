@@ -197,7 +197,7 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the illness was acquired
-     * @return The IllnessData identified by its pet and date.
+     * @return The IllnessData identified by its pet and date
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
