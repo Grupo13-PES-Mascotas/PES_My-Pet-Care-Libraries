@@ -7,6 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+import org.pesmypetcare.httptools.HttpClient;
+import org.pesmypetcare.httptools.HttpParameter;
+import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.RequestMethod;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetCollectionField;
@@ -46,6 +50,21 @@ public class PetManagerClient {
 
     public PetManagerClient() {
         taskManager = new TaskManager();
+    }
+
+    /**
+     * Creates a pet entry in the data base for the user specified.
+     *
+     * @param accessToken The personal access token for the account
+     * @param username The user's username
+     * @param pet The pet's name
+     */
+    public void createPetSync(String accessToken, String username, Pet pet) throws MyPetCareException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", accessToken);
+        new HttpClient().request(RequestMethod.POST,
+                BASE_URL + SLASH + PETS_PATH + SLASH + HttpParameter.encode(username) + SLASH + HttpParameter
+                        .encode(pet.getName()), null, headers, GSON.toJson(pet.getBody()));
     }
 
     /**
