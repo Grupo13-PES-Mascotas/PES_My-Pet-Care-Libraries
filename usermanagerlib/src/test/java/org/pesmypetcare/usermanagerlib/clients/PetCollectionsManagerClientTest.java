@@ -517,7 +517,8 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
         given(taskManager.get()).willReturn(medicationDataJson);
-        MedicationData response = client.getMedication(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        MedicationData response = client.getMedication(ACCESS_TOKEN, USERNAME, PET_NAME,
+            "1990-01-08T15:20:30-Cloroform85");
         assertEquals("Should return the specified element", medicationData, response);
     }
 
