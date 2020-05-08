@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("Medications");
             System.out.println(extraManager.getAllMedications("token", "Manolo", "Santiago"));
             System.out.println(extraManager.getMedicationsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime3.toString()));
+                dateTime1.toString(), dateTime1.toString()));
             System.out.println(extraManager.getMedication("token", "Manolo", "Santiago",
                 dateTime4.toString()+"-Chloroform"));
 

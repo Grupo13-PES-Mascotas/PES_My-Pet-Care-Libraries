@@ -1,5 +1,7 @@
 package org.pesmypetcare.usermanagerlib.datacontainers;
 
+import android.webkit.HttpAuthHandler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -46,13 +48,14 @@ public class ExerciseData {
      */
     public ExerciseData(String name, String description, String endDateTime, @NonNull List<LatLng> coordinates) {
         PetData.checkDateFormat(endDateTime);
-        Map<String, Double> point = new HashMap<>();
+        Map<String, Double> point;
         this.name = name;
         this.description = description;
         this.endDateTime = endDateTime;
         this.coordinates = new ArrayList<>();
         for (LatLng lat: coordinates) {
             if (lat != null) {
+                point = new HashMap<>();
                 point.put("latitude", lat.latitude);
                 point.put("longitude", lat.longitude);
                 this.coordinates.add(point);
