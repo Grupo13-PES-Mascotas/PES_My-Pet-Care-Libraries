@@ -35,6 +35,7 @@ public class ExerciseData {
         this.name = name;
         this.description = description;
         this.endDateTime = endDateTime;
+        this.coordinates = new ArrayList<>();
     }
 
     /**
@@ -90,9 +91,6 @@ public class ExerciseData {
      * @return List containing the coordinates
      */
     public List<LatLng> getCoordinates() {
-        if (this.coordinates == null) {
-            return null;
-        }
         List<LatLng> response = new ArrayList<>();
         for (Map<String, Double> point: this.coordinates) {
             response.add(new LatLng(point.get("latitude"), point.get("longitude")));
