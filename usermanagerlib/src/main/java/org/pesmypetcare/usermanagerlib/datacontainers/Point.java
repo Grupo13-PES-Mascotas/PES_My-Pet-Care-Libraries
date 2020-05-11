@@ -44,10 +44,10 @@ public class Point {
     @NonNull
     @Override
     public String toString() {
-        return "{" +
-            "latitude=" + latitude +
-            ", longitude=" + longitude +
-            '}';
+        return "{"
+            + "latitude=" + latitude
+            + ", longitude=" + longitude
+            + '}';
     }
 
     @Override
