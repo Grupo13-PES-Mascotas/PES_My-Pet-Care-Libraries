@@ -146,7 +146,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-            + petName + "/collection/exercises/" + date, accessToken).get();
+            + petName + "/fullcollection/exercises/" + date, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
