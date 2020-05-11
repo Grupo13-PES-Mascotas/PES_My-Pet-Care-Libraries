@@ -45,6 +45,8 @@ import static org.mockito.BDDMockito.given;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class PetCollectionsManagerClientTest {
+    private static final StringBuilder STATUS_NO_CONTENT_RETURNED = new StringBuilder("204");
+    private static final Integer STATUS_NO_CONTENT_EXPECTED = 204;
     private static final String ACCESS_TOKEN = "my-token";
     private static final String USERNAME = "user";
     private static final String PET_NAME = "Gustavo";
@@ -438,6 +440,15 @@ public class PetCollectionsManagerClientTest {
         given(taskManager.get()).willReturn(exerciseDataJson);
         ExerciseData response = client.getExercise(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", exerciseData, response);
+    }
+
+    @Test
+    public void deleteExercisesPreviousToDate() throws ExecutionException, InterruptedException {
+        given(taskManager.resetTaskManager()).willReturn(taskManager);
+        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
+        given(taskManager.get()).willReturn(STATUS_NO_CONTENT_RETURNED);
+        Integer response = client.deleteExercisesPreviousToDate(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        assertEquals("Should return the specified element", STATUS_NO_CONTENT_EXPECTED, response);
     }
 
     @Test
