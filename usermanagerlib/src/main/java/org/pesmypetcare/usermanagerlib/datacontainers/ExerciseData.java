@@ -16,7 +16,7 @@ import java.util.Map;
 public class ExerciseData {
     private String name;
     private String description;
-    private List<Map<String, Double>> coordinates;
+    private List<Point> coordinates;
     private String endDateTime;
 
     /**
@@ -47,17 +47,13 @@ public class ExerciseData {
      */
     public ExerciseData(String name, String description, String endDateTime, @NonNull List<LatLng> coordinates) {
         PetData.checkDateFormat(endDateTime);
-        Map<String, Double> point;
         this.name = name;
         this.description = description;
         this.endDateTime = endDateTime;
         this.coordinates = new ArrayList<>();
         for (LatLng lat: coordinates) {
             if (lat != null) {
-                point = new HashMap<>();
-                point.put("latitude", lat.latitude);
-                point.put("longitude", lat.longitude);
-                this.coordinates.add(point);
+                this.coordinates.add(new Point(lat.latitude, lat.longitude));
             }
         }
     }
@@ -92,8 +88,8 @@ public class ExerciseData {
      */
     public List<LatLng> getCoordinates() {
         List<LatLng> response = new ArrayList<>();
-        for (Map<String, Double> point: this.coordinates) {
-            response.add(new LatLng(point.get("latitude"), point.get("longitude")));
+        for (Point point: this.coordinates) {
+            response.add(new LatLng(point.getLatitude(), point.getLongitude()));
         }
         return response;
     }
@@ -103,14 +99,10 @@ public class ExerciseData {
      * @param coordinates Coordinates values
      */
     public void setCoordinates(@NonNull List<LatLng> coordinates) {
-        Map<String, Double> point;
         this.coordinates = new ArrayList<>();
         for (LatLng lat: coordinates) {
             if (lat != null) {
-                point = new HashMap<>();
-                point.put("latitude", lat.latitude);
-                point.put("longitude", lat.longitude);
-                this.coordinates.add(point);
+                this.coordinates.add(new Point(lat.latitude, lat.longitude));
             }
         }
     }
