@@ -130,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
                "Santiago", PetData.MEALS, dateTime1.toString()));
             manager.getAllPets("token", "Manolo");
 
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.EXERCISES, dateTime4.toString(), exerciseData.getAsMap()));
+            System.out.println(manager.addFieldCollectionElement("token", "Manolo",
+                "Santiago", PetData.EXERCISES, dateTime4.toString(), exerciseData.getAsMap()));
             //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.ILLNESSES, dateTime4.toString(), illnessData.getAsMap()));
             // System.out.println(manager.addFieldCollectionElement("token", "Manolo",
@@ -162,10 +162,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
-
+/*
+        try {
+            extraManager.deleteExercisesPreviousToDate("token", "Manolo", "Santiago",
+                dateTime2.toString());
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+*/
         // Pet family friendly retrieval functions
-
+/*
         try {
 
             System.out.println("Exercises");
@@ -229,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
+*/
 
         // TESTS GOOGLE CALENDAR
 /*
