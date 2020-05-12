@@ -130,6 +130,27 @@ public class PetCollectionsManagerClient {
     }
 
     /**
+     * Deletes all the exercises with a date previous to the specified one.
+     * @param accessToken The personal access token for the account
+     * @param username The pet's owner username
+     * @param petName The pet's name
+     * @param date Specified date (This one not included)
+     * @return Server petition response status code
+     * @throws ExecutionException When the retrieval fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public int deleteExercisesPreviousToDate(String accessToken, String username, String petName,
+                                                        String date)
+        throws ExecutionException, InterruptedException {
+        PetData.checkDateFormat(date);
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId(DELETE);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
+            + petName + "/fullcollection/exercises/" + date, accessToken).get();
+        return Integer.parseInt(response.toString());
+    }
+
+    /**
      * Gets the data from all the specified illnesses from the database identified by its pet.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
