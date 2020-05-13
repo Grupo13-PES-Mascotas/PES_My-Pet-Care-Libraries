@@ -165,6 +165,14 @@ public class ForumManagerClient {
         httpClient.request(RequestMethod.DELETE, COMMUNITY_BASE_URL + group + "/" + forum, params, headers, null);
     }
 
+    /**
+     * Gets all post images from a forum.
+     * @param token The user's personal access token
+     * @param parentGroup The parent group name
+     * @param forumName The forum name
+     * @return A map with the image path and the image
+     * @throws MyPetCareException When the request fails
+     */
     public Map<String, byte[]> getAllPostsImagesFromForum(String token, String parentGroup, String forumName)
             throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
