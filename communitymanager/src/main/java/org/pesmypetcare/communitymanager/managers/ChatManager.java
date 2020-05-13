@@ -11,6 +11,7 @@ import com.google.firebase.firestore.Query;
 
 import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.ChatException;
+import org.pesmypetcare.communitymanager.datacontainers.Message;
 import org.pesmypetcare.communitymanager.datacontainers.MessageData;
 
 /**
@@ -116,10 +117,10 @@ public class ChatManager {
                 int i = 0;
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     if (documentSnapshot.exists()) {
+                        mutableData.setValue(documentSnapshot.toObject(MessageData.class));
                         if (BuildConfig.DEBUG) {
                             Log.i(TAG, "Message correctly retrieved");
                         }
-                        mutableData.setValue(documentSnapshot.toObject(MessageData.class));
                     }
                 }
             }

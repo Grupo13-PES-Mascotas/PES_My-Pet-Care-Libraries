@@ -6,7 +6,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
+import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.datacontainers.Message;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
@@ -388,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException | JSONException e) {
             e.printStackTrace();
         }*/
-        PetManagerClient client = new PetManagerClient();
+        /*PetManagerClient client = new PetManagerClient();
         Thread thread = new Thread(() -> {
             try {
                 client.createPetSync("token", "santi",
@@ -399,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("Pasado");
         });
-        thread.start();
+        thread.start();*/
         //System.out.println(client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user));
         /*try {
             System.out.println("MAIN: " + client.getUser("kayle"));
@@ -472,17 +475,17 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();*/
         //TEST FORUMS
-        /*Thread thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("PES");
             String groupName1 = "Ansiano";
             String groupName2 = "Prueba 1";
             String forumName = "Vamos que nos vamos";
-            String forumName2 = "Pues no nos vamos";
+            String forumName2 = "Marc me aburro";
             ForumData forum = new ForumData(forumName, "santi", tags);
             ForumData forum2 = new ForumData("Marc me aburro", "santi", tags);
-            MessageData message = new MessageData("santi", "Buenas noches señores");
+            Message message = new Message("santi", "Hola");
             try {
                 //forumManager.createForum(groupName1, form);
                 //forumManager.deleteForum(groupName2, forumName);
@@ -492,13 +495,14 @@ public class MainActivity extends AppCompatActivity {
                 //forumManager.updateName(groupName1, forumName, forumName2);
                 //forumManager.updateTags(groupName1, forumName2, tags, null);
                 //forumManager.postMessage("token", groupName1, forumName2, message);
-                forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
+                System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
+                //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             System.out.println("FIN");
         });
-        thread.start();*/
+        thread.start();
     }
 }
 
