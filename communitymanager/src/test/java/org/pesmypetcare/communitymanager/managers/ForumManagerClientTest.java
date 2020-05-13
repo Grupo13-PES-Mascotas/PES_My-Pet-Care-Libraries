@@ -172,7 +172,7 @@ public class ForumManagerClientTest {
     @Test
     public void getAllPostsImagesFromForum() throws MyPetCareException {
         given(httpClient
-                .request(RequestMethod.GET, BASE_URL + "/storage/image/" + groupNameEncoded + "/" + forumNameEncoded,
+                .request(RequestMethod.GET, BASE_URL + "storage/image/" + groupNameEncoded + "/" + forumNameEncoded,
                         null, headers, null)).willReturn(httpResponse);
         Map<String, String> response = new HashMap<>();
         response.put("key", forumName);

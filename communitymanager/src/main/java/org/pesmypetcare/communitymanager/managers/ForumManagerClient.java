@@ -180,7 +180,7 @@ public class ForumManagerClient {
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
         HttpResponse response = httpClient.request(RequestMethod.GET,
-                BASE_URL + "/storage/image/" + group + "/" + forum, null, headers, null);
+                BASE_URL + "storage/image/" + group + "/" + forum, null, headers, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> responseMap = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> images = new HashMap<>();
