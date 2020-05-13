@@ -43,6 +43,7 @@ public class ForumManagerClientTest {
     private static String token;
     private static String groupNameEncoded;
     private static String forumNameEncoded;
+    private static String date;
     private static ForumData forum;
     private static Gson gson;
     private static Map<String, String> headers;
@@ -66,6 +67,7 @@ public class ForumManagerClientTest {
         forumNameEncoded = HttpParameter.encode(forumName);
         headers = new HashMap<>();
         headers.put("token", token);
+        date = "2020-05-12";
     }
 
     @Test
@@ -157,14 +159,13 @@ public class ForumManagerClientTest {
 
     @Test
     public void deleteMessage() throws MyPetCareException {
-        HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("creator", creator);
-        String date = "2020-05-12";
-        params[1] = new HttpParameter("date", date);
         given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
                 .willReturn(httpResponse);
 
         client.deleteMessage(token, parentGroup, forumName, creator, date);
+        HttpParameter[] params = new HttpParameter[2];
+        params[0] = new HttpParameter("creator", creator);
+        params[1] = new HttpParameter("date", date);
         verify(httpClient).request(same(RequestMethod.DELETE),
                 eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers), isNull());
     }
@@ -182,5 +183,21 @@ public class ForumManagerClientTest {
 
         Map<String, byte[]> result = client.getAllPostsImagesFromForum(token, parentGroup, forumName);
         assertEquals("Should return all the post images of a forum.", images, result);
+    }
+
+    @Test
+    public void likeMessage() throws MyPetCareException {
+        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
+                .willReturn(httpResponse);
+
+        client.likeMessage(token, creator, parentGroup, forumName, creator, date, true);
+        HttpParameter[] params = new HttpParameter[4];
+        params[0] = new HttpParameter("username", creator);
+        params[1] = new HttpParameter("creator", creator);
+        params[2] = new HttpParameter("date", date);
+        params[3] = new HttpParameter("like", true);
+        verify(httpClient).request(same(RequestMethod.PUT),
+                eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),
+                eq(headers), isNull());
     }
 }

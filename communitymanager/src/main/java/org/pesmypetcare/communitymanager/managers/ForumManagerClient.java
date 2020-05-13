@@ -167,6 +167,7 @@ public class ForumManagerClient {
 
     /**
      * Gets all post images from a forum.
+     *
      * @param token The user's personal access token
      * @param parentGroup The parent group name
      * @param forumName The forum name
@@ -179,8 +180,8 @@ public class ForumManagerClient {
         headers.put("token", token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        HttpResponse response = httpClient.request(RequestMethod.GET,
-                BASE_URL + "storage/image/" + group + "/" + forum, null, headers, null);
+        HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "storage/image/" + group + "/" + forum,
+                null, headers, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> responseMap = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> images = new HashMap<>();
@@ -188,5 +189,32 @@ public class ForumManagerClient {
             images.put(key, Base64.decode(responseMap.get(key), Base64.DEFAULT));
         }
         return images;
+    }
+
+    /**
+     * Adds or removes a like from a message.
+     *
+     * @param token The user's personal access token
+     * @param username The user's username
+     * @param parentGroup The parent group name
+     * @param forumName The forum name
+     * @param creatorName The creator's name
+     * @param date The publication date of the message
+     * @param like If true adds a like else removes it
+     * @throws MyPetCareException When the request fails
+     */
+    public void likeMessage(String token, String username, String parentGroup, String forumName, String creatorName,
+            String date, boolean like) throws MyPetCareException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", token);
+        HttpParameter[] params = new HttpParameter[4];
+        params[0] = new HttpParameter("username", username);
+        params[1] = new HttpParameter("creator", creatorName);
+        params[2] = new HttpParameter("date", date);
+        params[3] = new HttpParameter("like", like);
+        String group = HttpParameter.encode(parentGroup);
+        String forum = HttpParameter.encode(forumName);
+        httpClient.request(RequestMethod.PUT, COMMUNITY_BASE_URL + group + "/" + forum + "/messages", params, headers,
+                null);
     }
 }
