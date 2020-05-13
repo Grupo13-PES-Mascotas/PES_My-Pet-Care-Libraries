@@ -440,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        /*Thread thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
@@ -448,34 +448,37 @@ public class MainActivity extends AppCompatActivity {
             String groupName = "Prueba 14";
             GroupData data = new GroupData(groupName, "santi","", tags);
             try {
-                groupManager.createGroup(data);
-                groupManager.deleteGroup(groupName);
-                groupManager.createGroup(data);
-                System.out.println("Print 1: " + groupManager.getGroup(groupName));
-                System.out.println("Print 2: " + groupManager.getAllGroups());
-                System.out.println("Print 3: " + groupManager.getAllTags());
-                System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
-                groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
-                groupManager.updateField(groupName, "name", "Probando Cosas");
-                tags.remove("empo");
-                List<String> tags2 = new ArrayList<>();
-                tags2.add("doraimio");
-                groupManager.updateGroupTags("Probando Cosas", tags, tags2);
-                groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
-                System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
-                groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
-                System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
-                System.out.println("Print 7: " + groupManager.getAllGroups());
-                System.out.println("Print 8: " + groupManager.getAllTags());
-                groupManager.deleteGroup("Probando Cosas");
+                //groupManager.createGroup(data);
+                //groupManager.deleteGroup(groupName);
+                //groupManager.createGroup(data);
+                //System.out.println("Print 1: " + groupManager.getGroup(groupName));
+                //System.out.println("Print 2: " + groupManager.getAllGroups());
+                //System.out.println("Print 3: " + groupManager.getAllTags());
+                //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
+                //groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
+                //groupManager.updateField(groupName, "name", "Probando Cosas");
+                //tags.remove("empo");
+                //List<String> tags2 = new ArrayList<>();
+                //tags2.add("doraimio");
+                //groupManager.updateGroupTags("Probando Cosas", tags, tags2);
+                //groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
+                //System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                //groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
+                //System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                //System.out.println("Print 7: " + groupManager.getAllGroups());
+                //System.out.println("Print 8: " + groupManager.getAllTags());
+                //groupManager.deleteGroup("Probando Cosas");
+                //groupManager.updateGroupIcon("token", "Ansiano", "hola".getBytes());
+                byte[] img = groupManager.getGroupIcon("Ansiano");
+                System.out.println(new String(img));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             System.out.println("ACABADO");
         });
-        thread.start();*/
+        thread.start();
         //TEST FORUMS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("PES");
@@ -495,14 +498,14 @@ public class MainActivity extends AppCompatActivity {
                 //forumManager.updateName(groupName1, forumName, forumName2);
                 //forumManager.updateTags(groupName1, forumName2, tags, null);
                 //forumManager.postMessage("token", groupName1, forumName2, message);
-                System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
+                //System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
                 //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
             System.out.println("FIN");
         });
-        thread.start();
+        thread.start();*/
     }
 }
 

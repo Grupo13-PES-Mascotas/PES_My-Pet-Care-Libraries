@@ -2,7 +2,6 @@ package org.pesmypetcare.communitymanager.datacontainers;
 
 import androidx.annotation.NonNull;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -102,63 +101,10 @@ public class Message {
         return Objects.hash(image, message);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Message{" + "imageData=" + image + ", messageData=" + message + '}';
     }
 
-    class ImageData {
-        private String uid;
-        private byte[] img;
-
-        /**
-         * Creates an image data with an uid and an image.
-         * @param uid The uid for the image
-         * @param img The image as a byte array
-         */
-        public ImageData(@NonNull String uid, byte[] img) {
-            this.uid = uid;
-            this.img = img;
-        }
-
-        public String getUid() {
-            return uid;
-        }
-
-        public void setUid(String uid) {
-            this.uid = uid;
-        }
-
-        public byte[] getImg() {
-            return img;
-        }
-
-        public void setImg(byte[] img) {
-            this.img = img;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            ImageData image = (ImageData) o;
-            return getUid().equals(image.getUid()) && Arrays.equals(getImg(), image.getImg());
-        }
-
-        @Override
-        public int hashCode() {
-            int result = Objects.hash(getUid());
-            result = 31 * result + Arrays.hashCode(getImg());
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Image{" + "uid='" + uid + '\'' + ", img=" + Arrays.toString(img) + '}';
-        }
-    }
 }
