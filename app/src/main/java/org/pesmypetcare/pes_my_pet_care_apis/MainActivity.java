@@ -452,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
                 //groupManager.deleteGroup(groupName);
                 //groupManager.createGroup(data);
                 //System.out.println("Print 1: " + groupManager.getGroup(groupName));
-                //System.out.println("Print 2: " + groupManager.getAllGroups());
+                System.out.println("Print 2: " + groupManager.getAllGroups());
                 //System.out.println("Print 3: " + groupManager.getAllTags());
                 //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
                 //groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
@@ -469,8 +469,8 @@ public class MainActivity extends AppCompatActivity {
                 //System.out.println("Print 8: " + groupManager.getAllTags());
                 //groupManager.deleteGroup("Probando Cosas");
                 //groupManager.updateGroupIcon("token", "Ansiano", "hola".getBytes());
-                byte[] img = groupManager.getGroupIcon("Ansiano");
-                System.out.println(new String(img));
+                //byte[] img = groupManager.getGroupIcon("Ansiano");
+                //System.out.println(new String(img));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

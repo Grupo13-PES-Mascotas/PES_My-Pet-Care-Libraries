@@ -76,6 +76,7 @@ public class GroupManagerClient {
     public List<GroupData> getAllGroups() throws MyPetCareException {
         HttpResponse response = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL, null, null, null);
         Type listType = TypeToken.getParameterized(List.class, GroupData.class).getType();
+        System.out.println(response.asString());
         return gson.fromJson(response.asString(), listType);
     }
 

@@ -15,7 +15,7 @@ public class GroupData {
     @NonNull
     private String creator;
     private String creationDate;
-    private String icon;
+    private Map<String, String> icon;
     private String description;
     private List<String> tags;
     private Map<String, String> members;
@@ -49,16 +49,8 @@ public class GroupData {
         return creationDate;
     }
 
-    private void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getIcon() {
+    public Map<String, String> getIcon() {
         return icon;
-    }
-
-    private void setIcon(String icon) {
-        this.icon = icon;
     }
 
     public String getDescription() {
@@ -81,8 +73,12 @@ public class GroupData {
         return members;
     }
 
-    private void setMembers(Map<String, String> members) {
-        this.members = members;
+    public String getLastModificationDateOfIcon() {
+        return icon.get("lastModified");
+    }
+
+    public String getIconPath() {
+        return icon.get("path");
     }
 
     @Override

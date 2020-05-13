@@ -15,6 +15,7 @@ import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.MyPetCareException;
 import org.pesmypetcare.httptools.RequestMethod;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -25,7 +26,8 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForumManagerClientTest {
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
     private String parentGroup;
     private String forumName;
     private String creator;
@@ -54,25 +56,33 @@ public class ForumManagerClientTest {
                 httpResponse);
 
         client.createForum(parentGroup, forum);
-        verify(httpClient).request(same(RequestMethod.POST), eq(BASE_URL + HttpParameter.encode(parentGroup)), isNull(),
-                                   isNull(), eq(gson.toJson(forum)));
+        verify(httpClient).request(same(RequestMethod.POST), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)),
+                isNull(), isNull(), eq(gson.toJson(forum)));
     }
 
     @Test
     public void deleteForum() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("forum", forumName);
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(
-                httpResponse);
+        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
+                .willReturn(httpResponse);
 
         client.deleteForum(parentGroup, forumName);
-        verify(httpClient).request(same(RequestMethod.DELETE), eq(BASE_URL + HttpParameter.encode(parentGroup)),
-                                   eq(params),
-                                   isNull(), isNull());
+        verify(httpClient).request(same(RequestMethod.DELETE),
+                eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(), isNull());
     }
 
     @Test
-    public void getForum() {
+    public void getForum() throws MyPetCareException {
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("forum", forumName);
+        given(httpClient.request(same(RequestMethod.GET), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)),
+                eq(params), isNull(), isNull())).willReturn(httpResponse);
+        given(httpResponse.asString()).willReturn(gson.toJson(forum));
+
+        ForumData forumData = client.getForum(parentGroup, forumName);
+        assertEquals("Should return the requested forum data.", forum, forumData);
+
     }
 
     @Test
