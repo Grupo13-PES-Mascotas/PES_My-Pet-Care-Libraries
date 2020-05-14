@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MessageReceiveData extends Message {
-    private List<Blob> blobList;
+    private List<Blob> image;
 
     public MessageReceiveData() {
     }
@@ -28,8 +28,12 @@ public class MessageReceiveData extends Message {
         super(creator, text);
     }
 
-    private List<Blob> getBlobList() {
-        return blobList;
+    private List<Blob> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Blob> image) {
+        this.image = image;
     }
 
     /**
@@ -38,10 +42,10 @@ public class MessageReceiveData extends Message {
      * @throws IOException When the reconstruction of the image fails.
      */
     @Nullable
-    byte[] getImage() throws IOException {
-        if (blobList != null) {
+    byte[] buildImage() throws IOException {
+        if (image != null) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            for (Blob blob : blobList) {
+            for (Blob blob : image) {
                 outputStream.write(blob.toBytes());
             }
             outputStream.close();
@@ -62,12 +66,12 @@ public class MessageReceiveData extends Message {
             return false;
         }
         MessageReceiveData that = (MessageReceiveData) o;
-        return Objects.equals(getBlobList(), that.getBlobList());
+        return Objects.equals(getImage(), that.getImage());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getBlobList());
+        return Objects.hash(super.hashCode(), getImage());
     }
 
     @NonNull
@@ -75,6 +79,6 @@ public class MessageReceiveData extends Message {
     public String toString() {
         return "MessageReceiveData{" + "creator='" + getCreator() + '\'' + ", publicationDate='" + getPublicationDate()
                 + '\'' + ", " + "text='" + getText() + '\'' + ", banned=" + isBanned() + ", likedBy=" + getLikedBy()
-                + ", image=" + blobList + '}';
+                + ", image=" + image + '}';
     }
 }

@@ -21,7 +21,7 @@ public class MessageDisplay extends Message {
      */
     public MessageDisplay(MessageReceiveData messageReceiveData) throws IOException {
         super(messageReceiveData);
-        this.image = messageReceiveData.getImage();
+        this.image = messageReceiveData.builImage();
     }
 
     public String getCreator() {
