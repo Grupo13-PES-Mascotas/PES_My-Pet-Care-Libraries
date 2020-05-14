@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
+/*
         try {
             manager.getAllFreqTrainingsBetween("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3",
                     "Ansiano", dateTime1, dateTime2);
@@ -86,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        // TESTS PET
+        */
+   // TESTS PET
 /*
         PetManagerClient manager = new PetManagerClient();
         PetCollectionsManagerClient extraManager = new PetCollectionsManagerClient();
