@@ -28,7 +28,7 @@ public class MessageReceiveData extends Message {
         super(creator, text);
     }
 
-    private List<Blob> getImage() {
+    public List<Blob> getImage() {
         return image;
     }
 

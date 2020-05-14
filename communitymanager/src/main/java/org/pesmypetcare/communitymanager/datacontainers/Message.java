@@ -68,9 +68,11 @@ public class Message {
      * @param text The text
      * @throws MyPetCareException When the text is empty
      */
-    public void setText(@NonNull String text) throws MyPetCareException {
-        if (text.isEmpty()) {
-            throw new MyPetCareException("Text must not be empty");
+    public void setText(String text) throws MyPetCareException {
+        if (text != null) {
+            if (text.isEmpty()) {
+                throw new MyPetCareException("Text must not be empty");
+            }
         }
         this.text = text;
     }
