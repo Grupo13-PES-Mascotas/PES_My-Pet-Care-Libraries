@@ -77,6 +77,7 @@ public class MessageSendData extends Message {
         return Objects.hash(super.hashCode(), encodedImage);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "MessageSendData{" + "creator='" + getCreator() + '\'' + ", publicationDate='" + getPublicationDate()

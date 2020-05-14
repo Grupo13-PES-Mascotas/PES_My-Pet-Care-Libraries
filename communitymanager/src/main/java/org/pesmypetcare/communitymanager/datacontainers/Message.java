@@ -14,14 +14,14 @@ public class Message {
     private boolean banned;
     private List<String> likedBy;
 
-    public Message() {
+    Message() {
     }
 
     /**
      * Creates a message with a creator.
      * @param creator The creator's username
      */
-    public Message(@NonNull String creator) {
+    Message(@NonNull String creator) {
         this.creator = creator;
     }
 
@@ -31,7 +31,7 @@ public class Message {
      * @param text The text
      * @throws MyPetCareException When the text is empty
      */
-    public Message(@NonNull String creator, @NonNull String text) throws MyPetCareException {
+    Message(@NonNull String creator, @NonNull String text) throws MyPetCareException {
         this(creator);
         if (text.isEmpty()) {
             throw new MyPetCareException("Text must not be empty");
@@ -43,7 +43,7 @@ public class Message {
      * Creates a message from a MessageReceiveData
      * @param messageReceiveData The MessageReceiveData
      */
-    public Message(@NonNull MessageReceiveData messageReceiveData) {
+    Message(@NonNull MessageReceiveData messageReceiveData) {
         this.creator = messageReceiveData.getCreator();
         this.text = messageReceiveData.getText();
         this.publicationDate = messageReceiveData.getPublicationDate();
