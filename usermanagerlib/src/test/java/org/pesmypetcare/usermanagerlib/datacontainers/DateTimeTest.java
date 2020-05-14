@@ -6,6 +6,8 @@ import org.pesmypetcare.usermanagerlib.exceptions.DifferentDatesException;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import org.pesmypetcare.usermanagerlib.exceptions.PreviousEndDateException;
 
+import java.util.TimeZone;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -274,31 +276,31 @@ public class DateTimeTest {
 
     @Test
     public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
-        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
-        dateTime = DateTime.convertUTCtoLocal(dateTime);
-        assertEquals("Should successfully switch date from UTC to local timezone", "2021-01-01T01:59:59", dateTime.toString());
-    }
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
 
-    @Test
-    public void shouldconvertCorrectlyfromLocaltoUTC() throws InvalidFormatException {
-        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
-        dateTime = DateTime.convertLocaltoUTC(dateTime);
-        assertEquals("Should successfully switch date from local timezone to UTC", "2020-12-31T21:59:59", dateTime.toString());
-    }
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
 
-    @Test
-    public void shouldconvertCorrectlyfromUTCtoLocalString() throws InvalidFormatException {
-        String dateTime = "2020-12-31T23:59:59";
-        dateTime = DateTime.convertUTCtoLocalString(dateTime);
-        assertEquals("Should successfully switch date from UTC to local timezone", "2021-01-01T01:59:59", dateTime);
-    }
+        dateTime2 = DateTime.convertUTCtoLocal(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
 
-    @Test
-    public void shouldconvertCorrectlyfromLocaltoUTCString() throws InvalidFormatException {
-        String dateTime = "2020-12-31T23:59:59";
-        dateTime = DateTime.convertLocaltoUTCString(dateTime);
-        assertEquals("Should successfully switch date from local timezone to UTC", "2020-12-31T21:59:59", dateTime);
-    }
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime2 - hourDatetime1;
 
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
+
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
 
 }
