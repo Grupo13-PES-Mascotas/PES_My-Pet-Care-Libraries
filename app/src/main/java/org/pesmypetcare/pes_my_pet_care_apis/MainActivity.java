@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         FreqTrainingData body = new FreqTrainingData(22.0);
         FreqTraining freq = new FreqTraining(body);
 
-/*
         try {
             manager.createFreqTraining("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3", "Ansiano", freq, dateTime1 );
         } catch (ExecutionException e) {
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
 /*
         try {
             manager.getAllFreqTrainingsBetween("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3",
