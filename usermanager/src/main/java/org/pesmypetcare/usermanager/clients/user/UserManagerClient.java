@@ -29,8 +29,8 @@ public class UserManagerClient {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    //private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PUT = "PUT";
@@ -49,6 +49,7 @@ public class UserManagerClient {
 
     /**
      * Method called by the client to sign up a new user.
+     *
      * @param uid The user's unique identifier
      * @param data The user data object that contains the user's username, email and password
      * @return The response code
@@ -69,6 +70,7 @@ public class UserManagerClient {
 
     /**
      * Checks if a username is already in use.
+     *
      * @param username The username to check
      * @return True if the username is already in use
      * @throws MyPetCareException When the request fails
@@ -77,13 +79,15 @@ public class UserManagerClient {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("username", username);
         HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "usernames", params, null, null);
-        Type mapType = new TypeToken<HashMap<String, Boolean>>() { }.getType();
+        Type mapType = new TypeToken<HashMap<String, Boolean>>() {
+        }.getType();
         Map<String, Boolean> map = gson.fromJson(response.asString(), mapType);
         return Objects.requireNonNull(map.get("exists"));
     }
 
     /**
      * Method called by the client to get a user.
+     *
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want the information
      * @return Json that contains all the info of the user
@@ -103,6 +107,7 @@ public class UserManagerClient {
 
     /**
      * Method called by the client to delete user completely.
+     *
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want to delete
      * @return The response code
@@ -118,23 +123,23 @@ public class UserManagerClient {
 
     /**
      * Method called by the client to delete user from database.
+     *
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want to delete
      * @return The response code
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteUserFromDatabase(String accessToken, String uid)
-        throws ExecutionException, InterruptedException {
+    public int deleteUserFromDatabase(String accessToken, String uid) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid + "?db=true",
-            accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid + "?db=true", accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Method called by the client to update the user's password.
+     *
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to update
      * @param field The field to update
@@ -144,7 +149,7 @@ public class UserManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int updateField(String accessToken, String username, String field, String newValue)
-        throws ExecutionException, InterruptedException {
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         Map<String, String> reqData = new HashMap<>();
         reqData.put(field, newValue);
@@ -156,6 +161,7 @@ public class UserManagerClient {
 
     /**
      * Method called by the client to update the user's password.
+     *
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to update
      * @param newPassword The new value of password
@@ -171,7 +177,8 @@ public class UserManagerClient {
     }
 
     /**
-     *  Method called by the client to update the user's email.
+     * Method called by the client to update the user's email.
+     *
      * @param accessToken The personal access token for the account
      * @param username The username of which we want to update
      * @param newEmail The new value of email
@@ -188,43 +195,39 @@ public class UserManagerClient {
 
     /**
      * Saves the image given as the profile image.
+     *
      * @param accessToken The personal access token for the account
-     * @param uid The user's uid
+     * @param username The user's username
      * @param image The image to save
      * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int saveProfileImage(String accessToken, String uid, byte[] image)
-        throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
+    public void saveProfileImage(String accessToken, String username, byte[] image) throws MyPetCareException {
         Map<String, Object> reqData = new HashMap<>();
-        reqData.put(UID_FIELD, uid);
-        reqData.put("imgName", "profile-image.png");
+        reqData.put(UID_FIELD, username);
+        reqData.put("imgName", "profile-image");
         reqData.put("img", image);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + IMAGES_PATH, accessToken).get();
-        return Integer.parseInt(response.toString());
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", accessToken);
+        httpClient.request(RequestMethod.PUT, BASE_URL + IMAGES_PATH, null, headers, gson.toJson(reqData));
     }
 
     /**
      * Downloads the profile image of the specified user.
+     *
      * @param accessToken The personal access token for the account
-     * @param uid The user's uid
+     * @param username The user's username
      * @return The profile image as a byte array
-     * @throws ExecutionException When the retrieval of the user fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public byte[] downloadProfileImage(String accessToken,
-                                       String uid) throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + uid + "?name=profile-image.png",
-            accessToken).get();
-        if (json != null) {
-            return Base64.decode(json.toString(), Base64.DEFAULT);
-        }
-        return new byte[0];
+    public byte[] downloadProfileImage(String accessToken, String username) throws MyPetCareException {
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("name", "profile-image");
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", accessToken);
+        HttpResponse resp = httpClient.request(RequestMethod.GET,
+                BASE_URL + IMAGES_PATH + HttpParameter.encode(username), params, headers, null);
+        String encodedImage = resp.asString();
+        return Base64.decode(encodedImage, Base64.DEFAULT);
     }
 }

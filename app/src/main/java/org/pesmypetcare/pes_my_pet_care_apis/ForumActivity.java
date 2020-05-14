@@ -13,6 +13,7 @@ public class ForumActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_forum);
         final ChatModel viewModel = new ViewModelProvider(this).get(ChatModel.class);
         viewModel.getMessage().observe(this, System.out::println);

@@ -31,9 +31,13 @@ import java.util.concurrent.ExecutionException;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyByte;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
@@ -46,7 +50,8 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";
@@ -70,12 +75,16 @@ public class UserManagerClientTest {
     @Mock
     private HttpClient httpClient;
     @Mock
+    private HttpResponse httpResponse;
+    @Mock
     private TaskManager taskManager;
 
     @InjectMocks
     private UserManagerClient client = new UserManagerClient();
 
-    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    private Map<String, String> headers;
 
     @Before
     public void setUp() {
@@ -84,6 +93,8 @@ public class UserManagerClientTest {
         json = new StringBuilder(gson.toJson(user));
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();
+        headers = new HashMap<>();
+        headers.put("token", ACCESS_TOKEN);
     }
 
     @Test
@@ -98,9 +109,9 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void usernameAlreadyExists() throws  MyPetCareException {
-        HttpResponse httpResponse = mock(HttpResponse.class);
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
+    public void usernameAlreadyExists() throws MyPetCareException {
+        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
+                .willReturn(httpResponse);
         Map<String, Boolean> map = new HashMap<>();
         map.put("exists", true);
         String json = gson.toJson(map);
@@ -148,8 +159,7 @@ public class UserManagerClientTest {
     @Test
     public void deleteUserFromDatabase() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "?db=true", ACCESS_TOKEN))
-            .willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "?db=true", ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.deleteUserFromDatabase(ACCESS_TOKEN, USERNAME);
         verify(taskManager).setTaskId(DELETE);
@@ -159,8 +169,7 @@ public class UserManagerClientTest {
     @Test
     public void updateField() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN))
-            .willReturn(taskManager);
+        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
         given(taskManager.get()).willReturn(STATUS_OK);
         int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
         verify(taskManager).setTaskId(PUT);
@@ -169,42 +178,32 @@ public class UserManagerClientTest {
     }
 
     @Test
-    public void saveProfileImage() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + IMAGES_PATH, ACCESS_TOKEN)).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
-        verify(taskManager).setTaskId(PUT);
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+    public void saveProfileImage() throws MyPetCareException {
+        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString()))
+                .willReturn(httpResponse);
+
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("uid", USERNAME);
+        reqData.put("imgName", "profile-image");
+        reqData.put("img", image);
+        client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
+        verify(httpClient).request(same(RequestMethod.PUT), eq(BASE_URL + IMAGES_PATH), isNull(), eq(headers),
+                eq(gson.toJson(reqData)));
     }
 
     @Test
-    public void downloadProfileImage() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + IMAGES_PATH + USERNAME + "?name=profile-image.png", ACCESS_TOKEN))
-            .willReturn(taskManager);
-        given(taskManager.get()).willReturn(json);
-        mockStatic(Base64.class);
-        given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
+    public void downloadProfileImage() throws MyPetCareException {
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("name", "profile-image");
+        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
+                .willReturn(httpResponse);
+        String encodedImage = "icQUSDd7";
+        given(httpResponse.asString()).willReturn(encodedImage);
+
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId(GET);
-        assertEquals("Should return the profile image of the user", image, response);
-    }
-
-    @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenExecutionFails() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(ExecutionException.class).given(taskManager).get();
-        client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
-    }
-
-    @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenExecutionInterrupted() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(InterruptedException.class).given(taskManager).get();
-        client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
+        verify(httpClient).request(same(RequestMethod.GET), eq(BASE_URL + IMAGES_PATH + HttpParameter.encode(USERNAME)),
+                eq(params), eq(headers), isNull());
+        assertEquals("Should return the profile image of the user", Base64.decode(encodedImage, Base64.DEFAULT),
+                response);
     }
 }
