@@ -20,6 +20,37 @@ public class GroupData {
     private List<String> tags;
     private Map<String, String> members;
 
+    /**
+     * Creates a group data with the name group, its creator username and its description.
+     * @param name The group name
+     * @param creator The creator's username
+     * @param description The group description
+     */
+    public GroupData(@NonNull String name, @NonNull String creator, String description) {
+        this.name = name;
+        this.creator = creator;
+        this.description = description;
+    }
+
+    /**
+     * Creates a group data with the name group, its creator username and its tags.
+     * @param name The group name
+     * @param creator The creator's username
+     * @param tags The group tags
+     */
+    public GroupData(@NonNull String name, @NonNull String creator, List<String> tags) {
+        this.name = name;
+        this.creator = creator;
+        this.tags = tags;
+    }
+
+    /**
+     * Creates a group data with the name group, its creator username, description and tags.
+     * @param name The group name
+     * @param creator The creator's username
+     * @param description The group description
+     * @param tags The group tags
+     */
     public GroupData(@NonNull String name, @NonNull String creator, String description, List<String> tags) {
         this.name = name;
         this.creator = creator;

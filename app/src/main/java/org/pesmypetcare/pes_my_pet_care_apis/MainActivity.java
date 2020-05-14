@@ -436,12 +436,12 @@ public class MainActivity extends AppCompatActivity {
             tags.add("empo");
             tags.add("empotrador");
             String groupName = "Prueba 20";
-            GroupData data = new GroupData(groupName, "santi","", tags);
+            GroupData data = new GroupData(groupName, "santi",null, null);
             try {
-                groupManager.createGroup(data);
+                //groupManager.createGroup(data);
                 //groupManager.deleteGroup(groupName);
                 //groupManager.createGroup(data);
-                //System.out.println("Print 1: " + groupManager.getGroup(groupName));
+                System.out.println("Print 1: " + groupManager.getGroup("Beagles"));
                 //System.out.println("Print 2: " + groupManager.getAllGroups());
                 //System.out.println("Print 3: " + groupManager.getAllTags());
                 //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));

@@ -80,6 +80,11 @@ public class GroupManagerClient {
         return gson.fromJson(response.asString(), listType);
     }
 
+    /**
+     * Gets all the existing tags in the application.
+     * @return A map with the tag name as the key and its data
+     * @throws MyPetCareException When the request fails
+     */
     public Map<String, TagData> getAllTags() throws MyPetCareException {
         HttpResponse resp = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL + "/tags", null, null, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, TagData.class).getType();
