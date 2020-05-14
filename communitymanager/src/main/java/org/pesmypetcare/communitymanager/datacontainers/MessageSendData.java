@@ -31,7 +31,7 @@ public class MessageSendData extends Message {
      */
     public MessageSendData(@NonNull String creator,@NonNull byte[] image) {
         super(creator);
-        encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        encodedImage = Base64.encodeToString(image, Base64.NO_WRAP);
     }
 
     /**

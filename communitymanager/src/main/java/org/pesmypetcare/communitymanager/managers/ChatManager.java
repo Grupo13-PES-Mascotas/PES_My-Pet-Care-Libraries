@@ -120,6 +120,7 @@ public class ChatManager {
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     if (documentSnapshot.exists()) {
                         MessageReceiveData messageReceiveData = documentSnapshot.toObject(MessageReceiveData.class);
+
                         try {
                             mutableData.setValue(new MessageDisplay(messageReceiveData));
                         } catch (IOException ex) {
