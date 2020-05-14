@@ -474,7 +474,8 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Converts a DateTime from UTC format to the device's local Timezone
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a String
      * @return dateTime converted to the local Timezone as a String
      */
     public static String convertUTCtoLocalString (String dateIn) {
@@ -484,7 +485,8 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Converts a DateTime from the device's local Timezone to UTC's
+     * Converts a DateTime from the device's local Timezone to UTC's.
+     * @param dateIn the date to be converted as a String
      * @return dateTime converted to the local Timezone as a String
      */
     public static String convertLocaltoUTCString (String dateIn) {
@@ -494,7 +496,8 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Converts a DateTime from UTC format to the device's local Timezone
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a DateTime
      * @return dateTime converted to the local Timezone
      */
     public static DateTime convertUTCtoLocal(DateTime dateIn) {
@@ -504,7 +507,8 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Converts a DateTime from the local Timezone to UTC
+     * Converts a DateTime from the local Timezone to UTC.
+     * @param dateIn the date to be converted as a DateTime
      * @return dateTime converted to UTC
      */
     public static DateTime convertLocaltoUTC(DateTime dateIn) {
@@ -514,7 +518,9 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Applies the timezone offset in miliseconds to the datetime
+     * Applies the timezone offset in seconds to the datetime.
+     * @param dateIn the dateTime that needs to be applied the offset to
+     * @param offsetSeconds the offset to be applied in seconds
      * @return dateIn with the offset applied
      */
     private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
