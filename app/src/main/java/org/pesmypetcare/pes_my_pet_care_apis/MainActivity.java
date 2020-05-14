@@ -38,6 +38,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTCString;
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertUTCtoLocalString;
 
 /**
  * @author Santiago Del Rey
@@ -50,32 +52,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
 
-        FreqTrainingManagerClient manager = new FreqTrainingManagerClient();
+        String date = "2020-05-14T12:24:22";
 
-        DateTime dateTime1 = null;
-        DateTime dateTime2 = null;
-        try {
-            dateTime1 = DateTime.Builder.build(1996,4,20,16,50,12);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
+        System.out.println(convertUTCtoLocalString(date));
+        System.out.println(convertLocaltoUTCString(date));
 
-        try {
-            dateTime2 = DateTime.Builder.build(1996,4,24,20,50,12);
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
 
-        FreqTrainingData body = new FreqTrainingData(22.0);
-        FreqTraining freq = new FreqTraining(body);
 
-        try {
-            manager.createFreqTraining("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3", "Ansiano", freq, dateTime1 );
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 /*
         try {
             manager.getAllFreqTrainingsBetween("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3",

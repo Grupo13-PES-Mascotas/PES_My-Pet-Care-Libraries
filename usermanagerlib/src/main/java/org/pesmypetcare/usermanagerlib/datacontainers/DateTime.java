@@ -475,9 +475,31 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Converts a DateTime from UTC format to the device's local Timezone
-     * @return de DateTime converted to the local Timezone
+     * @return dateTime converted to the local Timezone as a String
      */
-    public static DateTime convertUTCtoLocal(DateTime dateIn){
+
+    public static String convertUTCtoLocalString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertUTCtoLocal(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from the device's local Timezone to UTC's
+     * @return dateTime converted to the local Timezone as a String
+     */
+
+    public static String convertLocaltoUTCString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertLocaltoUTC(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from UTC format to the device's local Timezone
+     * @return dateTime converted to the local Timezone
+     */
+    public static DateTime convertUTCtoLocal(DateTime dateIn) {
         TimeZone tz = TimeZone.getDefault();
         int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
         return applyOffset(dateIn, offsetSeconds);
@@ -485,9 +507,9 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Converts a DateTime from the local Timezone to UTC
-     * @return de DateTime converted to UTC
+     * @return dateTime converted to UTC
      */
-    public static DateTime convertLocaltoUTC(DateTime dateIn){
+    public static DateTime convertLocaltoUTC(DateTime dateIn) {
         TimeZone tz = TimeZone.getDefault();
         int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
         return applyOffset(dateIn, -offsetSeconds);
