@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.managers.ChatManager;
 
 /**
  * @author Santiago Del Rey
  */
 public class ChatModel extends ViewModel {
-    private MutableLiveData<MessageData> messageMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<MessageDisplay> messageMutableLiveData = new MutableLiveData<>();
 
-    public LiveData<MessageData> getMessage() {
+    public LiveData<MessageDisplay> getMessage() {
         return messageMutableLiveData;
     }
 

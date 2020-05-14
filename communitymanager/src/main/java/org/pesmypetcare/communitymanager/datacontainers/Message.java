@@ -2,86 +2,89 @@ package org.pesmypetcare.communitymanager.datacontainers;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.httptools.MyPetCareException;
+
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Santiago Del Rey
- */
 public class Message {
-    private ImageData image;
-    private MessageData message;
+    private String creator;
+    private String publicationDate;
+    private String text;
+    private boolean banned;
+    private List<String> likedBy;
 
-    /**
-     * Creates a message with text.
-     * @param creator The creator's username
-     * @param text The text
-     */
-    public Message(@NonNull String creator, String text) {
-        this.message = new MessageData(creator, text);
+    public Message() {
     }
 
     /**
-     * Creates a message with an image.
+     * Creates a message with a creator.
      * @param creator The creator's username
-     * @param img The image as a byte array
      */
-    public Message(@NonNull String creator, byte[] img) {
-        this.message = new MessageData(creator);
-        this.image = new ImageData(creator, img);
+    public Message(@NonNull String creator) {
+        this.creator = creator;
     }
 
     /**
-     * Creates a message with text and an image.
+     * Creates a message with a creator and text. If the text is empty the creation will fail.
      * @param creator The creator's username
      * @param text The text
-     * @param img The image as a byte array
+     * @throws MyPetCareException When the text is empty
      */
-    public Message(@NonNull String creator, String text, byte[] img) {
-        this.message = new MessageData(creator, text);
-        this.image = new ImageData(creator, img);
+    public Message(@NonNull String creator, @NonNull String text) throws MyPetCareException {
+        this(creator);
+        if (text.isEmpty()) {
+            throw new MyPetCareException("Text must not be empty");
+        }
+        this.text = text;
+    }
+
+    /**
+     * Creates a message from a MessageReceiveData
+     * @param messageReceiveData The MessageReceiveData
+     */
+    public Message(@NonNull MessageReceiveData messageReceiveData) {
+        this.creator = messageReceiveData.getCreator();
+        this.text = messageReceiveData.getText();
+        this.publicationDate = messageReceiveData.getPublicationDate();
+        this.banned = messageReceiveData.isBanned();
+        this.likedBy = messageReceiveData.getLikedBy();
     }
 
     public String getCreator() {
-        return message.getCreator();
+        return creator;
     }
 
     public void setCreator(@NonNull String creator) {
-        message.setCreator(creator);
-        image.setUid(creator);
-    }
-
-    public String getPublicationDate() {
-        return message.getPublicationDate();
+        this.creator = creator;
     }
 
     public String getText() {
-        return message.getText();
+        return text;
     }
 
-    public void setText(String text) {
-        message.setText(text);
+    /**
+     * Sets the message text. It will fail if the message is empty.
+     * @param text The text
+     * @throws MyPetCareException When the text is empty
+     */
+    public void setText(@NonNull String text) throws MyPetCareException {
+        if (text.isEmpty()) {
+            throw new MyPetCareException("Text must not be empty");
+        }
+        this.text = text;
     }
 
-    public byte[] getImage() {
-        return image.getImg();
+    public String getPublicationDate() {
+        return publicationDate;
     }
-
-    public void setImage(byte[] img) {
-        image.setImg(img);
-    }
-
-    public String getImagePath() {
-        return message.getImagePath();
-    }
-
 
     public boolean isBanned() {
-        return message.isBanned();
+        return banned;
     }
 
     public List<String> getLikedBy() {
-        return message.getLikedBy();
+        return likedBy;
     }
 
     @Override
@@ -93,18 +96,20 @@ public class Message {
             return false;
         }
         Message message = (Message) o;
-        return Objects.equals(image, message.image) && Objects.equals(this.message, message.message);
+        return isBanned() == message.isBanned() && getCreator().equals(message.getCreator()) && Objects.equals(
+                getPublicationDate(), message.getPublicationDate()) && Objects.equals(getText(), message.getText())
+                && Objects.equals(getLikedBy(), message.getLikedBy());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(image, message);
+        return Objects.hash(getCreator(), getPublicationDate(), getText(), isBanned(), getLikedBy());
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "Message{" + "imageData=" + image + ", messageData=" + message + '}';
+        return "Message{" + "creator='" + creator + '\'' + ", publicationDate='" + publicationDate + '\'' + ", text='"
+                + text + '\'' + ", banned=" + banned + ", likedBy=" + likedBy + '}';
     }
-
 }

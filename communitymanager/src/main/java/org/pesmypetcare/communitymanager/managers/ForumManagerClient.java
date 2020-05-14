@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
-import org.pesmypetcare.communitymanager.datacontainers.Message;
+import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
@@ -133,7 +133,7 @@ public class ForumManagerClient {
      * @param message The message data
      * @throws MyPetCareException When the request fails
      */
-    public void postMessage(String token, String parentGroup, String forumName, Message message)
+    public void postMessage(String token, String parentGroup, String forumName, MessageSendData message)
             throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
         headers.put("token", token);

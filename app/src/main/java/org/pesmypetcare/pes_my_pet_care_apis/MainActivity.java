@@ -5,23 +5,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
-import org.pesmypetcare.communitymanager.datacontainers.Message;
-import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
-import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
-import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
-import org.pesmypetcare.usermanager.datacontainers.pet.GenderType;
-import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
-import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
-import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Santiago Del Rey
@@ -441,15 +430,15 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        /*Thread thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
             tags.add("empotrador");
-            String groupName = "Prueba 14";
+            String groupName = "Prueba 20";
             GroupData data = new GroupData(groupName, "santi","", tags);
             try {
-                //groupManager.createGroup(data);
+                groupManager.createGroup(data);
                 //groupManager.deleteGroup(groupName);
                 //groupManager.createGroup(data);
                 //System.out.println("Print 1: " + groupManager.getGroup(groupName));
@@ -477,9 +466,9 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("ACABADO");
         });
-        thread.start();*/
+        thread.start();
         //TEST FORUMS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("PES");
@@ -508,7 +497,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("FIN");
         });
-        thread.start();
+        thread.start();*/
     }
 }
 

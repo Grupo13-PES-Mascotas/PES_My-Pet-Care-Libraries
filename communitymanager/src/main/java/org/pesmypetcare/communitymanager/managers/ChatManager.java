@@ -11,8 +11,10 @@ import com.google.firebase.firestore.Query;
 
 import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.ChatException;
-import org.pesmypetcare.communitymanager.datacontainers.Message;
-import org.pesmypetcare.communitymanager.datacontainers.MessageData;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
+
+import java.io.IOException;
 
 /**
  * @author Santiago Del Rey
@@ -38,7 +40,7 @@ public class ChatManager {
      * @param forum The forum name
      * @throws ChatException When the chat creation fails
      */
-    public void createMessageListener(String group, String forum, MutableLiveData<MessageData> mutableData)
+    public void createMessageListener(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
         db.document("groups_names/" + group).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -70,7 +72,7 @@ public class ChatManager {
         }
     }
 
-    private void getForumId(String group, String forum, MutableLiveData<MessageData> mutableData) throws ChatException {
+    private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData) throws ChatException {
         db.document("groups_names/" + group + "/forums/" + forum).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot forumDoc = task.getResult();
@@ -107,7 +109,7 @@ public class ChatManager {
      * @param mutableData The mutable message data
      * @throws ChatException When the listener creation fails
      */
-    private void createListener(MutableLiveData<MessageData> mutableData) throws ChatException {
+    private void createListener(MutableLiveData<MessageDisplay> mutableData) throws ChatException {
         Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages")
                         .orderBy("publicationDate", Query.Direction.DESCENDING);
         listener = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -117,7 +119,12 @@ public class ChatManager {
                 int i = 0;
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     if (documentSnapshot.exists()) {
-                        mutableData.setValue(documentSnapshot.toObject(MessageData.class));
+                        MessageReceiveData messageReceiveData = documentSnapshot.toObject(MessageReceiveData.class);
+                        try {
+                            mutableData.setValue(new MessageDisplay(messageReceiveData));
+                        } catch (IOException ex) {
+                            exception = new ChatException("Error reading the message image", ex);
+                        }
                         if (BuildConfig.DEBUG) {
                             Log.i(TAG, "Message correctly retrieved");
                         }

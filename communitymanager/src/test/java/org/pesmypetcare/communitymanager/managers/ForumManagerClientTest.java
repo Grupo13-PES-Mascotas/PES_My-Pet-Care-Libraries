@@ -11,7 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
-import org.pesmypetcare.communitymanager.datacontainers.Message;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
+import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
@@ -150,11 +151,11 @@ public class ForumManagerClientTest {
         given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString())).willReturn(
                 httpResponse);
 
-        Message message = new Message(creator, "Hello World!");
-        client.postMessage(token, parentGroup, forumName, message);
+        MessageSendData messageSendData = new MessageSendData(creator, "Hello World!");
+        client.postMessage(token, parentGroup, forumName, messageSendData);
         verify(httpClient).request(same(RequestMethod.POST),
                 eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), isNull(), eq(headers),
-                eq(gson.toJson(message)));
+                eq(gson.toJson(messageSendData)));
     }
 
     @Test
