@@ -477,7 +477,6 @@ public class DateTime implements Comparable<DateTime> {
      * Converts a DateTime from UTC format to the device's local Timezone
      * @return dateTime converted to the local Timezone as a String
      */
-
     public static String convertUTCtoLocalString (String dateIn) {
         DateTime datetime1 = new DateTime(dateIn, true);
         datetime1 = convertUTCtoLocal(datetime1);
@@ -488,7 +487,6 @@ public class DateTime implements Comparable<DateTime> {
      * Converts a DateTime from the device's local Timezone to UTC's
      * @return dateTime converted to the local Timezone as a String
      */
-
     public static String convertLocaltoUTCString (String dateIn) {
         DateTime datetime1 = new DateTime(dateIn, true);
         datetime1 = convertLocaltoUTC(datetime1);
@@ -515,6 +513,10 @@ public class DateTime implements Comparable<DateTime> {
         return applyOffset(dateIn, -offsetSeconds);
     }
 
+    /**
+     * Applies the timezone offset in miliseconds to the datetime
+     * @return dateIn with the offset applied
+     */
     private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
         int seconds, minutes, hours,offsetMinutes, offsetHours;
         seconds = offsetSeconds%60;
