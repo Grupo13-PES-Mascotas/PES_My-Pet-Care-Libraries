@@ -43,7 +43,7 @@ public class MessageSendData extends Message {
      */
     public MessageSendData(@NonNull String creator, @NonNull String text, @NonNull byte[] image) throws MyPetCareException {
         super(creator, text);
-        encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        encodedImage = Base64.encodeToString(image, Base64.NO_WRAP);
     }
     public void setCreator(@NonNull String creator) {
         super.setCreator(creator);
@@ -54,7 +54,7 @@ public class MessageSendData extends Message {
     }
 
     public void setEncodedImage(@NonNull byte[] image) {
-        encodedImage = Base64.encodeToString(image, Base64.DEFAULT);
+        encodedImage = Base64.encodeToString(image, Base64.NO_WRAP);
     }
 
     @Override
