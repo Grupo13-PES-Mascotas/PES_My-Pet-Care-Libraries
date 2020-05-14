@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * @author Marc Simó
@@ -471,6 +472,80 @@ public class DateTime implements Comparable<DateTime> {
 
         return time.toString();
     }
+
+    /**
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a String
+     * @return dateTime converted to the local Timezone as a String
+     */
+    public static String convertUTCtoLocalString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertUTCtoLocal(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from the device's local Timezone to UTC's.
+     * @param dateIn the date to be converted as a String
+     * @return dateTime converted to the local Timezone as a String
+     */
+    public static String convertLocaltoUTCString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertLocaltoUTC(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a DateTime
+     * @return dateTime converted to the local Timezone
+     */
+    public static DateTime convertUTCtoLocal(DateTime dateIn) {
+        TimeZone tz = TimeZone.getDefault();
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        return applyOffset(dateIn, offsetSeconds);
+    }
+
+    /**
+     * Converts a DateTime from the local Timezone to UTC.
+     * @param dateIn the date to be converted as a DateTime
+     * @return dateTime converted to UTC
+     */
+    public static DateTime convertLocaltoUTC(DateTime dateIn) {
+        TimeZone tz = TimeZone.getDefault();
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        return applyOffset(dateIn, -offsetSeconds);
+    }
+
+    /**
+     * Applies the timezone offset in seconds to the datetime.
+     * @param dateIn the dateTime that needs to be applied the offset to
+     * @param offsetSeconds the offset to be applied in seconds
+     * @return dateIn with the offset applied
+     */
+    private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
+        int seconds, minutes, hours,offsetMinutes, offsetHours;
+        seconds = offsetSeconds%60;
+        offsetMinutes = offsetSeconds/60;
+        minutes = offsetMinutes%60;
+        offsetHours = offsetMinutes/60;
+        hours = offsetHours%60;
+        if (dateIn.getHour() + hours > 23){
+            dateIn.increaseDay();
+            dateIn.setHour(dateIn.getHour() + hours - 24);
+        }
+        else if (dateIn.getHour() + hours < 0){
+            dateIn.decreaseDay();
+            dateIn.setHour(((hours + dateIn.getHour()) + 24));
+        }
+        else {
+            dateIn.setHour(dateIn.getHour() + hours);
+        }
+        dateIn.setMinutes(dateIn.getMinutes() + minutes);
+        dateIn.setSeconds(dateIn.getSeconds() + seconds);
+        return dateIn;
+    }
+
 
     @NonNull
     @Override

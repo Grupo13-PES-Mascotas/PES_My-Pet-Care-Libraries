@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.pesmypetcare.usermanagerlib.clients.FreqTrainingManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
 import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
 import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
 import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqTraining;
+import org.pesmypetcare.usermanagerlib.datacontainers.FreqTrainingData;
 import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
 import org.pesmypetcare.usermanagerlib.datacontainers.IllnessData;
 import org.pesmypetcare.usermanagerlib.datacontainers.IllnessType;
@@ -34,6 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTCString;
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertUTCtoLocalString;
+
 /**
  * @author Santiago Del Rey
  */
@@ -45,8 +52,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
 
-        // TESTS PET
+        String date = "2020-05-14T12:24:22";
 
+        System.out.println(convertUTCtoLocalString(date));
+        System.out.println(convertLocaltoUTCString(date));
+
+
+
+/*
+        try {
+            manager.getAllFreqTrainingsBetween("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3",
+                    "Ansiano", dateTime1, dateTime2);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        */
+   // TESTS PET
+/*
         PetManagerClient manager = new PetManagerClient();
         PetCollectionsManagerClient extraManager = new PetCollectionsManagerClient();
 
@@ -78,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         PetData petData = new PetData(GenderType.Female, "Huskie", dateTime1.toString(), "None", "Constant attention"
             , 84.0);
         Pet pet = new Pet("Santiago", petData);
+
+ */
 /*
         // Pet creation
         try {
@@ -107,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         }
 */
 
-
+/*
         List<LatLng> coordinates = new ArrayList<>();
         coordinates.add(new LatLng(84, 58));
         coordinates.add(new LatLng(34, 58));
@@ -162,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
+
+ */
 /*
         try {
             extraManager.deleteExercisesPreviousToDate("token", "Manolo", "Santiago",

@@ -6,6 +6,8 @@ import org.pesmypetcare.usermanagerlib.exceptions.DifferentDatesException;
 import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
 import org.pesmypetcare.usermanagerlib.exceptions.PreviousEndDateException;
 
+import java.util.TimeZone;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -271,4 +273,61 @@ public class DateTimeTest {
         dateTime.addSecond();
         assertEquals("Should add one second and change hour", "2021-01-01T00:00:00", dateTime.toString());
     }
+
+    @Test
+    public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+
+        dateTime2 = DateTime.convertUTCtoLocal(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
+
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime2 - hourDatetime1;
+
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromLocaltoUTC() throws InvalidFormatException {
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+
+        dateTime2 = DateTime.convertLocaltoUTC(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
+
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime1 - hourDatetime2;
+
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
+
 }
