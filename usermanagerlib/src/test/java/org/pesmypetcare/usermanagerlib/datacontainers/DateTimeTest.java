@@ -299,7 +299,34 @@ public class DateTimeTest {
         if (actualOffsetHours > 12){
             actualOffsetHours = actualOffsetHours - 24;
         }
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
 
+    @Test
+    public void shouldconvertCorrectlyfromLocaltoUTC() throws InvalidFormatException {
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+
+        dateTime2 = DateTime.convertLocaltoUTC(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
+
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime1 - hourDatetime2;
+
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
         assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
     }
 
