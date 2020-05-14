@@ -178,8 +178,8 @@ public class UserManagerClientTest {
 
     @Test
     public void saveProfileImage() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString()))
-                .willReturn(httpResponse);
+        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString())).willReturn(
+                httpResponse);
 
         Map<String, Object> reqData = new HashMap<>();
         reqData.put("uid", USERNAME);
@@ -204,5 +204,16 @@ public class UserManagerClientTest {
                 eq(params), eq(headers), isNull());
         assertEquals("Should return the profile image of the user", Base64.decode(encodedImage, Base64.DEFAULT),
                 response);
+    }
+
+    @Test
+    public void sendTokenToServer() throws MyPetCareException {
+        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), isNull())).willReturn(
+                httpResponse);
+
+        String messagingToken = "sdj3nm9dak";
+        headers.put("FCM-token", messagingToken);
+        client.sendTokenToServer(ACCESS_TOKEN, messagingToken);
+        verify(httpClient).request(same(RequestMethod.PUT), eq(BASE_URL + "/users"), isNull(), eq(headers), isNull());
     }
 }

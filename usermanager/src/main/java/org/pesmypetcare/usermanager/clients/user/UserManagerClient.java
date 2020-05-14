@@ -230,4 +230,17 @@ public class UserManagerClient {
         String encodedImage = resp.asString();
         return Base64.decode(encodedImage, Base64.DEFAULT);
     }
+
+    /**
+     * Sends a token to the server.
+     * @param authToken The user's authentication token
+     * @param messagingToken The user's messaging token
+     * @throws MyPetCareException When the request fails
+     */
+    public void sendTokenToServer(String authToken, String messagingToken) throws MyPetCareException {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("token", authToken);
+        headers.put("FCM-token", messagingToken);
+        httpClient.request(RequestMethod.PUT, BASE_URL + "/users", null, headers, null);
+    }
 }
