@@ -271,4 +271,34 @@ public class DateTimeTest {
         dateTime.addSecond();
         assertEquals("Should add one second and change hour", "2021-01-01T00:00:00", dateTime.toString());
     }
+
+    @Test
+    public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
+        dateTime = DateTime.convertUTCtoLocal(dateTime);
+        assertEquals("Should add one second and change hour", "2021-01-01T01:59:59", dateTime.toString());
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromLocaltoUTC() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
+        dateTime = DateTime.convertLocaltoUTC(dateTime);
+        assertEquals("Should add one second and change hour", "2020-12-31T21:59:59", dateTime.toString());
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromUTCtoLocalString() throws InvalidFormatException {
+        String dateTime = "2020-12-31T23:59:59";
+        dateTime = DateTime.convertUTCtoLocalString(dateTime);
+        assertEquals("Should add one second and change hour", "2021-01-01T01:59:59", dateTime);
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromLocaltoUTCString() throws InvalidFormatException {
+        String dateTime = "2020-12-31T23:59:59";
+        dateTime = DateTime.convertLocaltoUTCString(dateTime);
+        assertEquals("Should add one second and change hour", "2020-12-31T21:59:59", dateTime);
+    }
+
+
 }
