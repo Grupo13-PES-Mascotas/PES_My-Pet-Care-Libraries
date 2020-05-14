@@ -212,7 +212,7 @@ public class UserManagerClientTest {
                 httpResponse);
 
         String messagingToken = "sdj3nm9dak";
-        headers.put("FCM-token", messagingToken);
+        headers.put("fcmtoken", messagingToken);
         client.sendTokenToServer(ACCESS_TOKEN, messagingToken);
         verify(httpClient).request(same(RequestMethod.PUT), eq(BASE_URL + "/users"), isNull(), eq(headers), isNull());
     }
