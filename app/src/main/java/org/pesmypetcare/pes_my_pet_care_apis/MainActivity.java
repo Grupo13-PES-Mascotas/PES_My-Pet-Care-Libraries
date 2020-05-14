@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -355,13 +356,19 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        /*UserManagerClient client = new UserManagerClient();
-        UserData user = new UserData("John Doe", "john.doe@mail.com", "123455678");
-        try {
-            client.createUser("UbmT93oVDhYlzhnh0gRN5B1RD403", user);
-        } catch (ExecutionException | InterruptedException | JSONException e) {
-            e.printStackTrace();
-        }*/
+        UserManagerClient client = new UserManagerClient();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
+                    System.out.println(img.length);
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
@@ -430,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
@@ -466,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("ACABADO");
         });
-        thread.start();
+        thread.start();*/
         //TEST FORUMS
         /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();

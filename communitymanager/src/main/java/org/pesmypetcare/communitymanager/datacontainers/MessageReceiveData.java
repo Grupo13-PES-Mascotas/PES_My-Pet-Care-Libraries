@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MessageReceiveData extends Message {
-    private List<Blob> image;
+    private Blob image;
 
     public MessageReceiveData() {
     }
@@ -28,11 +28,11 @@ public class MessageReceiveData extends Message {
         super(creator, text);
     }
 
-    public List<Blob> getImage() {
+    public Blob getImage() {
         return image;
     }
 
-    public void setImage(List<Blob> image) {
+    public void setImage(Blob image) {
         this.image = image;
     }
 
@@ -44,12 +44,7 @@ public class MessageReceiveData extends Message {
     @Nullable
     byte[] buildImage() throws IOException {
         if (image != null) {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            for (Blob blob : image) {
-                outputStream.write(blob.toBytes());
-            }
-            outputStream.close();
-            return outputStream.toByteArray();
+            return image.toBytes();
         }
         return null;
     }

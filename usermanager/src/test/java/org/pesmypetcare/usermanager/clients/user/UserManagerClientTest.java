@@ -67,7 +67,6 @@ public class UserManagerClientTest {
     private final int expectedResponseCode = 200;
     private UserData user;
     private StringBuilder json;
-    private StringBuilder responseJson;
     private UserData expected;
     private byte[] image;
     private Gson gson;
