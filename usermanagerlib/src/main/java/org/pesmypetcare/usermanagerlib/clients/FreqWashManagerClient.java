@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+
 public class FreqWashManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/freqWash/";
     private static final String POST = "POST";
@@ -48,7 +50,7 @@ public class FreqWashManagerClient {
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -67,7 +69,7 @@ public class FreqWashManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -104,8 +106,8 @@ public class FreqWashManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
-                accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                + convertLocaltoUTC(date), accessToken).get();
         return GSON.fromJson(json.toString(), FreqWashData.class);
     }
 
@@ -155,7 +157,8 @@ public class FreqWashManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
-                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+                + "/between/" + convertLocaltoUTC(initialDate) + SLASH
+                + convertLocaltoUTC(finalDate), accessToken).get();
         List<FreqWash> freqWashList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -188,7 +191,7 @@ public class FreqWashManagerClient {
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
