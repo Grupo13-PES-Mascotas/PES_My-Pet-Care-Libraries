@@ -84,6 +84,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Read the date from string.
+     *
      * @param date The date to read
      */
     private void readDate(String date) {
@@ -95,6 +96,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Read the time from string.
+     *
      * @param time The time to read
      */
     private void readTime(String time) {
@@ -106,6 +108,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Method responsible for checking whether the date values are out of range or not.
+     *
      * @param month The month value that we want to check
      * @param hour The hour value that we want to check
      * @param minutes The minutes value that we want to check
@@ -121,6 +124,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Method responsible for checking whether the date values are negative or not.
+     *
      * @param year The year value that we want to check
      * @param month The month value that we want to check
      * @param hour The hour value that we want to check
@@ -136,6 +140,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Method responsible for obtaining the number of days for a given month of a given year.
+     *
      * @param year The year value
      * @param month The month for which we want to obtain the number of days
      * @return The number of days of the month for that given year
@@ -161,16 +166,18 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Method responsible for checking whether a year is a leap year or not.
+     *
      * @param year The year that we want to check
      * @return True if the given year is a leap year or false otherwise
      */
     private boolean isLeapYear(int year) {
         return year % LEAP_YEAR_FREQ == 0 && (year % TWO_LAST_DIGITS != 0
-            || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);
+                || (year / TWO_LAST_DIGITS) % LEAP_YEAR_FREQ == 0);
     }
 
     /**
      * Get the year.
+     *
      * @return The year
      */
     public int getYear() {
@@ -179,6 +186,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the year.
+     *
      * @param year The year to set.
      */
     public void setYear(int year) {
@@ -187,6 +195,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the month.
+     *
      * @return The month
      */
     public int getMonth() {
@@ -195,6 +204,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the month.
+     *
      * @param month The month to set.
      */
     public void setMonth(int month) {
@@ -203,6 +213,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the day.
+     *
      * @return The day
      */
     public int getDay() {
@@ -211,6 +222,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the day.
+     *
      * @param day The day to set.
      */
     public void setDay(int day) {
@@ -219,6 +231,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the hour.
+     *
      * @return The hour
      */
     public int getHour() {
@@ -227,6 +240,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the hour.
+     *
      * @param hour The hour to set.
      */
     public void setHour(int hour) {
@@ -235,6 +249,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the minutes.
+     *
      * @return The minutes
      */
     public int getMinutes() {
@@ -243,6 +258,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the minutes.
+     *
      * @param minutes The minutes to set.
      */
     public void setMinutes(int minutes) {
@@ -251,6 +267,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the seconds.
+     *
      * @return The seconds
      */
     public int getSeconds() {
@@ -259,6 +276,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Set the seconds.
+     *
      * @param seconds The seconds to set.
      */
     public void setSeconds(int seconds) {
@@ -297,6 +315,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Check whether the date time is the last week.
+     *
      * @param dateTime The datetime to check
      * @return True if it is the last week
      */
@@ -316,17 +335,19 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Check whether two date time take place on the same day.
+     *
      * @param dateTime The first date time to check
      * @param currentDate The second date time to check
      * @return True if the date times take place on the same day
      */
     private static boolean isSameDay(DateTime dateTime, DateTime currentDate) {
-        return dateTime.getDay() == currentDate.getDay() && dateTime.getMonth() == currentDate.getMonth() &&
-            dateTime.getYear() == currentDate.getYear();
+        return dateTime.getDay() == currentDate.getDay() && dateTime.getMonth() == currentDate.getMonth()
+                && dateTime.getYear() == currentDate.getYear();
     }
 
     /**
      * Get the current date in full format.
+     *
      * @return The current date
      */
     public static DateTime getCurrentDateTime() {
@@ -338,6 +359,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the current date in simple format
+     *
      * @return The current date
      */
     public static DateTime getCurrentDate() {
@@ -349,6 +371,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the duration in minutes between two DateTime in the same day.
+     *
      * @param endDateTime The end DateTime
      * @return The duration in minutes between the two DateTime
      * @throws DifferentDatesException The dates are different
@@ -415,6 +438,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the date string.
+     *
      * @return The date string
      */
     public String toDateString() {
@@ -434,6 +458,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the date string in the reverse order.
+     *
      * @return The date string in the reverse order
      */
     public String toDateStringReverse() {
@@ -452,6 +477,7 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Get the time string.
+     *
      * @return The time string
      */
     public String toTimeString() {
@@ -474,10 +500,11 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Converts a DateTime from UTC format to the device's local Timezone.
+     *
      * @param dateIn the date to be converted as a String
      * @return dateTime converted to the local Timezone as a String
      */
-    public static String convertUTCtoLocalString (String dateIn) {
+    public static String convertUTCtoLocalString(String dateIn) {
         DateTime datetime1 = new DateTime(dateIn, true);
         datetime1 = convertUTCtoLocal(datetime1);
         return datetime1.toString();
@@ -485,10 +512,11 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Converts a DateTime from the device's local Timezone to UTC's.
+     *
      * @param dateIn the date to be converted as a String
      * @return dateTime converted to the local Timezone as a String
      */
-    public static String convertLocaltoUTCString (String dateIn) {
+    public static String convertLocalToUTCString(String dateIn) {
         DateTime datetime1 = new DateTime(dateIn, true);
         datetime1 = convertLocaltoUTC(datetime1);
         return datetime1.toString();
@@ -496,52 +524,53 @@ public class DateTime implements Comparable<DateTime> {
 
     /**
      * Converts a DateTime from UTC format to the device's local Timezone.
+     *
      * @param dateIn the date to be converted as a DateTime
      * @return dateTime converted to the local Timezone
      */
     public static DateTime convertUTCtoLocal(DateTime dateIn) {
         TimeZone tz = TimeZone.getDefault();
-        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings()) / 1000;
         return applyOffset(dateIn, offsetSeconds);
     }
 
     /**
      * Converts a DateTime from the local Timezone to UTC.
+     *
      * @param dateIn the date to be converted as a DateTime
      * @return dateTime converted to UTC
      */
     public static DateTime convertLocaltoUTC(DateTime dateIn) {
         TimeZone tz = TimeZone.getDefault();
-        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings()) / 1000;
         return applyOffset(dateIn, -offsetSeconds);
     }
 
     /**
      * Applies the timezone offset in seconds to the datetime.
+     *
      * @param dateIn the dateTime that needs to be applied the offset to
      * @param offsetSeconds the offset to be applied in seconds
      * @return dateIn with the offset applied
      */
-    private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
+    private static DateTime applyOffset(DateTime dateIn, int offsetSeconds) {
         int seconds;
         int minutes;
         int hours;
         int offsetMinutes;
         int offsetHours;
-        seconds = offsetSeconds%60;
-        offsetMinutes = offsetSeconds/60;
-        minutes = offsetMinutes%60;
-        offsetHours = offsetMinutes/60;
-        hours = offsetHours%60;
-        if (dateIn.getHour() + hours > 23){
+        seconds = offsetSeconds % 60;
+        offsetMinutes = offsetSeconds / 60;
+        minutes = offsetMinutes % 60;
+        offsetHours = offsetMinutes / 60;
+        hours = offsetHours % 60;
+        if (dateIn.getHour() + hours > 23) {
             dateIn.increaseDay();
             dateIn.setHour(dateIn.getHour() + hours - 24);
-        }
-        else if (dateIn.getHour() + hours < 0){
+        } else if (dateIn.getHour() + hours < 0) {
             dateIn.decreaseDay();
             dateIn.setHour((hours + dateIn.getHour()) + 24);
-        }
-        else {
+        } else {
             dateIn.setHour(dateIn.getHour() + hours);
         }
         dateIn.setMinutes(dateIn.getMinutes() + minutes);
@@ -580,6 +609,7 @@ public class DateTime implements Comparable<DateTime> {
 
         /**
          * Build a DateTime with all parameters.
+         *
          * @param year The year
          * @param month The month
          * @param day The day
@@ -590,25 +620,26 @@ public class DateTime implements Comparable<DateTime> {
          * @throws InvalidFormatException The format is not valid
          */
         public static DateTime build(int year, int month, int day, int hour, int minutes, int seconds)
-            throws InvalidFormatException {
+                throws InvalidFormatException {
             return new DateTime(year, month, day, hour, minutes, seconds);
         }
 
         /**
          * Build a DateTime with just the date.
+         *
          * @param year The year
          * @param month The month
          * @param day The day
          * @return The built DateTime with just the date
          * @throws InvalidFormatException The format is not valid
          */
-        public static DateTime build(int year, int month, int day)
-            throws InvalidFormatException {
+        public static DateTime build(int year, int month, int day) throws InvalidFormatException {
             return new DateTime(year, month, day, 0, 0, 0);
         }
 
         /**
          * Build a DateTime with the format yyyy-MM-d'T'hh:mm:ss (apostrophes not included).
+         *
          * @param date The date with full string format
          * @return The built DateTime with full string format
          */
@@ -618,6 +649,7 @@ public class DateTime implements Comparable<DateTime> {
 
         /**
          * Build a DateTime with the format yyyy-MM-d.
+         *
          * @param date The date with date string format
          * @return The built DateTime with date string format
          */
@@ -626,7 +658,8 @@ public class DateTime implements Comparable<DateTime> {
         }
 
         /**
-         * Build a DateTime with the date in the format yyyy-MM-d and the hour with the format hh:mm:ss
+         * Build a DateTime with the date in the format yyyy-MM-d and the hour with the format hh:mm:ss.
+         *
          * @param date The date with the specified format
          * @param hour The hour with the specified format
          * @return The built DateTime with full string format using the two strings

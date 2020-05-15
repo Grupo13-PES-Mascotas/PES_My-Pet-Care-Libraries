@@ -155,11 +155,7 @@ public class HttpResponse {
     @NonNull
     @Override
     public String toString() {
-        return "HttpResponse{" +
-            "statusCode=" + statusCode +
-            ", is=" + is +
-            ", consumed=" + consumed +
-            ", responseAsString='" + responseAsString + '\'' +
-            '}';
+        return "HttpResponse{" + "statusCode=" + statusCode + ", is=" + is + ", consumed=" + consumed
+                + ", responseAsString='" + responseAsString + '\'' + '}';
     }
 }

@@ -18,6 +18,7 @@ public class ForumData {
 
     /**
      * Creates a forum data with a name and a creator.
+     *
      * @param name The forum name
      * @param creator The creator's name
      */
@@ -28,6 +29,7 @@ public class ForumData {
 
     /**
      * Creates a forum data with a name, a creator and a list of tags.
+     *
      * @param name The forum name
      * @param creator The creator's name
      * @param tags The list of tags
@@ -70,13 +72,15 @@ public class ForumData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ForumData forumData = (ForumData) o;
-        return getName().equals(forumData.getName()) &&
-            getCreator().equals(forumData.getCreator()) &&
-            Objects.equals(getCreationDate(), forumData.getCreationDate()) &&
-            Objects.equals(getTags(), forumData.getTags());
+        return getName().equals(forumData.getName()) && getCreator().equals(forumData.getCreator()) && Objects.equals(
+                getCreationDate(), forumData.getCreationDate()) && Objects.equals(getTags(), forumData.getTags());
     }
 
     @Override
@@ -87,11 +91,7 @@ public class ForumData {
     @NonNull
     @Override
     public String toString() {
-        return "ForumData{" +
-            "name='" + name + '\'' +
-            ", creator='" + creator + '\'' +
-            ", creationDate='" + creationDate + '\'' +
-            ", tags=" + tags +
-            '}';
+        return "ForumData{" + "name='" + name + '\'' + ", creator='" + creator + '\'' + ", creationDate='"
+                + creationDate + '\'' + ", tags=" + tags + '}';
     }
 }

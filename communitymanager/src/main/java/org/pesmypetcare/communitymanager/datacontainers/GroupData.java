@@ -22,6 +22,7 @@ public class GroupData {
 
     /**
      * Creates a group data with the name group, its creator username and its description.
+     *
      * @param name The group name
      * @param creator The creator's username
      * @param description The group description
@@ -34,6 +35,7 @@ public class GroupData {
 
     /**
      * Creates a group data with the name group, its creator username and its tags.
+     *
      * @param name The group name
      * @param creator The creator's username
      * @param tags The group tags
@@ -46,6 +48,7 @@ public class GroupData {
 
     /**
      * Creates a group data with the name group, its creator username, description and tags.
+     *
      * @param name The group name
      * @param creator The creator's username
      * @param description The group description
@@ -114,34 +117,30 @@ public class GroupData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         GroupData groupData = (GroupData) o;
-        return getName().equals(groupData.getName()) &&
-            getCreator().equals(groupData.getCreator()) &&
-            Objects.equals(getCreationDate(), groupData.getCreationDate()) &&
-            Objects.equals(getIcon(), groupData.getIcon()) &&
-            Objects.equals(getDescription(), groupData.getDescription()) &&
-            Objects.equals(getTags(), groupData.getTags()) &&
-            Objects.equals(getMembers(), groupData.getMembers());
+        return getName().equals(groupData.getName()) && getCreator().equals(groupData.getCreator()) && Objects.equals(
+                getCreationDate(), groupData.getCreationDate()) && Objects.equals(getIcon(), groupData.getIcon())
+                && Objects.equals(getDescription(), groupData.getDescription()) && Objects.equals(getTags(),
+                groupData.getTags()) && Objects.equals(getMembers(), groupData.getMembers());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getCreator(), getCreationDate(), getIcon(), getDescription(), getTags(), getMembers());
+        return Objects.hash(getName(), getCreator(), getCreationDate(), getIcon(), getDescription(), getTags(),
+                getMembers());
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "GroupData{" +
-            "name='" + name + '\'' +
-            ", creator='" + creator + '\'' +
-            ", creationDate='" + creationDate + '\'' +
-            ", icon='" + icon + '\'' +
-            ", description='" + description + '\'' +
-            ", tags=" + tags +
-            ", members=" + members +
-            '}';
+        return "GroupData{" + "name='" + name + '\'' + ", creator='" + creator + '\'' + ", creationDate='"
+                + creationDate + '\'' + ", icon='" + icon + '\'' + ", description='" + description + '\'' + ", tags="
+                + tags + ", members=" + members + '}';
     }
 }
