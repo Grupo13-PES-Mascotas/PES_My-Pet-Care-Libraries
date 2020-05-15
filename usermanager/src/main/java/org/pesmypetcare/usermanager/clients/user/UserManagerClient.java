@@ -240,7 +240,7 @@ public class UserManagerClient {
     public void sendTokenToServer(String authToken, String messagingToken) throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
         headers.put("token", authToken);
-        headers.put("FCM-token", messagingToken);
-        httpClient.request(RequestMethod.PUT, BASE_URL + "/users", null, headers, null);
+        headers.put("fcmToken", messagingToken);
+        httpClient.request(RequestMethod.PUT, BASE_URL + "users", null, headers, null);
     }
 }
