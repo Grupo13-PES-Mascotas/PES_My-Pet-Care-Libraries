@@ -26,6 +26,7 @@ public class GroupManagerClient {
     private static final String IMAGE_STORAGE_BASE_URL = "https://image-branch-testing.herokuapp.com/storage/image/";
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community";
     private static final String GROUP_KEY = "group";
+    private static final String TAGS_PATH = "/tags";
     private final Gson gson;
 
     public GroupManagerClient() {
@@ -87,7 +88,7 @@ public class GroupManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public Map<String, TagData> getAllTags() throws MyPetCareException {
-        HttpResponse resp = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL + "/tags", null, null, null);
+        HttpResponse resp = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL + TAGS_PATH, null, null, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, TagData.class).getType();
         return gson.fromJson(resp.asString(), mapType);
     }
@@ -108,7 +109,7 @@ public class GroupManagerClient {
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
-        new HttpClient().request(RequestMethod.PUT, COMMUNITY_BASE_URL + "/tags", params, null, gson.toJson(newValue));
+        new HttpClient().request(RequestMethod.PUT, COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
     }
 
     public void subscribe(String token, String groupName, String username) throws MyPetCareException {

@@ -358,7 +358,7 @@ public class DateTime implements Comparable<DateTime> {
     }
 
     /**
-     * Get the current date in simple format
+     * Get the current date in simple format.
      *
      * @return The current date
      */

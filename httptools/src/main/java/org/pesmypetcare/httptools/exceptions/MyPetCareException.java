@@ -9,7 +9,7 @@ public class MyPetCareException extends Exception {
     private int statusCode = -1;
     private int errorCode = -1;
     private HttpResponse response;
-    private String errorMessage = null;
+    private String errorMessage;
 
     public MyPetCareException(String message, Throwable cause) {
         super(message, cause);

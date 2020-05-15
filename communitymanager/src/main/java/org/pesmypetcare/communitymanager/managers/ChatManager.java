@@ -72,7 +72,8 @@ public class ChatManager {
         }
     }
 
-    private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData) throws ChatException {
+    private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
+            throws ChatException {
         db.document("groups_names/" + group + "/forums/" + forum).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot forumDoc = task.getResult();
@@ -110,8 +111,8 @@ public class ChatManager {
      * @throws ChatException When the listener creation fails
      */
     private void createListener(MutableLiveData<MessageDisplay> mutableData) throws ChatException {
-        Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages")
-                        .orderBy("publicationDate", Query.Direction.DESCENDING);
+        Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages").orderBy("publicationDate",
+                Query.Direction.DESCENDING);
         listener = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
             if (e != null) {
                 exception = new ChatException("Error creating the listener", e);

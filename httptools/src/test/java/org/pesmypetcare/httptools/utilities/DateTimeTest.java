@@ -267,7 +267,7 @@ public class DateTimeTest {
     }
 
     @Test
-    public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
+    public void shouldConvertCorrectlyFromUTCToLocal() throws InvalidFormatException {
         int hourDatetime1;
         int hourDatetime2;
         int expectedOffsetHours;

@@ -30,10 +30,6 @@ public class HttpResponse {
     private JSONObject json;
     private JSONArray jsonArray;
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
     public HttpResponse(HttpURLConnection connection) throws IOException {
         this.connection = connection;
         statusCode = connection.getResponseCode();
@@ -44,6 +40,10 @@ public class HttpResponse {
         responseAsString = null;
         json = null;
         jsonArray = null;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
     }
 
     public InputStream asStream() {
@@ -107,7 +107,7 @@ public class HttpResponse {
         return responseAsString;
     }
 
-    public JSONObject asJSONObject() throws MyPetCareException {
+    public JSONObject asJsonObject() throws MyPetCareException {
         if (json == null) {
             try {
                 json = new JSONObject(asString());
@@ -133,7 +133,7 @@ public class HttpResponse {
         return json;
     }
 
-    public JSONArray asJSONArray() throws MyPetCareException {
+    public JSONArray asJsonArray() throws MyPetCareException {
         if (jsonArray == null) {
             try {
                 jsonArray = new JSONArray(asString());
