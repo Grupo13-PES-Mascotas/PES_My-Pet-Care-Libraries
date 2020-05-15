@@ -3,6 +3,8 @@ package org.pesmypetcare.usermanager.datacontainers.pet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,6 +67,18 @@ public class MedicationData {
         response.put("duration", duration);
         response.put("periodicity", periodicity);
         return response;
+    }
+
+    /**
+     * Creates a meal json object.
+     * @return A JSON Object with the meal data.
+     */
+    public JSONObject buildMedicationJson() {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put("quantity", String.valueOf(quantity));
+        reqData.put("duration", String.valueOf(duration));
+        reqData.put("periodicity", String.valueOf(periodicity));
+        return new JSONObject(reqData);
     }
 
     @NonNull

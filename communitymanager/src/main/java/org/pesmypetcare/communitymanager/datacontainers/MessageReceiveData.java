@@ -10,6 +10,9 @@ import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class MessageReceiveData extends Message {
     private Blob image;
 

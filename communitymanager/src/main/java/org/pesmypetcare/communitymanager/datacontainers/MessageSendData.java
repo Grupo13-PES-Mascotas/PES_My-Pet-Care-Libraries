@@ -8,6 +8,9 @@ import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 
 import java.util.Objects;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class MessageSendData extends Message {
     private String encodedImage;
 

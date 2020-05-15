@@ -9,10 +9,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
-import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
+import org.pesmypetcare.httptools.BuildConfig;
 
 import java.io.IOException;
 

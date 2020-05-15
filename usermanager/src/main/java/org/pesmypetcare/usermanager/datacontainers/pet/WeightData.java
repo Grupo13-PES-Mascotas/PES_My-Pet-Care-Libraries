@@ -3,34 +3,24 @@ package org.pesmypetcare.usermanager.datacontainers.pet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Marc Simó
- */
 public class WeightData {
-    private Integer value;
+    private Double weight;
 
-    /**
-     * WeigthData constructor.
-     */
-    public WeightData() { }
-
-    /**
-     * WeightData constructor.
-     * @param weight new Weight value
-     */
-    public WeightData(Integer weight) {
-        this.value = weight;
+    public WeightData(double weight) {
+        this.weight = weight;
     }
 
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer weight) {
-        this.value = weight;
+    /**
+     * Returns the value of the weight.
+     * @return value of the weight
+     */
+    public Double getWeight() {
+        return weight;
     }
 
     /**
@@ -39,22 +29,32 @@ public class WeightData {
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();
-        response.put("value", value);
+        response.put("value", weight);
         return response;
+    }
+
+    /**
+     * Creates a weight json object.
+     * @return A JSON Object with the weight data
+     */
+    public JSONObject buildWeightJson() {
+        Map<String, String> reqData = new HashMap<>();
+        reqData.put("weight", Double.toString(weight));
+        return new JSONObject(reqData);
     }
 
     @NonNull
     @Override
     public String toString() {
         return "{"
-            + "weight = " + value
-            + '}';
+                + ", weight=" + weight
+                + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof WeightData) {
-            return ((WeightData) obj).getValue().equals(this.getValue());
+            return ((WeightData) obj).getWeight().equals(this.getWeight());
         }
         return false;
     }

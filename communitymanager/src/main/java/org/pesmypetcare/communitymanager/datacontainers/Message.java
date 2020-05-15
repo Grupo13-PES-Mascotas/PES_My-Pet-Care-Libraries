@@ -8,6 +8,9 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class Message {
     private String creator;
     private String publicationDate;

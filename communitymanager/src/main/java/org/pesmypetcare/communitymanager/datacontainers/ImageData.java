@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * @author Santiago Del Rey
+ */
 public class ImageData {
     private String uid;
     private String imgName;
