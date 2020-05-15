@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanager.datacontainers.pet;
+package org.pesmypetcare.usermanagerlib.datacontainers;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,36 +8,36 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Meal {
+public class Wash {
     private String key;
-    private MealData body;
+    private WashData body;
 
     /**
-     * Meal constructor.
+     * Wash constructor.
      */
-    public Meal() { }
+    public Wash() { }
 
     /**
-     * Meal constructor.
+     * Wash constructor.
      * @param key date value
-     * @param body meal data
+     * @param body wash data
      */
-    public Meal(String key, MealData body) {
+    public Wash(String key, WashData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Meal constructor.
-     * @param date Key value
-     * @param mealName Body meal name
-     * @param kcal Body kcalories
+     * Wash constructor.
+     * @param date Wash date
+     * @param description Wash description
+     * @param duration Wash duration
      */
-    public Meal(String date, String mealName, double kcal) {
+    public Wash(String date, String description, Integer duration) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new MealData(mealName, kcal);
+        this.body = new WashData(description, duration);
     }
 
     public String getKey() {
@@ -45,15 +45,15 @@ public class Meal {
     }
 
     public void setKey(String date) {
-        PetData.checkDateFormat(key);
+        PetData.checkDateFormat(date);
         this.key = date;
     }
 
-    public MealData getBody() {
+    public WashData getBody() {
         return body;
     }
 
-    public void setBody(MealData body) {
+    public void setBody(WashData body) {
         this.body = body;
     }
 
@@ -64,6 +64,7 @@ public class Meal {
     public Map<String, Object> getBodyAsMap() {
         return body.getAsMap();
     }
+
 
     @NonNull
     @Override
@@ -76,9 +77,9 @@ public class Meal {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Meal) {
-            return ((Meal) obj).getKey().equals(this.getKey())
-                && ((Meal) obj).getBody().equals(this.getBody());
+        if (obj instanceof Wash) {
+            return ((Wash) obj).getKey().equals(this.getKey())
+                && ((Wash) obj).getBody().equals(this.getBody());
         }
         return false;
     }

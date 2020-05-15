@@ -2,7 +2,11 @@ package org.pesmypetcare.usermanager.datacontainers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.pesmypetcare.usermanager.exceptions.DifferentDatesException;
 import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanager.exceptions.PreviousEndDateException;
+
+import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +21,7 @@ public class DateTimeTest {
     private DateTime dateTime4;
     private DateTime dateTime5;
     private DateTime dateTime6;
+    private DateTime dateTime7;
 
     @Before
     public void setUp() throws InvalidFormatException {
@@ -26,6 +31,7 @@ public class DateTimeTest {
         dateTime4 = DateTime.Builder.build(2020, 10, 5, 15, 2, 11);
         dateTime5 = DateTime.Builder.build(2020, 10, 23);
         dateTime6 = DateTime.Builder.build(2020, 10, 5);
+        dateTime7 = DateTime.Builder.build(2020, 10, 23, 16, 2, 11);
     }
 
     @Test
@@ -195,4 +201,133 @@ public class DateTimeTest {
         dateTime.increaseDay();
         assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
     }
+
+    @Test
+    public void shouldConvertToDateString() {
+        assertEquals("Should convert to date string", "2020-10-23", dateTime.toDateString());
+    }
+
+    @Test
+    public void shouldConvertToReverseDateString() {
+        assertEquals("Should convert to reverse date string", "23-10-2020", dateTime.toDateStringReverse());
+    }
+
+    @Test
+    public void shouldConvertToTimeString() {
+        assertEquals("Should convert to time string", "15:02:11", dateTime.toTimeString());
+    }
+
+    @Test(expected = DifferentDatesException.class)
+    public void shouldNotDatesBeDifferent() throws DifferentDatesException, PreviousEndDateException {
+        dateTime.getMinutesDuration(dateTime2);
+    }
+
+    @Test(expected = PreviousEndDateException.class)
+    public void shouldNotEndDateBeAfterStartOne() throws DifferentDatesException, PreviousEndDateException {
+        dateTime7.getMinutesDuration(dateTime);
+    }
+
+    @Test
+    public void shouldCalculateDurationInMinutes() throws DifferentDatesException, PreviousEndDateException {
+        int duration = dateTime.getMinutesDuration(dateTime7);
+        assertEquals("Should calculate duration in minutes", 60, duration);
+    }
+
+    @Test
+    public void shouldAddOneSecond() {
+        dateTime.addSecond();
+        assertEquals("Should add one second", "2020-10-23T15:02:12", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeMinute() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 15, 2, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change minute", "2020-10-23T15:03:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeHour() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 15, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-10-23T16:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeDay() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 23, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-10-24T00:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeMonth() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 10, 31, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2020-11-01T00:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldAddOneSecondAndChangeYear() throws InvalidFormatException {
+        DateTime dateTime = DateTime.Builder.build(2020, 12, 31, 23, 59, 59);
+        dateTime.addSecond();
+        assertEquals("Should add one second and change hour", "2021-01-01T00:00:00", dateTime.toString());
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+
+        dateTime2 = DateTime.convertUTCtoLocal(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
+
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime2 - hourDatetime1;
+
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
+
+    @Test
+    public void shouldconvertCorrectlyfromLocaltoUTC() throws InvalidFormatException {
+        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+        DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
+
+        TimeZone tz = TimeZone.getDefault();
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+
+        dateTime2 = DateTime.convertLocaltoUTC(dateTime2);
+        hourDatetime1 = dateTime1.getHour();
+        hourDatetime2 = dateTime2.getHour();
+        actualOffsetHours = 0;
+
+        for (i = hourDatetime1; i < hourDatetime2; i++){
+            if (i == 24){
+                i = 0;
+            }
+            actualOffsetHours = actualOffsetHours + 1;
+        }
+        actualOffsetHours = hourDatetime1 - hourDatetime2;
+
+        if (actualOffsetHours > 12){
+            actualOffsetHours = actualOffsetHours - 24;
+        }
+        assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
+    }
+
 }

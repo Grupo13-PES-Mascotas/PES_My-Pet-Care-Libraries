@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanager.datacontainers.pet;
+package org.pesmypetcare.usermanagerlib.datacontainers;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,36 +8,35 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Meal {
+public class Vaccination {
     private String key;
-    private MealData body;
+    private VaccinationData body;
 
     /**
-     * Meal constructor.
+     * Vaccination constructor.
      */
-    public Meal() { }
+    public Vaccination() { }
 
     /**
-     * Meal constructor.
-     * @param key date value
-     * @param body meal data
+     * Vaccination constructor.
+     * @param key date
+     * @param body vaccination data
      */
-    public Meal(String key, MealData body) {
+    public Vaccination(String key, VaccinationData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Meal constructor.
-     * @param date Key value
-     * @param mealName Body meal name
-     * @param kcal Body kcalories
+     * Vaccination constructor.
+     * @param date Vaccination date
+     * @param description Vaccination description
      */
-    public Meal(String date, String mealName, double kcal) {
+    public Vaccination(String date, String description) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new MealData(mealName, kcal);
+        this.body = new VaccinationData(description);
     }
 
     public String getKey() {
@@ -49,11 +48,11 @@ public class Meal {
         this.key = date;
     }
 
-    public MealData getBody() {
+    public VaccinationData getBody() {
         return body;
     }
 
-    public void setBody(MealData body) {
+    public void setBody(VaccinationData body) {
         this.body = body;
     }
 
@@ -76,9 +75,9 @@ public class Meal {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Meal) {
-            return ((Meal) obj).getKey().equals(this.getKey())
-                && ((Meal) obj).getBody().equals(this.getBody());
+        if (obj instanceof Vaccination) {
+            return ((Vaccination) obj).getKey().equals(this.getKey())
+                && ((Vaccination) obj).getBody().equals(this.getBody());
         }
         return false;
     }

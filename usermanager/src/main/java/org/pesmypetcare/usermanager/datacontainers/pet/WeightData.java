@@ -3,48 +3,58 @@ package org.pesmypetcare.usermanager.datacontainers.pet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Marc Simó
+ */
 public class WeightData {
-    private Double weight;
+    private Integer value;
 
-    public WeightData(double weight) {
-        this.weight = weight;
+    /**
+     * WeigthData constructor.
+     */
+    public WeightData() { }
+
+    /**
+     * WeightData constructor.
+     * @param weight new Weight value
+     */
+    public WeightData(Integer weight) {
+        this.value = weight;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer weight) {
+        this.value = weight;
     }
 
     /**
-     * Returns the value of the weight.
-     * @return value of the weight
+     * Turns the WeightData into a Map of key String and element Object.
+     * @return WeighData turned into map
      */
-    public Double getWeight() {
-        return weight;
-    }
-
-    /**
-     * Creates a weight json object.
-     * @return A JSON Object with the weight data
-     */
-    public JSONObject buildWeightJson() {
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put("weight", Double.toString(weight));
-        return new JSONObject(reqData);
+    public Map<String, Object> getAsMap() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("value", value);
+        return response;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "{"
-            + ", weight=" + weight
+            + "weight = " + value
             + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof WeightData) {
-            return ((WeightData) obj).getWeight().equals(this.getWeight());
+            return ((WeightData) obj).getValue().equals(this.getValue());
         }
         return false;
     }

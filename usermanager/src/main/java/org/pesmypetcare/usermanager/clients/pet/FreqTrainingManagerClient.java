@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+
 public class FreqTrainingManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/freqTraining/";
     private static final String POST = "POST";
@@ -50,7 +52,7 @@ public class FreqTrainingManagerClient {
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -69,7 +71,7 @@ public class FreqTrainingManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -106,7 +108,7 @@ public class FreqTrainingManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
+        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + convertLocaltoUTC(date),
                 accessToken).get();
         return GSON.fromJson(json.toString(), FreqTrainingData.class);
     }
@@ -159,7 +161,8 @@ public class FreqTrainingManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
-                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+                + "/between/" + convertLocaltoUTC(initialDate) + SLASH + convertLocaltoUTC(finalDate),
+                accessToken).get();
         List<FreqTraining> freqTrainingList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -193,7 +196,7 @@ public class FreqTrainingManagerClient {
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 

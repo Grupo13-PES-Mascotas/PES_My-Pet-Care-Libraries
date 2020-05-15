@@ -2,12 +2,15 @@ package org.pesmypetcare.usermanager.datacontainers;
 
 import androidx.annotation.NonNull;
 
+import org.pesmypetcare.usermanagerlib.exceptions.DifferentDatesException;
 import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
+import org.pesmypetcare.usermanagerlib.exceptions.PreviousEndDateException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * @author Marc Simó
@@ -345,32 +348,209 @@ public class DateTime implements Comparable<DateTime> {
         return new DateTime(strData, false);
     }
 
+    /**
+     * Get the duration in minutes between two DateTime in the same day.
+     * @param endDateTime The end DateTime
+     * @return The duration in minutes between the two DateTime
+     * @throws DifferentDatesException The dates are different
+     * @throws PreviousEndDateException The end date is previous to the start one
+     */
+    public int getMinutesDuration(DateTime endDateTime) throws DifferentDatesException, PreviousEndDateException {
+        if (!toDateString().equals(endDateTime.toDateString())) {
+            throw new DifferentDatesException();
+        } else if (this.compareTo(endDateTime) > 0) {
+            throw new PreviousEndDateException();
+        }
+        int startMinutes = hour * MAX_MINUTES_SECONDS + minutes;
+        int endMinutes = endDateTime.getHour() * MAX_MINUTES_SECONDS + endDateTime.getMinutes();
+
+        return endMinutes - startMinutes;
+    }
+
+    /**
+     * Add a second to the DateTime.
+     */
+    public void addSecond() {
+        ++seconds;
+
+        updateTime();
+        updateDate();
+    }
+
+    /**
+     * Update the date after adding one second.
+     */
+    private void updateDate() {
+        int numDays = numberOfDays(year, month);
+
+        if (day > numDays) {
+            day = 1;
+            ++month;
+        }
+
+        if (month > DECEMBER) {
+            month = 1;
+            ++year;
+        }
+    }
+
+    /**
+     * Update the time after adding one second.
+     */
+    private void updateTime() {
+        if (seconds == MAX_MINUTES_SECONDS) {
+            seconds = 0;
+            ++minutes;
+        }
+
+        if (minutes == MAX_MINUTES_SECONDS) {
+            minutes = 0;
+            ++hour;
+        }
+
+        if (hour == MAX_HOUR) {
+            hour = 0;
+            ++day;
+        }
+    }
+
+    /**
+     * Get the date string.
+     * @return The date string
+     */
+    public String toDateString() {
+        StringBuilder date = new StringBuilder("");
+        date.append(year).append(DATE_SEPARATOR_CHAR);
+        if (month < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(month).append(DATE_SEPARATOR_CHAR);
+        if (day < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(day);
+
+        return date.toString();
+    }
+
+    /**
+     * Get the date string in the reverse order.
+     * @return The date string in the reverse order
+     */
+    public String toDateStringReverse() {
+        StringBuilder date = new StringBuilder("");
+        if (day < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(day).append(DATE_SEPARATOR_CHAR);
+
+        if (month < FIRST_TWO_DIGITS) {
+            date.append(ZERO_DIGIT_CHAR);
+        }
+        date.append(month).append(DATE_SEPARATOR_CHAR).append(year);
+        return date.toString();
+    }
+
+    /**
+     * Get the time string.
+     * @return The time string
+     */
+    public String toTimeString() {
+        StringBuilder time = new StringBuilder("");
+        if (hour < FIRST_TWO_DIGITS) {
+            time.append(ZERO_DIGIT_CHAR);
+        }
+        time.append(hour).append(TIME_SEPARATOR_CHAR);
+        if (minutes < FIRST_TWO_DIGITS) {
+            time.append(ZERO_DIGIT_CHAR);
+        }
+        time.append(minutes).append(TIME_SEPARATOR_CHAR);
+        if (seconds < FIRST_TWO_DIGITS) {
+            time.append(ZERO_DIGIT_CHAR);
+        }
+        time.append(seconds);
+
+        return time.toString();
+    }
+
+    /**
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a String
+     * @return dateTime converted to the local Timezone as a String
+     */
+    public static String convertUTCtoLocalString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertUTCtoLocal(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from the device's local Timezone to UTC's.
+     * @param dateIn the date to be converted as a String
+     * @return dateTime converted to the local Timezone as a String
+     */
+    public static String convertLocaltoUTCString (String dateIn) {
+        DateTime datetime1 = new DateTime(dateIn, true);
+        datetime1 = convertLocaltoUTC(datetime1);
+        return datetime1.toString();
+    }
+
+    /**
+     * Converts a DateTime from UTC format to the device's local Timezone.
+     * @param dateIn the date to be converted as a DateTime
+     * @return dateTime converted to the local Timezone
+     */
+    public static DateTime convertUTCtoLocal(DateTime dateIn) {
+        TimeZone tz = TimeZone.getDefault();
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        return applyOffset(dateIn, offsetSeconds);
+    }
+
+    /**
+     * Converts a DateTime from the local Timezone to UTC.
+     * @param dateIn the date to be converted as a DateTime
+     * @return dateTime converted to UTC
+     */
+    public static DateTime convertLocaltoUTC(DateTime dateIn) {
+        TimeZone tz = TimeZone.getDefault();
+        int offsetSeconds = (tz.getRawOffset() + tz.getDSTSavings())/1000;
+        return applyOffset(dateIn, -offsetSeconds);
+    }
+
+    /**
+     * Applies the timezone offset in seconds to the datetime.
+     * @param dateIn the dateTime that needs to be applied the offset to
+     * @param offsetSeconds the offset to be applied in seconds
+     * @return dateIn with the offset applied
+     */
+    private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
+        int seconds, minutes, hours,offsetMinutes, offsetHours;
+        seconds = offsetSeconds%60;
+        offsetMinutes = offsetSeconds/60;
+        minutes = offsetMinutes%60;
+        offsetHours = offsetMinutes/60;
+        hours = offsetHours%60;
+        if (dateIn.getHour() + hours > 23){
+            dateIn.increaseDay();
+            dateIn.setHour(dateIn.getHour() + hours - 24);
+        }
+        else if (dateIn.getHour() + hours < 0){
+            dateIn.decreaseDay();
+            dateIn.setHour(((hours + dateIn.getHour()) + 24));
+        }
+        else {
+            dateIn.setHour(dateIn.getHour() + hours);
+        }
+        dateIn.setMinutes(dateIn.getMinutes() + minutes);
+        dateIn.setSeconds(dateIn.getSeconds() + seconds);
+        return dateIn;
+    }
+
+
     @NonNull
     @Override
     public String toString() {
-        StringBuilder dateTime = new StringBuilder("");
-        dateTime.append(year).append(DATE_SEPARATOR_CHAR);
-        if (month < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(month).append(DATE_SEPARATOR_CHAR);
-        if (day < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(day).append(DATE_TIME_SEPARATOR_CHAR);
-        if (hour < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(hour).append(TIME_SEPARATOR_CHAR);
-        if (minutes < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(minutes).append(TIME_SEPARATOR_CHAR);
-        if (seconds < FIRST_TWO_DIGITS) {
-            dateTime.append(ZERO_DIGIT_CHAR);
-        }
-        dateTime.append(seconds);
-        return dateTime.toString();
+        return toDateString() + DATE_TIME_SEPARATOR + toTimeString();
     }
 
     @Override

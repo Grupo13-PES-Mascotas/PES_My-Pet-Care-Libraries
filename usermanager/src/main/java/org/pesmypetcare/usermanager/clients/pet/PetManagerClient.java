@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 /**
- * @author Oriol Catalán
+ * @author Marc Simó & Oriol Catalán
  */
 public class PetManagerClient {
     public static final String GENDER = "gender";
@@ -153,8 +153,7 @@ public class PetManagerClient {
                 accessToken).get();
         if (response == null) {
             return new ArrayList<>();
-        }
-        if (response.length() <= 2) {
+        } else if (response.length() <= 2) {
             return new ArrayList<>();
         }
         String jsonArray = response.substring(1, response.length() - 1);
@@ -187,13 +186,28 @@ public class PetManagerClient {
     }
 
     /**
+     * Deletes all pets of the specified user.
+     * @param accessToken The personal access token for the account
+     * @param username The user's username
+     * @return The response code
+     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws InterruptedException When the retrieval is interrupted
+     */
+    public int deleteAllPets(String accessToken, String username) throws ExecutionException, InterruptedException {
+        taskManager = taskManager.resetTaskManager();
+        taskManager.setTaskId(DELETE);
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username, accessToken).get();
+        return Integer.parseInt(response.toString());
+    }
+
+    /**
      * Gets the value for the specified field of the pet on the database.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field to retrieve the value from
      * @return The value from the field on the database
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public Object getSimpleField(String accessToken, String username, String petName, String field)
@@ -203,14 +217,15 @@ public class PetManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
                 + petName + "/simple/" + field, accessToken).get();
+        if (response == null) {
+            return null;
+        }
         String[] split = response.toString().split("\"");
         if (split.length == 3) {
             return Double.parseDouble(split[2].split(":")[1].split("}")[0]);
-        }
-        if (split.length == 1) {
+        } else if (split.length == 1) {
             return split[0];
-        }
-        if (split.length == 5) {
+        } else if (split.length == 5) {
             return split[3];
         }
         return null;
@@ -224,7 +239,7 @@ public class PetManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int updateSimpleField(String accessToken, String username, String petName, String field,
@@ -248,7 +263,7 @@ public class PetManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field to delete
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int deleteFieldCollection(String accessToken, String username, String petName, String field)
@@ -268,7 +283,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param field Name of the field to retrieve
      * @return The elements from the field on the database
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<PetCollectionField> getFieldCollection(String accessToken, String username, String petName,
@@ -278,7 +293,9 @@ public class PetManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/" + field, accessToken).get();
-        if (response.length() <= 2) {
+        if (response == null) {
+            return new ArrayList<>();
+        } else if (response.length() <= 2) {
             return new ArrayList<>();
         }
         String jsonArray = response.substring(1, response.length() - 1);
@@ -302,7 +319,7 @@ public class PetManagerClient {
      * @param key1 Start key (This one included)
      * @param key2 End Key (This one included)
      * @return The elements between the keys
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<PetCollectionField> getFieldCollectionElementsBetweenKeys(String accessToken, String username,
@@ -314,7 +331,9 @@ public class PetManagerClient {
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
             + petName + "/collection/" + field + SLASH + key1 + SLASH + key2, accessToken).get();
-        if (response.length() <= 2) {
+        if (response == null) {
+            return new ArrayList<>();
+        } else if (response.length() <= 2) {
             return new ArrayList<>();
         }
         String jsonArray = response.substring(1, response.length() - 1);
@@ -336,6 +355,7 @@ public class PetManagerClient {
      * @param field Name of the field
      * @param key Key of the new element to be added
      * @param body Element to be added
+     * @throws ExecutionException When the retrieval fails
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
@@ -358,7 +378,7 @@ public class PetManagerClient {
      * @param petName The pet's name
      * @param field Name of the field
      * @param key Key of the element to delete
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int deleteFieldCollectionElement(String accessToken, String username, String petName,
@@ -379,7 +399,7 @@ public class PetManagerClient {
      * @param field Name of the field
      * @param key Key of the element to update
      * @param body Update of the element
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int updateFieldCollectionElement(String accessToken, String username, String petName, String field,
@@ -402,7 +422,7 @@ public class PetManagerClient {
      * @param field Name of the field
      * @param key Key of the element
      * @return Element assigned to the key
-     * @throws ExecutionException When the retrieval of the pets fails
+     * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
     public Map<String, Object> getFieldCollectionElement(String accessToken, String username, String petName,

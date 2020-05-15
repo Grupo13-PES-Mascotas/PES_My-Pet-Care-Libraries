@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanager.datacontainers.pet;
+package org.pesmypetcare.usermanagerlib.datacontainers;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,52 +8,52 @@ import java.util.Map;
 /**
  * @author Marc Simó
  */
-public class Meal {
+public class VetVisit {
     private String key;
-    private MealData body;
+    private VetVisitData body;
 
     /**
-     * Meal constructor.
+     * VetVisit constructor.
      */
-    public Meal() { }
+    public VetVisit() { }
 
     /**
-     * Meal constructor.
-     * @param key date value
-     * @param body meal data
+     * VetVisit constructor.
+     * @param key Vet visit date
+     * @param body Vet visit data
      */
-    public Meal(String key, MealData body) {
+    public VetVisit(String key, VetVisitData body) {
         PetData.checkDateFormat(key);
         this.key = key;
         this.body = body;
     }
 
     /**
-     * Meal constructor.
-     * @param date Key value
-     * @param mealName Body meal name
-     * @param kcal Body kcalories
+     * VetVisit constructor.
+     * @param date Vet visit date
+     * @param reason Vet visit reason
+     * @param address Vet visit address
      */
-    public Meal(String date, String mealName, double kcal) {
+    public VetVisit(String date, String reason, String address) {
         PetData.checkDateFormat(date);
         this.key = date;
-        this.body = new MealData(mealName, kcal);
+        this.body = new VetVisitData(reason, address);
     }
 
     public String getKey() {
         return key;
     }
 
-    public void setKey(String date) {
+    public void setKey(String key) {
         PetData.checkDateFormat(key);
-        this.key = date;
+        this.key = key;
     }
 
-    public MealData getBody() {
+    public VetVisitData getBody() {
         return body;
     }
 
-    public void setBody(MealData body) {
+    public void setBody(VetVisitData body) {
         this.body = body;
     }
 
@@ -76,9 +76,9 @@ public class Meal {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj instanceof Meal) {
-            return ((Meal) obj).getKey().equals(this.getKey())
-                && ((Meal) obj).getBody().equals(this.getBody());
+        if (obj instanceof VetVisit) {
+            return ((VetVisit) obj).getKey().equals(this.getKey())
+                && ((VetVisit) obj).getBody().equals(this.getBody());
         }
         return false;
     }

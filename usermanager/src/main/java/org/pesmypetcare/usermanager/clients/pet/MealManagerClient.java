@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+
 /**
  * @author Marc Simó
  */
@@ -49,7 +51,7 @@ public class MealManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getDate(),
+        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + meal.getKey(),
             accessToken).get();
         return Integer.parseInt(response.toString());
     }
@@ -68,7 +70,8 @@ public class MealManagerClient {
         InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/"
+                + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -101,7 +104,8 @@ public class MealManagerClient {
         ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date, accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + owner + "/" + petName + "/"
+                + convertLocaltoUTC(date), accessToken).get();
         return GSON.fromJson(json.toString(), MealData.class);
     }
 
@@ -144,7 +148,8 @@ public class MealManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response =
-            taskManager.execute(BASE_URL + owner + "/" + petName + "/between/" + initialDate + "/" + finalDate,
+            taskManager.execute(BASE_URL + owner + "/" + petName + "/between/"
+                            + convertLocaltoUTC(initialDate) + "/" + convertLocaltoUTC(finalDate),
                 accessToken).get();
         List<Meal> mealList = new ArrayList<>();
         if (response.length() > 2) {
@@ -179,8 +184,8 @@ public class MealManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/" + date + "/" + field,
-            accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName + "/"
+                        + convertLocaltoUTC(date) + "/" + field, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 

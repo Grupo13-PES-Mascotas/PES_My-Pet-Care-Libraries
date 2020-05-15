@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+
 public class WeekTrainingManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/weekTraining/";
     private static final String POST = "POST";
@@ -50,7 +52,7 @@ public class WeekTrainingManagerClient {
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -69,7 +71,7 @@ public class WeekTrainingManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
@@ -106,8 +108,8 @@ public class WeekTrainingManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH + date,
-                accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
+                        + convertLocaltoUTC(date), accessToken).get();
         return GSON.fromJson(json.toString(), WeekTrainingData.class);
     }
 
@@ -159,7 +161,8 @@ public class WeekTrainingManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName
-                + "/between/" + initialDate + SLASH + finalDate, accessToken).get();
+                + "/between/" + convertLocaltoUTC(initialDate) + SLASH
+                + convertLocaltoUTC(finalDate), accessToken).get();
         List<WeekTraining> weekTrainingList = new ArrayList<>();
         if (response.length() > 2) {
             String jsonArray = response.substring(1, response.length() - 1);
@@ -193,7 +196,7 @@ public class WeekTrainingManagerClient {
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
         StringBuilder response = taskManager.execute(BASE_URL + owner + SLASH + petName + SLASH
-                        + date, accessToken).get();
+                        + convertLocaltoUTC(date), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
