@@ -4,7 +4,7 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 
 import java.util.Objects;
 

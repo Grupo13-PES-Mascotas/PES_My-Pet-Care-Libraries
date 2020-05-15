@@ -7,8 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.usermanager.clients.TaskManager;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWash;
 import org.pesmypetcare.usermanager.datacontainers.pet.FreqWashData;
 

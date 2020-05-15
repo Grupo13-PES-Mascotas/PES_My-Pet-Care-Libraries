@@ -2,7 +2,8 @@ package org.pesmypetcare.communitymanager.datacontainers;
 
 import androidx.annotation.NonNull;
 
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +47,7 @@ public class Message {
     Message(@NonNull MessageReceiveData messageReceiveData) {
         this.creator = messageReceiveData.getCreator();
         this.text = messageReceiveData.getText();
-        this.publicationDate = messageReceiveData.getPublicationDate();
+        this.publicationDate = DateTime.convertUTCtoLocalString(messageReceiveData.getPublicationDate());
         this.banned = messageReceiveData.isBanned();
         this.likedBy = messageReceiveData.getLikedBy();
     }

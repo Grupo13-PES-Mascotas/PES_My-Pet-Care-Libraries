@@ -1,4 +1,4 @@
-package org.pesmypetcare.usermanager.exceptions;
+package org.pesmypetcare.httptools.exceptions;
 
 /**
  * @author Marc Simó

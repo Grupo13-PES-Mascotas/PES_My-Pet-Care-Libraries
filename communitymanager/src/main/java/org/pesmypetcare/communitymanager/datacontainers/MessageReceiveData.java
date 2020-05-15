@@ -5,11 +5,9 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.Blob;
 
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class MessageReceiveData extends Message {

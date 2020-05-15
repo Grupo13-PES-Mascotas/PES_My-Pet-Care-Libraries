@@ -1,15 +1,14 @@
-package org.pesmypetcare.usermanager.datacontainers;
+package org.pesmypetcare.httptools.utilities;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.pesmypetcare.usermanager.exceptions.DifferentDatesException;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
-import org.pesmypetcare.usermanager.exceptions.PreviousEndDateException;
+import org.pesmypetcare.httptools.exceptions.DifferentDatesException;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.exceptions.PreviousEndDateException;
 
 import java.util.TimeZone;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Marc Simó
@@ -126,50 +125,43 @@ public class DateTimeTest {
 
     @Test
     public void shouldTransformToString() {
-        assertEquals("Should transform to string", "2020-10-23T15:02:11",
-            dateTime.toString());
+        assertEquals("Should transform to string", "2020-10-23T15:02:11", dateTime.toString());
     }
 
     @Test
     public void shouldTransformFullStringWithTwoDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildFullString("2020-10-23T15:02:11");
-        assertEquals("Should transform two digit full string to dateTime", 0,
-            dateTime.compareTo(newDateTime));
+        assertEquals("Should transform two digit full string to dateTime", 0, dateTime.compareTo(newDateTime));
     }
 
     @Test
     public void shouldTransformFullStringWithOneDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildFullString("2020-10-5T15:02:11");
-        assertEquals("Should transform one digit full string to dateTime", 0,
-            dateTime4.compareTo(newDateTime));
+        assertEquals("Should transform one digit full string to dateTime", 0, dateTime4.compareTo(newDateTime));
     }
 
     @Test
     public void shouldTransformDateStringWithTwoDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildDateString("2020-10-23");
-        assertEquals("Should transform two digit date string to dateTime", 0,
-            dateTime5.compareTo(newDateTime));
+        assertEquals("Should transform two digit date string to dateTime", 0, dateTime5.compareTo(newDateTime));
     }
 
     @Test
     public void shouldTransformDateStringWithOneDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildDateString("2020-10-5");
-        assertEquals("Should transform one digit date string to dateTime", 0,
-            dateTime6.compareTo(newDateTime));
+        assertEquals("Should transform one digit date string to dateTime", 0, dateTime6.compareTo(newDateTime));
     }
 
     @Test
     public void shouldTransformDateTimeStringWithTwoDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildDateTimeString("2020-10-23", "15:02:11");
-        assertEquals("Should transform two digit date time string to dateTime", 0,
-            dateTime.compareTo(newDateTime));
+        assertEquals("Should transform two digit date time string to dateTime", 0, dateTime.compareTo(newDateTime));
     }
 
     @Test
     public void shouldTransformDateTimeStringWithOneDigitDayToDateTime() {
         DateTime newDateTime = DateTime.Builder.buildDateTimeString("2020-10-5", "15:02:11");
-        assertEquals("Should transform one digit date time string to dateTime", 0,
-            dateTime4.compareTo(newDateTime));
+        assertEquals("Should transform one digit date time string to dateTime", 0, dateTime4.compareTo(newDateTime));
     }
 
     @Test
@@ -281,22 +273,22 @@ public class DateTimeTest {
         DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
 
         TimeZone tz = TimeZone.getDefault();
-        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
 
         dateTime2 = DateTime.convertUTCtoLocal(dateTime2);
         hourDatetime1 = dateTime1.getHour();
         hourDatetime2 = dateTime2.getHour();
         actualOffsetHours = 0;
 
-        for (i = hourDatetime1; i < hourDatetime2; i++){
-            if (i == 24){
+        for (i = hourDatetime1; i < hourDatetime2; i++) {
+            if (i == 24) {
                 i = 0;
             }
             actualOffsetHours = actualOffsetHours + 1;
         }
         actualOffsetHours = hourDatetime2 - hourDatetime1;
 
-        if (actualOffsetHours > 12){
+        if (actualOffsetHours > 12) {
             actualOffsetHours = actualOffsetHours - 24;
         }
         assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
@@ -309,25 +301,24 @@ public class DateTimeTest {
         DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
 
         TimeZone tz = TimeZone.getDefault();
-        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings())/1000)/3600;
+        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
 
         dateTime2 = DateTime.convertLocaltoUTC(dateTime2);
         hourDatetime1 = dateTime1.getHour();
         hourDatetime2 = dateTime2.getHour();
         actualOffsetHours = 0;
 
-        for (i = hourDatetime1; i < hourDatetime2; i++){
-            if (i == 24){
+        for (i = hourDatetime1; i < hourDatetime2; i++) {
+            if (i == 24) {
                 i = 0;
             }
             actualOffsetHours = actualOffsetHours + 1;
         }
         actualOffsetHours = hourDatetime1 - hourDatetime2;
 
-        if (actualOffsetHours > 12){
+        if (actualOffsetHours > 12) {
             actualOffsetHours = actualOffsetHours - 24;
         }
         assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
     }
-
 }

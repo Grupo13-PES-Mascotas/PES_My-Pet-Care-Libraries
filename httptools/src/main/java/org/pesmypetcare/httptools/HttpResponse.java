@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

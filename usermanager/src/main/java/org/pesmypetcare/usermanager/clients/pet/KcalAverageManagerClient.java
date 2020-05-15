@@ -3,8 +3,8 @@ package org.pesmypetcare.usermanager.clients.pet;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.usermanager.clients.TaskManager;
-import org.pesmypetcare.usermanager.datacontainers.DateTime;
 import org.pesmypetcare.usermanager.datacontainers.pet.KcalAverage;
 import org.pesmypetcare.usermanager.datacontainers.pet.KcalAverageData;
 
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
+import static org.pesmypetcare.httptools.utilities.DateTime.convertLocaltoUTC;
 
 public class KcalAverageManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/kcalAverage/";

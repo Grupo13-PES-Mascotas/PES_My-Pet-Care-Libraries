@@ -1,10 +1,10 @@
-package org.pesmypetcare.usermanager.datacontainers;
+package org.pesmypetcare.httptools.utilities;
 
 import androidx.annotation.NonNull;
 
-import org.pesmypetcare.usermanagerlib.exceptions.DifferentDatesException;
-import org.pesmypetcare.usermanager.exceptions.InvalidFormatException;
-import org.pesmypetcare.usermanagerlib.exceptions.PreviousEndDateException;
+import org.pesmypetcare.httptools.exceptions.DifferentDatesException;
+import org.pesmypetcare.httptools.exceptions.InvalidFormatException;
+import org.pesmypetcare.httptools.exceptions.PreviousEndDateException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

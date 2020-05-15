@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;

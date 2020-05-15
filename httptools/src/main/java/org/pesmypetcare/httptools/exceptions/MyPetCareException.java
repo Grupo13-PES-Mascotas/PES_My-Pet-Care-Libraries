@@ -1,4 +1,6 @@
-package org.pesmypetcare.httptools;
+package org.pesmypetcare.httptools.exceptions;
+
+import org.pesmypetcare.httptools.HttpResponse;
 
 /**
  * @author Santiago Del Rey

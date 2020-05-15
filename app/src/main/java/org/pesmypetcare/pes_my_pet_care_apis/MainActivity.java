@@ -5,13 +5,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.datacontainers.GroupData;
-import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
-import org.pesmypetcare.httptools.MyPetCareException;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Santiago Del Rey
