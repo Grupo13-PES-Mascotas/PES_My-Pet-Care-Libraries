@@ -43,7 +43,7 @@ public class MessageReceiveData extends Message {
      * @throws IOException When the reconstruction of the image fails.
      */
     @Nullable
-    private byte[] buildImage() throws IOException {
+    byte[] buildImage() throws IOException {
         if (image != null) {
             return image.toBytes();
         }
