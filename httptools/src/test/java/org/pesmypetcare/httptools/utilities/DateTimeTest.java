@@ -268,7 +268,11 @@ public class DateTimeTest {
 
     @Test
     public void shouldconvertCorrectlyfromUTCtoLocal() throws InvalidFormatException {
-        int hourDatetime1, hourDatetime2, expectedOffsetHours, actualOffsetHours, i;
+        int hourDatetime1;
+        int hourDatetime2;
+        int expectedOffsetHours;
+        int actualOffsetHours;
+        int i;
         DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
         DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
 

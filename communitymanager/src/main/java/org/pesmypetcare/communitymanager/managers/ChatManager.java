@@ -116,7 +116,6 @@ public class ChatManager {
             if (e != null) {
                 exception = new ChatException("Error creating the listener", e);
             } else if (queryDocumentSnapshots != null) {
-                int i = 0;
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     if (documentSnapshot.exists()) {
                         MessageReceiveData messageReceiveData = documentSnapshot.toObject(MessageReceiveData.class);

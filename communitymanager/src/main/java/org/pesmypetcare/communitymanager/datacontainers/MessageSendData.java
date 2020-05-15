@@ -19,35 +19,40 @@ public class MessageSendData extends Message {
 
     /**
      * Creates a message with a creator and text. If the text is empty the creation will fail.
+     *
      * @param creator The creator's username
      * @param text The text
      * @throws MyPetCareException When the text is empty
      */
-    public MessageSendData(@NonNull String creator,@NonNull String text) throws MyPetCareException {
+    public MessageSendData(@NonNull String creator, @NonNull String text) throws MyPetCareException {
         super(creator, text);
     }
 
     /**
      * Creates a message with a creator and an image.
+     *
      * @param creator The creator's username
      * @param image The text
      */
-    public MessageSendData(@NonNull String creator,@NonNull byte[] image) {
+    public MessageSendData(@NonNull String creator, @NonNull byte[] image) {
         super(creator);
         encodedImage = Base64.encodeToString(image, Base64.NO_WRAP);
     }
 
     /**
      * Creates a message with a creator and text. If the text is empty the creation will fail.
+     *
      * @param creator The creator's username
      * @param text The text
      * @param image The image
      * @throws MyPetCareException When the text is empty
      */
-    public MessageSendData(@NonNull String creator, @NonNull String text, @NonNull byte[] image) throws MyPetCareException {
+    public MessageSendData(@NonNull String creator, @NonNull String text, @NonNull byte[] image)
+            throws MyPetCareException {
         super(creator, text);
         encodedImage = Base64.encodeToString(image, Base64.NO_WRAP);
     }
+
     public void setCreator(@NonNull String creator) {
         super.setCreator(creator);
     }

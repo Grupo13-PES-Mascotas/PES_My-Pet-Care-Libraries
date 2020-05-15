@@ -25,6 +25,7 @@ import java.util.Map;
 public class GroupManagerClient {
     private static final String IMAGE_STORAGE_BASE_URL = "https://image-branch-testing.herokuapp.com/storage/image/";
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community";
+    private static final String GROUP_KEY = "group";
     private final Gson gson;
 
     public GroupManagerClient() {
@@ -49,7 +50,7 @@ public class GroupManagerClient {
      */
     public void deleteGroup(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         new HttpClient().request(RequestMethod.DELETE, COMMUNITY_BASE_URL, params, null, null);
     }
 
@@ -62,7 +63,7 @@ public class GroupManagerClient {
      */
     public GroupData getGroup(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         HttpResponse response = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL, params, null, null);
         return gson.fromJson(response.asString(), GroupData.class);
     }
@@ -93,7 +94,7 @@ public class GroupManagerClient {
 
     public void updateField(String groupName, String field, String newValue) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         params[1] = new HttpParameter("field", field);
         Map<String, String> map = new HashMap<>();
         map.put("value", newValue);
@@ -103,7 +104,7 @@ public class GroupManagerClient {
     public void updateGroupTags(String groupName, List<String> deletedTags, List<String> newTags)
             throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
@@ -112,7 +113,7 @@ public class GroupManagerClient {
 
     public void subscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         params[1] = new HttpParameter("username", username);
         Map<String, String> headers = new HashMap<>();
         headers.put("token", token);
@@ -121,7 +122,7 @@ public class GroupManagerClient {
 
     public void unsubscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("group", groupName);
+        params[0] = new HttpParameter(GROUP_KEY, groupName);
         params[1] = new HttpParameter("username", username);
         Map<String, String> headers = new HashMap<>();
         headers.put("token", token);

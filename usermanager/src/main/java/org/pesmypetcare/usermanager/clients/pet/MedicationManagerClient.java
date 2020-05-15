@@ -1,6 +1,5 @@
 package org.pesmypetcare.usermanager.clients.pet;
 
-
 import com.google.gson.Gson;
 
 import org.json.JSONObject;

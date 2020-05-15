@@ -20,7 +20,7 @@ public class ImageData {
      */
     public ImageData(@NonNull String uid, byte[] img) {
         this.uid = uid;
-        this.img = img;
+        this.img = Arrays.copyOf(img, img.length);
     }
 
     public String getUid() {
@@ -40,11 +40,11 @@ public class ImageData {
     }
 
     public byte[] getImg() {
-        return img;
+        return Arrays.copyOf(img, img.length);
     }
 
     public void setImg(byte[] img) {
-        this.img = img;
+        this.img = Arrays.copyOf(img, img.length);
     }
 
     @Override
