@@ -155,7 +155,7 @@ public class EventData {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         sdf.setLenient(false);
         try {
-            Date javaDate = sdf.parse(date);
+            sdf.parse(date);
         } catch (ParseException e) {
             throw new IllegalArgumentException("Google Calendar Event Date must follow"
                 + " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");

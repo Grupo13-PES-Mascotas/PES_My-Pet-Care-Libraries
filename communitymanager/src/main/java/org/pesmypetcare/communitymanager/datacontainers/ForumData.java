@@ -16,6 +16,22 @@ public class ForumData {
     private String creationDate;
     private List<String> tags;
 
+    /**
+     * Creates a forum data with a name and a creator.
+     * @param name The forum name
+     * @param creator The creator's name
+     */
+    public ForumData(@NonNull String name, @NonNull String creator) {
+        this.name = name;
+        this.creator = creator;
+    }
+
+    /**
+     * Creates a forum data with a name, a creator and a list of tags.
+     * @param name The forum name
+     * @param creator The creator's name
+     * @param tags The list of tags
+     */
     public ForumData(@NonNull String name, @NonNull String creator, List<String> tags) {
         this.name = name;
         this.creator = creator;
@@ -42,10 +58,6 @@ public class ForumData {
 
     public String getCreationDate() {
         return creationDate;
-    }
-
-    private void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
     }
 
     public List<String> getTags() {

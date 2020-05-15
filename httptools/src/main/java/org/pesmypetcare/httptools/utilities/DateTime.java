@@ -44,7 +44,6 @@ public class DateTime implements Comparable<DateTime> {
     private static final String TIME_SEPARATOR = ":";
     private static final char DATE_SEPARATOR_CHAR = '-';
     private static final char ZERO_DIGIT_CHAR = '0';
-    private static final char DATE_TIME_SEPARATOR_CHAR = 'T';
     private static final char TIME_SEPARATOR_CHAR = ':';
 
     private int year;
@@ -524,7 +523,11 @@ public class DateTime implements Comparable<DateTime> {
      * @return dateIn with the offset applied
      */
     private static DateTime applyOffset(DateTime dateIn, int offsetSeconds){
-        int seconds, minutes, hours,offsetMinutes, offsetHours;
+        int seconds;
+        int minutes;
+        int hours;
+        int offsetMinutes;
+        int offsetHours;
         seconds = offsetSeconds%60;
         offsetMinutes = offsetSeconds/60;
         minutes = offsetMinutes%60;
@@ -536,7 +539,7 @@ public class DateTime implements Comparable<DateTime> {
         }
         else if (dateIn.getHour() + hours < 0){
             dateIn.decreaseDay();
-            dateIn.setHour(((hours + dateIn.getHour()) + 24));
+            dateIn.setHour((hours + dateIn.getHour()) + 24);
         }
         else {
             dateIn.setHour(dateIn.getHour() + hours);

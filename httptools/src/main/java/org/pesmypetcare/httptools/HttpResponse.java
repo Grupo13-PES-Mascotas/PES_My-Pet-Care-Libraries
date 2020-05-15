@@ -69,7 +69,7 @@ public class HttpResponse {
                 StringBuilder buf = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
-                    buf.append(line).append("\n");
+                    buf.append(line).append('\n');
                 }
                 this.responseAsString = buf.toString();
                 stream.close();

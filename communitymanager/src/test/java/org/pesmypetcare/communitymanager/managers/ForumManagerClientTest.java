@@ -56,7 +56,7 @@ public class ForumManagerClientTest {
     private ForumManagerClient client = new ForumManagerClient();
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUpClass() {
         gson = new Gson();
         parentGroup = "Dogs";
         forumName = "Huskies";

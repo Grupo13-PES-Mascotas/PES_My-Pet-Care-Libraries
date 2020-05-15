@@ -157,8 +157,8 @@ public class PetData {
      * @param newValue Value of the attribute.
      */
     public static void checkSimpleFieldAndValues(String field, Object newValue) {
-        if ((field.equals(BIRTH) || field.equals(BREED) || (field.equals(PATHOLOGIES)
-            || field.equals(NEEDS))) && !(newValue instanceof String)) {
+        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES)
+            || field.equals(NEEDS)) && !(newValue instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
         } else if (field.equals(RECOMMENDED_KCAL) && !(newValue instanceof Double)) {
             throw new IllegalArgumentException("New value must be a Double");
@@ -260,7 +260,7 @@ public class PetData {
             || !body.containsKey("endDateTime") || !body.containsKey("coordinates")) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if ((!(body.get("name") instanceof String) && !(body.get("description") instanceof String))
+        if (!(body.get("name") instanceof String) && !(body.get("description") instanceof String)
             || !(body.get("coordinates") instanceof List) || !(body.get("endDateTime") instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }

@@ -17,8 +17,6 @@ public class ChatModel extends ViewModel {
         return messageMutableLiveData;
     }
 
-    public ChatModel() { }
-
     public void doAction(String group, String forum) throws ChatException {
         ChatManager manager = new ChatManager();
         manager.createMessageListener(group, forum, messageMutableLiveData);

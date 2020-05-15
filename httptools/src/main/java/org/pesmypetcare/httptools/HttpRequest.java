@@ -35,7 +35,7 @@ public class HttpRequest {
     }
 
     public HttpParameter[] getParameters() {
-        return parameters;
+        return Arrays.copyOf(parameters, parameters.length);
     }
 
     public Map<String, String> getRequestHeaders() {

@@ -46,7 +46,7 @@ public class MessageDisplay extends Message {
 
     @Nullable
     public byte[] getImage() {
-        return image;
+        return Arrays.copyOf(image, image.length);
     }
 
     @Override
