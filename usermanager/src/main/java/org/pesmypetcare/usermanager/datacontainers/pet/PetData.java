@@ -227,8 +227,8 @@ public class PetData {
      */
     public static void checkMeals(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        String kcalKey = "kcalKey";
-        String mealNameKey = "mealNameKey";
+        String kcalKey = "kcal";
+        String mealNameKey = "mealName";
         if (body.size() != 2 || !body.containsKey(kcalKey) || !body.containsKey(mealNameKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
