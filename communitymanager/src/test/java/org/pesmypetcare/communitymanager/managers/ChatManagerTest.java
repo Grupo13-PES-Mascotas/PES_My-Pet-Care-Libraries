@@ -1,5 +1,6 @@
-/*
 package org.pesmypetcare.communitymanager.managers;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -10,33 +11,33 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.pesmypetcare.communitymanager.ChatException;
+import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
 
-*/
 /**
  * @author Santiago Del Rey
- *//*
-
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class ChatManagerTest {
     private List<DocumentSnapshot> documents;
     private MessageReceiveData messageReceiveData;
+    private MutableLiveData<MessageDisplay> messageMutableLiveData = new MutableLiveData<>();
 
     @Mock
     private FirebaseFirestore db;
@@ -56,10 +57,24 @@ public class ChatManagerTest {
     private QuerySnapshot querySnapshot;
 
     @InjectMocks
-    private ChatManager chatManager = new ChatManager();
+    private ChatManager chatManager = new ChatManager(db);
 
-    @Before
-    public void setUp() {
+    @Test
+    public void createMessageListener() throws ChatException {
+        initializeMocks();
+        given(task.isSuccessful()).willReturn(true);
+        given(documentSnapshot.exists()).willReturn(true);
+
+        chatManager.createMessageListener("Dogs", "Walks", messageMutableLiveData);
+    }
+
+    @Test
+    public void removeListener() {
+        chatManager.removeListener();
+        verify(listenerRegistration).remove();
+    }
+
+    private void initializeMocks() {
         lenient().when(db.document(anyString())).thenReturn(documentReference);
         given(documentReference.get()).willReturn(task);
         given(task.addOnCompleteListener(any())).willReturn(task);
@@ -75,15 +90,4 @@ public class ChatManagerTest {
         given(querySnapshot.getDocuments()).willReturn(documents);
         given(documentSnapshot.toObject(any())).willReturn(messageReceiveData);
     }
-
-    @Test
-    public void createMessageListener() {
-        given(task.isSuccessful()).willReturn(true);
-        given(documentSnapshot.exists()).willReturn(true);
-    }
-
-    @Test
-    public void removeListener() {
-    }
 }
-*/

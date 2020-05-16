@@ -29,8 +29,13 @@ public class ChatManager {
     private ChatException exception;
 
     public ChatManager() {
-        System.out.println("HERE");
         db = FirebaseFirestore.getInstance();
+        exception = null;
+        listener = null;
+    }
+
+    public ChatManager(FirebaseFirestore firestore) {
+        db = firestore;
         exception = null;
         listener = null;
     }
