@@ -119,9 +119,9 @@ public class MedicationManagerClient {
      * @param accessToken The personal access token for the account.
      * @param owner Username of the owner of the pets.
      * @param petName Name of the pet.
+     * @return The List containing all the Medications from the pet
      * @throws ExecutionException When the retrieval fails.
      * @throws InterruptedException When the retrieval is interrupted.
-     * @return The List containing all the Medications from the pet
      */
     public List<Medication> getAllMedicationData(String accessToken, String owner, String petName)
             throws ExecutionException,

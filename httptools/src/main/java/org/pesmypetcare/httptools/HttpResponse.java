@@ -87,6 +87,7 @@ public class HttpResponse {
                             Log.i(TAG, "InputStream closed");
                         }
                     } catch (IOException ignore) {
+                        //Ignore exception when closing the input buffer
                     }
                 }
                 if (br != null) {

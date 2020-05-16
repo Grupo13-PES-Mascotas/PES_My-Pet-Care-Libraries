@@ -39,6 +39,7 @@ public class UserManagerClient {
     private static final String DELETE = "DELETE";
     private static final String UID_FIELD = "uid";
     private static final String TOKEN_HEADER = "token";
+    private static final String USER_PROFILE_IMAGE_NAME = "profile-image";
     private TaskManager taskManager;
     private HttpClient httpClient;
     private Gson gson;
@@ -206,7 +207,7 @@ public class UserManagerClient {
     public void saveProfileImage(String accessToken, String username, byte[] image) throws MyPetCareException {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(UID_FIELD, username);
-        reqData.put("imgName", "profile-image");
+        reqData.put("imgName", USER_PROFILE_IMAGE_NAME);
         reqData.put("img", image);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, accessToken);
@@ -223,7 +224,7 @@ public class UserManagerClient {
      */
     public byte[] downloadProfileImage(String accessToken, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("name", "profile-image");
+        params[0] = new HttpParameter("name", USER_PROFILE_IMAGE_NAME);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, accessToken);
         HttpResponse resp = httpClient.request(RequestMethod.GET,

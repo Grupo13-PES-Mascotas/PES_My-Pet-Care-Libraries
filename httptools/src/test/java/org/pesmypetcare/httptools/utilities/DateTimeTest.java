@@ -187,10 +187,10 @@ public class DateTimeTest {
 
     @Test
     public void shouldIncreaseDayYearChange() throws InvalidFormatException {
-        DateTime expectedDate = DateTime.Builder.build(2021, 1, 1, 15, 2, 11);
         dateTime.setMonth(12);
         dateTime.setDay(31);
         dateTime.increaseDay();
+        DateTime expectedDate = DateTime.Builder.build(2021, 1, 1, 15, 2, 11);
         assertEquals("Should increase day", expectedDate.toString(), dateTime.toString());
     }
 

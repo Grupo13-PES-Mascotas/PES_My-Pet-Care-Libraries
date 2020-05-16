@@ -34,10 +34,11 @@ public class PetData {
     private String needs;
     private Double recommendedKcal;
 
-    public PetData() { }
+    public PetData() {
+    }
 
     public PetData(GenderType gender, String breed, String birth, String pathologies, String needs,
-                   Double recommendedKcal) {
+            Double recommendedKcal) {
         this.gender = gender;
         this.breed = breed;
         this.birth = birth;
@@ -48,6 +49,7 @@ public class PetData {
 
     /**
      * The method that returns the pet gender.
+     *
      * @return The pet's gender
      */
     public GenderType getGender() {
@@ -56,6 +58,7 @@ public class PetData {
 
     /**
      * The method that set the pet gender.
+     *
      * @param gender The pet's gender
      */
     public void setGender(GenderType gender) {
@@ -64,6 +67,7 @@ public class PetData {
 
     /**
      * The method that returns the pet breed.
+     *
      * @return The pet's breed
      */
     public String getBreed() {
@@ -72,6 +76,7 @@ public class PetData {
 
     /**
      * The method that set the pet breed.
+     *
      * @param breed The pet's breed
      */
     public void setBreed(String breed) {
@@ -80,6 +85,7 @@ public class PetData {
 
     /**
      * The method that returns the pet birth.
+     *
      * @return The pet's birth
      */
     public String getBirth() {
@@ -88,6 +94,7 @@ public class PetData {
 
     /**
      * The method that set the pet birth.
+     *
      * @param birth The pet's birth
      */
     public void setBirth(String birth) {
@@ -97,6 +104,7 @@ public class PetData {
 
     /**
      * The method that returns the pet needs.
+     *
      * @return The pet's needs
      */
     public String getNeeds() {
@@ -105,6 +113,7 @@ public class PetData {
 
     /**
      * The method that set the pet needs.
+     *
      * @param needs The pet's needs
      */
     public void setNeeds(String needs) {
@@ -113,6 +122,7 @@ public class PetData {
 
     /**
      * The method that returns the pet pathologies.
+     *
      * @return The pet's pathologies
      */
     public String getPathologies() {
@@ -121,6 +131,7 @@ public class PetData {
 
     /**
      * The method that set the pet pathologies.
+     *
      * @param pathologies The pet's pathologies
      */
     public void setPathologies(String pathologies) {
@@ -129,6 +140,7 @@ public class PetData {
 
     /**
      * The method that returns the pet recommended kcal.
+     *
      * @return The pet's recommended kcal
      */
     public Double getRecommendedKcal() {
@@ -137,6 +149,7 @@ public class PetData {
 
     /**
      * The method that set the pet recommended kcal.
+     *
      * @param recommendedKcal The pet's recommended kcal
      */
     public void setRecommendedKcal(Double recommendedKcal) {
@@ -145,46 +158,50 @@ public class PetData {
 
     /**
      * Checks that field has the correct format for a Pet simple attribute.
+     *
      * @param field Name of the attribute.
      */
     public static void checkSimpleField(String field) {
-        if (!GENDER.equals(field) && !BREED.equals(field) && !BIRTH.equals(field)
-            && !PATHOLOGIES.equals(field) && !NEEDS.equals(field) && !RECOMMENDED_KCAL.equals(field)) {
+        if (!GENDER.equals(field) && !BREED.equals(field) && !BIRTH.equals(field) && !PATHOLOGIES.equals(field)
+                && !NEEDS.equals(field) && !RECOMMENDED_KCAL.equals(field)) {
             throw new IllegalArgumentException("Field does not exists");
         }
     }
 
     /**
      * Checks that the field and the new value for this field have the correct format for a Pet simple attribute.
+     *
      * @param field Name of the attribute.
      * @param newValue Value of the attribute.
      */
     public static void checkSimpleFieldAndValues(String field, Object newValue) {
-        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES)
-            || field.equals(NEEDS)) && !(newValue instanceof String)) {
+        if ((field.equals(BIRTH) || field.equals(BREED) || field.equals(PATHOLOGIES) || field.equals(NEEDS))
+                && !(newValue instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
         } else if (field.equals(RECOMMENDED_KCAL) && !(newValue instanceof Double)) {
             throw new IllegalArgumentException("New value must be a Double");
-        } else if (field.equals(GENDER) && !"Male".equals(newValue) && !"Female".equals(newValue)
-            && !"Other".equals(newValue)) {
+        } else if (field.equals(GENDER) && !"Male".equals(newValue) && !"Female".equals(newValue) && !"Other"
+                .equals(newValue)) {
             throw new IllegalArgumentException("New value must be a GenderType");
         }
     }
 
     /**
      * Checks that field has the correct format for a Pet collection attribute.
+     *
      * @param field Name of the attribute collection. Possible fields: meals, trainings, washes, weights
      */
     public static void checkCollectionField(String field) {
         if (!MEALS.equals(field) && !WEIGHTS.equals(field) && !EXERCISES.equals(field) && !WASHES.equals(field)
-            && !VACCINATIONS.equals(field) && !ILLNESSES.equals(field) && !MEDICATIONS.equals(field)
-            && !VET_VISITS.equals(field)) {
+                && !VACCINATIONS.equals(field) && !ILLNESSES.equals(field) && !MEDICATIONS.equals(field) && !VET_VISITS
+                .equals(field)) {
             throw new IllegalArgumentException("Field does not exists");
         }
     }
 
     /**
      * Checks that field, key and body have the correct format of a Pet attribute.
+     *
      * @param field Name of the attribute collection. Possible fields: meals, trainings, washes, weights
      * @param key Key of the attribute
      * @param body Body of the attribute
@@ -222,6 +239,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for a meal.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -232,8 +250,8 @@ public class PetData {
         if (body.size() != 2 || !body.containsKey(kcalKey) || !body.containsKey(mealNameKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if ((!(body.get(kcalKey) instanceof Double) && !(body.get(kcalKey) instanceof Integer))
-            || !(body.get(mealNameKey) instanceof String)) {
+        if (!(body.get(kcalKey) instanceof Double) && !(body.get(kcalKey) instanceof Integer) || !(body
+                .get(mealNameKey) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -241,6 +259,7 @@ public class PetData {
     /**
      * Checks that key and body have the correct format for a date key and body with one element whose key is 'value'
      * and has an Object of type Integer.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -257,6 +276,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for an exercise.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -264,12 +284,12 @@ public class PetData {
         checkDateFormat(key);
         String nameKey = "name";
         String coordinatesKey = "coordinates";
-        if (body.size() != 4 || !body.containsKey(nameKey) || !body.containsKey(DESCRIPTION_KEY)
-            || !body.containsKey(END_DATE_TIME_KEY) || !body.containsKey(coordinatesKey)) {
+        if (body.size() != 4 || !body.containsKey(nameKey) || !body.containsKey(DESCRIPTION_KEY) || !body
+                .containsKey(END_DATE_TIME_KEY) || !body.containsKey(coordinatesKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get(nameKey) instanceof String) && !(body.get(DESCRIPTION_KEY) instanceof String)
-            || !(body.get(coordinatesKey) instanceof List) || !(body.get(END_DATE_TIME_KEY) instanceof String)) {
+        if (!(body.get(nameKey) instanceof String) && !(body.get(DESCRIPTION_KEY) instanceof String) || !(body
+                .get(coordinatesKey) instanceof List) || !(body.get(END_DATE_TIME_KEY) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
 
@@ -278,6 +298,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for a wash.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -293,6 +314,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for a vaccination.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -308,6 +330,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for an illness.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -315,12 +338,12 @@ public class PetData {
         checkDateFormat(key);
         String typeKey = "type";
         String severityKey = "severity";
-        if (body.size() != 4 || !body.containsKey(END_DATE_TIME_KEY) || !body.containsKey(typeKey)
-            || !body.containsKey(DESCRIPTION_KEY) || !body.containsKey(severityKey)) {
+        if (body.size() != 4 || !body.containsKey(END_DATE_TIME_KEY) || !body.containsKey(typeKey) || !body
+                .containsKey(DESCRIPTION_KEY) || !body.containsKey(severityKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get(END_DATE_TIME_KEY) instanceof String) || !(body.get(typeKey) instanceof String)
-            || !(body.get(DESCRIPTION_KEY) instanceof String) || !(body.get(severityKey) instanceof String)) {
+        if (!(body.get(END_DATE_TIME_KEY) instanceof String) || !(body.get(typeKey) instanceof String) || !(body
+                .get(DESCRIPTION_KEY) instanceof String) || !(body.get(severityKey) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
         checkDateFormat((String) body.get(END_DATE_TIME_KEY));
@@ -330,6 +353,7 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for a medication.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -337,18 +361,19 @@ public class PetData {
         checkDatePlusNameFormat(key);
         String quantityKey = "quantity";
         String periodicityKey = "periodicity";
-        if (body.size() != 3 || !body.containsKey(quantityKey) || !body.containsKey(DURATION_KEY)
-            || !body.containsKey(periodicityKey)) {
+        if (body.size() != 3 || !body.containsKey(quantityKey) || !body.containsKey(DURATION_KEY) || !body
+                .containsKey(periodicityKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if ((!(body.get(quantityKey) instanceof Double) && !(body.get(quantityKey) instanceof Integer))
-            || !(body.get(DURATION_KEY) instanceof Integer) || !(body.get(periodicityKey) instanceof Integer)) {
+        if (!(body.get(quantityKey) instanceof Double) && !(body.get(quantityKey) instanceof Integer) || !(body
+                .get(DURATION_KEY) instanceof Integer) || !(body.get(periodicityKey) instanceof Integer)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
 
     /**
      * Checks that key and body have the correct format for a vet visit.
+     *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
@@ -366,6 +391,7 @@ public class PetData {
 
     /**
      * Checks wether the severity value is valid or not.
+     *
      * @param severity Severity value
      */
     private static void checkSeverityValue(String severity) {
@@ -376,6 +402,7 @@ public class PetData {
 
     /**
      * Checks wether type value is valid or not.
+     *
      * @param type Type value
      */
     private static void checkTypeValue(String type) {
@@ -386,6 +413,7 @@ public class PetData {
 
     /**
      * Checks that the string date follows the specified format.
+     *
      * @param date String that contains a date
      */
     public static void checkDateFormat(String date) {
@@ -396,6 +424,7 @@ public class PetData {
 
     /**
      * Checks that the string key follows the specified format.
+     *
      * @param key String to checked
      */
     public static void checkDatePlusNameFormat(String key) {
@@ -407,25 +436,17 @@ public class PetData {
     @NonNull
     @Override
     public String toString() {
-        return "{"
-            + "gender=" + gender
-            + ", breed='" + breed + '\''
-            + ", birth=" + birth
-            + ", pathologies='" + pathologies + '\''
-            + ", needs='" + needs + '\''
-            + ", recommendedKcal=" + recommendedKcal
-            + '}';
+        return "{" + "gender=" + gender + ", breed='" + breed + '\'' + ", birth=" + birth + ", pathologies='"
+                + pathologies + '\'' + ", needs='" + needs + '\'' + ", recommendedKcal=" + recommendedKcal + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof PetData) {
-            return ((PetData) obj).getBirth().equals(this.getBirth())
-                && ((PetData) obj).getBreed().equals(this.getBreed())
-                && ((PetData) obj).getGender() == this.getGender()
-                && ((PetData) obj).getPathologies().equals(this.getPathologies())
-                && ((PetData) obj).getRecommendedKcal().equals(this.getRecommendedKcal())
-                && ((PetData) obj).getNeeds().equals(this.getNeeds());
+            return ((PetData) obj).getBirth().equals(this.getBirth()) && ((PetData) obj).getBreed()
+                    .equals(this.getBreed()) && ((PetData) obj).getGender() == this.getGender() && ((PetData) obj)
+                    .getPathologies().equals(this.getPathologies()) && ((PetData) obj).getRecommendedKcal()
+                    .equals(this.getRecommendedKcal()) && ((PetData) obj).getNeeds().equals(this.getNeeds());
         }
         return false;
     }

@@ -24,10 +24,12 @@ public class ExerciseData {
     /**
      * ExerciseData constructor.
      */
-    public ExerciseData() { }
+    public ExerciseData() {
+    }
 
     /**
      * ExerciseData constructor.
+     *
      * @param name name
      * @param description description
      * @param endDateTime endDateTime
@@ -42,6 +44,7 @@ public class ExerciseData {
 
     /**
      * ExerciseData constructor.
+     *
      * @param name name
      * @param description description
      * @param endDateTime endDateTime
@@ -53,7 +56,7 @@ public class ExerciseData {
         this.description = description;
         this.endDateTime = endDateTime;
         this.coordinates = new ArrayList<>();
-        for (LatLng lat: coordinates) {
+        for (LatLng lat : coordinates) {
             if (lat != null) {
                 Map<String, Double> point = new HashMap<>();
                 point.put(LATITUDE, lat.latitude);
@@ -89,13 +92,14 @@ public class ExerciseData {
 
     /**
      * Gets the exercise coordinates as a LatLng list.
+     *
      * @return List containing the coordinates
      */
     public List<LatLng> getCoordinates() {
         Double latitude;
         Double longitude;
         List<LatLng> response = new ArrayList<>();
-        for (Map<String, Double> point: this.coordinates) {
+        for (Map<String, Double> point : this.coordinates) {
             latitude = point.get(LATITUDE);
             longitude = point.get(LONGITUDE);
             if (latitude != null && longitude != null) {
@@ -107,11 +111,12 @@ public class ExerciseData {
 
     /**
      * Sets the exercise coordinates.
+     *
      * @param coordinates Coordinates values
      */
     public void setCoordinates(@NonNull List<LatLng> coordinates) {
         this.coordinates = new ArrayList<>();
-        for (LatLng lat: coordinates) {
+        for (LatLng lat : coordinates) {
             if (lat != null) {
                 Map<String, Double> point = new HashMap<>();
                 point.put(LATITUDE, lat.latitude);
@@ -123,6 +128,7 @@ public class ExerciseData {
 
     /**
      * Turns the ExerciseData into a Map of key String and element Object.
+     *
      * @return ExerciseData turned into map
      */
     public Map<String, Object> getAsMap() {
@@ -137,21 +143,16 @@ public class ExerciseData {
     @NonNull
     @Override
     public String toString() {
-        return "{"
-                + "name='" + name + '\''
-                + ", description='" + description + '\''
-                + ", endDateTime='" + endDateTime + '\''
-                + ", coordinates=" + coordinates
-                + '}';
+        return "{" + "name='" + name + '\'' + ", description='" + description + '\'' + ", endDateTime='" + endDateTime
+                + '\'' + ", coordinates=" + coordinates + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof ExerciseData) {
-            return ((ExerciseData) obj).getName().equals(this.getName())
-                    && ((ExerciseData) obj).getDescription().equals(this.getDescription())
-                    && ((ExerciseData) obj).getEndDateTime().equals(this.getEndDateTime())
-                    && ((ExerciseData) obj).getCoordinates().equals(this.getCoordinates());
+            return ((ExerciseData) obj).getName().equals(this.getName()) && ((ExerciseData) obj).getDescription()
+                    .equals(this.getDescription()) && ((ExerciseData) obj).getEndDateTime().equals(
+                    this.getEndDateTime()) && ((ExerciseData) obj).getCoordinates().equals(this.getCoordinates());
         }
         return false;
     }

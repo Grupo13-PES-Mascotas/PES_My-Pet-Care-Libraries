@@ -143,7 +143,7 @@ public class ChatManager {
     }
 
     /**
-     * Removes the message listener
+     * Removes the message listener.
      */
     public void removeListener() {
         if (listener != null) {

@@ -30,7 +30,7 @@ public class EventData {
     public static final String BASIL = "10";
     public static final String TOMATE = "11";
     private static final String[] COLORS = {LAVENDER, SAGE, GRAPE, FLAMINGO, BANANA, TANGERINE, PEACKOCK, GRAPHITE,
-            BLUEBERRY, BASIL, TOMATE};
+                                            BLUEBERRY, BASIL, TOMATE};
     private String id;
     private String summary;
     private String location;

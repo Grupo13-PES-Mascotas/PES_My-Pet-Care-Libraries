@@ -25,6 +25,9 @@ public class ForumManagerClient {
     private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
     private static final String TOKEN_HEADER = "token";
+    private final String FORUM_PARAMETER = "forum";
+    private final String CREATOR_PARAMETER = "creator";
+    private final String DATE_PARAMETER = "date";
     private HttpClient httpClient;
     private final Gson gson;
 
@@ -54,7 +57,7 @@ public class ForumManagerClient {
      */
     public void deleteForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("forum", forumName);
+        params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
         httpClient.request(RequestMethod.DELETE, COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null,
                 null);
     }
@@ -69,7 +72,7 @@ public class ForumManagerClient {
      */
     public ForumData getForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("forum", forumName);
+        params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
         HttpResponse response = httpClient.request(RequestMethod.GET,
                 COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
         return gson.fromJson(response.asString(), ForumData.class);
@@ -159,8 +162,8 @@ public class ForumManagerClient {
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("creator", creatorName);
-        params[1] = new HttpParameter("date", date);
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creatorName);
+        params[1] = new HttpParameter(DATE_PARAMETER, date);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
         httpClient.request(RequestMethod.DELETE, COMMUNITY_BASE_URL + group + "/" + forum, params, headers, null);
@@ -210,8 +213,8 @@ public class ForumManagerClient {
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", username);
-        params[1] = new HttpParameter("creator", creatorName);
-        params[2] = new HttpParameter("date", date);
+        params[1] = new HttpParameter(CREATOR_PARAMETER, creatorName);
+        params[2] = new HttpParameter(DATE_PARAMETER, date);
         params[3] = new HttpParameter("like", like);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);

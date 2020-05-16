@@ -480,7 +480,9 @@ public class PetManagerClient {
         StringBuilder json = taskManager
                 .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
                 .get();
-        if (json == null) return new HashMap<>();
+        if (json == null) {
+            return new HashMap<>();
+        }
         Gson gson = new Gson();
         Type mapType = new TypeToken<Map<String, String>>() { }.getType();
         Map<String, String> response = gson.fromJson(json.toString(), mapType);
