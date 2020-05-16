@@ -44,6 +44,9 @@ public class ChatManager {
      */
     public void createMessageListener(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Path to group name: " + GROUP_NAMES_PATH + group);
+        }
         db.document(GROUP_NAMES_PATH + group).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot groupDoc = task.getResult();
@@ -79,6 +82,9 @@ public class ChatManager {
 
     private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Path to forum name: " + GROUP_NAMES_PATH + group + "/forum_names/" + forum);
+        }
         db.document(GROUP_NAMES_PATH + group + "/forum_names/" + forum).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot forumDoc = task.getResult();
@@ -119,6 +125,9 @@ public class ChatManager {
      * @throws ChatException When the listener creation fails
      */
     private void createListener(MutableLiveData<MessageDisplay> mutableData) throws ChatException {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "Path to messages: " + "groups/" + groupId + "/forums/" + forumId + "/messages");
+        }
         Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages").orderBy("publicationDate",
                 Query.Direction.DESCENDING);
         listener = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
