@@ -88,7 +88,7 @@ artifacts {
     archives sourcesJar
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDebugUnitTest') {
+task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true
@@ -97,7 +97,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDebu
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
                       'android/**/*.*', '**/*Binding.class']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
-    def mainSrc = "${project.projectDir}/src/main/java"
+    def mainSrc = "${projectDir}/src/main/java"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree])

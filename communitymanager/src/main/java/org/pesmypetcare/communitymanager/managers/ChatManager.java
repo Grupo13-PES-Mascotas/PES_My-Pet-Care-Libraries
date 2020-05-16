@@ -75,7 +75,7 @@ public class ChatManager {
 
     private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
-        db.document(GROUP_NAMES_PATH + group + "/forums/" + forum).get().addOnCompleteListener(task -> {
+        db.document(GROUP_NAMES_PATH + group + "/forum_names/" + forum).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot forumDoc = task.getResult();
                 if (forumDoc != null) {
