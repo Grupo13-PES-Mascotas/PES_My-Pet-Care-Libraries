@@ -9,10 +9,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 
+import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
-import org.pesmypetcare.httptools.BuildConfig;
 
 import java.io.IOException;
 
@@ -29,6 +29,7 @@ public class ChatManager {
     private ChatException exception;
 
     public ChatManager() {
+        System.out.println("HERE");
         db = FirebaseFirestore.getInstance();
         exception = null;
         listener = null;
@@ -49,6 +50,9 @@ public class ChatManager {
                 if (groupDoc != null) {
                     if (groupDoc.exists()) {
                         groupId = (String) groupDoc.get("group");
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "Group ID: " + groupId);
+                        }
                         try {
                             getForumId(group, forum, mutableData);
                         } catch (ChatException e) {
@@ -81,6 +85,9 @@ public class ChatManager {
                 if (forumDoc != null) {
                     if (forumDoc.exists()) {
                         forumId = (String) forumDoc.get("forum");
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "Forum ID: " + forumId);
+                        }
                         try {
                             createListener(mutableData);
                         } catch (ChatException e) {
@@ -121,7 +128,6 @@ public class ChatManager {
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                     if (documentSnapshot.exists()) {
                         MessageReceiveData messageReceiveData = documentSnapshot.toObject(MessageReceiveData.class);
-
                         try {
                             mutableData.setValue(new MessageDisplay(messageReceiveData));
                         } catch (IOException ex) {
