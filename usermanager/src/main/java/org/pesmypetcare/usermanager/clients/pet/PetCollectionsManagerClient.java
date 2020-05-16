@@ -32,9 +32,15 @@ import java.util.concurrent.ExecutionException;
 public class PetCollectionsManagerClient {
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
     private static final String PETS_PATH = "pet/";
-    private static final String PUT = "PUT";
+    private static final String EXERCISES_PATH = "/collection/exercises";
+    private static final String ILLNESSES_PATH = "/collection/illnesses";
+    private static final String MEALS_PATH = "/collection/meals/";
+    private static final String WASHES_PATH = "/collection/washes";
+    private static final String WEIGHTS_PATH = "/collection/weights";
+    private static final String MEDICATIONS_PATH = "/collection/medications";
+    private static final String VACCINATIONS_PATH = "/collection/vaccinations";
+    private static final String VET_VISITS_PATH = "/collection/vet_visits";
     private static final String GET = "GET";
-    private static final String POST = "POST";
     private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
     private final Gson GSON = new Gson();
@@ -58,7 +64,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/exercises", accessToken).get();
+                + petName + EXERCISES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -92,7 +98,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/exercises/" + key1 + SLASH + key2, accessToken).get();
+                + petName + EXERCISES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -123,7 +129,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/exercises/" + key, accessToken).get();
+                + petName + EXERCISES_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), ExerciseData.class);
         }
@@ -165,7 +171,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/illnesses", accessToken).get();
+                + petName + ILLNESSES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -199,7 +205,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/illnesses/" + key1 + SLASH + key2, accessToken).get();
+                + petName + ILLNESSES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -229,7 +235,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/illnesses/" + key, accessToken).get();
+                + petName + ILLNESSES_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), IllnessData.class);
         }
@@ -250,7 +256,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/meals", accessToken).get();
+                + petName + MEALS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -282,7 +288,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/meals/" + key1 + SLASH + key2, accessToken).get();
+                + petName + MEALS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -312,7 +318,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/meals/" + key, accessToken).get();
+                + petName + MEALS_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), MealData.class);
         }
@@ -333,7 +339,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/washes", accessToken).get();
+                + petName + WASHES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -365,7 +371,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/washes/" + key1 + SLASH + key2, accessToken).get();
+                + petName + WASHES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -395,7 +401,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/washes/" + key, accessToken).get();
+                + petName + WASHES_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), WashData.class);
         }
@@ -416,7 +422,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/weights", accessToken).get();
+                + petName + WEIGHTS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -448,7 +454,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/weights/" + key1 + SLASH + key2, accessToken).get();
+                + petName + WEIGHTS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -478,7 +484,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/weights/" + key, accessToken).get();
+                + petName + WEIGHTS_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), WeightData.class);
         }
@@ -499,7 +505,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/medications", accessToken).get();
+                + petName + MEDICATIONS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -535,7 +541,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/medications/" + key1 + SLASH + date2.toString(), accessToken).get();
+                + petName + MEDICATIONS_PATH + SLASH + key1 + SLASH + date2.toString(), accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -565,7 +571,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/medications/" + key, accessToken).get();
+                + petName + MEDICATIONS_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), MedicationData.class);
         }
@@ -586,7 +592,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vaccinations", accessToken).get();
+                + petName + VACCINATIONS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -620,7 +626,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vaccinations/" + key1 + SLASH + key2, accessToken).get();
+                + petName + VACCINATIONS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -650,7 +656,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vaccinations/" + key, accessToken).get();
+                + petName + VACCINATIONS_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), VaccinationData.class);
         }
@@ -671,7 +677,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vet_visits", accessToken).get();
+                + petName + VET_VISITS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -704,7 +710,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vet_visits/" + key1 + SLASH + key2, accessToken).get();
+                + petName + VET_VISITS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -734,7 +740,7 @@ public class PetCollectionsManagerClient {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/vet_visits/" + key, accessToken).get();
+                + petName + VET_VISITS_PATH + SLASH + key, accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), VetVisitData.class);
         }

@@ -26,7 +26,8 @@ public class DateTime implements Comparable<DateTime> {
     private static final int DAYS_28 = 28;
     private static final int DECEMBER = 12;
     private static final int MAX_HOUR = 24;
-    private static final int MAX_MINUTES_SECONDS = 60;
+    private static final int SIXTY = 60;
+    private static final int MAX_MINUTES_SECONDS = SIXTY;
     private static final int FIRST_TWO_DIGITS = 10;
     private static final int WEEK_DAYS = 7;
     private static final String FULL_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
@@ -78,7 +79,9 @@ public class DateTime implements Comparable<DateTime> {
             readTime(dateTimeParts[TIME]);
         } else {
             readDate(dateTime);
-            this.hour = this.minutes = this.seconds = 0;
+            this.hour = 0;
+            this.minutes = 0;
+            this.seconds = 0;
         }
     }
 
@@ -554,22 +557,17 @@ public class DateTime implements Comparable<DateTime> {
      * @return dateIn with the offset applied
      */
     private static DateTime applyOffset(DateTime dateIn, int offsetSeconds) {
-        int seconds;
-        int minutes;
-        int hours;
-        int offsetMinutes;
-        int offsetHours;
-        seconds = offsetSeconds % 60;
-        offsetMinutes = offsetSeconds / 60;
-        minutes = offsetMinutes % 60;
-        offsetHours = offsetMinutes / 60;
-        hours = offsetHours % 60;
+        int seconds = offsetSeconds % SIXTY;
+        int offsetMinutes = offsetSeconds / SIXTY;
+        int minutes = offsetMinutes % SIXTY;
+        int offsetHours = offsetMinutes / SIXTY;
+        int hours = offsetHours % SIXTY;
         if (dateIn.getHour() + hours > 23) {
             dateIn.increaseDay();
-            dateIn.setHour(dateIn.getHour() + hours - 24);
+            dateIn.setHour(dateIn.getHour() + hours - MAX_HOUR);
         } else if (dateIn.getHour() + hours < 0) {
             dateIn.decreaseDay();
-            dateIn.setHour((hours + dateIn.getHour()) + 24);
+            dateIn.setHour(hours + dateIn.getHour() + MAX_HOUR);
         } else {
             dateIn.setHour(dateIn.getHour() + hours);
         }

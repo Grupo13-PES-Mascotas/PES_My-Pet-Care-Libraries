@@ -24,6 +24,7 @@ import java.util.Map;
 public class ForumManagerClient {
     private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private static final String TOKEN_HEADER = "token";
     private HttpClient httpClient;
     private final Gson gson;
 
@@ -136,7 +137,7 @@ public class ForumManagerClient {
     public void postMessage(String token, String parentGroup, String forumName, MessageSendData message)
             throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
         httpClient.request(RequestMethod.POST, COMMUNITY_BASE_URL + group + "/" + forum, null, headers,
@@ -156,7 +157,7 @@ public class ForumManagerClient {
     public void deleteMessage(String token, String parentGroup, String forumName, String creatorName, String date)
             throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter("creator", creatorName);
         params[1] = new HttpParameter("date", date);
@@ -177,7 +178,7 @@ public class ForumManagerClient {
     public Map<String, byte[]> getAllPostsImagesFromForum(String token, String parentGroup, String forumName)
             throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
         HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "storage/image/" + group + "/" + forum,
@@ -206,7 +207,7 @@ public class ForumManagerClient {
     public void likeMessage(String token, String username, String parentGroup, String forumName, String creatorName,
             String date, boolean like) throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", username);
         params[1] = new HttpParameter("creator", creatorName);

@@ -18,6 +18,7 @@ import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +27,7 @@ import java.util.concurrent.ExecutionException;
  * @author Oriol Catalán
  */
 public class UserManagerClient {
-    public static final String USERNAME = "username";
+    public static final String USERNAME_PARAMETER = "username";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
@@ -37,6 +38,7 @@ public class UserManagerClient {
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
     private static final String UID_FIELD = "uid";
+    private static final String TOKEN_HEADER = "token";
     private TaskManager taskManager;
     private HttpClient httpClient;
     private Gson gson;
@@ -208,7 +210,7 @@ public class UserManagerClient {
         reqData.put("imgName", "profile-image");
         reqData.put("img", image);
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", accessToken);
+        headers.put(TOKEN_HEADER, accessToken);
         httpClient.request(RequestMethod.PUT, BASE_URL + IMAGES_PATH, null, headers, gson.toJson(reqData));
     }
 
@@ -224,11 +226,22 @@ public class UserManagerClient {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("name", "profile-image");
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", accessToken);
+        headers.put(TOKEN_HEADER, accessToken);
         HttpResponse resp = httpClient.request(RequestMethod.GET,
                 BASE_URL + IMAGES_PATH + HttpParameter.encode(username), params, headers, null);
         String encodedImage = resp.asString();
         return Base64.decode(encodedImage, Base64.DEFAULT);
+    }
+
+    public List<String> getUserSubscriptions(String token, String username) throws MyPetCareException {
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter(USERNAME_PARAMETER, username);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(TOKEN_HEADER, token);
+        HttpResponse res = new HttpClient().request(RequestMethod.GET,
+                "https://image-branch-testing.herokuapp.com/users/subscriptions", params, headers, null);
+        Type listType = TypeToken.getParameterized(List.class, String.class).getType();
+        return gson.fromJson(res.asString(), listType);
     }
 
     /**
@@ -239,7 +252,7 @@ public class UserManagerClient {
      */
     public void sendTokenToServer(String authToken, String messagingToken) throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", authToken);
+        headers.put(TOKEN_HEADER, authToken);
         headers.put("fcmToken", messagingToken);
         httpClient.request(RequestMethod.PUT, BASE_URL + "users", null, headers, null);
     }

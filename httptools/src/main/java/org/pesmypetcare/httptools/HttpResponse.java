@@ -96,6 +96,7 @@ public class HttpResponse {
                             Log.i(TAG, "BufferedReader closed");
                         }
                     } catch (IOException ignore) {
+                        //Ignore exception when closing the buffer
                     }
                 }
                 connection.disconnect();

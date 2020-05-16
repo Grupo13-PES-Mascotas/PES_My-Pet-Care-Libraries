@@ -21,6 +21,7 @@ import java.io.IOException;
  */
 public class ChatManager {
     private static final String TAG = "ChatManager";
+    private static final String GROUP_NAMES_PATH = "groups_names/";
     private FirebaseFirestore db;
     private String groupId;
     private String forumId;
@@ -42,7 +43,7 @@ public class ChatManager {
      */
     public void createMessageListener(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
-        db.document("groups_names/" + group).get().addOnCompleteListener(task -> {
+        db.document(GROUP_NAMES_PATH + group).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot groupDoc = task.getResult();
                 if (groupDoc != null) {
@@ -74,7 +75,7 @@ public class ChatManager {
 
     private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
-        db.document("groups_names/" + group + "/forums/" + forum).get().addOnCompleteListener(task -> {
+        db.document(GROUP_NAMES_PATH + group + "/forums/" + forum).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot forumDoc = task.getResult();
                 if (forumDoc != null) {

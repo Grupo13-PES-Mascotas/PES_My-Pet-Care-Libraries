@@ -14,7 +14,7 @@ public class HttpRequest {
     private final String body;
 
     public HttpRequest(RequestMethod method, String url, HttpParameter[] parameters, Map<String, String> requestHeaders,
-                       String body) {
+            String body) {
         this.method = method;
         if (parameters != null && parameters.length > 0) {
             this.url = url + "?" + HttpParameter.encodeParams(parameters);
@@ -48,12 +48,7 @@ public class HttpRequest {
 
     @Override
     public String toString() {
-        return "HttpRequest{" +
-            "method=" + method +
-            ", url='" + url + '\'' +
-            ", parameters=" + Arrays.toString(parameters) +
-            ", requestHeaders=" + requestHeaders +
-            ", body='" + body + '\'' +
-            '}';
+        return "HttpRequest{" + "method=" + method + ", url='" + url + '\'' + ", parameters=" + Arrays.toString(
+                parameters) + ", requestHeaders=" + requestHeaders + ", body='" + body + '\'' + '}';
     }
 }

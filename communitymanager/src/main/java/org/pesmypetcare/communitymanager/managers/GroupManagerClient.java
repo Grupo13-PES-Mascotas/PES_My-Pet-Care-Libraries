@@ -27,6 +27,9 @@ public class GroupManagerClient {
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community";
     private static final String GROUP_KEY = "group";
     private static final String TAGS_PATH = "/tags";
+    private static final String USERNAME_PARAMETER = "username";
+    private static final String TOKEN_HEADER = "token";
+    private static final String GROUP_ICON_SUFIX = "-icon";
     private final Gson gson;
 
     public GroupManagerClient() {
@@ -84,11 +87,13 @@ public class GroupManagerClient {
 
     /**
      * Gets all the existing tags in the application.
+     *
      * @return A map with the tag name as the key and its data
      * @throws MyPetCareException When the request fails
      */
     public Map<String, TagData> getAllTags() throws MyPetCareException {
-        HttpResponse resp = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL + TAGS_PATH, null, null, null);
+        HttpResponse resp = new HttpClient().request(RequestMethod.GET, COMMUNITY_BASE_URL + TAGS_PATH, null, null,
+                null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, TagData.class).getType();
         return gson.fromJson(resp.asString(), mapType);
     }
@@ -109,53 +114,42 @@ public class GroupManagerClient {
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
-        new HttpClient().request(RequestMethod.PUT, COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
+        new HttpClient().request(RequestMethod.PUT, COMMUNITY_BASE_URL + TAGS_PATH, params, null,
+                gson.toJson(newValue));
     }
 
     public void subscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
-        params[1] = new HttpParameter("username", username);
+        params[1] = new HttpParameter(USERNAME_PARAMETER, username);
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         new HttpClient().request(RequestMethod.POST, COMMUNITY_BASE_URL + "/subscribe", params, headers, null);
     }
 
     public void unsubscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
-        params[1] = new HttpParameter("username", username);
+        params[1] = new HttpParameter(USERNAME_PARAMETER, username);
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         new HttpClient().request(RequestMethod.DELETE, COMMUNITY_BASE_URL + "/unsubscribe", params, headers, null);
     }
 
     public void updateGroupIcon(String token, String groupName, byte[] image) throws MyPetCareException {
         ImageData imageData = new ImageData(groupName, image);
-        imageData.setImgName(groupName + "-icon");
+        imageData.setImgName(groupName + GROUP_ICON_SUFIX);
         Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(TOKEN_HEADER, token);
         new HttpClient().request(RequestMethod.PUT, IMAGE_STORAGE_BASE_URL + HttpParameter.encode(groupName), null,
                 headers, gson.toJson(imageData));
     }
 
     public byte[] getGroupIcon(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("name", groupName + "-icon");
+        params[0] = new HttpParameter("name", groupName + GROUP_ICON_SUFIX);
         HttpResponse response = new HttpClient().request(RequestMethod.GET,
                 IMAGE_STORAGE_BASE_URL + "groups/" + HttpParameter.encode(groupName), params, null, null);
         return Base64.decode(response.asString(), Base64.DEFAULT);
-    }
-
-    public List<String> getUserSubscriptions(String token, String username) throws MyPetCareException {
-        //TODO: Move to usermanager
-        HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("username", username);
-        Map<String, String> headers = new HashMap<>();
-        headers.put("token", token);
-        HttpResponse res = new HttpClient().request(RequestMethod.GET,
-                "https://image-branch-testing.herokuapp.com/users/subscriptions", params, headers, null);
-        Type listType = TypeToken.getParameterized(List.class, String.class).getType();
-        return gson.fromJson(res.asString(), listType);
     }
 }

@@ -149,9 +149,9 @@ public class MedicationManagerClient {
      * @param petName Name of the pet.
      * @param initialDate Initial Date.
      * @param finalDate Final Date.
+     * @return The List containing all the Medications eaten by the pet in the specified time.
      * @throws ExecutionException When the retrieval fails.
      * @throws InterruptedException When the retrieval is interrupted.
-     * @return The List containing all the Medications eaten by the pet in the specified time.
      */
     public List<Medication> getAllMedicationsBetween(String accessToken, String owner, String petName,
             DateTime initialDate,
