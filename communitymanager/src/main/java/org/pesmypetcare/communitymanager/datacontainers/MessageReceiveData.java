@@ -40,10 +40,9 @@ public class MessageReceiveData extends Message {
     /**
      * Builds the message image from its blobs.
      * @return The message image as a byte array
-     * @throws IOException When the reconstruction of the image fails.
      */
     @Nullable
-    byte[] buildImage() throws IOException {
+    byte[] buildImage() {
         if (image != null) {
             return image.toBytes();
         }
