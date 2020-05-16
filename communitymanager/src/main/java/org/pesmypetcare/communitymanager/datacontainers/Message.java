@@ -23,6 +23,7 @@ public class Message {
 
     /**
      * Creates a message with a creator.
+     *
      * @param creator The creator's username
      */
     Message(@NonNull String creator) {
@@ -31,6 +32,7 @@ public class Message {
 
     /**
      * Creates a message with a creator and text. If the text is empty the creation will fail.
+     *
      * @param creator The creator's username
      * @param text The text
      * @throws MyPetCareException When the text is empty
@@ -44,7 +46,8 @@ public class Message {
     }
 
     /**
-     * Creates a message from a MessageReceiveData
+     * Creates a message from a MessageReceiveData.
+     *
      * @param messageReceiveData The MessageReceiveData
      */
     Message(@NonNull MessageReceiveData messageReceiveData) {
@@ -69,6 +72,7 @@ public class Message {
 
     /**
      * Sets the message text. It will fail if the message is empty.
+     *
      * @param text The text
      * @throws MyPetCareException When the text is empty
      */

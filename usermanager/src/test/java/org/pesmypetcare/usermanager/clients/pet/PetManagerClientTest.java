@@ -43,7 +43,7 @@ public class PetManagerClientTest {
     private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
     private static final String DATE_1 = "1990-01-08T15:20:30";
-    private static final String DATE_2 = "1995-01-08T15:20:30";
+    private static final String DATE_2 = "1995-01-08T20:20:30";
     private static final String NEEDS_EXAMPLE = "None of your business";
     private final int expectedResponseCode = 200;
     private StringBuilder json;

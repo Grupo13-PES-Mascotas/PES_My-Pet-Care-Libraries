@@ -9,7 +9,6 @@ import org.pesmypetcare.httptools.utilities.DateTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,7 +30,7 @@ public class EventData {
     public static final String BASIL = "10";
     public static final String TOMATE = "11";
     private static final String[] COLORS = {LAVENDER, SAGE, GRAPE, FLAMINGO, BANANA, TANGERINE, PEACKOCK, GRAPHITE,
-        BLUEBERRY, BASIL, TOMATE};
+            BLUEBERRY, BASIL, TOMATE};
     private String id;
     private String summary;
     private String location;
@@ -42,10 +41,11 @@ public class EventData {
     private String startDate;
     private String endDate;
 
-    public EventData() { }
+    public EventData() {
+    }
 
     public EventData(String id, String summary, String location, String description, String color,
-                     Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
+            Integer emailReminderMinutes, Integer repetitionInterval, String startDate, String endDate) {
         checkCorrectDateFormat(startDate);
         checkCorrectDateFormat(endDate);
         checkCorrectColor(color);
@@ -138,6 +138,7 @@ public class EventData {
     /**
      * Checks that the color value is amongst the possible ones (LAVENDER, SAGE, GRAPE, FLAMINGO, BANANA, TANGERINE,
      * PEACKOCK, GRAPHITE, BLUEBERRY, BASIL or TOMATE).
+     *
      * @param color Value of the color to check
      */
     private void checkCorrectColor(String color) {
@@ -149,6 +150,7 @@ public class EventData {
 
     /**
      * Checks that a date value has the correct format for an event.
+     *
      * @param date Value of the date to check
      */
     private void checkCorrectDateFormat(String date) {
@@ -157,13 +159,14 @@ public class EventData {
         try {
             sdf.parse(date);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Google Calendar Event Date must follow"
-                + " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
+            throw new IllegalArgumentException(
+                    "Google Calendar Event Date must follow" + " the format: \"yyyy-MM-dd'T'HH:mm:ss\"");
         }
     }
 
     /**
      * Creates an event json object.
+     *
      * @return A JSON Object with the meal data
      */
     public JSONObject buildJson() {
@@ -183,31 +186,22 @@ public class EventData {
     @NonNull
     @Override
     public String toString() {
-        return "{"
-            + "id='" + id + '\''
-            + "summary='" + summary + '\''
-            + "location='" + location + '\''
-            + "description='" + description + '\''
-            + "color='" + color + '\''
-            + "emailReminderMinutes='" + emailReminderMinutes + '\''
-            + "repetitionInterval='" + repetitionInterval + '\''
-            + "startDate='" + startDate + '\''
-            + "endDate='" + endDate
-            + '}';
+        return "{" + "id='" + id + '\'' + "summary='" + summary + '\'' + "location='" + location + '\''
+                + "description='" + description + '\'' + "color='" + color + '\'' + "emailReminderMinutes='"
+                + emailReminderMinutes + '\'' + "repetitionInterval='" + repetitionInterval + '\'' + "startDate='"
+                + startDate + '\'' + "endDate='" + endDate + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof EventData) {
-            return ((EventData) obj).getId().equals(this.getId())
-                && ((EventData) obj).getSummary().equals(this.getSummary())
-                && ((EventData) obj).getLocation().equals(this.getLocation())
-                && ((EventData) obj).getDescription().equals(this.getDescription())
-                && ((EventData) obj).getColor().equals(this.getColor())
-                && ((EventData) obj).getEmailReminderMinutes().equals(this.getEmailReminderMinutes())
-                && ((EventData) obj).getRepetitionInterval().equals(this.getRepetitionInterval())
-                && ((EventData) obj).getStartDate().equals(this.getStartDate())
-                && ((EventData) obj).getEndDate().equals(this.getEndDate());
+            return ((EventData) obj).getId().equals(this.getId()) && ((EventData) obj).getSummary().equals(
+                    this.getSummary()) && ((EventData) obj).getLocation().equals(this.getLocation())
+                    && ((EventData) obj).getDescription().equals(this.getDescription()) && ((EventData) obj).getColor()
+                    .equals(this.getColor()) && ((EventData) obj).getEmailReminderMinutes().equals(
+                    this.getEmailReminderMinutes()) && ((EventData) obj).getRepetitionInterval().equals(
+                    this.getRepetitionInterval()) && ((EventData) obj).getStartDate().equals(this.getStartDate())
+                    && ((EventData) obj).getEndDate().equals(this.getEndDate());
         }
         return false;
     }

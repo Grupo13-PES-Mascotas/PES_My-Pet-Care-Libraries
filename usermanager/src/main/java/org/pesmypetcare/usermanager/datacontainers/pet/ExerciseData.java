@@ -14,6 +14,8 @@ import java.util.Map;
  * @author Marc Simó
  */
 public class ExerciseData {
+    private static final String LATITUDE = "latitude";
+    private static final String LONGITUDE = "longitude";
     private String name;
     private String description;
     private List<Map<String, Double>> coordinates;
@@ -54,8 +56,8 @@ public class ExerciseData {
         for (LatLng lat: coordinates) {
             if (lat != null) {
                 Map<String, Double> point = new HashMap<>();
-                point.put("latitude", lat.latitude);
-                point.put("longitude", lat.longitude);
+                point.put(LATITUDE, lat.latitude);
+                point.put(LONGITUDE, lat.longitude);
                 this.coordinates.add(point);
             }
         }
@@ -90,9 +92,15 @@ public class ExerciseData {
      * @return List containing the coordinates
      */
     public List<LatLng> getCoordinates() {
+        Double latitude;
+        Double longitude;
         List<LatLng> response = new ArrayList<>();
         for (Map<String, Double> point: this.coordinates) {
-            response.add(new LatLng(point.get("latitude"), point.get("longitude")));
+            latitude = point.get(LATITUDE);
+            longitude = point.get(LONGITUDE);
+            if (latitude != null && longitude != null) {
+                response.add(new LatLng(latitude, longitude));
+            }
         }
         return response;
     }
@@ -106,8 +114,8 @@ public class ExerciseData {
         for (LatLng lat: coordinates) {
             if (lat != null) {
                 Map<String, Double> point = new HashMap<>();
-                point.put("latitude", lat.latitude);
-                point.put("longitude", lat.longitude);
+                point.put(LATITUDE, lat.latitude);
+                point.put(LONGITUDE, lat.longitude);
                 this.coordinates.add(point);
             }
         }

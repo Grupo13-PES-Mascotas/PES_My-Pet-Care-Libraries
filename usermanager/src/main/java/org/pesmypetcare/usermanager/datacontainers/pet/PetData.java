@@ -24,6 +24,9 @@ public class PetData {
     public static final String PATHOLOGIES = "pathologies";
     public static final String RECOMMENDED_KCAL = "recommendedKcal";
     public static final String NEEDS = "needs";
+    private static final String DESCRIPTION_KEY = "description";
+    private static final String END_DATE_TIME_KEY = "endDateTime";
+    private static final String DURATION_KEY = "duration";
     private GenderType gender;
     private String breed;
     private String birth;
@@ -224,11 +227,13 @@ public class PetData {
      */
     public static void checkMeals(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 2 || !body.containsKey("kcal") || !body.containsKey("mealName")) {
+        String kcalKey = "kcalKey";
+        String mealNameKey = "mealNameKey";
+        if (body.size() != 2 || !body.containsKey(kcalKey) || !body.containsKey(mealNameKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if ((!(body.get("kcal") instanceof Double) && !(body.get("kcal") instanceof Integer))
-            || !(body.get("mealName") instanceof String)) {
+        if ((!(body.get(kcalKey) instanceof Double) && !(body.get(kcalKey) instanceof Integer))
+            || !(body.get(mealNameKey) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -241,10 +246,11 @@ public class PetData {
      */
     public static void checkDateAndValueInteger(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 1 || !body.containsKey("value")) {
+        String valueKey = "value";
+        if (body.size() != 1 || !body.containsKey(valueKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("value") instanceof Integer)) {
+        if (!(body.get(valueKey) instanceof Integer)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -256,15 +262,18 @@ public class PetData {
      */
     public static void checkExercises(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 4 || !body.containsKey("name") || !body.containsKey("description")
-            || !body.containsKey("endDateTime") || !body.containsKey("coordinates")) {
+        String nameKey = "name";
+        String coordinatesKey = "coordinates";
+        if (body.size() != 4 || !body.containsKey(nameKey) || !body.containsKey(DESCRIPTION_KEY)
+            || !body.containsKey(END_DATE_TIME_KEY) || !body.containsKey(coordinatesKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("name") instanceof String) && !(body.get("description") instanceof String)
-            || !(body.get("coordinates") instanceof List) || !(body.get("endDateTime") instanceof String)) {
+        if (!(body.get(nameKey) instanceof String) && !(body.get(DESCRIPTION_KEY) instanceof String)
+            || !(body.get(coordinatesKey) instanceof List) || !(body.get(END_DATE_TIME_KEY) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        checkDateFormat((String) body.get("endDateTime"));
+
+        checkDateFormat((String) body.get(END_DATE_TIME_KEY));
     }
 
     /**
@@ -274,10 +283,10 @@ public class PetData {
      */
     public static void checkWashes(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 2 || !body.containsKey("description") || !body.containsKey("duration")) {
+        if (body.size() != 2 || !body.containsKey(DESCRIPTION_KEY) || !body.containsKey(DURATION_KEY)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("description") instanceof String) || !(body.get("duration") instanceof Integer)) {
+        if (!(body.get(DESCRIPTION_KEY) instanceof String) || !(body.get(DURATION_KEY) instanceof Integer)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -289,10 +298,10 @@ public class PetData {
      */
     public static void checkVaccinations(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 1 || !body.containsKey("description")) {
+        if (body.size() != 1 || !body.containsKey(DESCRIPTION_KEY)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("description") instanceof String)) {
+        if (!(body.get(DESCRIPTION_KEY) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -304,17 +313,19 @@ public class PetData {
      */
     public static void checkIllnesses(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 4 || !body.containsKey("endDateTime") || !body.containsKey("type")
-            || !body.containsKey("description") || !body.containsKey("severity")) {
+        String typeKey = "type";
+        String severityKey = "severity";
+        if (body.size() != 4 || !body.containsKey(END_DATE_TIME_KEY) || !body.containsKey(typeKey)
+            || !body.containsKey(DESCRIPTION_KEY) || !body.containsKey(severityKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("endDateTime") instanceof String) || !(body.get("type") instanceof String)
-            || !(body.get("description") instanceof String) || !(body.get("severity") instanceof String)) {
+        if (!(body.get(END_DATE_TIME_KEY) instanceof String) || !(body.get(typeKey) instanceof String)
+            || !(body.get(DESCRIPTION_KEY) instanceof String) || !(body.get(severityKey) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        checkDateFormat((String) body.get("endDateTime"));
-        checkTypeValue((String) body.get("type"));
-        checkSeverityValue((String) body.get("severity"));
+        checkDateFormat((String) body.get(END_DATE_TIME_KEY));
+        checkTypeValue((String) body.get(typeKey));
+        checkSeverityValue((String) body.get(severityKey));
     }
 
     /**
@@ -324,12 +335,14 @@ public class PetData {
      */
     public static void checkMedications(String key, Map<String, Object> body) {
         checkDatePlusNameFormat(key);
-        if (body.size() != 3 || !body.containsKey("quantity") || !body.containsKey("duration")
-            || !body.containsKey("periodicity")) {
+        String quantityKey = "quantity";
+        String periodicityKey = "periodicity";
+        if (body.size() != 3 || !body.containsKey(quantityKey) || !body.containsKey(DURATION_KEY)
+            || !body.containsKey(periodicityKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if ((!(body.get("quantity") instanceof Double) && !(body.get("quantity") instanceof Integer))
-            || !(body.get("duration") instanceof Integer) || !(body.get("periodicity") instanceof Integer)) {
+        if ((!(body.get(quantityKey) instanceof Double) && !(body.get(quantityKey) instanceof Integer))
+            || !(body.get(DURATION_KEY) instanceof Integer) || !(body.get(periodicityKey) instanceof Integer)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
@@ -341,10 +354,12 @@ public class PetData {
      */
     public static void checkVetVisits(String key, Map<String, Object> body) {
         checkDateFormat(key);
-        if (body.size() != 2 || !body.containsKey("reason") || !body.containsKey("address")) {
+        String reasonKey = "reason";
+        String addressKey = "address";
+        if (body.size() != 2 || !body.containsKey(reasonKey) || !body.containsKey(addressKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get("reason") instanceof String) || !(body.get("address") instanceof String)) {
+        if (!(body.get(reasonKey) instanceof String) || !(body.get(addressKey) instanceof String)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }

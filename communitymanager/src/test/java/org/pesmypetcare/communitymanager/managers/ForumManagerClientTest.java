@@ -37,6 +37,9 @@ import static org.mockito.Mockito.verify;
 public class ForumManagerClientTest {
     private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
     private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private static final String FORUM_PARAMETER = "forum";
+    private static final String CREATOR_PARAMETER = "creator";
+    private static final String DATE_PARAMETER = "date";
     private static String parentGroup;
     private static String forumName;
     private static String creator;
@@ -66,7 +69,7 @@ public class ForumManagerClientTest {
         forum = new ForumData(forumName, creator, null);
         forumNameEncoded = HttpParameter.encode(forumName);
         headers = new HashMap<>();
-        headers.put("token", token);
+        headers.put(token, token);
         date = "2020-05-12";
     }
 
@@ -83,7 +86,7 @@ public class ForumManagerClientTest {
     @Test
     public void deleteForum() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("forum", forumName);
+        params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
         given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
                 .willReturn(httpResponse);
 
@@ -95,7 +98,7 @@ public class ForumManagerClientTest {
     @Test
     public void getForum() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("forum", forumName);
+        params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
         given(httpClient.request(same(RequestMethod.GET), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)),
                 eq(params), isNull(), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(forum));
@@ -164,8 +167,8 @@ public class ForumManagerClientTest {
 
         client.deleteMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
-        params[0] = new HttpParameter("creator", creator);
-        params[1] = new HttpParameter("date", date);
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
+        params[1] = new HttpParameter(DATE_PARAMETER, date);
         verify(httpClient).request(same(RequestMethod.DELETE),
                 eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers), isNull());
     }
@@ -193,8 +196,8 @@ public class ForumManagerClientTest {
         client.likeMessage(token, creator, parentGroup, forumName, creator, date, true);
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", creator);
-        params[1] = new HttpParameter("creator", creator);
-        params[2] = new HttpParameter("date", date);
+        params[1] = new HttpParameter(CREATOR_PARAMETER, creator);
+        params[2] = new HttpParameter(DATE_PARAMETER, date);
         params[3] = new HttpParameter("like", true);
         verify(httpClient).request(same(RequestMethod.PUT),
                 eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),

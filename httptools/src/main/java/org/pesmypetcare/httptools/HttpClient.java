@@ -18,6 +18,9 @@ import java.util.Map;
  */
 public class HttpClient {
     private static final String TAG = "HttpClient";
+    private static final int OK = 200;
+    private static final int CREATED = 201;
+    private static final int NO_CONTENT = 204;
 
     public HttpResponse request(RequestMethod method, String url, HttpParameter[] params,
                                 Map<String, String> headers, String body) throws MyPetCareException {
@@ -41,7 +44,7 @@ public class HttpClient {
             setBody(req, con);
             responseCode = con.getResponseCode();
             res = new HttpResponse(con);
-            if (responseCode != 200 && responseCode != 201 && responseCode != 204) {
+            if (responseCode != OK && responseCode != CREATED && responseCode != NO_CONTENT) {
                 throw new MyPetCareException(res.asString(), res);
             }
         } catch (IOException e) {

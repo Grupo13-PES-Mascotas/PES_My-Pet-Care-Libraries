@@ -1,5 +1,7 @@
 package org.pesmypetcare.communitymanager.datacontainers;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -17,11 +19,9 @@ public class TagData {
         return forums;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "TagData{" +
-            "groups=" + groups +
-            ", forums=" + forums +
-            '}';
+        return "TagData{" + "groups=" + groups + ", forums=" + forums + '}';
     }
 }

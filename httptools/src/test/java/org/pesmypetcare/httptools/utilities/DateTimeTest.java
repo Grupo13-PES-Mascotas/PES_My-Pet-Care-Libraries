@@ -268,23 +268,14 @@ public class DateTimeTest {
 
     @Test
     public void shouldConvertCorrectlyFromUTCToLocal() throws InvalidFormatException {
-        int hourDatetime1;
-        int hourDatetime2;
-        int expectedOffsetHours;
-        int actualOffsetHours;
-        int i;
         DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
         DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
-
-        TimeZone tz = TimeZone.getDefault();
-        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
-
         dateTime2 = DateTime.convertUTCtoLocal(dateTime2);
-        hourDatetime1 = dateTime1.getHour();
-        hourDatetime2 = dateTime2.getHour();
-        actualOffsetHours = 0;
+        int hourDatetime1 = dateTime1.getHour();
+        int hourDatetime2 = dateTime2.getHour();
+        int actualOffsetHours = 0;
 
-        for (i = hourDatetime1; i < hourDatetime2; i++) {
+        for (int i = hourDatetime1; i < hourDatetime2; i++) {
             if (i == 24) {
                 i = 0;
             }
@@ -295,28 +286,22 @@ public class DateTimeTest {
         if (actualOffsetHours > 12) {
             actualOffsetHours = actualOffsetHours - 24;
         }
+
+        TimeZone tz = TimeZone.getDefault();
+        int expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
         assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
     }
 
     @Test
     public void shouldConvertCorrectlyFromLocalToUTC() throws InvalidFormatException {
-        int hourDatetime1;
-        int hourDatetime2;
-        int expectedOffsetHours;
-        int actualOffsetHours;
-        int i;
         DateTime dateTime1 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
         DateTime dateTime2 = DateTime.Builder.build(2020, 12, 31, 12, 59, 59);
-
-        TimeZone tz = TimeZone.getDefault();
-        expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
-
         dateTime2 = DateTime.convertLocaltoUTC(dateTime2);
-        hourDatetime1 = dateTime1.getHour();
-        hourDatetime2 = dateTime2.getHour();
-        actualOffsetHours = 0;
+        int hourDatetime1 = dateTime1.getHour();
+        int hourDatetime2 = dateTime2.getHour();
+        int actualOffsetHours = 0;
 
-        for (i = hourDatetime1; i < hourDatetime2; i++) {
+        for (int i = hourDatetime1; i < hourDatetime2; i++) {
             if (i == 24) {
                 i = 0;
             }
@@ -327,6 +312,9 @@ public class DateTimeTest {
         if (actualOffsetHours > 12) {
             actualOffsetHours = actualOffsetHours - 24;
         }
+
+        TimeZone tz = TimeZone.getDefault();
+        int expectedOffsetHours = ((tz.getRawOffset() + tz.getDSTSavings()) / 1000) / 3600;
         assertEquals("Offset should be", expectedOffsetHours, actualOffsetHours);
     }
 }

@@ -191,5 +191,4 @@ public class WeightManagerClient {
                 accessToken).get();
         return Integer.parseInt(response.toString());
     }
-
 }

@@ -79,7 +79,7 @@ public class UserManagerClient {
      */
     public boolean usernameAlreadyExists(String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter("username", username);
+        params[0] = new HttpParameter(USERNAME_PARAMETER, username);
         HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "usernames", params, null, null);
         Type mapType = new TypeToken<HashMap<String, Boolean>>() {
         }.getType();
@@ -201,7 +201,6 @@ public class UserManagerClient {
      * @param accessToken The personal access token for the account
      * @param username The user's username
      * @param image The image to save
-     * @return The response code
      * @throws MyPetCareException When the request fails
      */
     public void saveProfileImage(String accessToken, String username, byte[] image) throws MyPetCareException {

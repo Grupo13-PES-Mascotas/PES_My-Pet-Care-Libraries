@@ -12,6 +12,9 @@ import java.util.Map;
  * @author Marc Simó
  */
 public class MedicationData {
+    private static final String DURATION = "duration";
+    private static final String QUANTITY = "quantity";
+    private static final String PERIODICITY = "periodicity";
     private Double quantity;
     private Integer duration;
     private Integer periodicity;
@@ -63,9 +66,9 @@ public class MedicationData {
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();
-        response.put("quantity", quantity);
-        response.put("duration", duration);
-        response.put("periodicity", periodicity);
+        response.put(QUANTITY, quantity);
+        response.put(DURATION, duration);
+        response.put(PERIODICITY, periodicity);
         return response;
     }
 
@@ -75,9 +78,9 @@ public class MedicationData {
      */
     public JSONObject buildMedicationJson() {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("quantity", String.valueOf(quantity));
-        reqData.put("duration", String.valueOf(duration));
-        reqData.put("periodicity", String.valueOf(periodicity));
+        reqData.put(QUANTITY, String.valueOf(quantity));
+        reqData.put(DURATION, String.valueOf(duration));
+        reqData.put(PERIODICITY, String.valueOf(periodicity));
         return new JSONObject(reqData);
     }
 

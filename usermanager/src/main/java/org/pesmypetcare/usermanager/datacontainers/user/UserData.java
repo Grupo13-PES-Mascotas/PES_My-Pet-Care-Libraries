@@ -21,6 +21,7 @@ public class UserData {
 
     /**
      * Creates a UserData object with the specified username, email and password.
+     *
      * @param username The user's username
      * @param email The user's email
      * @param password The user's password
@@ -41,6 +42,7 @@ public class UserData {
 
     /**
      * Gets the user's username.
+     *
      * @return The user's username
      */
     public String getUsername() {
@@ -49,6 +51,7 @@ public class UserData {
 
     /**
      * Sets the user's username.
+     *
      * @param username The user's username
      */
     public void setUsername(String username) {
@@ -57,6 +60,7 @@ public class UserData {
 
     /**
      * Gets the user's email.
+     *
      * @return The user's email
      */
     public String getEmail() {
@@ -65,6 +69,7 @@ public class UserData {
 
     /**
      * Sets the user's email.
+     *
      * @param email The user's email
      */
     public void setEmail(String email) {
@@ -73,6 +78,7 @@ public class UserData {
 
     /**
      * Gets the user's password.
+     *
      * @return The user's password
      */
     public String getPassword() {
@@ -81,6 +87,7 @@ public class UserData {
 
     /**
      * Sets the user's password.
+     *
      * @param password The user's password
      */
     public void setPassword(String password) {
@@ -97,6 +104,7 @@ public class UserData {
 
     /**
      * Creates a user data JSONObject.
+     *
      * @return The JSONObject for the user data
      * @throws JSONException Thrown to indicate a problem with the JSON API
      */
@@ -111,21 +119,16 @@ public class UserData {
     @NonNull
     @Override
     public String toString() {
-        return "UserData{" +
-            "username='" + username + '\'' +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            ", groupSubscriptions=" + groupSubscriptions +
-            '}';
+        return "UserData{" + "username='" + username + '\'' + ", email='" + email + '\'' + ", password='" + password
+                + '\'' + ", groupSubscriptions=" + groupSubscriptions + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof UserData) {
-            return ((UserData) obj).getUsername().equals(this.username)
-                && ((UserData) obj).getEmail().equals(this.email)
-                && ((UserData) obj).getPassword().equals(this.password)
-                && ((UserData) obj).getGroupSubscriptions().equals(this.groupSubscriptions);
+            return ((UserData) obj).getUsername().equals(this.username) && ((UserData) obj).getEmail().equals(
+                    this.email) && ((UserData) obj).getPassword().equals(this.password) && ((UserData) obj)
+                    .getGroupSubscriptions().equals(this.groupSubscriptions);
         }
         return false;
     }

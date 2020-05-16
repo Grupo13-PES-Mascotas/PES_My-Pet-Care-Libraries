@@ -20,14 +20,14 @@ import static org.pesmypetcare.httptools.utilities.DateTime.convertLocaltoUTC;
  * @author Marc Simó
  */
 public class MealManagerClient {
-    public static final String MEALNAME = "mealName";
+    public static final String MEAL_NAME = "mealName";
     public static final String KCAL = "kcal";
     private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/meal/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
     private static final String PUT = "PUT";
-    private static Gson GSON = new Gson();
+    private static final Gson GSON = new Gson();
     private TaskManager taskManager;
 
     public MealManagerClient() {
@@ -196,7 +196,7 @@ public class MealManagerClient {
      * @throws IllegalArgumentException When an invalid field value is passed
      */
     private void checkCorrectType(String field, Object value) {
-        if (field.equals(MEALNAME) && !(value instanceof String)) {
+        if (field.equals(MEAL_NAME) && !(value instanceof String)) {
             throw new IllegalArgumentException("New value must be a String");
         }
         if (field.equals(KCAL) && !(value instanceof Double)) {

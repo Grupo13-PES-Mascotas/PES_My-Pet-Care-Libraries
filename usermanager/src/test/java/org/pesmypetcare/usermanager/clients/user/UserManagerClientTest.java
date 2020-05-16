@@ -17,8 +17,8 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
-import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.RequestMethod;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -40,8 +40,6 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
  * @author Santiago Del Rey
@@ -68,6 +66,7 @@ public class UserManagerClientTest {
     private StringBuilder json;
     private UserData expected;
     private byte[] image;
+    private Map<String, String> headers;
     private Gson gson;
 
     @Mock
@@ -82,7 +81,6 @@ public class UserManagerClientTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    private Map<String, String> headers;
 
     @Before
     public void setUp() {
