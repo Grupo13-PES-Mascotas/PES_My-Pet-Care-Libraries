@@ -24,7 +24,7 @@ class HttpRequest {
      * @param requestHeaders The request headers
      * @param body The request body
      */
-    public HttpRequest(RequestMethod method, String url, HttpParameter[] parameters, Map<String, String> requestHeaders,
+    HttpRequest(RequestMethod method, String url, HttpParameter[] parameters, Map<String, String> requestHeaders,
             String body) {
         this.method = method;
         if (parameters != null && parameters.length > 0) {

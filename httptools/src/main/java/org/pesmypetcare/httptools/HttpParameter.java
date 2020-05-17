@@ -20,7 +20,7 @@ public class HttpParameter {
     }
 
     /**
-     * Creates an http parameter with a string as value
+     * Creates an http parameter with a string as value.
      *
      * @param name The parameter name
      * @param value The parameter value
@@ -31,7 +31,7 @@ public class HttpParameter {
     }
 
     /**
-     * Creates an http parameter with an integer as value
+     * Creates an http parameter with an integer as value.
      *
      * @param name The parameter name
      * @param value The parameter value
@@ -42,7 +42,7 @@ public class HttpParameter {
     }
 
     /**
-     * Creates an http parameter with an boolean as value
+     * Creates an http parameter with an boolean as value.
      *
      * @param name The parameter name
      * @param value The parameter value
