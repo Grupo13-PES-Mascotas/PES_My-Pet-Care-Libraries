@@ -31,6 +31,9 @@ public class GroupManagerClient {
     private static final String GROUP_ICON_SUFIX = "-icon";
     private final Gson gson;
 
+    /**
+     * Default constructor.
+     */
     public GroupManagerClient() {
         gson = new Gson();
     }
@@ -96,6 +99,13 @@ public class GroupManagerClient {
         return gson.fromJson(resp.asString(), mapType);
     }
 
+    /**
+     * Updates a field of a group.
+     * @param groupName The group name
+     * @param field The field to update
+     * @param newValue The new field value
+     * @throws MyPetCareException When the request fails
+     */
     public void updateField(String groupName, String field, String newValue) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
@@ -105,6 +115,13 @@ public class GroupManagerClient {
         new HttpClient().put(COMMUNITY_BASE_URL, params, null, gson.toJson(map));
     }
 
+    /**
+     * Updates the tags of a group.
+     * @param groupName The group name
+     * @param deletedTags The list of deleted tags
+     * @param newTags The list of new tags
+     * @throws MyPetCareException When the request fails
+     */
     public void updateGroupTags(String groupName, List<String> deletedTags, List<String> newTags)
             throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
@@ -115,6 +132,13 @@ public class GroupManagerClient {
         new HttpClient().put(COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
     }
 
+    /**
+     * Subscribes a user to a group.
+     * @param token The user's personal access token
+     * @param groupName The group name
+     * @param username The user's username
+     * @throws MyPetCareException When the request fails
+     */
     public void subscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
@@ -124,6 +148,13 @@ public class GroupManagerClient {
         new HttpClient().post(COMMUNITY_BASE_URL + "/subscribe", params, headers, null);
     }
 
+    /**
+     * Unsubscribes a user to a group.
+     * @param token The user's personal access token
+     * @param groupName The group name
+     * @param username The user's username
+     * @throws MyPetCareException When the request fails
+     */
     public void unsubscribe(String token, String groupName, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
@@ -133,6 +164,13 @@ public class GroupManagerClient {
         new HttpClient().delete(COMMUNITY_BASE_URL + "/unsubscribe", params, headers, null);
     }
 
+    /**
+     * Updates the icon of a group.
+     * @param token The user's personal access token
+     * @param groupName The group name
+     * @param image The new icon
+     * @throws MyPetCareException When the request fails
+     */
     public void updateGroupIcon(String token, String groupName, byte[] image) throws MyPetCareException {
         ImageData imageData = new ImageData(groupName, image);
         imageData.setImgName(groupName + GROUP_ICON_SUFIX);
@@ -142,6 +180,12 @@ public class GroupManagerClient {
                 .put(IMAGE_STORAGE_BASE_URL + HttpParameter.encode(groupName), null, headers, gson.toJson(imageData));
     }
 
+    /**
+     * Gets the icon of a group.
+     * @param groupName The group name
+     * @return The icon as a byte array
+     * @throws MyPetCareException When the request fails
+     */
     public byte[] getGroupIcon(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("name", groupName + GROUP_ICON_SUFIX);

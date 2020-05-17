@@ -28,12 +28,19 @@ public class ChatManager {
     private ListenerRegistration listener;
     private ChatException exception;
 
+    /**
+     * Default constructor.
+     */
     public ChatManager() {
         db = FirebaseFirestore.getInstance();
         exception = null;
         listener = null;
     }
 
+    /**
+     * Creates a ChatManager with the given instance of Firestore.
+     * @param firestore The Firestore instance
+     */
     public ChatManager(FirebaseFirestore firestore) {
         db = firestore;
         exception = null;
@@ -41,10 +48,11 @@ public class ChatManager {
     }
 
     /**
-     * Creates a chat instance for the forum.
+     * Creates a listener for the forum messages.
      *
-     * @param group The group name
-     * @param forum The forum name
+     * @param group The name of the group where the forum belongs
+     * @param forum The name of the group
+     * @param mutableData The mutable message data
      * @throws ChatException When the chat creation fails
      */
     public void createMessageListener(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
@@ -65,7 +73,7 @@ public class ChatManager {
                         }
                         try {
                             System.out.println("HERE");
-                            getForumId(group, forum, mutableData);
+                            getForumIdAndCreateListener(group, forum, mutableData);
                         } catch (ChatException e) {
                             e.printStackTrace();
                             exception = e;
@@ -88,7 +96,14 @@ public class ChatManager {
         }
     }
 
-    private void getForumId(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
+    /**
+     * Gets the forum ID and creates the listener for its messages.
+     * @param group The name of the group where the forum belongs
+     * @param forum The name of the forum
+     * @param mutableData The mutable message data
+     * @throws ChatException When the creation of the listener fails
+     */
+    private void getForumIdAndCreateListener(String group, String forum, MutableLiveData<MessageDisplay> mutableData)
             throws ChatException {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Path to forum name: " + GROUP_NAMES_PATH + group + "/forum_names/" + forum);

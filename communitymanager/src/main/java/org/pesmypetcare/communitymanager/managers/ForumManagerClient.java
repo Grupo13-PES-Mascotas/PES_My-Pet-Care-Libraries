@@ -30,6 +30,9 @@ public class ForumManagerClient {
     private HttpClient httpClient;
     private final Gson gson;
 
+    /**
+     * Default constructor.
+     */
     public ForumManagerClient() {
         httpClient = new HttpClient();
         gson = new Gson();

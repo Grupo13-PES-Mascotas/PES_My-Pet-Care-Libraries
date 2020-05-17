@@ -15,6 +15,9 @@ import java.util.Objects;
 public class MessageReceiveData extends Message {
     private Blob image;
 
+    /**
+     * Default constructor.
+     */
     public MessageReceiveData() {
     }
 

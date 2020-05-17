@@ -1,5 +1,7 @@
 package org.pesmypetcare.httptools;
 
+import androidx.annotation.NonNull;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Objects;
@@ -11,16 +13,40 @@ public class HttpParameter {
     private String name;
     private String value;
 
+    /**
+     * Default constructor.
+     */
+    private HttpParameter() {
+    }
+
+    /**
+     * Creates an http parameter with a string as value
+     *
+     * @param name The parameter name
+     * @param value The parameter value
+     */
     public HttpParameter(String name, String value) {
         this.name = name;
         this.value = value;
     }
 
+    /**
+     * Creates an http parameter with an integer as value
+     *
+     * @param name The parameter name
+     * @param value The parameter value
+     */
     public HttpParameter(String name, int value) {
         this.name = name;
         this.value = String.valueOf(value);
     }
 
+    /**
+     * Creates an http parameter with an boolean as value
+     *
+     * @param name The parameter name
+     * @param value The parameter value
+     */
     public HttpParameter(String name, boolean value) {
         this.name = name;
         this.value = String.valueOf(value);
@@ -36,6 +62,7 @@ public class HttpParameter {
 
     /**
      * Encodes the given params.
+     *
      * @param parameters The url parameters
      * @return The encoded string
      */
@@ -55,6 +82,7 @@ public class HttpParameter {
 
     /**
      * Encodes the given value.
+     *
      * @param value The value to be encoded
      * @return The encoded string
      */
@@ -72,8 +100,8 @@ public class HttpParameter {
                 builder.append("%2A");
             } else if (focus == '+') {
                 builder.append("%20");
-            } else if (focus == '%' && (i + 1) < encoded.length()
-                && encoded.charAt(i + 1) == '7' && encoded.charAt(i + 2) == 'E') {
+            } else if (focus == '%' && (i + 1) < encoded.length() && encoded.charAt(i + 1) == '7'
+                    && encoded.charAt(i + 2) == 'E') {
                 builder.append('~');
                 i += 2;
             } else {
@@ -105,5 +133,11 @@ public class HttpParameter {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getValue() != null ? getValue().hashCode() : 0);
         return result;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "HttpParameter{" + "name='" + name + '\'' + ", value='" + value + '\'' + '}';
     }
 }

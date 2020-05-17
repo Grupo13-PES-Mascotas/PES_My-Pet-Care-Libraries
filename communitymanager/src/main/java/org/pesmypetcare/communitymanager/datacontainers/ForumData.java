@@ -17,6 +17,12 @@ public class ForumData {
     private List<String> tags;
 
     /**
+     * Default constructor.
+     */
+    private ForumData() {
+    }
+
+    /**
      * Creates a forum data with a name and a creator.
      *
      * @param name The forum name

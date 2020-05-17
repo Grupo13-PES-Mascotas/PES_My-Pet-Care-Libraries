@@ -14,7 +14,10 @@ import java.util.Objects;
 public class MessageSendData extends Message {
     private String encodedImage;
 
-    public MessageSendData() {
+    /**
+     * Default constructor.
+     */
+    private MessageSendData() {
     }
 
     /**

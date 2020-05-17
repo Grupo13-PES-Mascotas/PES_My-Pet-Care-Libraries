@@ -14,6 +14,12 @@ public class ImageData {
     private byte[] img;
 
     /**
+     * Default constructor.
+     */
+    public ImageData() {
+    }
+
+    /**
      * Creates an image data with an uid and an image.
      * @param uid The uid for the image
      * @param img The image as a byte array

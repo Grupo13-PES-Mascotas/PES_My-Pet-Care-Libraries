@@ -18,6 +18,9 @@ public class Message {
     private boolean banned;
     private List<String> likedBy;
 
+    /**
+     * Default constructor.
+     */
     Message() {
     }
 

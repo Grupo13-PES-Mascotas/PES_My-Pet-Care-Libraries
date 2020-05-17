@@ -14,6 +14,12 @@ public class MessageDisplay extends Message {
     private byte[] image;
 
     /**
+     * Default constructor.
+     */
+    public MessageDisplay() {
+    }
+
+    /**
      * Creates a message from message data.
      *
      * @param messageReceiveData The message data

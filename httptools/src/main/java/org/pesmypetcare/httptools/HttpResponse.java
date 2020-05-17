@@ -30,6 +30,18 @@ public class HttpResponse {
     private JSONObject json;
     private JSONArray jsonArray;
 
+    /**
+     * Default constructor.
+     */
+    private HttpResponse() {
+    }
+
+    /**
+     * Creates an http response for the given http connection.
+     *
+     * @param connection The http connection
+     * @throws IOException If an error occurred connecting to the server
+     */
     public HttpResponse(HttpURLConnection connection) throws IOException {
         this.connection = connection;
         statusCode = connection.getResponseCode();
@@ -46,6 +58,11 @@ public class HttpResponse {
         return statusCode;
     }
 
+    /**
+     * Returns the connection response as a stream.
+     *
+     * @return The connection response as stream
+     */
     public InputStream asStream() {
         if (consumed) {
             throw new IllegalStateException("Stream has already been consumed");
@@ -53,6 +70,12 @@ public class HttpResponse {
         return is;
     }
 
+    /**
+     * Returns the connection response as a string.
+     *
+     * @return The connection response as a string
+     * @throws MyPetCareException If an error occurred connecting to the server
+     */
     public String asString() throws MyPetCareException {
         if (null == responseAsString) {
             BufferedReader br = null;
@@ -109,6 +132,12 @@ public class HttpResponse {
         return responseAsString;
     }
 
+    /**
+     * Returns the connection response as a JSONObject.
+     *
+     * @return The connection response as a JSONObject
+     * @throws MyPetCareException If an error occurred connecting to the server
+     */
     public JSONObject asJsonObject() throws MyPetCareException {
         if (json == null) {
             try {
@@ -135,6 +164,12 @@ public class HttpResponse {
         return json;
     }
 
+    /**
+     * Returns the connection response as a JSONArray.
+     *
+     * @return The connection response as a JSONArray
+     * @throws MyPetCareException If an error occurred connecting to the server
+     */
     public JSONArray asJsonArray() throws MyPetCareException {
         if (jsonArray == null) {
             try {

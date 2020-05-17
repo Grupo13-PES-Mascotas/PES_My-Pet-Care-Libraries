@@ -2,6 +2,8 @@ package org.pesmypetcare.httptools;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
@@ -22,26 +24,79 @@ public class HttpClient {
     private static final int CREATED = 201;
     private static final int NO_CONTENT = 204;
 
-    public HttpResponse post(String url, HttpParameter[] params, Map<String, String> headers, String body)
+    /**
+     * Default constructor.
+     */
+    public HttpClient() {
+    }
+
+    /**
+     * Makes a POST request.
+     *
+     * @param url The url of the request
+     * @param params The parameters of the request
+     * @param headers The headers of the request
+     * @param body The body of the request
+     * @return The request response
+     * @throws MyPetCareException When the request fails
+     */
+    public HttpResponse post(@NonNull String url, HttpParameter[] params, Map<String, String> headers, String body)
             throws MyPetCareException {
         return handleRequest(new HttpRequest(RequestMethod.POST, url, params, headers, body));
     }
 
-    public HttpResponse get(String url, HttpParameter[] params, Map<String, String> headers, String body)
+    /**
+     * Makes a GET request.
+     *
+     * @param url The url of the request
+     * @param params The parameters of the request
+     * @param headers The headers of the request
+     * @param body The body of the request
+     * @return The request response
+     * @throws MyPetCareException When the request fails
+     */
+    public HttpResponse get(@NonNull String url, HttpParameter[] params, Map<String, String> headers, String body)
             throws MyPetCareException {
         return handleRequest(new HttpRequest(RequestMethod.GET, url, params, headers, body));
     }
 
-    public HttpResponse put(String url, HttpParameter[] params, Map<String, String> headers, String body)
+    /**
+     * Makes a PUT request.
+     *
+     * @param url The url of the request
+     * @param params The parameters of the request
+     * @param headers The headers of the request
+     * @param body The body of the request
+     * @return The request response
+     * @throws MyPetCareException When the request fails
+     */
+    public HttpResponse put(@NonNull String url, HttpParameter[] params, Map<String, String> headers, String body)
             throws MyPetCareException {
         return handleRequest(new HttpRequest(RequestMethod.PUT, url, params, headers, body));
     }
 
-    public HttpResponse delete(String url, HttpParameter[] params, Map<String, String> headers, String body)
+    /**
+     * Makes a DELETE request.
+     *
+     * @param url The url of the request
+     * @param params The parameters of the request
+     * @param headers The headers of the request
+     * @param body The body of the request
+     * @return The request response
+     * @throws MyPetCareException When the request fails
+     */
+    public HttpResponse delete(@NonNull String url, HttpParameter[] params, Map<String, String> headers, String body)
             throws MyPetCareException {
         return handleRequest(new HttpRequest(RequestMethod.DELETE, url, params, headers, body));
     }
 
+    /**
+     * Handles the connection of an http request.
+     *
+     * @param req The request to handle
+     * @return The request response
+     * @throws MyPetCareException When the request fails
+     */
     private HttpResponse handleRequest(HttpRequest req) throws MyPetCareException {
         HttpResponse res;
         int responseCode = -1;
@@ -68,6 +123,13 @@ public class HttpClient {
         return res;
     }
 
+    /**
+     * Sets the request body for an http connection.
+     *
+     * @param req The http request
+     * @param con The http connection
+     * @throws IOException When the writing of the body fails
+     */
     private void setBody(HttpRequest req, HttpURLConnection con) throws IOException {
         if (req.getBody() != null) {
             con.setRequestProperty("Content-Type", "application/json");
@@ -87,6 +149,12 @@ public class HttpClient {
         }
     }
 
+    /**
+     * Sets the request headers for a http connection.
+     *
+     * @param req The http request
+     * @param con The http connection
+     */
     private void setHeaders(HttpRequest req, HttpURLConnection con) {
         if (req.getRequestHeaders() != null) {
             for (String key : req.getRequestHeaders().keySet()) {

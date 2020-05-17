@@ -11,6 +11,12 @@ public class TagData {
     private List<String> groups;
     private List<String> forums;
 
+    /**
+     * Default constructor.
+     */
+    public TagData() {
+    }
+
     public List<String> getGroups() {
         return groups;
     }

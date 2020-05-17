@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
  * @author Oriol Catalán
  */
 public class UserManagerClient {
-    public static final String USERNAME_PARAMETER = "username";
+    public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
@@ -43,6 +43,9 @@ public class UserManagerClient {
     private HttpClient httpClient;
     private Gson gson;
 
+    /**
+     * Default constructor.
+     */
     public UserManagerClient() {
         taskManager = new TaskManager();
         httpClient = new HttpClient();
@@ -79,7 +82,7 @@ public class UserManagerClient {
      */
     public boolean usernameAlreadyExists(String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(USERNAME_PARAMETER, username);
+        params[0] = new HttpParameter(USERNAME, username);
         HttpResponse response = httpClient.get(BASE_URL + "usernames", params, null, null);
         Type mapType = new TypeToken<HashMap<String, Boolean>>() {
         }.getType();
@@ -232,13 +235,20 @@ public class UserManagerClient {
         return Base64.decode(encodedImage, Base64.DEFAULT);
     }
 
+    /**
+     * Gets the user group subscriptions.
+     *
+     * @param token The user's personal access token
+     * @param username The user's username
+     * @return A list with groups which the user is subscribed to
+     * @throws MyPetCareException When the request fails
+     */
     public List<String> getUserSubscriptions(String token, String username) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(USERNAME_PARAMETER, username);
+        params[0] = new HttpParameter(USERNAME, username);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpResponse res = new HttpClient()
-                .get("https://image-branch-testing.herokuapp.com/users/subscriptions", params, headers, null);
+        HttpResponse res = new HttpClient().get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
         Type listType = TypeToken.getParameterized(List.class, String.class).getType();
         return gson.fromJson(res.asString(), listType);
     }

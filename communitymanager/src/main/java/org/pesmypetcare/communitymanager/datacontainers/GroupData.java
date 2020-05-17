@@ -21,6 +21,12 @@ public class GroupData {
     private Map<String, String> members;
 
     /**
+     * Default constructor.
+     */
+    private GroupData() {
+    }
+
+    /**
      * Creates a group data with the name group, its creator username and its description.
      *
      * @param name The group name
