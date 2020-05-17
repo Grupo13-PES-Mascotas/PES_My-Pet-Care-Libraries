@@ -18,6 +18,7 @@ buildscript {
 }
 
 allprojects {
+
     repositories {
         google()
         jcenter()
@@ -30,7 +31,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-def getProjectList() {
-    subprojects
-}
-

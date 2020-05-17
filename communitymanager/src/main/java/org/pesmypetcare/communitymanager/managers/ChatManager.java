@@ -52,16 +52,19 @@ public class ChatManager {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Path to group name: " + GROUP_NAMES_PATH + group);
         }
+        System.out.println("HERE 1");
         db.document(GROUP_NAMES_PATH + group).get().addOnCompleteListener(task -> {
+            System.out.println("HERE 2");
             if (task.isSuccessful()) {
                 DocumentSnapshot groupDoc = task.getResult();
                 if (groupDoc != null) {
                     if (groupDoc.exists()) {
-                        groupId = (String) groupDoc.get("group");
+                        groupId = groupDoc.getString("group");
                         if (BuildConfig.DEBUG) {
                             Log.d(TAG, "Group ID: " + groupId);
                         }
                         try {
+                            System.out.println("HERE");
                             getForumId(group, forum, mutableData);
                         } catch (ChatException e) {
                             e.printStackTrace();
@@ -95,7 +98,7 @@ public class ChatManager {
                 DocumentSnapshot forumDoc = task.getResult();
                 if (forumDoc != null) {
                     if (forumDoc.exists()) {
-                        forumId = (String) forumDoc.get("forum");
+                        forumId = forumDoc.getString("forum");
                         if (BuildConfig.DEBUG) {
                             Log.d(TAG, "Forum ID: " + forumId);
                         }

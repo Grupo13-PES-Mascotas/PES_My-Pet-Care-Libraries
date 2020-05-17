@@ -33,7 +33,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Create coverage report
-      run: ./gradlew jacocoTestReport
+      run: ./gradlew communityTestReport userTestReport
 
     - name: Send report to Codacy
       run: |
