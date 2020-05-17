@@ -95,7 +95,7 @@ task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testD
     }
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
-                      'android/**/*.*', '**/*Binding.class']
+                      'android/**/*.*', '**/*Binding.class', '**/datacontainers/**']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
     def mainSrc = "${projectDir}/src/main/java"
 
