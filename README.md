@@ -55,4 +55,10 @@ To add all modules:
 ```
 ## Documentation
 Documentation for the current release:
-* [Usermanager Javadoc](https://jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/v1.1.0/javadoc)
+* [Usermanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/usermanager
+/feature~feature_forums_content_CRUD-SNAPSHOT/javadoc/)
+* [Communitymanager Javadoc](https://javadoc.jitpack
+.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/community
+                             /feature~feature_forums_content_CRUD-SNAPSHOT/javadoc/)
+* [Httptools Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/httptools
+                      /feature~feature_forums_content_CRUD-SNAPSHOT/javadoc/)
