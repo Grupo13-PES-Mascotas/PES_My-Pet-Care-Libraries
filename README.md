@@ -60,3 +60,5 @@ Documentation for the current release:
 * [Communitymanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/communitymanager/feature~feature_forums_content_CRUD-SNAPSHOT/javadoc)
 			     
 * [Httptools Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/httptools/feature~feature_forums_content_CRUD-SNAPSHOT/javadoc)
+
+Both Usermanager and Communitymanager libraries need Httptools to work.
