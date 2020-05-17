@@ -11,7 +11,6 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
-import org.pesmypetcare.httptools.RequestMethod;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -44,8 +43,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void createForum(String parentGroup, ForumData forum) throws MyPetCareException {
-        httpClient.request(RequestMethod.POST, COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, null,
-                gson.toJson(forum));
+        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, null, gson.toJson(forum));
     }
 
     /**
@@ -58,8 +56,7 @@ public class ForumManagerClient {
     public void deleteForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
-        httpClient.request(RequestMethod.DELETE, COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null,
-                null);
+        httpClient.delete(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
     }
 
     /**
@@ -73,8 +70,8 @@ public class ForumManagerClient {
     public ForumData getForum(String parentGroup, String forumName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
-        HttpResponse response = httpClient.request(RequestMethod.GET,
-                COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
+        HttpResponse response = httpClient
+                .get(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
         return gson.fromJson(response.asString(), ForumData.class);
     }
 
@@ -86,8 +83,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public List<ForumData> getAllForums(String groupName) throws MyPetCareException {
-        HttpResponse response = httpClient.request(RequestMethod.GET,
-                COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null, null, null);
+        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null, null, null);
         Type listType = TypeToken.getParameterized(List.class, ForumData.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -105,7 +101,7 @@ public class ForumManagerClient {
         params[0] = new HttpParameter("newName", newName);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.request(RequestMethod.PUT, COMMUNITY_BASE_URL + group + "/" + forum, params, null, null);
+        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum, params, null, null);
     }
 
     /**
@@ -124,8 +120,7 @@ public class ForumManagerClient {
         newValue.put("new", newTags);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.request(RequestMethod.PUT, COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, null,
-                gson.toJson(newValue));
+        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, null, gson.toJson(newValue));
     }
 
     /**
@@ -143,8 +138,7 @@ public class ForumManagerClient {
         headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.request(RequestMethod.POST, COMMUNITY_BASE_URL + group + "/" + forum, null, headers,
-                gson.toJson(message));
+        httpClient.post(COMMUNITY_BASE_URL + group + "/" + forum, null, headers, gson.toJson(message));
     }
 
     /**
@@ -166,7 +160,7 @@ public class ForumManagerClient {
         params[1] = new HttpParameter(DATE_PARAMETER, date);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.request(RequestMethod.DELETE, COMMUNITY_BASE_URL + group + "/" + forum, params, headers, null);
+        httpClient.delete(COMMUNITY_BASE_URL + group + "/" + forum, params, headers, null);
     }
 
     /**
@@ -184,8 +178,7 @@ public class ForumManagerClient {
         headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        HttpResponse response = httpClient.request(RequestMethod.GET, BASE_URL + "storage/image/" + group + "/" + forum,
-                null, headers, null);
+        HttpResponse response = httpClient.get(BASE_URL + "storage/image/" + group + "/" + forum, null, headers, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> responseMap = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> images = new HashMap<>();
@@ -218,7 +211,6 @@ public class ForumManagerClient {
         params[3] = new HttpParameter("like", like);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.request(RequestMethod.PUT, COMMUNITY_BASE_URL + group + "/" + forum + "/messages", params, headers,
-                null);
+        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum + "/messages", params, headers, null);
     }
 }

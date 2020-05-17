@@ -7,7 +7,6 @@ import com.google.firebase.firestore.Blob;
 
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /**

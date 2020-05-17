@@ -16,7 +16,6 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
-import org.pesmypetcare.httptools.RequestMethod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -75,32 +73,31 @@ public class ForumManagerClientTest {
 
     @Test
     public void createForum() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), isNull(), anyString())).willReturn(
-                httpResponse);
+        given(httpClient.post(anyString(), isNull(), isNull(), anyString())).willReturn(httpResponse);
 
         client.createForum(parentGroup, forum);
-        verify(httpClient).request(same(RequestMethod.POST), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)),
-                isNull(), isNull(), eq(gson.toJson(forum)));
+        verify(httpClient).post(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), isNull(), isNull(),
+                eq(gson.toJson(forum)));
     }
 
     @Test
     public void deleteForum() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient.delete(anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
 
         client.deleteForum(parentGroup, forumName);
-        verify(httpClient).request(same(RequestMethod.DELETE),
-                eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(), isNull());
+        verify(httpClient)
+                .delete(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(), isNull());
     }
 
     @Test
     public void getForum() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
-        given(httpClient.request(same(RequestMethod.GET), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)),
-                eq(params), isNull(), isNull())).willReturn(httpResponse);
+        given(httpClient
+                .get(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(), isNull()))
+                .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(forum));
 
         ForumData forumData = client.getForum(parentGroup, forumName);
@@ -109,9 +106,8 @@ public class ForumManagerClientTest {
 
     @Test
     public void getAllForums() throws MyPetCareException {
-        given(httpClient
-                .request(same(RequestMethod.GET), eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), isNull(),
-                        isNull(), isNull())).willReturn(httpResponse);
+        given(httpClient.get(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), isNull(), isNull(), isNull()))
+                .willReturn(httpResponse);
         List<ForumData> forums = new ArrayList<>();
         forums.add(forum);
         given(httpResponse.asString()).willReturn(gson.toJson(forums));
@@ -124,12 +120,11 @@ public class ForumManagerClientTest {
         HttpParameter[] params = new HttpParameter[1];
         String newName = "German Shepherds";
         params[0] = new HttpParameter("newName", newName);
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
 
         client.updateName(parentGroup, forumName, newName);
-        verify(httpClient).request(same(RequestMethod.PUT),
-                eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), isNull(), isNull());
+        verify(httpClient).put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), isNull(),
+                isNull());
     }
 
     @Test
@@ -139,45 +134,43 @@ public class ForumManagerClientTest {
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", tags);
         newValue.put("new", tags);
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), isNull(), anyString())).willReturn(
-                httpResponse);
+        given(httpClient.put(anyString(), isNull(), isNull(), anyString())).willReturn(httpResponse);
 
         client.updateTags(parentGroup, forumName, tags, tags);
-        verify(httpClient).request(same(RequestMethod.PUT),
-                eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(), isNull(),
-                eq(gson.toJson(newValue)));
+        verify(httpClient)
+                .put(eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(), isNull(),
+                        eq(gson.toJson(newValue)));
     }
 
     @Test
     public void postMessage() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString())).willReturn(
-                httpResponse);
+        given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
         MessageSendData messageSendData = new MessageSendData(creator, "Hello World!");
         client.postMessage(token, parentGroup, forumName, messageSendData);
-        verify(httpClient).request(same(RequestMethod.POST),
-                eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), isNull(), eq(headers),
-                eq(gson.toJson(messageSendData)));
+        verify(httpClient)
+                .post(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), isNull(), eq(headers),
+                        eq(gson.toJson(messageSendData)));
     }
 
     @Test
     public void deleteMessage() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient.delete(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
         client.deleteMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
         params[1] = new HttpParameter(DATE_PARAMETER, date);
-        verify(httpClient).request(same(RequestMethod.DELETE),
-                eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers), isNull());
+        verify(httpClient)
+                .delete(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers),
+                        isNull());
     }
 
     @Test
     public void getAllPostsImagesFromForum() throws MyPetCareException {
         given(httpClient
-                .request(RequestMethod.GET, BASE_URL + "storage/image/" + groupNameEncoded + "/" + forumNameEncoded,
-                        null, headers, null)).willReturn(httpResponse);
+                .get(BASE_URL + "storage/image/" + groupNameEncoded + "/" + forumNameEncoded, null, headers, null))
+                .willReturn(httpResponse);
         Map<String, String> response = new HashMap<>();
         response.put("key", forumName);
         Map<String, byte[]> images = new HashMap<>();
@@ -190,8 +183,7 @@ public class ForumManagerClientTest {
 
     @Test
     public void likeMessage() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
         client.likeMessage(token, creator, parentGroup, forumName, creator, date, true);
         HttpParameter[] params = new HttpParameter[4];
@@ -199,8 +191,8 @@ public class ForumManagerClientTest {
         params[1] = new HttpParameter(CREATOR_PARAMETER, creator);
         params[2] = new HttpParameter(DATE_PARAMETER, date);
         params[3] = new HttpParameter("like", true);
-        verify(httpClient).request(same(RequestMethod.PUT),
-                eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),
-                eq(headers), isNull());
+        verify(httpClient)
+                .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),
+                        eq(headers), isNull());
     }
 }

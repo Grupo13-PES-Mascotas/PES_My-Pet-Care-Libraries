@@ -17,7 +17,6 @@ import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
-import org.pesmypetcare.httptools.RequestMethod;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
@@ -36,7 +35,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
@@ -106,7 +104,7 @@ public class UserManagerClientTest {
 
     @Test
     public void usernameAlreadyExists() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), isNull(), isNull()))
+        given(httpClient.get(anyString(), any(HttpParameter[].class), isNull(), isNull()))
                 .willReturn(httpResponse);
         Map<String, Boolean> map = new HashMap<>();
         map.put("exists", true);
@@ -175,7 +173,7 @@ public class UserManagerClientTest {
 
     @Test
     public void saveProfileImage() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), anyString())).willReturn(
+        given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(
                 httpResponse);
 
         Map<String, Object> reqData = new HashMap<>();
@@ -183,7 +181,7 @@ public class UserManagerClientTest {
         reqData.put("imgName", "profile-image");
         reqData.put("img", image);
         client.saveProfileImage(ACCESS_TOKEN, USERNAME, image);
-        verify(httpClient).request(same(RequestMethod.PUT), eq(BASE_URL + IMAGES_PATH), isNull(), eq(headers),
+        verify(httpClient).put(eq(BASE_URL + IMAGES_PATH), isNull(), eq(headers),
                 eq(gson.toJson(reqData)));
     }
 
@@ -191,13 +189,13 @@ public class UserManagerClientTest {
     public void downloadProfileImage() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("name", "profile-image");
-        given(httpClient.request(any(RequestMethod.class), anyString(), any(HttpParameter[].class), anyMap(), isNull()))
+        given(httpClient.get(anyString(), any(HttpParameter[].class), anyMap(), isNull()))
                 .willReturn(httpResponse);
         String encodedImage = "icQUSDd7";
         given(httpResponse.asString()).willReturn(encodedImage);
 
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME);
-        verify(httpClient).request(same(RequestMethod.GET), eq(BASE_URL + IMAGES_PATH + HttpParameter.encode(USERNAME)),
+        verify(httpClient).get(eq(BASE_URL + IMAGES_PATH + HttpParameter.encode(USERNAME)),
                 eq(params), eq(headers), isNull());
         assertEquals("Should return the profile image of the user", Base64.decode(encodedImage, Base64.DEFAULT),
                 response);
@@ -205,12 +203,12 @@ public class UserManagerClientTest {
 
     @Test
     public void sendTokenToServer() throws MyPetCareException {
-        given(httpClient.request(any(RequestMethod.class), anyString(), isNull(), anyMap(), isNull())).willReturn(
+        given(httpClient.put(anyString(), isNull(), anyMap(), isNull())).willReturn(
                 httpResponse);
 
         String messagingToken = "sdj3nm9dak";
         headers.put("fcmToken", messagingToken);
         client.sendTokenToServer(ACCESS_TOKEN, messagingToken);
-        verify(httpClient).request(same(RequestMethod.PUT), eq(BASE_URL + "users"), isNull(), eq(headers), isNull());
+        verify(httpClient).put(eq(BASE_URL + "users"), isNull(), eq(headers), isNull());
     }
 }

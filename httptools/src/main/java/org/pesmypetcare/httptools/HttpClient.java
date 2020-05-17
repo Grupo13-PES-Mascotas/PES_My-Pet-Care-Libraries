@@ -22,12 +22,24 @@ public class HttpClient {
     private static final int CREATED = 201;
     private static final int NO_CONTENT = 204;
 
-    public HttpResponse request(RequestMethod method, String url, HttpParameter[] params,
-                                Map<String, String> headers, String body) throws MyPetCareException {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "Request started");
-        }
-        return handleRequest(new HttpRequest(method, url, params, headers, body));
+    public HttpResponse post(String url, HttpParameter[] params, Map<String, String> headers, String body)
+            throws MyPetCareException {
+        return handleRequest(new HttpRequest(RequestMethod.POST, url, params, headers, body));
+    }
+
+    public HttpResponse get(String url, HttpParameter[] params, Map<String, String> headers, String body)
+            throws MyPetCareException {
+        return handleRequest(new HttpRequest(RequestMethod.GET, url, params, headers, body));
+    }
+
+    public HttpResponse put(String url, HttpParameter[] params, Map<String, String> headers, String body)
+            throws MyPetCareException {
+        return handleRequest(new HttpRequest(RequestMethod.PUT, url, params, headers, body));
+    }
+
+    public HttpResponse delete(String url, HttpParameter[] params, Map<String, String> headers, String body)
+            throws MyPetCareException {
+        return handleRequest(new HttpRequest(RequestMethod.DELETE, url, params, headers, body));
     }
 
     private HttpResponse handleRequest(HttpRequest req) throws MyPetCareException {

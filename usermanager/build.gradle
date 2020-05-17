@@ -87,7 +87,6 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-//TODO: Add all modules to report
 task userTestReport(type: JacocoReport, dependsOn: ':usermanager:testDebugUnitTest') {
     reports {
         xml.enabled = true
