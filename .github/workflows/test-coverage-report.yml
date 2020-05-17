@@ -39,5 +39,5 @@ jobs:
       run: |
         export CODACY_PROJECT_TOKEN=${{secrets.CODACY_KEY}}
         bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r communitymanager/build/reports/jacoco/communityTestReport/communityTestReport.xml --partial
-        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r usermanager/build/reports/jacoco/userTestReport/userTestReport.xmluserTestReport.xml --partial
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r usermanager/build/reports/jacoco/userTestReport/userTestReport.xml --partial
         bash <(curl -Ls https://coverage.codacy.com/get.sh) final
