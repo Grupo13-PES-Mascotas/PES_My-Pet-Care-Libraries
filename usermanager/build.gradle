@@ -102,6 +102,25 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
+if (android.productFlavors.size() > 0) {
+    android.libraryVariants.all { variant ->
+        if (variant.name.toLowerCase().contains("debug")) {
+            return
+        }
+
+        def bundleTask = tasks["bundle${variant.name.capitalize()}Aar"]
+
+        artifacts {
+            archives(bundleTask.archivePath) {
+                classifier variant.flavorName
+                builtBy bundleTask
+                name = project.name
+            }
+        }
+
+    }
+}
+
 task userTestReport(type: JacocoReport, dependsOn: ':usermanager:testDevelopDebugUnitTest') {
     reports {
         xml.enabled = true
