@@ -112,10 +112,10 @@ task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testD
 
     def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
                       'android/**/*.*', '**/*Binding.class', '**/datacontainers/**']
-    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/debug/classes", excludes: fileFilter)
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/developDebug/classes", excludes: fileFilter)
     def mainSrc = "${projectDir}/src/main/java"
 
     sourceDirectories.from = files([mainSrc])
     classDirectories.from = files([debugTree])
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+    executionData.from = files("${buildDir}/jacoco/testDevelopDebugUnitTest.exec")
 }
