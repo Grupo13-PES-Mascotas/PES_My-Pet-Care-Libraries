@@ -1,4 +1,4 @@
-name: Build develop aar
+name: Build
 
 on:
   push:
@@ -20,6 +20,13 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
+    - name: Decrypt google-services.json
+      run: |
+        chmod +x ./.github/scripts/decrypt_key.sh
+        ./.github/scripts/decrypt_key.sh
+      env:
+        FIREBASE_PASSPHRASE: ${{ secrets.FIREBASE_PASSPHRASE }}
     
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
@@ -35,4 +42,28 @@ jobs:
       with:
         name: usermanagerlib-release.aar
         path: ./usermanagerlib/build/outputs/aar
+
+    - name: Run communitymanager tests
+      run: ./gradlew :communitymanager:test
+
+    - name: Build communitymanager
+      run: ./gradlew :communitymanager:assembleRelease
+
+    - name: Upload communitymanager
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: communitymanager-release.aar
+        path: ./communitymanager/build/outputs/aar
+
+    - name: Run httptools tests
+      run: ./gradlew :httptools:test
+
+    - name: Build httptools
+      run: ./gradlew :httptools:assembleRelease
+
+    - name: Upload httptools
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: httptools-release.aar
+        path: ./httptools/build/outputs/aar
       

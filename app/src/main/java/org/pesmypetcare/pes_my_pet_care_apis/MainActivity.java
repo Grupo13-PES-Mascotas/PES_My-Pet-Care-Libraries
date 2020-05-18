@@ -5,41 +5,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import org.pesmypetcare.usermanagerlib.clients.FreqTrainingManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.PetCollectionsManagerClient;
-import org.pesmypetcare.usermanagerlib.clients.PetManagerClient;
-import org.pesmypetcare.usermanagerlib.datacontainers.DateTime;
-import org.pesmypetcare.usermanagerlib.datacontainers.ExerciseData;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqTraining;
-import org.pesmypetcare.usermanagerlib.datacontainers.FreqTrainingData;
-import org.pesmypetcare.usermanagerlib.datacontainers.GenderType;
-import org.pesmypetcare.usermanagerlib.datacontainers.IllnessData;
-import org.pesmypetcare.usermanagerlib.datacontainers.IllnessType;
-import org.pesmypetcare.usermanagerlib.datacontainers.MealData;
-import org.pesmypetcare.usermanagerlib.datacontainers.MedicationData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Pet;
-import org.pesmypetcare.usermanagerlib.datacontainers.PetData;
-import org.pesmypetcare.usermanagerlib.datacontainers.SeverityType;
-import org.pesmypetcare.usermanagerlib.datacontainers.Vaccination;
-import org.pesmypetcare.usermanagerlib.datacontainers.VaccinationData;
-import org.pesmypetcare.usermanagerlib.datacontainers.VetVisit;
-import org.pesmypetcare.usermanagerlib.datacontainers.VetVisitData;
-import org.pesmypetcare.usermanagerlib.datacontainers.WashData;
-import org.pesmypetcare.usermanagerlib.datacontainers.Weight;
-import org.pesmypetcare.usermanagerlib.datacontainers.WeightData;
-import org.pesmypetcare.usermanagerlib.exceptions.InvalidFormatException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTC;
-import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertLocaltoUTCString;
-import static org.pesmypetcare.usermanagerlib.datacontainers.DateTime.convertUTCtoLocalString;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
 /**
  * @author Santiago Del Rey
@@ -52,27 +19,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
 
-        String date = "2020-05-14T12:24:22";
-
-        System.out.println(convertUTCtoLocalString(date));
-        System.out.println(convertLocaltoUTCString(date));
-
-
-
-/*
-        try {
-            manager.getAllFreqTrainingsBetween("token", "ZNDUvnyCbyaN8pkpZDr6TQZ8zAD3",
-                    "Ansiano", dateTime1, dateTime2);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
-   // TESTS PET
-/*
+        // TESTS PET
+        /*
         PetManagerClient manager = new PetManagerClient();
-        PetCollectionsManagerClient extraManager = new PetCollectionsManagerClient();
 
         DateTime dateTime1 = null, dateTime2 = null, dateTime3 = null, dateTime4 = null;
 
@@ -102,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         PetData petData = new PetData(GenderType.Female, "Huskie", dateTime1.toString(), "None", "Constant attention"
             , 84.0);
         Pet pet = new Pet("Santiago", petData);
-
- */
 /*
         // Pet creation
         try {
@@ -132,137 +79,30 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 */
+  /*
 
-/*
-        List<LatLng> coordinates = new ArrayList<>();
-        coordinates.add(new LatLng(84, 58));
-        coordinates.add(new LatLng(34, 58));
-        coordinates.add(new LatLng(21, 58));
-
-        ExerciseData exerciseData = new ExerciseData("Planking", "Staying horizontal over a plain surface",
-            "2000-01-08T15:20:30", coordinates);
-        IllnessData illnessData = new IllnessData("2000-01-08T15:20:30", "I'm not feeling so well",
-            IllnessType.Normal, SeverityType.High);
-        MealData mealData = new MealData("Tortilla", 85.45);
-        MedicationData medicationData = new MedicationData(85.0, 45, 36);
-        VaccinationData vaccinationData = new VaccinationData("It was really pleasant");
-        VetVisitData vetVisitData = new VetVisitData("It was really pleasant", "Calle 2, pt. Avenida");
-        WashData washData = new WashData("It smelt so bad", 54);
-        WeightData weightData = new WeightData(54);
-
+        Map<String, Object> body = new HashMap<>();
+        body.put("kcal", 32.2);
+        body.put("mealName", "I can't remember it");
         // Pet collection functions
         try {
-            System.out.println(manager.getFieldCollectionElement("token", "Manolo",
-               "Santiago", PetData.MEALS, dateTime1.toString()));
-            manager.getAllPets("token", "Manolo");
-
-            System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-                "Santiago", PetData.EXERCISES, dateTime4.toString(), exerciseData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.ILLNESSES, dateTime4.toString(), illnessData.getAsMap()));
-            // System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.MEALS, dateTime4.toString(), mealData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.MEDICATIONS, dateTime4.toString()+"-Chloroform", medicationData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.VACCINATIONS, dateTime4.toString(), vaccinationData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.VET_VISITS, dateTime4.toString(), vetVisitData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.WASHES, dateTime4.toString(), washData.getAsMap()));
-            //System.out.println(manager.addFieldCollectionElement("token", "Manolo",
-            //    "Santiago", PetData.WEIGHTS, dateTime4.toString(), weightData.getAsMap()));
-
+            //System.out.println(manager.addFieldCollectionElement("token", "Manolo", "Santiago", PetData.MEALS,
+            // dateTime4.toString(), body));
             //System.out.println(manager.deleteFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime4.toString()));
             //System.out.println(manager.updateFieldCollectionElement("token", "Manolo",
             //    "Santiago", PetData.MEALS, dateTime2.toString(), body));
-            //System.out.println(manager.getFieldCollectionElement("token", "Manolo",
-            //        "Santiago", PetData.MEALS, dateTime2.toString()));
-            //System.out.println(manager.getFieldCollection("token", "Manolo",
-            //    "Santiago", PetData.MEALS));
-            //System.out.println(manager.getFieldCollectionElementsBetweenKeys("token", "Manolo",
-            //    "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
+            System.out.println(manager.getFieldCollectionElement("token", "Manolo",
+                    "Santiago", PetData.MEALS, dateTime2.toString()));
+            System.out.println(manager.getFieldCollection("token", "Manolo",
+                "Santiago", PetData.MEALS));
+            System.out.println(manager.getFieldCollectionElementsBetweenKeys("token", "Manolo",
+                "Santiago", PetData.MEALS, dateTime1.toString(), dateTime2.toString()));
             //System.out.println(manager.deleteFieldCollection("token", "Manolo",
             //    "Santiago", PetData.MEALS));
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
- */
-/*
-        try {
-            extraManager.deleteExercisesPreviousToDate("token", "Manolo", "Santiago",
-                dateTime2.toString());
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-*/
-        // Pet family friendly retrieval functions
-/*
-        try {
-
-            System.out.println("Exercises");
-            System.out.println(extraManager.getAllExercises("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getExercisesBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getExercise("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-            System.out.println("Illnesses");
-            System.out.println(extraManager.getAllIllnesses("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getIllnessesBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getIllness("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-            System.out.println("Meals");
-            System.out.println(extraManager.getAllMeals("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getMealsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getMeal("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-
-            System.out.println("Medications");
-            System.out.println(extraManager.getAllMedications("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getMedicationsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime1.toString()));
-            System.out.println(extraManager.getMedication("token", "Manolo", "Santiago",
-                dateTime4.toString()+"-Chloroform"));
-
-
-            System.out.println("Vaccinations");
-            System.out.println(extraManager.getAllVaccinations("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getVaccinationsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getVaccination("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-
-            System.out.println("VetVisits");
-            System.out.println(extraManager.getAllVetVisits("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getVetVisitsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getVetVisit("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-            System.out.println("Washes");
-            System.out.println(extraManager.getAllWashes("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getWashesBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getWash("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-
-            System.out.println("Weights");
-            System.out.println(extraManager.getAllWeights("token", "Manolo", "Santiago"));
-            System.out.println(extraManager.getWeightsBetween("token", "Manolo", "Santiago",
-                dateTime1.toString(), dateTime2.toString()));
-            System.out.println(extraManager.getWeight("token", "Manolo", "Santiago",
-                dateTime4.toString()));
-        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 */
@@ -310,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             dateTime1 = new DateTime(2016,12,25,13,50,12);
-          
+
         } catch (InvalidFormatException e) {
             e.printStackTrace();
         }
@@ -511,30 +351,53 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-/*
-
         UserManagerClient client = new UserManagerClient();
-        UserData user = new UserData("santi", "santi@mail.com", "123455678");
-        try {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
+                    //System.out.println(img.length);
+                    client.sendTokenToServer("eyJhbGciOiJSUzI1NiIsImtpZCI6ImZjMmM4YmIyNmE3OGM0M2JkODYzNzA1YjNkNzkyMWI0ZTY0MjVkNTQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXBpbnQyMSIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9teS1wZXQtY2FyZS04NTg4MyIsImF1ZCI6Im15LXBldC1jYXJlLTg1ODgzIiwiYXV0aF90aW1lIjoxNTg5NDk5NTQ1LCJ1c2VyX2lkIjoiREljNkZxeUU5R2Jmd3lNbHVVOVg2azl2UVJKMiIsInN1YiI6IkRJYzZGcXlFOUdiZnd5TWx1VTlYNms5dlFSSjIiLCJpYXQiOjE1ODk0OTk1NDUsImV4cCI6MTU4OTUwMzE0NSwiZW1haWwiOiJhbGJlcnQubXlwZXRjYXJlQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFsYmVydC5teXBldGNhcmVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.T9Y2uZd9pCdIaYZIPLqrbaigJvGWyoceAe6LoYEU4twIt54vS1kqwADiTinvO8Z5dbQjiHo_y_UCp2azwCBKRHHczCgjwiF5M111-Ps790croPuiqgQL_9iz5pNJHdKfnbD1FsPuQOlVOzPjffSMACssk2MupBVmEQXe7rnTjxahwcF_cE0HR92P1gcyuIdoEm5vSjcgdKxh3UbDpRlhihPygMT1zuuFVkDc-CgeXAdS33GvR2uN_osfVQIuCt7NA5f88oUi0B9twhRFQQY32RxSBJG4DR7nLM4i84rXj4wifD1_MWA4WN4kZCC_OTCQmtSoqHVnoa0tI1MgrXeo8Q", "c61zZpw4GlE"
+                            + ":APA91bHj1eOAQlFrgVwLoGNiIZsx7yLfc_ljYkRAx7OK5t0e0Pmg9xriuzrpzeFisonFeKS1QDbap4wVe8PX9-D0nfM1Zw0X4ijmm6SEAGzOMOrP0_FInmJHm3aAYTzvgvQHPYjaQZit");
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
             }
             //client.updateField("token", "santi", UserManagerClient.EMAIL, "mynewEmail@mail.com");
             //client.updateField("token", "santi", UserManagerClient.PASSWORD, "safawr32efwrw");
-            //client.updateField("token", "santi", UserManagerClient.USERNAME, "santi2");
+            client.updateField("token", "santi", UserManagerClient.USERNAME, "Santiago");
             //client.deleteUserFromDatabase("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //client.deleteUser("token", "8jzc2Kbz46PWdIb2UMavsLO02UF3");
             //System.out.println(client.getUser("token", "santi"));
             //client.getUser("token", "santi");
             //int code = client.signUp("Caudillo", "11231231", "caudillo@email.com");
             //int code = client.deleteUserFromDatabase("token", "Caudillo");
-            /*System.out.println(code);
-            text.setText(String.valueOf(code));*/
-        //} catch (ExecutionException | InterruptedException | JSONException e) {
-         //   e.printStackTrace();
-        //}
-        /*client.signUp("santi", "123456", "santi@gmail.com");
-        System.out.println("Pasado signup");*/
+            System.out.println(code);
+            text.setText(String.valueOf(code));
+        } catch (ExecutionException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }*/
+        /*PetManagerClient client = new PetManagerClient();
+        Thread thread = new Thread(() -> {
+            try {
+                client.createPetSync("token", "santi",
+                        new Pet("Max", new PetData(GenderType.Male, "Huskie", "2020-04-09T20:34:00", null, null,
+                        null)));
+            } catch (MyPetCareException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            System.out.println("Pasado");
+        });
+        thread.start();*/
+        //System.out.println(client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user));
         /*try {
             System.out.println("MAIN: " + client.getUser("kayle"));
         } catch (ExecutionException | InterruptedException e) {
@@ -569,6 +432,76 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }*/
+
+        //TEST GROUPS
+        /*Thread thread = new Thread(() -> {
+            GroupManagerClient groupManager = new GroupManagerClient();
+            List<String> tags = new ArrayList<>();
+            tags.add("empo");
+            tags.add("empotrador");
+            String groupName = "Prueba 20";
+            GroupData data = new GroupData(groupName, "santi",null, null);
+            try {
+                //groupManager.createGroup(data);
+                //groupManager.deleteGroup(groupName);
+                //groupManager.createGroup(data);
+                System.out.println("Print 1: " + groupManager.getGroup("Beagles"));
+                //System.out.println("Print 2: " + groupManager.getAllGroups());
+                //System.out.println("Print 3: " + groupManager.getAllTags());
+                //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
+                //groupManager.updateField(groupName, "description", "Hola gente estoy doraimio");
+                //groupManager.updateField(groupName, "name", "Probando Cosas");
+                //tags.remove("empo");
+                //List<String> tags2 = new ArrayList<>();
+                //tags2.add("doraimio");
+                //groupManager.updateGroupTags("Probando Cosas", tags, tags2);
+                //groupManager.subscribe("token", "Probando Cosas", "Enric Hernando");
+                //System.out.println("Print 5: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                //groupManager.unsubscribe("token", "Probando Cosas", "Enric Hernando");
+                //System.out.println("Print 6: " + groupManager.getUserSubscriptions("token", "Enric Hernando"));
+                //System.out.println("Print 7: " + groupManager.getAllGroups());
+                //System.out.println("Print 8: " + groupManager.getAllTags());
+                //groupManager.deleteGroup("Probando Cosas");
+                //groupManager.updateGroupIcon("token", "Ansiano", "hola".getBytes());
+                //byte[] img = groupManager.getGroupIcon("Ansiano");
+                //System.out.println(new String(img));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("ACABADO");
+        });
+        thread.start();*/
+        //TEST FORUMS
+        /*Thread thread = new Thread(() -> {
+            ForumManagerClient forumManager = new ForumManagerClient();
+            List<String> tags = new ArrayList<>();
+            tags.add("PES");
+            String groupName1 = "Ansiano";
+            String groupName2 = "Prueba 1";
+            String forumName = "Vamos que nos vamos";
+            String forumName2 = "Peluquerias";
+            ForumData forum = new ForumData(forumName, "santi", tags);
+            ForumData forum2 = new ForumData("Marc me aburro", "santi", tags);
+            Message message = new Message("santi", "Hola");
+            try {
+                //forumManager.createForum(groupName1, form);
+                //forumManager.deleteForum(groupName2, forumName);
+                //forumManager.createForum(groupName1, forum2);
+                //System.out.println(forumManager.getForum(groupName1, forumName));
+                //System.out.println(forumManager.getAllForums(groupName1));
+                //forumManager.updateName(groupName1, forumName, forumName2);
+                //forumManager.updateTags(groupName1, forumName2, tags, null);
+                //forumManager.postMessage("token", groupName1, forumName2, message);
+                //System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
+                //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
+                forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
+                        "2020-04-24T08:22:12", true);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("FIN");
+        });
+        thread.start();*/
     }
 }
 
