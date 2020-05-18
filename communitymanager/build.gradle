@@ -104,7 +104,7 @@ artifacts {
     archives sourcesJar
 }
 
-task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDebugUnitTest') {
+task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDevelopDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true

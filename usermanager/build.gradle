@@ -102,7 +102,7 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-task userTestReport(type: JacocoReport, dependsOn: ':usermanager:testDebugUnitTest') {
+task userTestReport(type: JacocoReport, dependsOn: ':usermanager:testDevelopDebugUnitTest') {
     reports {
         xml.enabled = true
         html.enabled = true
