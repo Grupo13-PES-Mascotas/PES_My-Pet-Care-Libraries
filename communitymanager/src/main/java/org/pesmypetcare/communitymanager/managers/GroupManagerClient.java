@@ -5,6 +5,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.datacontainers.ImageData;
 import org.pesmypetcare.communitymanager.datacontainers.TagData;
@@ -22,8 +23,9 @@ import java.util.Map;
  * @author Santiago Del Rey
  */
 public class GroupManagerClient {
-    private static final String IMAGE_STORAGE_BASE_URL = "https://image-branch-testing.herokuapp.com/storage/image/";
-    private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community";
+    private static final String BASE_URL = BuildConfig.URL;
+    private static final String IMAGE_STORAGE_BASE_URL = BASE_URL + "storage/image/";
+    private static final String COMMUNITY_BASE_URL = BASE_URL + "community";
     private static final String GROUP_KEY = "group";
     private static final String TAGS_PATH = "/tags";
     private static final String USERNAME_PARAMETER = "username";

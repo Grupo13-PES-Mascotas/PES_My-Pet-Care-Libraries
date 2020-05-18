@@ -5,6 +5,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
 import org.pesmypetcare.httptools.HttpClient;
@@ -21,8 +22,8 @@ import java.util.Map;
  * @author Santiago Del Rey
  */
 public class ForumManagerClient {
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
-    private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private static final String BASE_URL = BuildConfig.URL;
+    private static final String COMMUNITY_BASE_URL = BASE_URL + "community/";
     private static final String TOKEN_HEADER = "token";
     private final String FORUM_PARAMETER = "forum";
     private final String CREATOR_PARAMETER = "creator";

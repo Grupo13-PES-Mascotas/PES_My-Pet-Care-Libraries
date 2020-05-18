@@ -18,6 +18,7 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -45,8 +46,7 @@ import static org.mockito.Mockito.verify;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserManagerClientTest {
-    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String BASE_URL = BuildConfig.URL;
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String EMAIL = "user@email.com";

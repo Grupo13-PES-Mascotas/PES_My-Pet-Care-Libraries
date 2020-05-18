@@ -25,6 +25,7 @@ android {
     }
 
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -34,6 +35,21 @@ android {
             testCoverageEnabled true
         }
     }
+
+    defaultPublishConfig "productionRelease"
+
+    flavorDimensions "level"
+    productFlavors {
+        production {
+            dimension "level"
+            buildConfigField 'String', 'URL', productionUrl
+        }
+        develop {
+            dimension "level"
+            buildConfigField 'String', 'URL', developUrl
+        }
+    }
+
     lintOptions {
         abortOnError false
     }

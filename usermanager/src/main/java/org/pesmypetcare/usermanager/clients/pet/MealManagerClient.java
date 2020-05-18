@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Meal;
 import org.pesmypetcare.usermanager.datacontainers.pet.MealData;
@@ -22,7 +23,7 @@ import static org.pesmypetcare.httptools.utilities.DateTime.convertLocaltoUTC;
 public class MealManagerClient {
     public static final String MEAL_NAME = "mealName";
     public static final String KCAL = "kcal";
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/meal/";
+    private static final String BASE_URL = BuildConfig.URL + "meal/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";

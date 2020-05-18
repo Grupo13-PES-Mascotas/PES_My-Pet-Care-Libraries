@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Pet;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetCollectionField;
@@ -29,7 +30,7 @@ public class PetManagerClient {
     public static final String PATHOLOGIES = "pathologies";
     public static final String RECOMMENDED_KCAL = "recommendedKcal";
     public static final String NEEDS = "needs";
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = BuildConfig.URL;
     private static final String PETS_PATH = "pet/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PETS_PICTURES_PATH = "/pets/";

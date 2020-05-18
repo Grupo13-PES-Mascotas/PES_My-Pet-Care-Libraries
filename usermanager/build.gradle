@@ -32,6 +32,21 @@ android {
             testCoverageEnabled true
         }
     }
+
+    defaultPublishConfig "productionRelease"
+
+    flavorDimensions "level"
+    productFlavors {
+        production {
+            dimension "level"
+            buildConfigField 'String', 'URL', productionUrl
+        }
+        develop {
+            dimension "level"
+            buildConfigField 'String', 'URL', developUrl
+        }
+    }
+
     lintOptions {
         abortOnError false
     }

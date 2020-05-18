@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.KcalAverage;
 import org.pesmypetcare.usermanager.datacontainers.pet.KcalAverageData;
@@ -17,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 import static org.pesmypetcare.httptools.utilities.DateTime.convertLocaltoUTC;
 
 public class KcalAverageManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/kcalAverage/";
+    private static final String BASE_URL = BuildConfig.URL + "kcalAverage/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
