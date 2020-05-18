@@ -31,17 +31,17 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
-    - name: Run usermanagerlib tests
-      run: ./gradlew :usermanagerlib:test
+    - name: Run usermanager tests
+      run: ./gradlew :usermanager:test
     
-    - name: Build usermanagerlib
-      run: ./gradlew :usermanagerlib:assembleRelease
+    - name: Build usermanager
+      run: ./gradlew :usermanager:assembleRelease
     
-    - name: Upload usermanagerlib
+    - name: Upload usermanager
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: usermanagerlib-release.aar
-        path: ./usermanagerlib/build/outputs/aar
+        name: usermanager-release.aar
+        path: ./usermanager/build/outputs/aar
 
     - name: Run communitymanager tests
       run: ./gradlew :communitymanager:test
