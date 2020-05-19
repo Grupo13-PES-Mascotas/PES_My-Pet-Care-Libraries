@@ -32,12 +32,14 @@ public class GroupManagerClient {
     private static final String TOKEN_HEADER = "token";
     private static final String GROUP_ICON_SUFIX = "-icon";
     private final Gson gson;
+    private HttpClient httpClient;
 
     /**
      * Default constructor.
      */
     public GroupManagerClient() {
         gson = new Gson();
+        httpClient = new HttpClient();
     }
 
     /**
@@ -47,7 +49,7 @@ public class GroupManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void createGroup(GroupData group) throws MyPetCareException {
-        new HttpClient().post(COMMUNITY_BASE_URL, null, null, gson.toJson(group));
+        httpClient.post(COMMUNITY_BASE_URL, null, null, gson.toJson(group));
     }
 
     /**
@@ -59,7 +61,7 @@ public class GroupManagerClient {
     public void deleteGroup(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
-        new HttpClient().delete(COMMUNITY_BASE_URL, params, null, null);
+        httpClient.delete(COMMUNITY_BASE_URL, params, null, null);
     }
 
     /**
@@ -72,7 +74,7 @@ public class GroupManagerClient {
     public GroupData getGroup(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
-        HttpResponse response = new HttpClient().get(COMMUNITY_BASE_URL, params, null, null);
+        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL, params, null, null);
         return gson.fromJson(response.asString(), GroupData.class);
     }
 
@@ -83,9 +85,8 @@ public class GroupManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public List<GroupData> getAllGroups() throws MyPetCareException {
-        HttpResponse response = new HttpClient().get(COMMUNITY_BASE_URL, null, null, null);
+        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL, null, null, null);
         Type listType = TypeToken.getParameterized(List.class, GroupData.class).getType();
-        System.out.println(response.asString());
         return gson.fromJson(response.asString(), listType);
     }
 
@@ -96,13 +97,14 @@ public class GroupManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public Map<String, TagData> getAllTags() throws MyPetCareException {
-        HttpResponse resp = new HttpClient().get(COMMUNITY_BASE_URL + TAGS_PATH, null, null, null);
+        HttpResponse resp = httpClient.get(COMMUNITY_BASE_URL + TAGS_PATH, null, null, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, TagData.class).getType();
         return gson.fromJson(resp.asString(), mapType);
     }
 
     /**
      * Updates a field of a group.
+     *
      * @param groupName The group name
      * @param field The field to update
      * @param newValue The new field value
@@ -114,11 +116,12 @@ public class GroupManagerClient {
         params[1] = new HttpParameter("field", field);
         Map<String, String> map = new HashMap<>();
         map.put("value", newValue);
-        new HttpClient().put(COMMUNITY_BASE_URL, params, null, gson.toJson(map));
+        httpClient.put(COMMUNITY_BASE_URL, params, null, gson.toJson(map));
     }
 
     /**
      * Updates the tags of a group.
+     *
      * @param groupName The group name
      * @param deletedTags The list of deleted tags
      * @param newTags The list of new tags
@@ -131,11 +134,12 @@ public class GroupManagerClient {
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
-        new HttpClient().put(COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
+        httpClient.put(COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
     }
 
     /**
      * Subscribes a user to a group.
+     *
      * @param token The user's personal access token
      * @param groupName The group name
      * @param username The user's username
@@ -147,11 +151,12 @@ public class GroupManagerClient {
         params[1] = new HttpParameter(USERNAME_PARAMETER, username);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        new HttpClient().post(COMMUNITY_BASE_URL + "/subscribe", params, headers, null);
+        httpClient.post(COMMUNITY_BASE_URL + "/subscribe", params, headers, null);
     }
 
     /**
      * Unsubscribes a user to a group.
+     *
      * @param token The user's personal access token
      * @param groupName The group name
      * @param username The user's username
@@ -163,11 +168,12 @@ public class GroupManagerClient {
         params[1] = new HttpParameter(USERNAME_PARAMETER, username);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        new HttpClient().delete(COMMUNITY_BASE_URL + "/unsubscribe", params, headers, null);
+        httpClient.delete(COMMUNITY_BASE_URL + "/unsubscribe", params, headers, null);
     }
 
     /**
      * Updates the icon of a group.
+     *
      * @param token The user's personal access token
      * @param groupName The group name
      * @param image The new icon
@@ -178,12 +184,12 @@ public class GroupManagerClient {
         imageData.setImgName(groupName + GROUP_ICON_SUFIX);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        new HttpClient()
-                .put(IMAGE_STORAGE_BASE_URL + HttpParameter.encode(groupName), null, headers, gson.toJson(imageData));
+        httpClient.put(IMAGE_STORAGE_BASE_URL + HttpParameter.encode(groupName), null, headers, gson.toJson(imageData));
     }
 
     /**
      * Gets the icon of a group.
+     *
      * @param groupName The group name
      * @return The icon as a byte array
      * @throws MyPetCareException When the request fails
@@ -191,7 +197,7 @@ public class GroupManagerClient {
     public byte[] getGroupIcon(String groupName) throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("name", groupName + GROUP_ICON_SUFIX);
-        HttpResponse response = new HttpClient()
+        HttpResponse response = httpClient
                 .get(IMAGE_STORAGE_BASE_URL + "groups/" + HttpParameter.encode(groupName), params, null, null);
         return Base64.decode(response.asString(), Base64.DEFAULT);
     }

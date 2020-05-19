@@ -46,9 +46,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation project(path: ':usermanager')
-    implementation project(path: ':communitymanager')
-    implementation project(path: ':httptools')
+    //implementation project(path: ':usermanager')
+    //implementation project(path: ':communitymanager')
+    //implementation project(path: ':httptools')
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.3.3'
     testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
@@ -60,4 +60,5 @@ dependencies {
     androidTestUtil 'androidx.test:orchestrator:1.2.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.github.Grupo13-PES-Mascotas:PES_My-Pet-Care-Libraries:5be5d66844'
 }

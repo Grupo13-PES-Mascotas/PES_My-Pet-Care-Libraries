@@ -5,8 +5,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+
+import java.util.List;
 
 /**
  * @author Santiago Del Rey
@@ -351,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
         // TESTS USER
 
 
-        UserManagerClient client = new UserManagerClient();
+        /*UserManagerClient client = new UserManagerClient();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -365,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        thread.start();
+        thread.start();*/
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);

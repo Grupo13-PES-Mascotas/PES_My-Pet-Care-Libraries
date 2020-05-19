@@ -248,7 +248,7 @@ public class UserManagerClient {
         params[0] = new HttpParameter(USERNAME, username);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpResponse res = new HttpClient().get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
+        HttpResponse res = httpClient.get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
         Type listType = TypeToken.getParameterized(List.class, String.class).getType();
         return gson.fromJson(res.asString(), listType);
     }
