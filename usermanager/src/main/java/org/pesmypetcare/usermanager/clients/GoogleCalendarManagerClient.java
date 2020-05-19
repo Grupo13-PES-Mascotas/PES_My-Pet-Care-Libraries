@@ -3,6 +3,7 @@ package org.pesmypetcare.usermanager.clients;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.EventData;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.concurrent.ExecutionException;
  * @author Marc Simó
  */
 public class GoogleCalendarManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/calendar/";
+    private static final String BASE_URL = BuildConfig.URL + "calendar/";
     private static final String EVENT = "event/";
     private static final String POST = "POST";
     private static final String GET = "GET";

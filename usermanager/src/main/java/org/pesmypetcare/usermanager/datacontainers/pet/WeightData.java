@@ -9,18 +9,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WeightData {
-    private Double weight;
+    private Double value;
 
-    public WeightData(double weight) {
-        this.weight = weight;
+    public WeightData(double value) {
+        this.value = value;
     }
 
     /**
      * Returns the value of the weight.
      * @return value of the weight
      */
-    public Double getWeight() {
-        return weight;
+    public Double getValue() {
+        return value;
     }
 
     /**
@@ -29,7 +29,7 @@ public class WeightData {
      */
     public Map<String, Object> getAsMap() {
         Map<String, Object> response = new HashMap<>();
-        response.put("value", weight);
+        response.put("value", value);
         return response;
     }
 
@@ -39,7 +39,7 @@ public class WeightData {
      */
     public JSONObject buildWeightJson() {
         Map<String, String> reqData = new HashMap<>();
-        reqData.put("weight", Double.toString(weight));
+        reqData.put("weight", Double.toString(value));
         return new JSONObject(reqData);
     }
 
@@ -47,14 +47,14 @@ public class WeightData {
     @Override
     public String toString() {
         return "{"
-                + ", weight=" + weight
+                + ", weight=" + value
                 + '}';
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof WeightData) {
-            return ((WeightData) obj).getWeight().equals(this.getWeight());
+            return ((WeightData) obj).getValue().equals(this.getValue());
         }
         return false;
     }

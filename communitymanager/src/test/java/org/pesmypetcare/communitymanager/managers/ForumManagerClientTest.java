@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.pesmypetcare.communitymanager.BuildConfig;
 import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.MessageSendData;
 import org.pesmypetcare.httptools.HttpClient;
@@ -33,8 +34,8 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForumManagerClientTest {
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
-    private static final String COMMUNITY_BASE_URL = "https://image-branch-testing.herokuapp.com/community/";
+    private static final String BASE_URL = BuildConfig.URL;
+    private static final String COMMUNITY_BASE_URL = BASE_URL + "community/";
     private static final String FORUM_PARAMETER = "forum";
     private static final String CREATOR_PARAMETER = "creator";
     private static final String DATE_PARAMETER = "date";

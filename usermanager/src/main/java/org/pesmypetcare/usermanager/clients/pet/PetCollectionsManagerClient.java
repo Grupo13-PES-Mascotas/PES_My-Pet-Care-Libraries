@@ -3,6 +3,7 @@ package org.pesmypetcare.usermanager.clients.pet;
 import com.google.gson.Gson;
 
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Exercise;
 import org.pesmypetcare.usermanager.datacontainers.pet.ExerciseData;
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutionException;
  * @author Marc Simó
  */
 public class PetCollectionsManagerClient {
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
+    private static final String BASE_URL = BuildConfig.URL;
     private static final String PETS_PATH = "pet/";
     private static final String EXERCISES_PATH = "/collection/exercises";
     private static final String ILLNESSES_PATH = "/collection/illnesses";

@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
@@ -29,8 +30,7 @@ public class UserManagerClient {
     public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-    //private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/";
-    private static final String BASE_URL = "https://image-branch-testing.herokuapp.com/";
+    private static final String BASE_URL = BuildConfig.URL;
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
     private static final String PUT = "PUT";
@@ -248,7 +248,7 @@ public class UserManagerClient {
         params[0] = new HttpParameter(USERNAME, username);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpResponse res = new HttpClient().get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
+        HttpResponse res = httpClient.get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
         Type listType = TypeToken.getParameterized(List.class, String.class).getType();
         return gson.fromJson(res.asString(), listType);
     }

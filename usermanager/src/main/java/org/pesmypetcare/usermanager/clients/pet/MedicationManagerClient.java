@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Medication;
 import org.pesmypetcare.usermanager.datacontainers.pet.MedicationData;
@@ -18,7 +19,7 @@ public class MedicationManagerClient {
     private static final String QUANTITY = "quantity";
     private static final String DURATION = "duration";
     private static final String PERIODICITY = "periodicity";
-    private static final String BASE_URL = "https://pes-my-pet-care.herokuapp.com/medication/";
+    private static final String BASE_URL = BuildConfig.URL + "medication/";
     private static final String POST = "POST";
     private static final String GET = "GET";
     private static final String DELETE = "DELETE";
