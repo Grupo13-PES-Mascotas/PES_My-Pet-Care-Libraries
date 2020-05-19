@@ -50,14 +50,13 @@ public class GroupManagerClientTest {
     private static final String GROUP_KEY = "group";
     private static final String TAGS_PATH = "/tags";
     private static final String USERNAME_PARAMETER = "username";
-    private static final String TOKEN_HEADER = "token";
     private static final String GROUP_ICON_SUFIX = "-icon";
     private static String group;
     private static String creator;
     private static String token;
     private static String groupJson;
     private static String groupNameEncoded;
-    private static String date;
+    private static String tag;
     private static GroupData groupData;
     private static Gson gson;
     private static Map<String, String> tokenHeader;
@@ -78,12 +77,12 @@ public class GroupManagerClientTest {
         creator = "John";
         token = "token";
         groupNameEncoded = HttpParameter.encode(group);
-        groupData = new GroupData(group, creator, "This is a group", Arrays.asList("dogs", "huskies"));
+        tag = "dogs";
+        groupData = new GroupData(group, creator, "This is a group", Arrays.asList(tag, "huskies"));
         tokenHeader = new HashMap<>();
         tokenHeader.put(token, token);
-        date = "2020-05-12";
         groupJson = gson.toJson(groupData);
-        groupList = Collections.singletonList("Dogs");
+        groupList = Collections.singletonList(group);
     }
 
     @Test
@@ -133,7 +132,7 @@ public class GroupManagerClientTest {
                 .willReturn(httpResponse);
 
         Map<String, TagData> tags = new HashMap<>();
-        tags.put("dogs", new TagData(groupList, true));
+        tags.put(tag, new TagData(groupList, true));
         given(httpResponse.asString()).willReturn(gson.toJson(tags));
         Map<String, TagData> response = client.getAllTags();
         assertEquals("Should return all the existing tags.", tags, response);
@@ -209,10 +208,12 @@ public class GroupManagerClientTest {
     public void getGroupIcon() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("name", group + GROUP_ICON_SUFIX);
-        given(httpClient.get(eq(IMAGE_STORAGE_BASE_URL + "groups/" + groupNameEncoded), eq(params), isNull(), isNull())).willReturn(httpResponse);
-        given(httpResponse.asString()).willReturn("icQUSDd7");
+        given(httpClient.get(eq(IMAGE_STORAGE_BASE_URL + "groups/" + groupNameEncoded), eq(params), isNull(), isNull()))
+                .willReturn(httpResponse);
+        String encodedImage = "icQUSDd7";
+        given(httpResponse.asString()).willReturn(encodedImage);
         mockStatic(Base64.class);
-        given(Base64.decode("icQUSDd7", Base64.DEFAULT)).willReturn(group.getBytes());
+        given(Base64.decode(encodedImage, Base64.DEFAULT)).willReturn(group.getBytes());
 
         byte[] img = client.getGroupIcon(group);
         assertArrayEquals("Should return the group icon.", group.getBytes(), img);

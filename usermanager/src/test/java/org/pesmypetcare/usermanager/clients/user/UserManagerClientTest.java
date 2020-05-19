@@ -92,7 +92,7 @@ public class UserManagerClientTest {
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();
         headers = new HashMap<>();
-        headers.put("token", ACCESS_TOKEN);
+        headers.put(TOKEN_HEADER, ACCESS_TOKEN);
     }
 
     @Test
