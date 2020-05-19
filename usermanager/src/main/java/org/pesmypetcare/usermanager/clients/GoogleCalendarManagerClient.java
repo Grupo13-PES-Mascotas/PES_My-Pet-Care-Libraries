@@ -111,29 +111,6 @@ public class GoogleCalendarManagerClient {
     }
 
     /**
-     * Retrieves an Event in a specified Google Calendar.
-     * @param accessToken oauth2 token needed to access the Google Calendar
-     * @param owner Name of the owner of the pet
-     * @param petName Name of the pet the calendar belongs to
-     * @param eventId Id of the event to retrieve with key
-     * @return Event retrieved
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
-     */
-    @Deprecated
-    public EventData getEvent(String accessToken, String owner, String petName, String eventId)
-        throws ExecutionException, InterruptedException {
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put("eventId", eventId);
-        JSONObject reqJson = new JSONObject(reqData);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
-        return gson.fromJson(response.toString(), EventData.class);
-    }
-
-    /**
      * Updates an Event in a specified Google Calendar.
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet

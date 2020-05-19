@@ -70,35 +70,6 @@ public class PetManagerClient {
     }
 
     /**
-     * Creates a pet entry in the data base for the user specified.
-     * @param accessToken The personal access token for the account
-     * @param username The user's username
-     * @param petName The pet's name
-     * @param gender The pet's gender
-     * @param breed The pet's breed
-     * @param birthday The pet's birthday
-     * @param needs The pet's needs
-     * @param pathologies The pet's pathologies
-     * @param recKcal The pet's recommended Kcal
-     */
-    @Deprecated
-    public void createPet(String accessToken, String username, String petName, String gender, String
-            breed, String birthday, String needs, String pathologies, double recKcal) {
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(NAME_FIELD, petName);
-        reqData.put(GENDER, gender);
-        reqData.put(BREED, breed);
-        reqData.put(BIRTH, birthday);
-        reqData.put(PATHOLOGIES, pathologies);
-        reqData.put(NEEDS, needs);
-        reqData.put(RECOMMENDED_KCAL, Double.toString(recKcal));
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(POST);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName, accessToken);
-    }
-
-    /**
      * Returns the data of a pet.
      * @param accessToken The personal access token for the account
      * @param username The pet's owner

@@ -165,40 +165,6 @@ public class UserManagerClient {
     }
 
     /**
-     * Method called by the client to update the user's password.
-     *
-     * @param accessToken The personal access token for the account
-     * @param username The username of which we want to update
-     * @param newPassword The new value of password
-     */
-    @Deprecated
-    public void updatePassword(String accessToken, String username, String newPassword) {
-        taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(PASSWORD, newPassword);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/password", accessToken);
-    }
-
-    /**
-     * Method called by the client to update the user's email.
-     *
-     * @param accessToken The personal access token for the account
-     * @param username The username of which we want to update
-     * @param newEmail The new value of email
-     */
-    @Deprecated
-    public void updateEmail(String accessToken, String username, String newEmail) {
-        taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(EMAIL, newEmail);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        taskManager.execute(BASE_URL + USERS_PATH + username + "/update/email", accessToken);
-    }
-
-    /**
      * Saves the image given as the profile image.
      *
      * @param accessToken The personal access token for the account

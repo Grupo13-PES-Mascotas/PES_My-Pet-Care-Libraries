@@ -122,17 +122,6 @@ public class GoogleCalendarManagerClientTest {
     }
 
     @Test
-    public void getEvent() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(jsonEventData);
-
-        EventData response = client.getEvent(ACCESS_TOKEN, owner, petName, eventId);
-        assertEquals("Should return Event", eventData, response);
-
-    }
-
-    @Test
     public void updateEvent() throws ExecutionException, InterruptedException {
         given(taskManager.resetTaskManager()).willReturn(taskManager);
         given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
