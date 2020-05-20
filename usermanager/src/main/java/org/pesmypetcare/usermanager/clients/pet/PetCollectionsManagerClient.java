@@ -53,6 +53,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified exercises from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -64,8 +65,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + EXERCISES_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -82,6 +83,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the exercises done by the pet between the initial and final date including both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -92,14 +94,14 @@ public class PetCollectionsManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Exercise> getExercisesBetween(String accessToken, String username, String petName, String key1,
-            String key2)
-            throws ExecutionException, InterruptedException {
+            String key2) throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + EXERCISES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH + SLASH + key1 + SLASH + key2,
+                accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -116,6 +118,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a exercise identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -129,8 +132,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + EXERCISES_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), ExerciseData.class);
         }
@@ -139,6 +143,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Deletes all the exercises with a date previous to the specified one.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -147,19 +152,20 @@ public class PetCollectionsManagerClient {
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteExercisesPreviousToDate(String accessToken, String username, String petName,
-            String date)
+    public int deleteExercisesPreviousToDate(String accessToken, String username, String petName, String date)
             throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(date);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/fullcollection/exercises/" + date, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/fullcollection/exercises/" + date,
+                        accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Gets the data from all the specified illnesses from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -171,8 +177,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + ILLNESSES_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -189,6 +195,7 @@ public class PetCollectionsManagerClient {
     /**
      * Gets the data from all the illnesses acquired by the pet between the initial and final date including both of
      * them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -199,14 +206,14 @@ public class PetCollectionsManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Illness> getIllnessesBetween(String accessToken, String username, String petName, String key1,
-            String key2)
-            throws ExecutionException, InterruptedException {
+            String key2) throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + ILLNESSES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH + SLASH + key1 + SLASH + key2,
+                accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -222,6 +229,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets an illness identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -235,8 +243,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + ILLNESSES_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), IllnessData.class);
         }
@@ -245,6 +254,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified meals from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -256,8 +266,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEALS_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -273,6 +283,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the meals eaten by the pet between the initial and final date including both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -288,8 +299,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEALS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH + SLASH + key1 + SLASH + key2,
+                        accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -305,6 +317,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a meal identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -318,8 +331,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEALS_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), MealData.class);
         }
@@ -328,6 +342,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified washes from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -339,8 +354,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WASHES_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -356,6 +371,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the washes eaten by the pet between the initial and final date including both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -371,8 +387,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WASHES_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH + SLASH + key1 + SLASH + key2,
+                        accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -388,6 +405,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a wash identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -401,8 +419,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WASHES_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), WashData.class);
         }
@@ -411,6 +430,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified weights from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -422,8 +442,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WEIGHTS_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -439,6 +459,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the weights added between the initial and final date including both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -454,8 +475,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WEIGHTS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH + SLASH + key1 + SLASH + key2,
+                        accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -471,6 +493,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a weight identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -484,8 +507,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + WEIGHTS_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), WeightData.class);
         }
@@ -494,6 +518,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified medications from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -505,8 +530,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEDICATIONS_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -523,6 +548,7 @@ public class PetCollectionsManagerClient {
     /**
      * Gets the data from all the medications consumed by the pet between the initial and final date including
      * both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -533,16 +559,16 @@ public class PetCollectionsManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Medication> getMedicationsBetween(String accessToken, String username, String petName, String key1,
-            String key2)
-            throws ExecutionException, InterruptedException {
+            String key2) throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         DateTime date2 = DateTime.Builder.buildFullString(key2);
         date2.addSecond();
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEDICATIONS_PATH + SLASH + key1 + SLASH + date2.toString(), accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH + SLASH + key1 + SLASH + date2
+                        .toString(), accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -558,6 +584,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a medication identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -571,8 +598,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDatePlusNameFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + MEDICATIONS_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH + SLASH + key,
+                        accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), MedicationData.class);
         }
@@ -581,6 +609,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified vaccinations from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -592,8 +621,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VACCINATIONS_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -610,6 +639,7 @@ public class PetCollectionsManagerClient {
     /**
      * Gets the data from all the vaccinations done to the pet between the initial and final date including both of
      * them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -620,14 +650,14 @@ public class PetCollectionsManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Vaccination> getVaccinationsBetween(String accessToken, String username, String petName, String key1,
-            String key2)
-            throws ExecutionException, InterruptedException {
+            String key2) throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VACCINATIONS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH + SLASH + key1 + SLASH + key2,
+                accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -643,6 +673,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a vaccination identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -656,8 +687,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VACCINATIONS_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH + SLASH + key,
+                        accessToken).get();
         if (response != null) {
             return GSON.fromJson(response.toString(), VaccinationData.class);
         }
@@ -666,6 +698,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the specified vet visits from the database identified by its pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -677,8 +710,8 @@ public class PetCollectionsManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VET_VISITS_PATH, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH, accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -694,6 +727,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets the data from all the vet visits done by the pet between the initial and final date including both of them.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -704,14 +738,14 @@ public class PetCollectionsManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<VetVisit> getVetVisitsBetween(String accessToken, String username, String petName, String key1,
-            String key2)
-            throws ExecutionException, InterruptedException {
+            String key2) throws ExecutionException, InterruptedException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VET_VISITS_PATH + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH + SLASH + key1 + SLASH + key2,
+                accessToken).get();
         if (responseNullOrEmpty(response)) {
             return new ArrayList<>();
         }
@@ -727,6 +761,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Gets a vet visit identified by its pet and date.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -740,8 +775,9 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(key);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + VET_VISITS_PATH + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH + SLASH + key, accessToken)
+                .get();
         if (response != null) {
             return GSON.fromJson(response.toString(), VetVisitData.class);
         }
@@ -750,6 +786,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Splits the Json response obtained from a get collection.
+     *
      * @param response StringBuilder containing the response
      * @return A basic array containing the response split
      */
@@ -760,6 +797,7 @@ public class PetCollectionsManagerClient {
 
     /**
      * Check wether the Json response obtained is null or empty.
+     *
      * @param response Json response obtained
      * @return True if response is null or empty, false otherwise
      */

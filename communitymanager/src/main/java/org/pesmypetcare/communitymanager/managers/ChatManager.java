@@ -1,9 +1,12 @@
 package org.pesmypetcare.communitymanager.managers;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -31,14 +34,18 @@ public class ChatManager {
     /**
      * Default constructor.
      */
-    public ChatManager() {
-        db = FirebaseFirestore.getInstance();
+    public ChatManager(Context context) {
+        FirebaseOptions.Builder builder = new FirebaseOptions.Builder()
+                .setApplicationId(BuildConfig.FIREBASE_APPLICATION_ID).setApiKey(BuildConfig.API_KEY)
+                .setDatabaseUrl(BuildConfig.DATABASE_URL).setStorageBucket(BuildConfig.STORAGE_BUCKET);
+        db = FirebaseFirestore.getInstance(FirebaseApp.initializeApp(context, builder.build()));
         exception = null;
         listener = null;
     }
 
     /**
      * Creates a ChatManager with the given instance of Firestore.
+     *
      * @param firestore The Firestore instance
      */
     public ChatManager(FirebaseFirestore firestore) {
@@ -98,6 +105,7 @@ public class ChatManager {
 
     /**
      * Gets the forum ID and creates the listener for its messages.
+     *
      * @param group The name of the group where the forum belongs
      * @param forum The name of the forum
      * @param mutableData The mutable message data
@@ -151,8 +159,8 @@ public class ChatManager {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "Path to messages: " + "groups/" + groupId + "/forums/" + forumId + "/messages");
         }
-        Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages").orderBy("publicationDate",
-                Query.Direction.DESCENDING);
+        Query query = db.collection("groups/" + groupId + "/forums/" + forumId + "/messages")
+                .orderBy("publicationDate", Query.Direction.DESCENDING);
         listener = query.addSnapshotListener((queryDocumentSnapshots, e) -> {
             if (e != null) {
                 exception = new ChatException("Error creating the listener", e);

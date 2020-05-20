@@ -28,6 +28,7 @@ jobs:
         ./.github/scripts/decrypt_key.sh
       env:
         FIREBASE_PASSPHRASE: ${{ secrets.FIREBASE_PASSPHRASE }}
+        PROPERTIES_PASSPHRASE: ${{ secrets.PROPERTIES_PASSPHRASE }}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
