@@ -1,4 +1,4 @@
 /build
 
 google-services.json
-gradle.properties
+/gradle.properties

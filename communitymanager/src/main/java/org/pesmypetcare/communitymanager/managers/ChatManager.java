@@ -25,6 +25,7 @@ import java.io.IOException;
 public class ChatManager {
     private static final String TAG = "ChatManager";
     private static final String GROUP_NAMES_PATH = "groups_names/";
+    private static FirebaseApp firebaseApp;
     private FirebaseFirestore db;
     private String groupId;
     private String forumId;
@@ -35,10 +36,13 @@ public class ChatManager {
      * Default constructor.
      */
     public ChatManager(Context context) {
-        FirebaseOptions.Builder builder = new FirebaseOptions.Builder()
-                .setApplicationId(BuildConfig.FIREBASE_APPLICATION_ID).setApiKey(BuildConfig.API_KEY)
-                .setDatabaseUrl(BuildConfig.DATABASE_URL).setStorageBucket(BuildConfig.STORAGE_BUCKET);
-        db = FirebaseFirestore.getInstance(FirebaseApp.initializeApp(context, builder.build()));
+        if (firebaseApp == null) {
+            FirebaseOptions.Builder builder = new FirebaseOptions.Builder()
+                    .setApplicationId(BuildConfig.FIREBASE_APPLICATION_ID).setApiKey(BuildConfig.API_KEY)
+                    .setDatabaseUrl(BuildConfig.DATABASE_URL).setStorageBucket(BuildConfig.STORAGE_BUCKET);
+            firebaseApp = FirebaseApp.initializeApp(context, builder.build());
+        }
+        db = FirebaseFirestore.getInstance(firebaseApp);
         exception = null;
         listener = null;
     }
