@@ -2,6 +2,9 @@ name: Generate test coverage report
 
 on:
   push:
+    branches-ignore: 
+      - develop
+      - master
   pull_request:
     types: [opened, closed]
     branches: 
@@ -14,16 +17,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
+    - name: Decrypt google-services.json
+      run: |
+        chmod +x ./.github/scripts/decrypt_key.sh
+        ./.github/scripts/decrypt_key.sh
+      env:
+        FIREBASE_PASSPHRASE: ${{ secrets.FIREBASE_PASSPHRASE }}
+        PROPERTIES_PASSPHRASE: ${{ secrets.PROPERTIES_PASSPHRASE }}
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
     - name: Create coverage report
-      run: ./gradlew jacocoTestReport
+      run: ./gradlew communityTestReport userTestReport
+
     - name: Send report to Codacy
       run: |
         export CODACY_PROJECT_TOKEN=${{secrets.CODACY_KEY}}
-        bash <(curl -Ls https://coverage.codacy.com/get.sh)
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r communitymanager/build/reports/jacoco/communityTestReport/communityTestReport.xml --partial
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Java -r usermanager/build/reports/jacoco/userTestReport/userTestReport.xml --partial
+        bash <(curl -Ls https://coverage.codacy.com/get.sh) final

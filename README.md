@@ -1,7 +1,7 @@
 # Pes_My-Pet-Care-Libraries
-A software project from FIB (Facultat d'Informàtica de Barcelona)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e4eba67e1aca4bc6853f7ce45475a3df)](https://www.codacy.com/gh/Grupo13-PES-Mascotas/PES_My-Pet-Care-API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Grupo13-PES-Mascotas/PES_My-Pet-Care-API&amp;utm_campaign=Badge_Grade)	[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/e4eba67e1aca4bc6853f7ce45475a3df)](https://www.codacy.com/gh/Grupo13-PES-Mascotas/PES_My-Pet-Care-API?utm_source=github.com&utm_medium=referral&utm_content=Grupo13-PES-Mascotas/PES_My-Pet-Care-API&utm_campaign=Badge_Coverage)	[![Release](https://jitpack.io/v/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries.svg)](https://jitpack.io/#Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e4eba67e1aca4bc6853f7ce45475a3df)](https://www.codacy.com/gh/Grupo13-PES-Mascotas/PES_My-Pet-Care-API?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Grupo13-PES-Mascotas/PES_My-Pet-Care-API&amp;utm_campaign=Badge_Grade)	[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/e4eba67e1aca4bc6853f7ce45475a3df)](https://www.codacy.com/gh/Grupo13-PES-Mascotas/PES_My-Pet-Care-API?utm_source=github.com&utm_medium=referral&utm_content=Grupo13-PES-Mascotas/PES_My-Pet-Care-API&utm_campaign=Badge_Coverage)	[![Release](https://jitpack.io/v/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries.svg)](https://jitpack.io/#Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries) ![Build](https://github.com/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/workflows/Build/badge.svg)
 
+A software project from FIB (Facultat d'Informàtica de Barcelona
 ## Download
 
 ### Gradle:
@@ -55,4 +55,11 @@ To add all modules:
 ```
 ## Documentation
 Documentation for the current release:
-* [Usermanager Javadoc](https://jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/v1.1.0/javadoc)
+
+* [Usermanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/usermanager/v2.0.0/javadoc)
+
+* [Communitymanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/communitymanager/v2.0.0/javadoc)
+			     
+* [Httptools Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/httptools/v2.0.0/javadoc)
+
+Both Usermanager and Communitymanager libraries need Httptools to work.

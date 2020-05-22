@@ -1,0 +1,151 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'jacoco'
+
+group = 'com.github.Grupo13-PES-Mascotas'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 29
+        //TODO: Add automatic versioning from git
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    buildTypes {
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            testCoverageEnabled false
+        }
+        debug {
+            testCoverageEnabled true
+        }
+    }
+
+    defaultPublishConfig "productionRelease"
+
+    flavorDimensions "level"
+    productFlavors {
+        production {
+            dimension "level"
+            buildConfigField 'String', 'URL', productionUrl
+            buildConfigField 'String', 'FIREBASE_APPLICATION_ID', production_application_id
+            buildConfigField 'String', 'API_KEY', production_api_key
+            buildConfigField 'String', 'DATABASE_URL', production_database_url
+            buildConfigField 'String', 'STORAGE_BUCKET', production_storage_bucket
+        }
+        develop {
+            dimension "level"
+            buildConfigField 'String', 'URL', developUrl
+            buildConfigField 'String', 'FIREBASE_APPLICATION_ID', develop_application_id
+            buildConfigField 'String', 'API_KEY', develop_api_key
+            buildConfigField 'String', 'DATABASE_URL', develop_database_url
+            buildConfigField 'String', 'STORAGE_BUCKET', develop_storage_bucket
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+    }
+
+}
+
+jacoco {
+    toolVersion '0.8.5'
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation project(path: ':httptools')
+    implementation 'com.google.firebase:firebase-firestore:21.4.3'
+    implementation 'com.google.firebase:firebase-analytics:17.4.1'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.mockito:mockito-core:3.3.3'
+    testImplementation group: 'org.powermock', name: 'powermock-module-junit4', version: '2.0.7'
+    testImplementation group: 'org.powermock', name: 'powermock-api-mockito2', version: '2.0.7'
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task javadoc(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+if (android.productFlavors.size() > 0) {
+    android.libraryVariants.all { variant ->
+        if (variant.name.toLowerCase().contains("debug")) {
+            return
+        }
+
+        def bundleTask = tasks["bundle${variant.name.capitalize()}Aar"]
+
+        artifacts {
+            archives(bundleTask.archivePath) {
+                classifier variant.flavorName
+                builtBy bundleTask
+                name = project.name
+            }
+        }
+
+    }
+}
+
+task communityTestReport(type: JacocoReport, dependsOn: ':communitymanager:testDevelopDebugUnitTest') {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*',
+                      'android/**/*.*', '**/*Binding.class', '**/datacontainers/**', '**/ChatModel.class',
+                      '**/ChatException.class']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/javac/developDebug/classes", excludes: fileFilter)
+    def mainSrc = "${projectDir}/src/main/java"
+
+    sourceDirectories.from = files([mainSrc])
+    classDirectories.from = files([debugTree])
+    executionData.from = files("${buildDir}/jacoco/testDevelopDebugUnitTest.exec")
+}

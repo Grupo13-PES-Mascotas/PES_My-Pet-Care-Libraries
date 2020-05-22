@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="app" target="1.8" />
-      <module name="usermanagerlib" target="1.8" />
+      <module name="usermanager" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
