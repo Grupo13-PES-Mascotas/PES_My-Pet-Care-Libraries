@@ -24,12 +24,7 @@ import java.util.concurrent.ExecutionException;
  * @author Marc Simó & Oriol Catalán
  */
 public class PetManagerClient {
-    public static final String GENDER = "gender";
-    public static final String BIRTH = "birth";
-    public static final String BREED = "breed";
-    public static final String PATHOLOGIES = "pathologies";
     public static final String RECOMMENDED_KCAL = "recommendedKcal";
-    public static final String NEEDS = "needs";
     private static final String BASE_URL = BuildConfig.URL;
     private static final String PETS_PATH = "pet/";
     private static final String IMAGES_PATH = "storage/image/";
@@ -41,7 +36,6 @@ public class PetManagerClient {
     private static final String POST = "POST";
     private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
-    private static final String NAME_FIELD = "name";
     private final Gson GSON = new Gson();
     private TaskManager taskManager;
 
@@ -51,6 +45,7 @@ public class PetManagerClient {
 
     /**
      * Creates a pet entry in the data base for the user specified.
+     *
      * @param accessToken The personal access token for the account
      * @param username The user's username
      * @param pet The pet's name
@@ -58,19 +53,19 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int createPet(String accessToken, String username, Pet pet)
-            throws ExecutionException, InterruptedException {
+    public int createPet(String accessToken, String username, Pet pet) throws ExecutionException, InterruptedException {
         JSONObject reqJson = Pet.buildPetJsonObject(pet.getBody());
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + pet.getName(), accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + pet.getName(), accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Returns the data of a pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner
      * @param petName The pet's name
@@ -78,12 +73,11 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pet fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public PetData getPet(String accessToken, String username,
-            String petName) throws ExecutionException, InterruptedException {
+    public PetData getPet(String accessToken, String username, String petName)
+            throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName,
-                accessToken).get();
+        StringBuilder json = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName, accessToken).get();
         if (json != null) {
             return GSON.fromJson(json.toString(), PetData.class);
         }
@@ -92,18 +86,17 @@ public class PetManagerClient {
 
     /**
      * Returns all the pets of the user.
+     *
      * @param accessToken The personal access token for the account
      * @param username The user's username
      * @return All the pets of the user
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Pet> getAllPets(String accessToken, String username) throws ExecutionException,
-            InterruptedException {
+    public List<Pet> getAllPets(String accessToken, String username) throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username,
-                accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username, accessToken).get();
         if (response == null) {
             return new ArrayList<>();
         } else if (response.length() <= 2) {
@@ -122,6 +115,7 @@ public class PetManagerClient {
 
     /**
      * Deletes a pet of the specified user.
+     *
      * @param accessToken The personal access token for the account
      * @param username The user's username
      * @param petName The pet's name
@@ -133,13 +127,14 @@ public class PetManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH + petName, accessToken)
+                .get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Deletes all pets of the specified user.
+     *
      * @param accessToken The personal access token for the account
      * @param username The user's username
      * @return The response code
@@ -155,6 +150,7 @@ public class PetManagerClient {
 
     /**
      * Gets the value for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -168,8 +164,8 @@ public class PetManagerClient {
         PetData.checkSimpleField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/simple/" + field, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/simple/" + field, accessToken).get();
         if (response == null) {
             return null;
         }
@@ -186,6 +182,7 @@ public class PetManagerClient {
 
     /**
      * Updates de gender of a pet.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -195,8 +192,7 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int updateSimpleField(String accessToken, String username, String petName, String field,
-            Object newValue)
+    public int updateSimpleField(String accessToken, String username, String petName, String field, Object newValue)
             throws ExecutionException, InterruptedException {
         PetData.checkSimpleFieldAndValues(field, newValue);
         taskManager = taskManager.resetTaskManager();
@@ -204,14 +200,15 @@ public class PetManagerClient {
         reqData.put(VALUE_KEY, newValue);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/simple/" + field, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/simple/" + field, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
 
     /**
      * Deletes the map for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -224,13 +221,14 @@ public class PetManagerClient {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field, accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Gets the elements for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -244,8 +242,8 @@ public class PetManagerClient {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field, accessToken).get();
         if (response == null) {
             return new ArrayList<>();
         } else if (response.length() <= 2) {
@@ -265,6 +263,7 @@ public class PetManagerClient {
 
     /**
      * Gets all the elements between the keys from the database for the specified field.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -276,14 +275,13 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public List<PetCollectionField> getFieldCollectionElementsBetweenKeys(String accessToken, String username,
-            String petName, String field,
-            String key1, String key2)
-            throws ExecutionException, InterruptedException {
+            String petName, String field, String key1, String key2) throws ExecutionException, InterruptedException {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field + SLASH + key1 + SLASH + key2, accessToken).get();
+        StringBuilder response = taskManager.execute(
+                BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field + SLASH + key1 + SLASH
+                        + key2, accessToken).get();
         if (response == null) {
             return new ArrayList<>();
         } else if (response.length() <= 2) {
@@ -302,6 +300,7 @@ public class PetManagerClient {
 
     /**
      * Adds an element to the map for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -312,20 +311,21 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the pets fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int addFieldCollectionElement(String accessToken, String username, String petName, String field,
-            String key, Map<String, Object> body)
-            throws ExecutionException, InterruptedException {
+    public int addFieldCollectionElement(String accessToken, String username, String petName, String field, String key,
+            Map<String, Object> body) throws ExecutionException, InterruptedException {
         PetData.checkCollectionKeyAndBody(field, key, body);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(POST);
         taskManager.setReqBody(new JSONObject(body));
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field + SLASH + key,
+                        accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Deletes an element from the map for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -334,18 +334,20 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteFieldCollectionElement(String accessToken, String username, String petName,
-            String field, String key) throws ExecutionException, InterruptedException {
+    public int deleteFieldCollectionElement(String accessToken, String username, String petName, String field,
+            String key) throws ExecutionException, InterruptedException {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field + SLASH + key,
+                        accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Updates an element from the map for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -356,19 +358,20 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public int updateFieldCollectionElement(String accessToken, String username, String petName, String field,
-            String key, Map<String, Object> body)
-            throws ExecutionException, InterruptedException {
+            String key, Map<String, Object> body) throws ExecutionException, InterruptedException {
         PetData.checkCollectionKeyAndBody(field, key, body);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(body));
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field + SLASH + key,
+                        accessToken).get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Gets an element from the map for the specified field of the pet on the database.
+     *
      * @param accessToken The personal access token for the account
      * @param username The pet's owner username
      * @param petName The pet's name
@@ -379,15 +382,16 @@ public class PetManagerClient {
      * @throws InterruptedException When the retrieval is interrupted
      */
     public Map<String, Object> getFieldCollectionElement(String accessToken, String username, String petName,
-            String field, String key)
-            throws ExecutionException, InterruptedException {
+            String field, String key) throws ExecutionException, InterruptedException {
         PetData.checkCollectionField(field);
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + PETS_PATH + username + SLASH
-                + petName + "/collection/" + field + SLASH + key, accessToken).get();
+        StringBuilder response = taskManager
+                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/collection/" + field + SLASH + key,
+                        accessToken).get();
         if (response != null) {
-            Type type = new TypeToken<Map<String, Object>>(){}.getType();
+            Type type = new TypeToken<Map<String, Object>>() {
+            }.getType();
             return GSON.fromJson(response.toString(), type);
         }
         return null;
@@ -395,6 +399,7 @@ public class PetManagerClient {
 
     /**
      * Saves the image given as the profile image.
+     *
      * @param accessToken The personal access token for the account
      * @param userId The user unique identifier
      * @param petName The pet's name
@@ -412,13 +417,14 @@ public class PetManagerClient {
         reqData.put("img", image);
         taskManager.setTaskId(PUT);
         taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder response = taskManager.execute(BASE_URL + IMAGES_PATH + userId
-                + PETS_PICTURES_PATH, accessToken).get();
+        StringBuilder response = taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
+                .get();
         return Integer.parseInt(response.toString());
     }
 
     /**
      * Downloads profile image of the specified user.
+     *
      * @param accessToken The personal access token for the account
      * @param userId The owner's unique identifier
      * @param petName The pet's name
@@ -426,19 +432,19 @@ public class PetManagerClient {
      * @throws ExecutionException When the retrieval of the user fails
      * @throws InterruptedException When the retrieval is interrupted
      */
-    public byte[] downloadProfileImage(String accessToken,
-            String userId, String petName)
+    public byte[] downloadProfileImage(String accessToken, String userId, String petName)
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
         StringBuilder json = taskManager
-                .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH + petName
-                        + PROFILE_IMAGE_NAME, accessToken).get();
+                .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH + petName + PROFILE_IMAGE_NAME,
+                        accessToken).get();
         return Base64.decode(json.toString(), Base64.DEFAULT);
     }
 
     /**
      * Downloads all profile images of the user's pets.
+     *
      * @param accessToken The personal access token for the account
      * @param userId The owner's unique identifier
      * @return A map with all profile images of the user's pets
@@ -449,14 +455,14 @@ public class PetManagerClient {
             throws ExecutionException, InterruptedException {
         taskManager = taskManager.resetTaskManager();
         taskManager.setTaskId(GET);
-        StringBuilder json = taskManager
-                .execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
+        StringBuilder json = taskManager.execute(BASE_URL + IMAGES_PATH + userId + PETS_PICTURES_PATH, accessToken)
                 .get();
         if (json == null) {
             return new HashMap<>();
         }
         Gson gson = new Gson();
-        Type mapType = new TypeToken<Map<String, String>>() { }.getType();
+        Type mapType = new TypeToken<Map<String, String>>() {
+        }.getType();
         Map<String, String> response = gson.fromJson(json.toString(), mapType);
         Map<String, byte[]> result = new HashMap<>();
         for (String key : response.keySet()) {

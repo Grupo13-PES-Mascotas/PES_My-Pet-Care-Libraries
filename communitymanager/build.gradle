@@ -43,10 +43,18 @@ android {
         production {
             dimension "level"
             buildConfigField 'String', 'URL', productionUrl
+            buildConfigField 'String', 'FIREBASE_APPLICATION_ID', production_application_id
+            buildConfigField 'String', 'API_KEY', production_api_key
+            buildConfigField 'String', 'DATABASE_URL', production_database_url
+            buildConfigField 'String', 'STORAGE_BUCKET', production_storage_bucket
         }
         develop {
             dimension "level"
             buildConfigField 'String', 'URL', developUrl
+            buildConfigField 'String', 'FIREBASE_APPLICATION_ID', develop_application_id
+            buildConfigField 'String', 'API_KEY', develop_api_key
+            buildConfigField 'String', 'DATABASE_URL', develop_database_url
+            buildConfigField 'String', 'STORAGE_BUCKET', develop_storage_bucket
         }
     }
 

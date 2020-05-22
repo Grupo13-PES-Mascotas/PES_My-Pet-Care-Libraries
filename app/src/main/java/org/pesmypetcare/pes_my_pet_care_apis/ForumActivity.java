@@ -18,7 +18,7 @@ public class ForumActivity extends AppCompatActivity {
         final ChatModel viewModel = new ViewModelProvider(this).get(ChatModel.class);
         viewModel.getMessage().observe(this, System.out::println);
         try {
-            viewModel.doAction("Beagles", "testing 2");
+            viewModel.doAction(getApplicationContext(), "Beagles", "testing 2");
         } catch (ChatException e) {
             e.printStackTrace();
         }
