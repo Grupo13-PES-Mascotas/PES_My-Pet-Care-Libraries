@@ -24,12 +24,7 @@ import java.util.concurrent.ExecutionException;
  * @author Marc Simó & Oriol Catalán
  */
 public class PetManagerClient {
-    public static final String GENDER = "gender";
-    public static final String BIRTH = "birth";
-    public static final String BREED = "breed";
-    public static final String PATHOLOGIES = "pathologies";
     public static final String RECOMMENDED_KCAL = "recommendedKcal";
-    public static final String NEEDS = "needs";
     private static final String BASE_URL = BuildConfig.URL;
     private static final String PETS_PATH = "pet/";
     private static final String IMAGES_PATH = "storage/image/";
@@ -41,7 +36,6 @@ public class PetManagerClient {
     private static final String POST = "POST";
     private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
-    private static final String NAME_FIELD = "name";
     private final Gson GSON = new Gson();
     private TaskManager taskManager;
 

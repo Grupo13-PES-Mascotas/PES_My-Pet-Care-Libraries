@@ -31,7 +31,6 @@ public class GoogleCalendarManagerClientTest {
     private EventData eventData;
     private List<EventData> eventDataList;
     private String eventId;
-    private StringBuilder jsonEventData;
     private StringBuilder jsonAllEvents;
 
     @Mock
@@ -53,17 +52,6 @@ public class GoogleCalendarManagerClientTest {
             "2020-02-13T10:30:00", "2020-02-13T12:30:00");
         eventDataList = new ArrayList<>();
         eventDataList.add(eventData);
-        jsonEventData = new StringBuilder("{\n"
-            + "  \"id\": \"eventId\",\n"
-            + "  \"summary\":\"My summary\",\n"
-            + "  \"location\": \"My location\",\n"
-            + "  \"description\": \"My description\",\n"
-            + "  \"color\": \"5\",\n"
-            + "  \"emailReminderMinutes\": 80,\n"
-            + "  \"repetitionInterval\": 14,\n"
-            + "  \"startDate\": \"2020-02-13T10:30:00\",\n"
-            + "  \"endDate\": \"2020-02-13T12:30:00\"\n"
-            + "}");
         jsonAllEvents = new StringBuilder("[\n"
             + "  {\n"
             + "    \"id\": \"eventId\",\n"
