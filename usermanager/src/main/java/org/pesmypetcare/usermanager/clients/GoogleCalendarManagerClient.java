@@ -1,16 +1,19 @@
 package org.pesmypetcare.usermanager.clients;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
+import org.pesmypetcare.httptools.HttpClient;
+import org.pesmypetcare.httptools.HttpParameter;
+import org.pesmypetcare.httptools.HttpResponse;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.EventData;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Marc Simó
@@ -18,137 +21,110 @@ import java.util.concurrent.ExecutionException;
 public class GoogleCalendarManagerClient {
     private static final String BASE_URL = BuildConfig.URL + "calendar/";
     private static final String EVENT = "event/";
-    private static final String POST = "POST";
-    private static final String GET = "GET";
-    private static final String DELETE = "DELETE";
-    private static final String PUT = "PUT";
     private static Gson gson = new Gson();
-    private TaskManager taskManager;
+    private HttpClient httpClient;
+    private Map<String, String> httpHeaders;
 
     public GoogleCalendarManagerClient() {
-        taskManager = new TaskManager();
+        httpClient = new HttpClient();
+        httpHeaders = new HashMap<>();
     }
 
     /**
      * Creates a Secondary Google Calendar in the account specified by the accessToken.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar is created for
-     * @return The response code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int createSecondaryCalendar(String accessToken, String owner, String petName)
-        throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(POST);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName, accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void createSecondaryCalendar(String accessToken, String owner, String petName) throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        httpClient.post(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
+                null);
     }
 
     /**
      * Deletes a Secondary Google Calendar in the account specified by the accessToken.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
-     * @return The response code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int deleteSecondaryCalendar(String accessToken, String owner, String petName)
-        throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName, accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void deleteSecondaryCalendar(String accessToken, String owner, String petName) throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        httpClient
+                .delete(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
+                        null);
     }
 
     /**
      * Returns all Calendar Events from a specified Calendar.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
      * @return List containing all the Events from the specified Calendar
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
     public List<EventData> getAllEventsFromCalendar(String accessToken, String owner, String petName)
-        throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(BASE_URL + owner + "/" + petName, accessToken).get();
-        List<EventData> eventList = new ArrayList<>();
-        if (response.length() > 2) {
-            String jsonArray = response.substring(1, response.length() - 1);
-            String[] events = jsonArray.split(",\\{");
-            eventList.add(gson.fromJson(events[0], EventData.class));
-            for (int i = 1; i < events.length; i++) {
-                events[i] = "{" + events[i];
-                eventList.add(gson.fromJson(events[i], EventData.class));
-            }
-        }
-        return eventList;
+            throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
+                        null);
+        Type listType = TypeToken.getParameterized(List.class, EventData.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
      * Creates an Event in a specified Google Calendar.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
      * @param eventData Event to create
-     * @return The response code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int createEvent(String accessToken, String owner, String petName, EventData eventData)
-        throws ExecutionException, InterruptedException {
-        JSONObject reqJson = eventData.buildJson();
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(POST);
-        taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void createEvent(String accessToken, String owner, String petName, EventData eventData)
+            throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        httpClient.post(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
+                httpHeaders, gson.toJson(eventData));
     }
 
     /**
      * Updates an Event in a specified Google Calendar.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
      * @param eventData New Event that overwrites the past event with the same id
-     * @return The response code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int updateEvent(String accessToken, String owner, String petName, EventData eventData)
-        throws ExecutionException, InterruptedException {
-        JSONObject reqJson = eventData.buildJson();
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void updateEvent(String accessToken, String owner, String petName, EventData eventData)
+            throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        httpClient.put(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
+                httpHeaders, gson.toJson(eventData));
     }
 
     /**
      * Deletes an Event in a specified Google Calendar.
+     *
      * @param accessToken oauth2 token needed to access the Google Calendar
      * @param owner Name of the owner of the pet
      * @param petName Name of the pet the calendar belongs to
      * @param eventId Id of the event to delete with key
-     * @return The response code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int deleteEvent(String accessToken, String owner, String petName, String eventId)
-        throws ExecutionException, InterruptedException {
+    public void deleteEvent(String accessToken, String owner, String petName, String eventId)
+            throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
         Map<String, String> reqData = new HashMap<>();
         reqData.put("eventId", eventId);
-        JSONObject reqJson = new JSONObject(reqData);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(DELETE);
-        taskManager.setReqBody(reqJson);
-        StringBuilder response = taskManager.execute(BASE_URL + EVENT + owner + "/" + petName, accessToken).get();
-        return Integer.parseInt(response.toString());
+        httpClient.delete(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
+                httpHeaders, gson.toJson(reqData));
     }
 }

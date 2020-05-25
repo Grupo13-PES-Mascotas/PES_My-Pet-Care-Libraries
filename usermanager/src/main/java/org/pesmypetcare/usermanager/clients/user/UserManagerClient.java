@@ -6,14 +6,11 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
-import org.pesmypetcare.usermanager.clients.TaskManager;
+import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 
 import java.lang.reflect.Type;
@@ -21,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Oriol Catalán
@@ -33,22 +29,19 @@ public class UserManagerClient {
     private static final String BASE_URL = BuildConfig.URL;
     private static final String USERS_PATH = "users/";
     private static final String IMAGES_PATH = "storage/image/";
-    private static final String PUT = "PUT";
-    private static final String GET = "GET";
-    private static final String DELETE = "DELETE";
     private static final String UID_FIELD = "uid";
     private static final String TOKEN_HEADER = "token";
     private static final String USER_PROFILE_IMAGE_NAME = "profile-image";
-    private TaskManager taskManager;
     private HttpClient httpClient;
+    private Map<String, String> httpHeaders;
     private Gson gson;
 
     /**
      * Default constructor.
      */
     public UserManagerClient() {
-        taskManager = new TaskManager();
         httpClient = new HttpClient();
+        httpHeaders = new HashMap<>();
         gson = new Gson();
     }
 
@@ -57,20 +50,13 @@ public class UserManagerClient {
      *
      * @param uid The user's unique identifier
      * @param data The user data object that contains the user's username, email and password
-     * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int createUser(String uid, UserData data) throws ExecutionException, InterruptedException, JSONException {
-        taskManager = taskManager.resetTaskManager();
-        JSONObject reqBody = new JSONObject();
+    public void createUser(String uid, UserData data) throws MyPetCareException {
+        Map<String, Object> reqBody = new HashMap<>();
         reqBody.put(UID_FIELD, uid);
-        reqBody.put("user", data.toJson());
-        System.out.println(reqBody);
-        taskManager.setTaskId("POST");
-        taskManager.setReqBody(reqBody);
-        StringBuilder response = taskManager.execute(BASE_URL + "signup", "").get();
-        return Integer.parseInt(response.toString());
+        reqBody.put("user", gson.toJson(data));
+        httpClient.post(BASE_URL + "signup", null, null, gson.toJson(reqBody));
     }
 
     /**
@@ -96,18 +82,13 @@ public class UserManagerClient {
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want the information
      * @return Json that contains all the info of the user
-     * @throws ExecutionException When the retrieval of the user fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public UserData getUser(String accessToken, String uid) throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder json = taskManager.execute(BASE_URL + USERS_PATH + uid, accessToken).get();
-        if (json != null) {
-            Gson gson = new Gson();
-            return gson.fromJson(json.toString(), UserData.class);
-        }
-        return null;
+    public UserData getUser(String accessToken, String uid) throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
+        return gson.fromJson(response.asString(), UserData.class);
     }
 
     /**
@@ -115,15 +96,11 @@ public class UserManagerClient {
      *
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want to delete
-     * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int deleteUser(String accessToken, String uid) throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid, accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void deleteUser(String accessToken, String uid) throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
     }
 
     /**
@@ -131,15 +108,13 @@ public class UserManagerClient {
      *
      * @param accessToken The personal access token for the account
      * @param uid The user uid of which we want to delete
-     * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int deleteUserFromDatabase(String accessToken, String uid) throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager.execute(BASE_URL + USERS_PATH + uid + "?db=true", accessToken).get();
-        return Integer.parseInt(response.toString());
+    public void deleteUserFromDatabase(String accessToken, String uid) throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("db", true);
+        httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), params, httpHeaders, null);
     }
 
     /**
@@ -150,18 +125,14 @@ public class UserManagerClient {
      * @param field The field to update
      * @param newValue The new field value
      * @return The response code
-     * @throws ExecutionException When the retrieval of the pets fails
-     * @throws InterruptedException When the retrieval is interrupted
+     * @throws MyPetCareException When the request fails
      */
-    public int updateField(String accessToken, String username, String field, String newValue)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        Map<String, String> reqData = new HashMap<>();
-        reqData.put(field, newValue);
-        taskManager.setTaskId(PUT);
-        taskManager.setReqBody(new JSONObject(reqData));
-        StringBuilder result = taskManager.execute(BASE_URL + USERS_PATH + username, accessToken).get();
-        return Integer.parseInt(result.toString());
+    public void updateField(String accessToken, String username, String field, String newValue)
+            throws MyPetCareException {
+        httpHeaders.put("token", accessToken);
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter(field, newValue);
+        httpClient.put(BASE_URL + USERS_PATH + HttpParameter.encode(username), params, httpHeaders, null);
     }
 
     /**

@@ -4,7 +4,6 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,7 +18,6 @@ import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.BuildConfig;
-import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -75,8 +73,7 @@ public class UserManagerClientTest {
     private HttpClient httpClient;
     @Mock
     private HttpResponse httpResponse;
-    @Mock
-    private TaskManager taskManager;
+    private String encodedUid;
 
     @InjectMocks
     private UserManagerClient client = new UserManagerClient();
@@ -93,17 +90,19 @@ public class UserManagerClientTest {
         image = json.toString().getBytes();
         headers = new HashMap<>();
         headers.put(TOKEN_HEADER, ACCESS_TOKEN);
+        encodedUid = HttpParameter.encode(UID);
     }
 
     @Test
-    public void signUp() throws ExecutionException, InterruptedException, JSONException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + "signup", "")).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.createUser(UID, user);
-        verify(taskManager).setTaskId("POST");
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+    public void createUser() throws MyPetCareException {
+        given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
+
+        client.createUser(UID, user);
+
+        Map<String, Object> reqBody = new HashMap<>();
+        reqBody.put("uid", UID);
+        reqBody.put("user", gson.toJson(user));
+        verify(httpClient).post(eq(BASE_URL + "signup"), isNull(), isNull(), eq(gson.toJson(reqBody)));
     }
 
     @Test
@@ -113,65 +112,51 @@ public class UserManagerClientTest {
         map.put("exists", true);
         String json = gson.toJson(map);
         given(httpResponse.asString()).willReturn(json);
+
         boolean response = client.usernameAlreadyExists(USERNAME);
         assertTrue("Should return true when username exists", response);
     }
 
     @Test
-    public void getUser() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
-        given(taskManager.get()).willReturn(json);
-        UserData response = client.getUser(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId(GET);
+    public void getUser() throws MyPetCareException {
+        given(httpClient.get(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpResponse.asString()).willReturn(gson.toJson(expected));
+
+        UserData response = client.getUser(ACCESS_TOKEN, UID);
         assertEquals("Should return the user data", expected, response);
     }
 
-    @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenTaskExecutionFails() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(ExecutionException.class).given(taskManager).get();
-        client.getUser(ACCESS_TOKEN, USERNAME);
-    }
+    @Test
+    public void deleteUser() throws MyPetCareException {
+        given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-    @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenTaskExecutionInterrupted() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(InterruptedException.class).given(taskManager).get();
-        client.getUser(ACCESS_TOKEN, USERNAME);
+        client.deleteUser(ACCESS_TOKEN, UID);
+        verify(httpClient).delete(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull());
     }
 
     @Test
-    public void deleteUser() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.deleteUser(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId(DELETE);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+    public void deleteUserFromDatabase() throws MyPetCareException {
+        given(httpClient.delete(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
+
+        client.deleteUserFromDatabase(ACCESS_TOKEN, UID);
+
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter("db", true);
+        verify(httpClient).delete(eq(BASE_URL + USERS_PATH + encodedUid), eq(params), eq(headers), isNull());
+
     }
 
     @Test
-    public void deleteUserFromDatabase() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME + "?db=true", ACCESS_TOKEN)).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.deleteUserFromDatabase(ACCESS_TOKEN, USERNAME);
-        verify(taskManager).setTaskId(DELETE);
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
-    }
+    public void updateField() throws MyPetCareException {
+        given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), anyString())).willReturn(httpResponse);
 
-    @Test
-    public void updateField() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(BASE_URL + USERS_PATH + USERNAME, ACCESS_TOKEN)).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, "user01@email.com");
-        verify(taskManager).setTaskId(PUT);
-        verify(taskManager).setReqBody(isA(JSONObject.class));
-        assertEquals("Should return response code 200", expectedResponseCode, responseCode);
+        String newEmail = "user01@email.com";
+        client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, newEmail);
+
+        HttpParameter[] params = new HttpParameter[1];
+        params[0] = new HttpParameter(EMAIL_FIELD, newEmail);
+        verify(httpClient).put(eq(BASE_URL + USERS_PATH + HttpParameter.encode(USERNAME)), eq(params), eq(headers),
+                isNull());
     }
 
     @Test
