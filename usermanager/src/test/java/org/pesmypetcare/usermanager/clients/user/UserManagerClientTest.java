@@ -4,7 +4,6 @@ import android.util.Base64;
 
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,7 +25,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -34,10 +32,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
@@ -56,15 +52,8 @@ public class UserManagerClientTest {
     private static final String PASSWORD = "123456";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
-    private static final String GET = "GET";
-    private static final String PUT = "PUT";
-    private static final String DELETE = "DELETE";
     private static final String TOKEN_HEADER = "token";
-    private static final StringBuilder STATUS_OK = new StringBuilder("200");
-    private final int expectedResponseCode = 200;
     private UserData user;
-    private StringBuilder json;
-    private UserData expected;
     private byte[] image;
     private Map<String, String> headers;
     private Gson gson;
@@ -85,9 +74,7 @@ public class UserManagerClientTest {
     public void setUp() {
         gson = new Gson();
         user = new UserData(USERNAME, EMAIL, PASSWORD);
-        json = new StringBuilder(gson.toJson(user));
-        expected = gson.fromJson(json.toString(), UserData.class);
-        image = json.toString().getBytes();
+        image = user.toString().getBytes();
         headers = new HashMap<>();
         headers.put(TOKEN_HEADER, ACCESS_TOKEN);
         encodedUid = HttpParameter.encode(UID);
@@ -120,10 +107,10 @@ public class UserManagerClientTest {
     @Test
     public void getUser() throws MyPetCareException {
         given(httpClient.get(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull())).willReturn(httpResponse);
-        given(httpResponse.asString()).willReturn(gson.toJson(expected));
+        given(httpResponse.asString()).willReturn(gson.toJson(user));
 
         UserData response = client.getUser(ACCESS_TOKEN, UID);
-        assertEquals("Should return the user data", expected, response);
+        assertEquals("Should return the user data", user, response);
     }
 
     @Test

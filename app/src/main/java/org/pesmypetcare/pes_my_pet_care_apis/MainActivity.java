@@ -5,11 +5,17 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.pesmypetcare.communitymanager.datacontainers.ForumData;
+import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.datacontainers.Message;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Santiago Del Rey
@@ -437,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        /*Thread thread = new Thread(() -> {
+        Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
@@ -448,7 +454,8 @@ public class MainActivity extends AppCompatActivity {
                 //groupManager.createGroup(data);
                 //groupManager.deleteGroup(groupName);
                 //groupManager.createGroup(data);
-                System.out.println("Print 1: " + groupManager.getGroup("Beagles"));
+                Map<String, String> dog_people = groupManager.getGroup("Bienvenidos a My Pet Care").getMembers();
+                System.out.println("Print 1: " + dog_people);
                 //System.out.println("Print 2: " + groupManager.getAllGroups());
                 //System.out.println("Print 3: " + groupManager.getAllTags());
                 //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
@@ -473,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("ACABADO");
         });
-        thread.start();*/
+        thread.start();
         //TEST FORUMS
         /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
@@ -483,11 +490,11 @@ public class MainActivity extends AppCompatActivity {
             String groupName2 = "Prueba 1";
             String forumName = "Vamos que nos vamos";
             String forumName2 = "Peluquerias";
-            ForumData forum = new ForumData(forumName, "santi", tags);
+            ForumData forum = new ForumData(forumName, "santi", new ArrayList<>());
             ForumData forum2 = new ForumData("Marc me aburro", "santi", tags);
-            Message message = new Message("santi", "Hola");
+            //Message message = new Message("santi", "Hola");
             try {
-                //forumManager.createForum(groupName1, form);
+                //forumManager.createForum("Dog people", forum);
                 //forumManager.deleteForum(groupName2, forumName);
                 //forumManager.createForum(groupName1, forum2);
                 //System.out.println(forumManager.getForum(groupName1, forumName));
@@ -497,8 +504,8 @@ public class MainActivity extends AppCompatActivity {
                 //forumManager.postMessage("token", groupName1, forumName2, message);
                 //System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
                 //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
-                forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
-                        "2020-04-24T08:22:12", true);
+                //forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
+                //        "2020-04-24T08:22:12", true);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
