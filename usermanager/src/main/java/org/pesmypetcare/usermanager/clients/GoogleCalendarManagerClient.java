@@ -22,6 +22,7 @@ public class GoogleCalendarManagerClient {
     private static final String BASE_URL = BuildConfig.URL + "calendar/";
     private static final String EVENT = "event/";
     private static Gson gson = new Gson();
+    private static final String TOKEN_HEADER = "token";
     private HttpClient httpClient;
     private Map<String, String> httpHeaders;
 
@@ -39,7 +40,7 @@ public class GoogleCalendarManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void createSecondaryCalendar(String accessToken, String owner, String petName) throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.post(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
                 null);
     }
@@ -53,7 +54,7 @@ public class GoogleCalendarManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void deleteSecondaryCalendar(String accessToken, String owner, String petName) throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient
                 .delete(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
                         null);
@@ -70,7 +71,7 @@ public class GoogleCalendarManagerClient {
      */
     public List<EventData> getAllEventsFromCalendar(String accessToken, String owner, String petName)
             throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null, httpHeaders,
                         null);
@@ -89,7 +90,7 @@ public class GoogleCalendarManagerClient {
      */
     public void createEvent(String accessToken, String owner, String petName, EventData eventData)
             throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.post(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
                 httpHeaders, gson.toJson(eventData));
     }
@@ -105,7 +106,7 @@ public class GoogleCalendarManagerClient {
      */
     public void updateEvent(String accessToken, String owner, String petName, EventData eventData)
             throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.put(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
                 httpHeaders, gson.toJson(eventData));
     }
@@ -121,7 +122,7 @@ public class GoogleCalendarManagerClient {
      */
     public void deleteEvent(String accessToken, String owner, String petName, String eventId)
             throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         Map<String, String> reqData = new HashMap<>();
         reqData.put("eventId", eventId);
         httpClient.delete(BASE_URL + EVENT + HttpParameter.encode(owner) + "/" + HttpParameter.encode(petName), null,
