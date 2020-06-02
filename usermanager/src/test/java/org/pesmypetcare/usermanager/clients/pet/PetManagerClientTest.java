@@ -39,7 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
- * @author Santiago Del Rey
+ * @author Marc Simó & Santiago Del Rey
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})

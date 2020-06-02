@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Marc Simó
+ * @author Marc Simó & Santiago Del Rey
  */
 public class GoogleCalendarManagerClient {
     private static final String BASE_URL = BuildConfig.URL + "calendar/";

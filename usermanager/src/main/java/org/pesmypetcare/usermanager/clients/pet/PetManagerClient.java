@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Marc Simó & Oriol Catalán
+ * @author Marc Simó, Oriol Catalán & Santiago Del Rey
  */
 
 public class PetManagerClient {
@@ -34,7 +34,7 @@ public class PetManagerClient {
     private static final String TOKEN_HEADER = "token";
     private static final String VALUE_KEY = "value";
     private static final String SLASH = "/";
-    private static final Gson GSON = new Gson();
+    private final Gson gson = new Gson();
     private HttpClient httpClient;
     private Map<String, String> httpHeaders;
 
@@ -54,7 +54,7 @@ public class PetManagerClient {
     public void createPet(String accessToken, String username, Pet pet) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter
-                .encode(pet.getName()), null, httpHeaders, GSON.toJson(pet.getBody()));
+                .encode(pet.getName()), null, httpHeaders, gson.toJson(pet.getBody()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class PetManagerClient {
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName),
                         null, httpHeaders, null);
-        return GSON.fromJson(response.asString(), PetData.class);
+        return gson.fromJson(response.asString(), PetData.class);
     }
 
     /**
@@ -87,7 +87,7 @@ public class PetManagerClient {
         HttpResponse res = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username), null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, Pet.class).getType();
-        return GSON.fromJson(res.asString(), listType);
+        return gson.fromJson(res.asString(), listType);
     }
 
     /**
@@ -164,7 +164,7 @@ public class PetManagerClient {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                + "/simple/" + HttpParameter.encode(field), null, httpHeaders, GSON.toJson(reqData));
+                + "/simple/" + HttpParameter.encode(field), null, httpHeaders, gson.toJson(reqData));
     }
 
 
@@ -203,7 +203,7 @@ public class PetManagerClient {
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
                         + "/collection/" + HttpParameter.encode(field), null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
-        return GSON.fromJson(response.asString(), listType);
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -227,7 +227,7 @@ public class PetManagerClient {
                         + "/collection/" + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key1) + SLASH
                         + HttpParameter.encode(key2), null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
-        return GSON.fromJson(response.asString(), listType);
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -248,7 +248,7 @@ public class PetManagerClient {
         httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
                         + "/collection/" + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
                 httpHeaders,
-                GSON.toJson(body));
+                gson.toJson(body));
     }
 
     /**
@@ -289,7 +289,7 @@ public class PetManagerClient {
         httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
                         + "/collection/" + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
                 httpHeaders,
-                GSON.toJson(body));
+                gson.toJson(body));
     }
 
     /**
@@ -312,7 +312,7 @@ public class PetManagerClient {
                         null,
                         httpHeaders, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, Object.class).getType();
-        return GSON.fromJson(response.asString(), mapType);
+        return gson.fromJson(response.asString(), mapType);
     }
 
     /**
@@ -332,7 +332,7 @@ public class PetManagerClient {
         reqData.put("imgName", petName + PROFILE_IMAGE_NAME);
         reqData.put("img", image);
         httpClient.put(BASE_URL + IMAGES_PATH + HttpParameter.encode(userId) + PETS_PICTURES_PATH, null, httpHeaders,
-                GSON.toJson(reqData));
+                gson.toJson(reqData));
     }
 
     /**
@@ -367,7 +367,7 @@ public class PetManagerClient {
                 .get(BASE_URL + IMAGES_PATH + HttpParameter.encode(userId) + PETS_PICTURES_PATH, null, httpHeaders,
                         null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
-        Map<String, String> encodedImages = GSON.fromJson(response.asString(), mapType);
+        Map<String, String> encodedImages = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> result = new HashMap<>();
         for (String key : encodedImages.keySet()) {
             byte[] img = Base64.decode(encodedImages.get(key), Base64.DEFAULT);

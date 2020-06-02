@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 /**
- * @author Marc Simó
+ * @author Marc Simó & Santiago Del Rey
  */
 public class GoogleCalendarManagerClientTest {
     private static final String BASE_URL = BuildConfig.URL + "calendar/";
