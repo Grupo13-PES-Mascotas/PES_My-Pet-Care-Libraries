@@ -70,7 +70,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + EXERCISES_PATH, null, httpHeaders, null);
+                     + EXERCISES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Exercise.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -93,8 +93,8 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + EXERCISES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
-                        null, httpHeaders, null);
+                     + EXERCISES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Exercise.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -115,7 +115,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + EXERCISES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + EXERCISES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), ExerciseData.class);
     }
@@ -133,7 +133,7 @@ public class PetCollectionsManagerClient {
         PetData.checkDateFormat(date);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                + "/fullcollection/exercises/" + HttpParameter.encode(date), null, httpHeaders, null);
+                          + "/fullcollection/exercises/" + HttpParameter.encode(date), null, httpHeaders, null);
     }
 
     /**
@@ -149,7 +149,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + ILLNESSES_PATH, null, httpHeaders, null);
+                     + ILLNESSES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Illness.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -173,8 +173,8 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + ILLNESSES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
-                        null, httpHeaders, null);
+                     + ILLNESSES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Illness.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -196,7 +196,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + ILLNESSES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + ILLNESSES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), IllnessData.class);
     }
@@ -213,7 +213,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + MEALS_PATH, null, httpHeaders, null);
+                     + MEALS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Meal.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -236,7 +236,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + MEALS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                     + MEALS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Meal.class).getType();
@@ -257,7 +257,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + MEALS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + MEALS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), MealData.class);
     }
@@ -274,7 +274,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + WASHES_PATH, null, httpHeaders, null);
+                     + WASHES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Wash.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -297,7 +297,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + WASHES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                     + WASHES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Wash.class).getType();
@@ -318,7 +318,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + WASHES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + WASHES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), WashData.class);
     }
@@ -335,7 +335,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + WEIGHTS_PATH, null, httpHeaders, null);
+                     + WEIGHTS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Weight.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -358,7 +358,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + WEIGHTS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                     + WEIGHTS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Weight.class).getType();
@@ -380,7 +380,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + WEIGHTS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + WEIGHTS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), WeightData.class);
     }
@@ -398,7 +398,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + MEDICATIONS_PATH, null, httpHeaders, null);
+                     + MEDICATIONS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Medication.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -424,8 +424,8 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter
-                        .encode(date2.toString()), null, httpHeaders, null);
+                     + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter
+                             .encode(date2.toString()), null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Medication.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -446,7 +446,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), MedicationData.class);
     }
@@ -464,7 +464,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + VACCINATIONS_PATH, null, httpHeaders, null);
+                     + VACCINATIONS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Vaccination.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -488,7 +488,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
+                     + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
                         null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Vaccination.class).getType();
@@ -510,7 +510,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), VaccinationData.class);
     }
@@ -528,7 +528,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + VET_VISITS_PATH, null, httpHeaders, null);
+                     + VET_VISITS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, VetVisit.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -551,8 +551,8 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                                + VET_VISITS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
-                        null, httpHeaders, null);
+                     + VET_VISITS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, VetVisit.class).getType();
         return gson.fromJson(response.asString(), listType);
@@ -573,7 +573,7 @@ public class PetCollectionsManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + VET_VISITS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+                     + VET_VISITS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), VetVisitData.class);
     }

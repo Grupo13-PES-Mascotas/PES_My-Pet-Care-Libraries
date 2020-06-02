@@ -106,7 +106,8 @@ public class UserManagerClientTest {
 
     @Test
     public void getUser() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpClient.get(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull()))
+                .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(user));
 
         UserData response = client.getUser(ACCESS_TOKEN, UID);
@@ -142,8 +143,8 @@ public class UserManagerClientTest {
 
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(EMAIL_FIELD, newEmail);
-        verify(httpClient).put(eq(BASE_URL + USERS_PATH + HttpParameter.encode(USERNAME)), eq(params), eq(headers),
-                isNull());
+        verify(httpClient)
+                .put(eq(BASE_URL + USERS_PATH + HttpParameter.encode(USERNAME)), eq(params), eq(headers), isNull());
     }
 
     @Test

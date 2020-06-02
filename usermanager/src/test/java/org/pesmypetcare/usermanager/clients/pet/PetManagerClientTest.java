@@ -197,8 +197,8 @@ public class PetManagerClientTest {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
         client.deleteFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
-        verify(httpClient)
-                .delete(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+        verify(httpClient).delete(eq(
+                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS)), isNull(), eq(headers), isNull());
     }
 
@@ -218,7 +218,7 @@ public class PetManagerClientTest {
         given(httpClient
                 .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1) + "/" + HttpParameter
-                        .encode(DATE_2)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+                                .encode(DATE_2)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(petCollectionFieldList));
         List<PetCollectionField> response = client
                 .getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1, DATE_2);
@@ -252,10 +252,10 @@ public class PetManagerClientTest {
 
         client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
                 collectionElementBody);
-        verify(httpClient).put(eq(
-                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
-                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
-                eq(GSON.toJson(collectionElementBody)));
+        verify(httpClient)
+                .put(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                                .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
+                        eq(GSON.toJson(collectionElementBody)));
     }
 
     @Test

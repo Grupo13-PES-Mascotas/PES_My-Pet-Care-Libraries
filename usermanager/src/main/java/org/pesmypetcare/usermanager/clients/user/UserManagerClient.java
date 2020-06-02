@@ -85,7 +85,7 @@ public class UserManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public UserData getUser(String accessToken, String uid) throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
         return gson.fromJson(response.asString(), UserData.class);
@@ -99,7 +99,7 @@ public class UserManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void deleteUser(String accessToken, String uid) throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
     }
 
@@ -111,7 +111,7 @@ public class UserManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void deleteUserFromDatabase(String accessToken, String uid) throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("db", true);
         httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), params, httpHeaders, null);
@@ -124,12 +124,11 @@ public class UserManagerClient {
      * @param username The username of which we want to update
      * @param field The field to update
      * @param newValue The new field value
-     * @return The response code
      * @throws MyPetCareException When the request fails
      */
     public void updateField(String accessToken, String username, String field, String newValue)
             throws MyPetCareException {
-        httpHeaders.put("token", accessToken);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(field, newValue);
         httpClient.put(BASE_URL + USERS_PATH + HttpParameter.encode(username), params, httpHeaders, null);
