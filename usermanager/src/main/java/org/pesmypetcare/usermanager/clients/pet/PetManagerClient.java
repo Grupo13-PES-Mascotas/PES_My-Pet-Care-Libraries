@@ -136,7 +136,7 @@ public class PetManagerClient {
         if (response == null) {
             return null;
         }
-        String[] split = response.toString().split("\"");
+        String[] split = response.asString().split("\"");
         if (split.length == 3) {
             return Double.parseDouble(split[2].split(":")[1].split("}")[0]);
         } else if (split.length == 1) {
@@ -312,7 +312,7 @@ public class PetManagerClient {
                         null,
                         httpHeaders, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, Object.class).getType();
-        return GSON.fromJson(response.toString(), mapType);
+        return GSON.fromJson(response.asString(), mapType);
     }
 
     /**
@@ -367,7 +367,7 @@ public class PetManagerClient {
                 .get(BASE_URL + IMAGES_PATH + HttpParameter.encode(userId) + PETS_PICTURES_PATH, null, httpHeaders,
                         null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
-        Map<String, String> encodedImages = GSON.fromJson(response.toString(), mapType);
+        Map<String, String> encodedImages = GSON.fromJson(response.asString(), mapType);
         Map<String, byte[]> result = new HashMap<>();
         for (String key : encodedImages.keySet()) {
             byte[] img = Base64.decode(encodedImages.get(key), Base64.DEFAULT);

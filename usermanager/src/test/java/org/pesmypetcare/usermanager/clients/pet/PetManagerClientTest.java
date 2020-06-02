@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -36,7 +35,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
@@ -53,14 +51,12 @@ public class PetManagerClientTest {
     private static final String USERNAME = "user";
     private static final String ACCESS_TOKEN = "my-token";
     private static final String BIRTH_FIELD = "birth";
-    private static final String CODE_OK = "Should return response code 200";
-    private static final StringBuilder STATUS_OK = new StringBuilder("200");
     private static final double RECOMMENDED_KCAL_EXAMPLE = 2.5;
     private static final String DATE_1 = "1990-01-08T15:20:30";
     private static final String DATE_2 = "1995-01-08T20:20:30";
     private static final String NEEDS_EXAMPLE = "None of your business";
+    private static final String VALUE_KEY = "value";
     private static final Gson GSON = new Gson();
-    private final int expectedResponseCode = 200;
     private List<PetCollectionField> petCollectionFieldList;
     private Map<String, Object> collectionElementBody;
     private Pet pet;
@@ -112,7 +108,7 @@ public class PetManagerClientTest {
         client.createPet(ACCESS_TOKEN, USERNAME, pet);
         verify(httpClient)
                 .post(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName), isNull(), eq(headers),
-                        eq(GSON.toJson(pet)));
+                        eq(GSON.toJson(pet.getBody())));
     }
 
     @Test
@@ -161,169 +157,161 @@ public class PetManagerClientTest {
         String json = "{\n" + "  \"recommendedKcal\": 2.5\n" + "}";
         given(httpResponse.asString()).willReturn(json);
 
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.RECOMMENDED_KCAL);
+        Double response = (Double) client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.RECOMMENDED_KCAL);
         assertEquals("Should return the gender value", RECOMMENDED_KCAL_EXAMPLE, response);
     }
 
     @Test
-    public void getSimpleFieldString() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(needsJson);
-        Object response = client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
+    public void getSimpleFieldString() throws MyPetCareException {
+        given(httpClient
+                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/simple/" + HttpParameter
+                        .encode(PetData.NEEDS)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        String json = "{\n" + "  \"needs\": \"None of your business\"\n" + "}";
+        given(httpResponse.asString()).willReturn(json);
+
+        String response = (String) client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
         assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
     }
 
     @Test
-    public void updateSimpleField() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client
-                .updateSimpleField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, "2019-02-13T10:30:00");
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    public void updateSimpleField() throws MyPetCareException {
+        given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
+
+        String newValue = "2019-02-13T10:30:00";
+        client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, newValue);
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put(VALUE_KEY, newValue);
+        verify(httpClient)
+                .put(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/simple/" + HttpParameter
+                        .encode(BIRTH_FIELD)), isNull(), eq(headers), eq(GSON.toJson(reqData)));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldThrowAnExceptionWhenWrongType() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
+    public void shouldThrowAnExceptionWhenWrongType() throws MyPetCareException {
+        given(httpClient.put(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
         client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
     }
 
     @Test
-    public void deleteFieldCollection() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.deleteFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    public void deleteFieldCollection() throws MyPetCareException {
+        given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
+
+        client.deleteFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
+        verify(httpClient)
+                .delete(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS)), isNull(), eq(headers), isNull());
     }
 
     @Test
-    public void getFieldCollection() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(mealsFieldCollectionJson);
+    public void getFieldCollection() throws MyPetCareException {
+        given(httpClient
+                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpResponse.asString()).willReturn(GSON.toJson(petCollectionFieldList));
+
         List<PetCollectionField> response = client.getFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
         assertEquals("Should return a meals list", petCollectionFieldList, response);
     }
 
     @Test
-    public void getFieldCollectionElementsBetweenKeys() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(mealsFieldCollectionJson);
+    public void getFieldCollectionElementsBetweenKeys() throws MyPetCareException {
+        given(httpClient
+                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1) + "/" + HttpParameter
+                        .encode(DATE_2)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpResponse.asString()).willReturn(GSON.toJson(petCollectionFieldList));
         List<PetCollectionField> response = client
                 .getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1, DATE_2);
         assertEquals("Should return a meals list with elements between the keys", petCollectionFieldList, response);
     }
 
     @Test
-    public void addFieldCollectionElement() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
+    public void addFieldCollectionElement() throws MyPetCareException {
+        given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
+
+        client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1, collectionElementBody);
+        verify(httpClient).post(eq(
+                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
+                eq(GSON.toJson(collectionElementBody)));
+    }
+
+    @Test
+    public void deleteFieldCollectionElement() throws MyPetCareException {
+        given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
+
+        client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
+        verify(httpClient).delete(eq(
+                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers), isNull());
+    }
+
+    @Test
+    public void updateFieldCollectionElement() throws MyPetCareException {
+        given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
+
+        client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
                 collectionElementBody);
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+        verify(httpClient).put(eq(
+                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
+                eq(GSON.toJson(collectionElementBody)));
     }
 
     @Test
-    public void deleteFieldCollectionElement() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
-    }
+    public void getFieldCollectionElement() throws MyPetCareException {
+        given(httpClient
+                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                        .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers), isNull()))
+                .willReturn(httpResponse);
+        given(httpResponse.asString()).willReturn(GSON.toJson(collectionElementBody));
 
-    @Test
-    public void updateFieldCollectionElement() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
-                collectionElementBody);
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
-    }
-
-    @Test
-    public void getFieldCollectionElement() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(mealsFieldCollectionElementJson);
         Map<String, Object> response = client
                 .getFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
         assertEquals("Should return the specified element", collectionElementBody, response);
     }
 
     @Test
-    public void saveProfileImage() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(STATUS_OK);
-        int responseCode = client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
-        assertEquals(CODE_OK, expectedResponseCode, responseCode);
+    public void saveProfileImage() throws MyPetCareException {
+        given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
+
+        client.saveProfileImage(ACCESS_TOKEN, USERNAME, petName, image);
+
+        Map<String, Object> reqData = new HashMap<>();
+        reqData.put("uid", USERNAME);
+        reqData.put("imgName", petName + "-profile-image.png");
+        reqData.put("img", image);
+        verify(httpClient).put(eq(BASE_URL + IMAGES_PATH + encodedUsername + PETS_PICTURES_PATH), isNull(), eq(headers),
+                eq(GSON.toJson(reqData)));
     }
 
     @Test
-    public void downloadProfileImage() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(json);
+    public void downloadProfileImage() throws MyPetCareException {
+        given(httpClient
+                .get(eq(BASE_URL + IMAGES_PATH + encodedUsername + PETS_PICTURES_PATH + encodedPetName), isNull(),
+                        eq(headers), isNull())).willReturn(httpResponse);
+        String strImage = new String(image);
+        given(httpResponse.asString()).willReturn(strImage);
         mockStatic(Base64.class);
-        given(Base64.decode(json.toString(), Base64.DEFAULT)).willReturn(image);
+        given(Base64.decode(strImage, Base64.DEFAULT)).willReturn(image);
+
         byte[] response = client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
         assertEquals("Should return the pet's profile picture", image, response);
     }
 
-    @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenDownloadExecutionFails() throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(ExecutionException.class).given(taskManager).get();
-        client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
-    }
-
-    @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenDownloadExecutionInterrupted()
-            throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(InterruptedException.class).given(taskManager).get();
-        client.downloadProfileImage(ACCESS_TOKEN, USERNAME, petName);
-    }
-
     @Test
-    public void downloadAllProfileImages() throws ExecutionException, InterruptedException {
-        StringBuilder responseJson = new StringBuilder("{\n" + "  \"Linux\": \"encodedImg\"\n" + "}");
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        given(taskManager.get()).willReturn(responseJson);
+    public void downloadAllProfileImages() throws MyPetCareException {
+        given(httpClient.get(eq(BASE_URL + IMAGES_PATH + encodedUsername + PETS_PICTURES_PATH), isNull(), eq(headers),
+                isNull())).willReturn(httpResponse);
+        String responseJson = "{\n" + "  \"Linux\": \"encodedImg\"\n" + "}";
+        given(httpResponse.asString()).willReturn(responseJson);
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
+
         Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
         Map<String, byte[]> expected = new HashMap<>();
         expected.put(petName, image);
         assertEquals("Should return all the pets profile pictures", expected, response);
-    }
-
-    @Test(expected = ExecutionException.class)
-    public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionFails()
-            throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(ExecutionException.class).given(taskManager).get();
-        client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
-    }
-
-    @Test(expected = InterruptedException.class)
-    public void shouldThrowAnExceptionWhenDownloadAllPetsPicturesExecutionInterrupted()
-            throws ExecutionException, InterruptedException {
-        given(taskManager.resetTaskManager()).willReturn(taskManager);
-        given(taskManager.execute(anyString(), anyString())).willReturn(taskManager);
-        willThrow(InterruptedException.class).given(taskManager).get();
-        client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
     }
 
     private void initializePet() {
