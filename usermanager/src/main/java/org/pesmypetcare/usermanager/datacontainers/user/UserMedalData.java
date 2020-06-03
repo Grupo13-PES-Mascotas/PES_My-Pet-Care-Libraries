@@ -2,6 +2,7 @@ package org.pesmypetcare.usermanager.datacontainers.user;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +42,11 @@ public class UserMedalData {
         this.name = name;
         this.levels = levels;
         this.description = description;
-        this.medalIcon = medalIcon;
+        if (medalIcon != null) {
+            this.medalIcon = Arrays.copyOf(medalIcon, medalIcon.length);
+        } else {
+            this.medalIcon = null;
+        }
         this.progress = progress;
         this.currentLevel = currentLevel;
         this.completedLevelsDate = completedLevelsDate;
@@ -59,8 +64,12 @@ public class UserMedalData {
         return description;
     }
 
+    @Nullable
     public byte[] getMedalIcon() {
-        return medalIcon;
+        if (medalIcon == null) {
+            return null;
+        }
+        return Arrays.copyOf(medalIcon, medalIcon.length);
     }
 
     public Double getProgress() {
@@ -105,12 +114,5 @@ public class UserMedalData {
                 && Objects.equals(progress, that.progress)
                 && Objects.equals(currentLevel, that.currentLevel)
                 && Objects.equals(completedLevelsDate, that.completedLevelsDate);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(name, levels, description, progress, currentLevel, completedLevelsDate);
-        result = 31 * result + Arrays.hashCode(medalIcon);
-        return result;
     }
 }

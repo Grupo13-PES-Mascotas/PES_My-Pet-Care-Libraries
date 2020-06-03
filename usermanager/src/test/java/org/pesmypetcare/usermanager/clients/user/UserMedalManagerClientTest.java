@@ -67,7 +67,7 @@ public class UserMedalManagerClientTest {
         field = "progress";
         fieldNameEncoded = HttpParameter.encode(field);
         ownerNameEncoded = HttpParameter.encode(owner);
-        medal = new UserMedalData("Walker",
+        medal = new UserMedalData(medalName,
                 new ArrayList<>(Arrays.asList(5., 10., 25., 50., 100.)),
                 "You have to walk a lot!", new byte[] {10, 55, 67, 89, 103, 116},
                 2.0, 1.0,
