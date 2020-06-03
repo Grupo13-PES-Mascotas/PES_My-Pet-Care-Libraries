@@ -46,6 +46,8 @@ public class UserMedalManagerClientTest {
     private static String ownerNameEncoded;
     private static String fieldNameEncoded;
     private static String field;
+    private static Double value;
+
     private static Gson gson;
     private static UserMedalData medal;
     private static Map<String, String> headers;
@@ -65,6 +67,7 @@ public class UserMedalManagerClientTest {
         medalName = "Walker";
         token = "token";
         field = "progress";
+        value = 3.0;
         fieldNameEncoded = HttpParameter.encode(field);
         ownerNameEncoded = HttpParameter.encode(owner);
         medal = new UserMedalData(medalName,
@@ -85,7 +88,6 @@ public class UserMedalManagerClientTest {
                 .get(eq(USERMEDAL_PATH + ownerNameEncoded + "/" + medalNameEncoded),
                         eq(params), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(medal));
-        System.out.println(gson.toJson(medal));
         UserMedalData medalData = client.getMedal(token, owner, medalName);
         Assert.assertEquals("Should return the requested medal data.", medal, medalData);
     }
@@ -104,7 +106,6 @@ public class UserMedalManagerClientTest {
     @Test
     public void updateField() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
-        Double value = 3.0;
         params[0] = new HttpParameter(field, value);
         given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull()))
                 .willReturn(httpResponse);
@@ -120,7 +121,6 @@ public class UserMedalManagerClientTest {
         given(httpClient.get(eq(USERMEDAL_PATH + ownerNameEncoded + "/" + medalNameEncoded
                         + "/" + fieldNameEncoded), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
-        Object value = 3.0;
         given(httpResponse.asString()).willReturn(gson.toJson(value));
         Object response = client.getField(token, owner, medalName, field);
         Assert.assertEquals("Should return the value of the medal field.", value,
