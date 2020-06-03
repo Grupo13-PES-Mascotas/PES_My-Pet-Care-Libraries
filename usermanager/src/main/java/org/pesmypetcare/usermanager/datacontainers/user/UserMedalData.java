@@ -2,7 +2,6 @@ package org.pesmypetcare.usermanager.datacontainers.user;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
