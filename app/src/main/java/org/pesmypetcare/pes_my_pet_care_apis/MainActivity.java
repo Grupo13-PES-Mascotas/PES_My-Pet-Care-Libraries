@@ -9,7 +9,7 @@ import org.pesmypetcare.communitymanager.datacontainers.ForumData;
 import org.pesmypetcare.communitymanager.datacontainers.GroupData;
 import org.pesmypetcare.communitymanager.datacontainers.Message;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
-import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
@@ -526,6 +526,27 @@ public class MainActivity extends AppCompatActivity {
                 //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
                 //forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
                 //        "2020-04-24T08:22:12", true);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("FIN");
+        });
+        thread.start();*/
+
+        // TEST REPORT i UNBAN
+        /*
+        Thread thread = new Thread(() -> {
+            ForumManagerClient forumManager = new ForumManagerClient();
+            List<String> tags = new ArrayList<>();
+            String token = "token";
+            String groupName = "Dog people";
+            String forumName = "Huskies Lovers";
+            String creator = "Marc Simó Guzmán";
+            String reporter = "Kilom";
+            String date = "2020-06-03T11:38:00";
+            try {
+               //forumManager.reportMessage(token, groupName, forumName, creator, reporter, date);
+                forumManager.unbanMessage(token, groupName, forumName, creator, date);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
