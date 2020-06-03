@@ -4,20 +4,16 @@ import com.google.gson.Gson;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.user.UserMedalData;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
@@ -38,7 +34,6 @@ import static org.mockito.Mockito.verify;
  * @author Oriol Catalán
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class UserMedalManagerClientTest {
     private static final String BASE_URL = BuildConfig.URL;
     private static final String USERMEDAL_PATH = BASE_URL + "usermedal/";
@@ -62,9 +57,6 @@ public class UserMedalManagerClientTest {
 
     @InjectMocks
     private UserMedalManagerClient client = new UserMedalManagerClient();
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Before
     public void setUp() {

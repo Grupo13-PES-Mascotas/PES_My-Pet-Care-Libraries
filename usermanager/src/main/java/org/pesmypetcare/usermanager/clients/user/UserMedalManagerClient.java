@@ -1,8 +1,5 @@
 package org.pesmypetcare.usermanager.clients.user;
 
-
-import android.util.Base64;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,13 +43,15 @@ public class UserMedalManagerClient {
      * @return The medal information
      * @throws MyPetCareException When the request fails
      */
-    public UserMedalData getMedal(String token, String owner, String medalName) throws MyPetCareException {
+    public UserMedalData getMedal(String token, String owner, String medalName)
+            throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(USERMEDAL_PARAMETER, medalName);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpResponse response = httpClient
-                .get(USERMEDAL_PATH + HttpParameter.encode(owner) + "/" + HttpParameter.encode(medalName), params, headers, null);
+                .get(USERMEDAL_PATH + HttpParameter.encode(owner) + "/"
+                        + HttpParameter.encode(medalName), params, headers, null);
         return gson.fromJson(response.asString(), UserMedalData.class);
     }
 
@@ -66,7 +65,8 @@ public class UserMedalManagerClient {
     public List<UserMedalData> getAllMedals(String token, String owner) throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpResponse response = httpClient.get(USERMEDAL_PATH + HttpParameter.encode(owner), null, headers, null);
+        HttpResponse response = httpClient.get(USERMEDAL_PATH + HttpParameter.encode(owner),
+                null, headers, null);
         Type listType = TypeToken.getParameterized(List.class, UserMedalData.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -89,7 +89,8 @@ public class UserMedalManagerClient {
         String user = HttpParameter.encode(owner);
         String medal = HttpParameter.encode(medalName);
         String fieldHttp = HttpParameter.encode(field);
-        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, params, headers, null);
+        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, params,
+                headers, null);
     }
 
     /**
@@ -109,7 +110,8 @@ public class UserMedalManagerClient {
         String medal = HttpParameter.encode(medalName);
         String fieldHttp = HttpParameter.encode(field);
         HttpResponse response = httpClient
-                .get(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, null, headers, null);
+                .get(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, null,
+                        headers, null);
         return gson.fromJson(response.asString(), Object.class);
     }
 }

@@ -36,8 +36,9 @@ public class UserMedalData {
      * @param currentLevel UserMedalData's current level of the medal
      * @param completedLevelsDate UserMedalData's array with the completed levels dates.
      */
-    public UserMedalData(String name, List<Double> levels, String description, byte[] medalIcon,
-    Double progress, Double currentLevel, List<String> completedLevelsDate) {
+    public UserMedalData(String name, List<Double> levels, String description,
+                         byte[] medalIcon, Double progress, Double currentLevel,
+                         List<String> completedLevelsDate) {
         this.name = name;
         this.levels = levels;
         this.description = description;
@@ -82,29 +83,29 @@ public class UserMedalData {
     @NonNull
     @Override
     public String toString() {
-        return "UserMedalData{" +
-                "name='" + name + '\'' +
-                ", levels=" + levels +
-                ", description='" + description + '\'' +
-                ", medalIcon=" + Arrays.toString(medalIcon) +
-                ", progress=" + progress +
-                ", currentLevel=" + currentLevel +
-                ", completedLevelsDate=" + completedLevelsDate +
-                '}';
+        return "UserMedalData{" + "name='" + name + '\'' + ", levels=" + levels
+                + ", description='" + description + '\''
+                + ", medalIcon=" + Arrays.toString(medalIcon) + ", progress=" + progress
+                + ", currentLevel=" + currentLevel
+                + ", completedLevelsDate=" + completedLevelsDate + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserMedalData that = (UserMedalData) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(levels, that.levels) &&
-                Objects.equals(description, that.description) &&
-                Arrays.equals(medalIcon, that.medalIcon) &&
-                Objects.equals(progress, that.progress) &&
-                Objects.equals(currentLevel, that.currentLevel) &&
-                Objects.equals(completedLevelsDate, that.completedLevelsDate);
+        return Objects.equals(name, that.name)
+                && Objects.equals(levels, that.levels)
+                && Objects.equals(description, that.description)
+                && Arrays.equals(medalIcon, that.medalIcon)
+                && Objects.equals(progress, that.progress)
+                && Objects.equals(currentLevel, that.currentLevel)
+                && Objects.equals(completedLevelsDate, that.completedLevelsDate);
     }
 
     @Override
