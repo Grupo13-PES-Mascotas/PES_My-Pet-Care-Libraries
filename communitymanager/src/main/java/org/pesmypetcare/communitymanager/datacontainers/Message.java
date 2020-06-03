@@ -59,6 +59,7 @@ public class Message {
         this.text = messageReceiveData.getText();
         this.publicationDate = DateTime.convertUTCtoLocalString(messageReceiveData.getPublicationDate());
         this.banned = messageReceiveData.isBanned();
+        this.reportedBy = messageReceiveData.getReportedList();
         this.likedBy = messageReceiveData.getLikedBy();
     }
 
