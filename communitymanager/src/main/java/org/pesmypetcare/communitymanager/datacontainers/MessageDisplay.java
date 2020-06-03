@@ -3,7 +3,6 @@ package org.pesmypetcare.communitymanager.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 

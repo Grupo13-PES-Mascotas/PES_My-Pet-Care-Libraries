@@ -17,8 +17,6 @@ import org.pesmypetcare.communitymanager.ChatException;
 import org.pesmypetcare.communitymanager.datacontainers.MessageDisplay;
 import org.pesmypetcare.communitymanager.datacontainers.MessageReceiveData;
 
-import java.io.IOException;
-
 /**
  * @author Santiago Del Rey
  */
