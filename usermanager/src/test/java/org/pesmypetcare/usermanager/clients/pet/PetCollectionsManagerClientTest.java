@@ -67,7 +67,7 @@ public class PetCollectionsManagerClientTest {
     private static final String PETS_PATH = "pet/";
     private static final String EXERCISES_PATH = "/collection/exercises";
     private static final String ILLNESSES_PATH = "/collection/illnesses";
-    private static final String MEALS_PATH = "/collection/meals/";
+    private static final String MEALS_PATH = "/collection/meals";
     private static final String WASHES_PATH = "/collection/washes";
     private static final String WEIGHTS_PATH = "/collection/weights";
     private static final String MEDICATIONS_PATH = "/collection/medications";
