@@ -11,7 +11,11 @@ import org.pesmypetcare.communitymanager.datacontainers.Message;
 import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -356,6 +360,22 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
+        PetManagerClient client = new PetManagerClient();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Weight weight = new Weight("2020-05-08T00:00:00", 2.3);
+                try {
+                    client.addFieldCollectionElement("token", "Albert Pinto Gil", "Estela", PetData.WEIGHTS,
+                            weight.getKey(), weight.getBodyAsMap());
+                } catch (MyPetCareException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
+
 
         // TESTS USER
 
@@ -443,7 +463,7 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         //TEST GROUPS
-        Thread thread = new Thread(() -> {
+        /*Thread thread = new Thread(() -> {
             GroupManagerClient groupManager = new GroupManagerClient();
             List<String> tags = new ArrayList<>();
             tags.add("empo");
