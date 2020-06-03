@@ -52,6 +52,17 @@ public class HttpParameter {
         this.value = String.valueOf(value);
     }
 
+    /**
+     * Creates an http parameter with a double as value.
+     *
+     * @param name The parameter name
+     * @param value The parameter value
+     */
+    public HttpParameter(String name, Double value) {
+        this.name = name;
+        this.value = String.valueOf(value);
+    }
+
     public String getName() {
         return name;
     }
