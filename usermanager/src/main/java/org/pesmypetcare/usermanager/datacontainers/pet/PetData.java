@@ -212,7 +212,7 @@ public class PetData {
                 checkMeals(key, body);
                 break;
             case WEIGHTS:
-                checkDateAndValueDouble(key, body);
+                checkDateAndValueDoubleOrDouble(key, body);
                 break;
             case EXERCISES:
                 checkExercises(key, body);
@@ -258,18 +258,18 @@ public class PetData {
 
     /**
      * Checks that key and body have the correct format for a date key and body with one element whose key is 'value'
-     * and has an Object of type Double.
+     * and has an Object of type Double or Integer.
      *
      * @param key Key of the attribute
      * @param body Body of the attribute
      */
-    public static void checkDateAndValueDouble(String key, Map<String, Object> body) {
+    public static void checkDateAndValueDoubleOrDouble(String key, Map<String, Object> body) {
         checkDateFormat(key);
         String valueKey = "value";
         if (body.size() != 1 || !body.containsKey(valueKey)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
-        if (!(body.get(valueKey) instanceof Double)) {
+        if (!(body.get(valueKey) instanceof Double || body.get(valueKey) instanceof Integer)) {
             throw new IllegalArgumentException("Request body does not have a correct format");
         }
     }
