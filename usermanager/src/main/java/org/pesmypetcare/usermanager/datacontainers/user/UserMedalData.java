@@ -44,8 +44,6 @@ public class UserMedalData {
         this.description = description;
         if (medalIcon != null) {
             this.medalIcon = Arrays.copyOf(medalIcon, medalIcon.length);
-        } else {
-            this.medalIcon = null;
         }
         this.progress = progress;
         this.currentLevel = currentLevel;
