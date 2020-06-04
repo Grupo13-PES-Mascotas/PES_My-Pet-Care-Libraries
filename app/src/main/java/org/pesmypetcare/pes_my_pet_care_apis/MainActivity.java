@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.clients.user.UserMedalManagerClient;
 
 import java.util.List;
 
@@ -21,6 +22,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
+
+        //TESTS MEDAL
+
+        /*Thread thread = new Thread(() -> {
+            UserMedalManagerClient manager = new UserMedalManagerClient();
+
+            try {
+                System.out.println(manager.getAllMedals("token", "OriCat8989"));
+                //System.out.println(manager.getMedal("token", "OriCat8989", "Contributioner"));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
+*/
 
         // TESTS PET
         /*

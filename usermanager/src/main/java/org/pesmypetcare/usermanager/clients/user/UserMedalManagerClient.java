@@ -67,8 +67,11 @@ public class UserMedalManagerClient {
         headers.put(TOKEN_HEADER, token);
         HttpResponse response = httpClient.get(USERMEDAL_PATH + HttpParameter.encode(owner),
                 null, headers, null);
+        System.out.println(response.asString());
+        System.out.println(".----------------------.");
         Type listType = TypeToken.getParameterized(List.class, UserMedalData.class).getType();
         return gson.fromJson(response.asString(), listType);
+
     }
 
     /**
