@@ -87,7 +87,7 @@ public class UserManagerClientTest {
     @Before
     public void setUp() {
         gson = new Gson();
-        user = new UserData(USERNAME, EMAIL, PASSWORD);
+        user = new UserData(USERNAME, EMAIL, PASSWORD, 0);
         json = new StringBuilder(gson.toJson(user));
         expected = gson.fromJson(json.toString(), UserData.class);
         image = json.toString().getBytes();

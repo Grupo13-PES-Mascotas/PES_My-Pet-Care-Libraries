@@ -16,6 +16,7 @@ public class Message {
     private String publicationDate;
     private String text;
     private boolean banned;
+    private List<String> reportedBy;
     private List<String> likedBy;
 
     /**
@@ -94,6 +95,10 @@ public class Message {
 
     public boolean isBanned() {
         return banned;
+    }
+
+    public List<String> getReportedList() {
+        return reportedBy;
     }
 
     public List<String> getLikedBy() {
