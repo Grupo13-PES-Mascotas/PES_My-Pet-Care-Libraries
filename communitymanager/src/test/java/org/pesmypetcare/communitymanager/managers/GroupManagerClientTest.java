@@ -89,19 +89,19 @@ public class GroupManagerClientTest {
     public void createGroup() throws MyPetCareException {
         given(httpClient.post(anyString(), isNull(), isNull(), anyString())).willReturn(httpResponse);
 
-        client.createGroup(groupData);
-        verify(httpClient).post(eq(COMMUNITY_BASE_URL), isNull(), isNull(), eq(groupJson));
+        client.createGroup(token, groupData);
+        verify(httpClient).post(eq(COMMUNITY_BASE_URL), isNull(), eq(tokenHeader), eq(groupJson));
     }
 
     @Test
     public void deleteGroup() throws MyPetCareException {
         given(httpClient.delete(anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
 
-        client.deleteGroup(group);
+        client.deleteGroup(token, group);
 
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, group);
-        verify(httpClient).delete(eq(COMMUNITY_BASE_URL), eq(params), isNull(), isNull());
+        verify(httpClient).delete(eq(COMMUNITY_BASE_URL), eq(params), eq(tokenHeader), isNull());
     }
 
     @Test
@@ -144,28 +144,28 @@ public class GroupManagerClientTest {
 
         String field = "name";
         String newName = "Cats";
-        client.updateField(group, field, newName);
+        client.updateField(token, group, field, newName);
 
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, group);
         params[1] = new HttpParameter("field", field);
         Map<String, String> map = new HashMap<>();
         map.put("value", newName);
-        verify(httpClient).put(eq(COMMUNITY_BASE_URL), eq(params), isNull(), eq(gson.toJson(map)));
+        verify(httpClient).put(eq(COMMUNITY_BASE_URL), eq(params), eq(tokenHeader), eq(gson.toJson(map)));
     }
 
     @Test
     public void updateGroupTags() throws MyPetCareException {
         given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), anyString())).willReturn(httpResponse);
 
-        client.updateGroupTags(group, groupList, groupList);
+        client.updateGroupTags(token, group, groupList, groupList);
 
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, group);
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", groupList);
         newValue.put("new", groupList);
-        verify(httpClient).put(eq(COMMUNITY_BASE_URL + TAGS_PATH), eq(params), isNull(), eq(gson.toJson(newValue)));
+        verify(httpClient).put(eq(COMMUNITY_BASE_URL + TAGS_PATH), eq(params), eq(tokenHeader), eq(gson.toJson(newValue)));
     }
 
     @Test

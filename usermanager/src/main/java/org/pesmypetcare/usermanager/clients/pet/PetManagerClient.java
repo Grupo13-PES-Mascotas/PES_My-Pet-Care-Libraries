@@ -305,7 +305,7 @@ public class PetManagerClient {
         reqData.put("uid", userId);
         reqData.put("imgName", petName + PROFILE_IMAGE_NAME);
         reqData.put("img", image);
-        httpClient.put(BASE_URL + IMAGES_PATH + PETS_PICTURES_PATH, null, httpHeaders, gson.toJson(reqData));
+        httpClient.put(BASE_URL + IMAGES_PATH + "pets", null, httpHeaders, gson.toJson(reqData));
     }
 
     /**
@@ -335,7 +335,7 @@ public class PetManagerClient {
      */
     public Map<String, byte[]> downloadAllProfileImages(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        HttpResponse response = httpClient.get(BASE_URL + IMAGES_PATH + PETS_PICTURES_PATH, null, httpHeaders, null);
+        HttpResponse response = httpClient.get(BASE_URL + IMAGES_PATH + "pets", null, httpHeaders, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> encodedImages = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> result = new HashMap<>();

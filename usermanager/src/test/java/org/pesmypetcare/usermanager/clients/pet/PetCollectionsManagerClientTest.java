@@ -176,31 +176,31 @@ public class PetCollectionsManagerClientTest {
     @Test
     public void getAllExercises() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + EXERCISES_PATH), isNull(),
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + EXERCISES_PATH), isNull(),
                         eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(exerciseCollectionList));
 
-        List<Exercise> response = client.getAllExercises(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Exercise> response = client.getAllExercises(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", exerciseCollectionList, response);
     }
 
     @Test
     public void getExercisesBetween() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + EXERCISES_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + EXERCISES_PATH + "/"
                 + encodedDate1 + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(exerciseCollectionList));
 
-        List<Exercise> response = client.getExercisesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Exercise> response = client.getExercisesBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", exerciseCollectionList, response);
     }
 
     @Test
     public void getExercises() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + EXERCISES_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + EXERCISES_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(exerciseData));
 
-        ExerciseData response = client.getExercise(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        ExerciseData response = client.getExercise(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", exerciseData, response);
     }
 
@@ -208,82 +208,82 @@ public class PetCollectionsManagerClientTest {
     public void deleteExercisesPreviousToDate() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteExercisesPreviousToDate(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        client.deleteExercisesPreviousToDate(ACCESS_TOKEN, PET_NAME, DATE_1);
         verify(httpClient).delete(eq(
-                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/fullcollection/exercises/"
+                BASE_URL + PETS_PATH + encodedPetName + "/fullcollection/exercises/"
                         + encodedDate1), isNull(), eq(headers), isNull());
     }
 
     @Test
     public void getAllIllnesses() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + ILLNESSES_PATH), isNull(),
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + ILLNESSES_PATH), isNull(),
                         eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(illnessCollectionList));
 
-        List<Illness> response = client.getAllIllnesses(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Illness> response = client.getAllIllnesses(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", illnessCollectionList, response);
     }
 
     @Test
     public void getIllnessesBetween() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + ILLNESSES_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + ILLNESSES_PATH + "/"
                 + encodedDate1 + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(illnessCollectionList));
 
-        List<Illness> response = client.getIllnessesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Illness> response = client.getIllnessesBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", illnessCollectionList, response);
     }
 
     @Test
     public void getIllness() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + ILLNESSES_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + ILLNESSES_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(illnessData));
 
-        IllnessData response = client.getIllness(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        IllnessData response = client.getIllness(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", illnessData, response);
     }
 
     @Test
     public void getAllMeals() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEALS_PATH), isNull(),
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + MEALS_PATH), isNull(),
                 eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(mealCollectionList));
 
-        List<Meal> response = client.getAllMeals(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Meal> response = client.getAllMeals(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", mealCollectionList, response);
     }
 
     @Test
     public void getMealsBetween() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEALS_PATH + "/" + encodedDate1
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + MEALS_PATH + "/" + encodedDate1
                         + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(mealCollectionList));
 
-        List<Meal> response = client.getMealsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Meal> response = client.getMealsBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", mealCollectionList, response);
     }
 
     @Test
     public void getMeal() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEALS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + MEALS_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(mealData));
 
-        MealData response = client.getMeal(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        MealData response = client.getMeal(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", mealData, response);
     }
 
     @Test
     public void getAllMedications() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEDICATIONS_PATH), isNull(),
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + MEDICATIONS_PATH), isNull(),
                         eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(medicationCollectionList));
 
-        List<Medication> response = client.getAllMedications(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Medication> response = client.getAllMedications(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", medicationCollectionList, response);
     }
 
@@ -291,147 +291,147 @@ public class PetCollectionsManagerClientTest {
     public void getMedicationsBetween() throws MyPetCareException {
         DateTime date2 = DateTime.Builder.buildFullString(DATE_3);
         date2.addSecond();
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEDICATIONS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + MEDICATIONS_PATH + "/"
                 + encodedDate1 + "/" + HttpParameter.encode(date2.toString())), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(medicationCollectionList));
 
-        List<Medication> response = client.getMedicationsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Medication> response = client.getMedicationsBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", medicationCollectionList, response);
     }
 
     @Test
     public void getMedication() throws MyPetCareException {
         String date = "1990-01-08T15:20:30-Cloroform85";
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + MEDICATIONS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + MEDICATIONS_PATH + "/"
                 + HttpParameter.encode(date)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(medicationData));
 
         MedicationData response = client
-                .getMedication(ACCESS_TOKEN, USERNAME, PET_NAME, date);
+                .getMedication(ACCESS_TOKEN, PET_NAME, date);
         assertEquals("Should return the specified element", medicationData, response);
     }
 
     @Test
     public void getAllVaccinations() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VACCINATIONS_PATH), isNull(),
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + VACCINATIONS_PATH), isNull(),
                         eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vaccinationCollectionList));
 
-        List<Vaccination> response = client.getAllVaccinations(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Vaccination> response = client.getAllVaccinations(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", vaccinationCollectionList, response);
     }
 
     @Test
     public void getVaccinationsBetween() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VACCINATIONS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + VACCINATIONS_PATH + "/"
                 + encodedDate1 + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vaccinationCollectionList));
 
-        List<Vaccination> response = client.getVaccinationsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Vaccination> response = client.getVaccinationsBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", vaccinationCollectionList, response);
     }
 
     @Test
     public void getVaccination() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VACCINATIONS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + VACCINATIONS_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vaccinationData));
 
-        VaccinationData response = client.getVaccination(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        VaccinationData response = client.getVaccination(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", vaccinationData, response);
     }
 
     @Test
     public void getAllVetVisits() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VET_VISITS_PATH), isNull(),
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + VET_VISITS_PATH), isNull(),
                         eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vetVisitCollectionList));
 
-        List<VetVisit> response = client.getAllVetVisits(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<VetVisit> response = client.getAllVetVisits(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", vetVisitCollectionList, response);
     }
 
     @Test
     public void getVetVisitsBetween() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VET_VISITS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + VET_VISITS_PATH + "/"
                 + encodedDate1 + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vetVisitCollectionList));
 
-        List<VetVisit> response = client.getVetVisitsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<VetVisit> response = client.getVetVisitsBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", vetVisitCollectionList, response);
     }
 
     @Test
     public void getVetVisit() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + VET_VISITS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + VET_VISITS_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(vetVisitData));
 
-        VetVisitData response = client.getVetVisit(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        VetVisitData response = client.getVetVisit(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", vetVisitData, response);
     }
 
     @Test
     public void getAllWashes() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WASHES_PATH), isNull(),
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + WASHES_PATH), isNull(),
                 eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(washCollectionList));
 
-        List<Wash> response = client.getAllWashes(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Wash> response = client.getAllWashes(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", washCollectionList, response);
     }
 
     @Test
     public void getWashesBetween() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WASHES_PATH + "/" + encodedDate1
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + WASHES_PATH + "/" + encodedDate1
                         + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(washCollectionList));
 
-        List<Wash> response = client.getWashesBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Wash> response = client.getWashesBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", washCollectionList, response);
     }
 
     @Test
     public void getWashes() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WASHES_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + WASHES_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(washData));
 
-        WashData response = client.getWash(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        WashData response = client.getWash(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", washData, response);
     }
 
     @Test
     public void getAllWeights() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WEIGHTS_PATH), isNull(),
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + WEIGHTS_PATH), isNull(),
                 eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(weightCollectionList));
 
-        List<Weight> response = client.getAllWeights(ACCESS_TOKEN, USERNAME, PET_NAME);
+        List<Weight> response = client.getAllWeights(ACCESS_TOKEN, PET_NAME);
         assertEquals("Should return a list", weightCollectionList, response);
     }
 
     @Test
     public void getWeightsBetween() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WEIGHTS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + WEIGHTS_PATH + "/"
                 + encodedDate1 + "/" + encodedDate3), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(weightCollectionList));
 
-        List<Weight> response = client.getWeightsBetween(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1, DATE_3);
+        List<Weight> response = client.getWeightsBetween(ACCESS_TOKEN, PET_NAME, DATE_1, DATE_3);
         assertEquals("Should return a list", weightCollectionList, response);
     }
 
     @Test
     public void getWeights() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + WEIGHTS_PATH + "/"
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName + WEIGHTS_PATH + "/"
                 + encodedDate1), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(weightData));
 
-        WeightData response = client.getWeight(ACCESS_TOKEN, USERNAME, PET_NAME, DATE_1);
+        WeightData response = client.getWeight(ACCESS_TOKEN, PET_NAME, DATE_1);
         assertEquals("Should return the specified element", weightData, response);
     }
 }

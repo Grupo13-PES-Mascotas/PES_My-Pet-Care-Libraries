@@ -105,11 +105,11 @@ public class UserManagerClientTest {
 
     @Test
     public void getUser() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull()))
+        given(httpClient.get(eq(BASE_URL + USERS_PATH), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(user));
 
-        UserData response = client.getUser(ACCESS_TOKEN, UID);
+        UserData response = client.getUser(ACCESS_TOKEN);
         assertEquals("Should return the user data", user, response);
     }
 
@@ -117,19 +117,19 @@ public class UserManagerClientTest {
     public void deleteUser() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteUser(ACCESS_TOKEN, UID);
-        verify(httpClient).delete(eq(BASE_URL + USERS_PATH + encodedUid), isNull(), eq(headers), isNull());
+        client.deleteUser(ACCESS_TOKEN);
+        verify(httpClient).delete(eq(BASE_URL + USERS_PATH), isNull(), eq(headers), isNull());
     }
 
     @Test
     public void deleteUserFromDatabase() throws MyPetCareException {
         given(httpClient.delete(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteUserFromDatabase(ACCESS_TOKEN, UID);
+        client.deleteUserFromDatabase(ACCESS_TOKEN);
 
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("db", true);
-        verify(httpClient).delete(eq(BASE_URL + USERS_PATH + encodedUid), eq(params), eq(headers), isNull());
+        verify(httpClient).delete(eq(BASE_URL + USERS_PATH), eq(params), eq(headers), isNull());
 
     }
 
@@ -138,12 +138,12 @@ public class UserManagerClientTest {
         given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), anyString())).willReturn(httpResponse);
 
         String newEmail = "user01@email.com";
-        client.updateField(ACCESS_TOKEN, USERNAME, EMAIL_FIELD, newEmail);
+        client.updateField(ACCESS_TOKEN, EMAIL_FIELD, newEmail);
 
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(EMAIL_FIELD, newEmail);
         verify(httpClient)
-                .put(eq(BASE_URL + USERS_PATH + HttpParameter.encode(USERNAME)), eq(params), eq(headers), isNull());
+                .put(eq(BASE_URL + USERS_PATH), eq(params), eq(headers), isNull());
     }
 
     @Test
@@ -181,12 +181,12 @@ public class UserManagerClientTest {
         params[0] = new HttpParameter("username", USERNAME);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, ACCESS_TOKEN);
-        given(httpClient.get(eq(BASE_URL + USERS_PATH + "subscriptions"), eq(params), eq(headers), isNull()))
+        given(httpClient.get(eq(BASE_URL + USERS_PATH + "subscriptions"), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
         List<String> subscriptions = Collections.singletonList("Dogs");
         given(httpResponse.asString()).willReturn(gson.toJson(subscriptions));
 
-        List<String> result = client.getUserSubscriptions(ACCESS_TOKEN, USERNAME);
+        List<String> result = client.getUserSubscriptions(ACCESS_TOKEN);
         assertEquals("Should return the user subscriptions.", subscriptions, result);
     }
 

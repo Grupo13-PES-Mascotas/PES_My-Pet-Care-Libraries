@@ -4,9 +4,6 @@ package org.pesmypetcare.usermanager.datacontainers.user;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 

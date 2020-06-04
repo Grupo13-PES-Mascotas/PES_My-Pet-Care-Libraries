@@ -105,29 +105,29 @@ public class PetManagerClientTest {
     public void createPet() throws MyPetCareException {
         given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
-        client.createPet(ACCESS_TOKEN, USERNAME, pet);
+        client.createPet(ACCESS_TOKEN, pet);
         verify(httpClient)
-                .post(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName), isNull(), eq(headers),
+                .post(eq(BASE_URL + PETS_PATH + encodedPetName), isNull(), eq(headers),
                         eq(GSON.toJson(pet.getBody())));
     }
 
     @Test
     public void getPet() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName), isNull(), eq(headers),
+        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedPetName), isNull(), eq(headers),
                 isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(expectedPetData));
 
-        PetData response = client.getPet(ACCESS_TOKEN, USERNAME, petName);
+        PetData response = client.getPet(ACCESS_TOKEN, petName);
         assertEquals("Should return the pet data", expectedPetData, response);
     }
 
     @Test
     public void getAllPets() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + PETS_PATH + encodedUsername), isNull(), eq(headers), isNull()))
+        given(httpClient.get(eq(BASE_URL + PETS_PATH), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(petList));
 
-        List<Pet> response = client.getAllPets(ACCESS_TOKEN, USERNAME);
+        List<Pet> response = client.getAllPets(ACCESS_TOKEN);
         assertEquals("Should return all the pets data", petList, response);
     }
 
@@ -135,9 +135,9 @@ public class PetManagerClientTest {
     public void deletePet() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deletePet(ACCESS_TOKEN, USERNAME, petName);
+        client.deletePet(ACCESS_TOKEN, petName);
         verify(httpClient)
-                .delete(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName), isNull(), eq(headers),
+                .delete(eq(BASE_URL + PETS_PATH + encodedPetName), isNull(), eq(headers),
                         isNull());
     }
 
@@ -145,31 +145,31 @@ public class PetManagerClientTest {
     public void deleteAllPets() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteAllPets(ACCESS_TOKEN, USERNAME);
-        verify(httpClient).delete(eq(BASE_URL + PETS_PATH + encodedUsername), isNull(), eq(headers), isNull());
+        client.deleteAllPets(ACCESS_TOKEN);
+        verify(httpClient).delete(eq(BASE_URL + PETS_PATH), isNull(), eq(headers), isNull());
     }
 
     @Test
     public void getSimpleFieldDouble() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/simple/" + HttpParameter
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + "/simple/" + HttpParameter
                         .encode(PetData.RECOMMENDED_KCAL)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         String json = "{\n" + "  \"recommendedKcal\": 2.5\n" + "}";
         given(httpResponse.asString()).willReturn(json);
 
-        Double response = (Double) client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.RECOMMENDED_KCAL);
+        Double response = (Double) client.getSimpleField(ACCESS_TOKEN, petName, PetData.RECOMMENDED_KCAL);
         assertEquals("Should return the gender value", RECOMMENDED_KCAL_EXAMPLE, response);
     }
 
     @Test
     public void getSimpleFieldString() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/simple/" + HttpParameter
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + "/simple/" + HttpParameter
                         .encode(PetData.NEEDS)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         String json = "{\n" + "  \"needs\": \"None of your business\"\n" + "}";
         given(httpResponse.asString()).willReturn(json);
 
-        String response = (String) client.getSimpleField(ACCESS_TOKEN, USERNAME, petName, PetData.NEEDS);
+        String response = (String) client.getSimpleField(ACCESS_TOKEN, petName, PetData.NEEDS);
         assertEquals("Should return the gender value", NEEDS_EXAMPLE, response);
     }
 
@@ -178,50 +178,50 @@ public class PetManagerClientTest {
         given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
         String newValue = "2019-02-13T10:30:00";
-        client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, BIRTH_FIELD, newValue);
+        client.updateSimpleField(ACCESS_TOKEN, petName, BIRTH_FIELD, newValue);
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         verify(httpClient)
-                .put(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/simple/" + HttpParameter
+                .put(eq(BASE_URL + PETS_PATH + encodedPetName + "/simple/" + HttpParameter
                         .encode(BIRTH_FIELD)), isNull(), eq(headers), eq(GSON.toJson(reqData)));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowAnExceptionWhenWrongType() throws MyPetCareException {
         given(httpClient.put(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
-        client.updateSimpleField(ACCESS_TOKEN, USERNAME, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
+        client.updateSimpleField(ACCESS_TOKEN, petName, PetManagerClient.RECOMMENDED_KCAL, "23.3");
     }
 
     @Test
     public void deleteFieldCollection() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
+        client.deleteFieldCollection(ACCESS_TOKEN, petName, PetData.MEALS);
         verify(httpClient).delete(eq(
-                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS)), isNull(), eq(headers), isNull());
     }
 
     @Test
     public void getFieldCollection() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(petCollectionFieldList));
 
-        List<PetCollectionField> response = client.getFieldCollection(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS);
+        List<PetCollectionField> response = client.getFieldCollection(ACCESS_TOKEN, petName, PetData.MEALS);
         assertEquals("Should return a meals list", petCollectionFieldList, response);
     }
 
     @Test
     public void getFieldCollectionElementsBetweenKeys() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1) + "/" + HttpParameter
                                 .encode(DATE_2)), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(petCollectionFieldList));
         List<PetCollectionField> response = client
-                .getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1, DATE_2);
+                .getFieldCollectionElementsBetweenKeys(ACCESS_TOKEN, petName, PetData.MEALS, DATE_1, DATE_2);
         assertEquals("Should return a meals list with elements between the keys", petCollectionFieldList, response);
     }
 
@@ -229,9 +229,9 @@ public class PetManagerClientTest {
     public void addFieldCollectionElement() throws MyPetCareException {
         given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
-        client.addFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1, collectionElementBody);
+        client.addFieldCollectionElement(ACCESS_TOKEN, petName, PetData.MEALS, DATE_1, collectionElementBody);
         verify(httpClient).post(eq(
-                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
                 eq(GSON.toJson(collectionElementBody)));
     }
@@ -240,9 +240,9 @@ public class PetManagerClientTest {
     public void deleteFieldCollectionElement() throws MyPetCareException {
         given(httpClient.delete(anyString(), isNull(), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
+        client.deleteFieldCollectionElement(ACCESS_TOKEN, petName, PetData.MEALS, DATE_1);
         verify(httpClient).delete(eq(
-                BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers), isNull());
     }
 
@@ -250,10 +250,10 @@ public class PetManagerClientTest {
     public void updateFieldCollectionElement() throws MyPetCareException {
         given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
-        client.updateFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1,
+        client.updateFieldCollectionElement(ACCESS_TOKEN, petName, PetData.MEALS, DATE_1,
                 collectionElementBody);
         verify(httpClient)
-                .put(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                .put(eq(BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                                 .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers),
                         eq(GSON.toJson(collectionElementBody)));
     }
@@ -261,13 +261,13 @@ public class PetManagerClientTest {
     @Test
     public void getFieldCollectionElement() throws MyPetCareException {
         given(httpClient
-                .get(eq(BASE_URL + PETS_PATH + encodedUsername + "/" + encodedPetName + "/collection/" + HttpParameter
+                .get(eq(BASE_URL + PETS_PATH + encodedPetName + "/collection/" + HttpParameter
                         .encode(PetData.MEALS) + "/" + HttpParameter.encode(DATE_1)), isNull(), eq(headers), isNull()))
                 .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(GSON.toJson(collectionElementBody));
 
         Map<String, Object> response = client
-                .getFieldCollectionElement(ACCESS_TOKEN, USERNAME, petName, PetData.MEALS, DATE_1);
+                .getFieldCollectionElement(ACCESS_TOKEN, petName, PetData.MEALS, DATE_1);
         assertEquals("Should return the specified element", collectionElementBody, response);
     }
 
@@ -281,7 +281,7 @@ public class PetManagerClientTest {
         reqData.put("uid", USERNAME);
         reqData.put("imgName", petName + "-profile-image.png");
         reqData.put("img", image);
-        verify(httpClient).put(eq(BASE_URL + IMAGES_PATH + encodedUsername + PETS_PICTURES_PATH), isNull(), eq(headers),
+        verify(httpClient).put(eq(BASE_URL + IMAGES_PATH + "pets"), isNull(), eq(headers),
                 eq(GSON.toJson(reqData)));
     }
 
@@ -301,14 +301,14 @@ public class PetManagerClientTest {
 
     @Test
     public void downloadAllProfileImages() throws MyPetCareException {
-        given(httpClient.get(eq(BASE_URL + IMAGES_PATH + encodedUsername + PETS_PICTURES_PATH), isNull(), eq(headers),
+        given(httpClient.get(eq(BASE_URL + IMAGES_PATH + "pets"), isNull(), eq(headers),
                 isNull())).willReturn(httpResponse);
         String responseJson = "{\n" + "  \"Linux\": \"encodedImg\"\n" + "}";
         given(httpResponse.asString()).willReturn(responseJson);
         mockStatic(Base64.class);
         given(Base64.decode("encodedImg", Base64.DEFAULT)).willReturn(image);
 
-        Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN, USERNAME);
+        Map<String, byte[]> response = client.downloadAllProfileImages(ACCESS_TOKEN);
         Map<String, byte[]> expected = new HashMap<>();
         expected.put(petName, image);
         assertEquals("Should return all the pets profile pictures", expected, response);

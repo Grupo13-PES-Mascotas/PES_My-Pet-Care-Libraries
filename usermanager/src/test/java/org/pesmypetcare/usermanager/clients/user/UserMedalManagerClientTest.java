@@ -70,10 +70,8 @@ public class UserMedalManagerClientTest {
         value = 3.0;
         fieldNameEncoded = HttpParameter.encode(field);
         ownerNameEncoded = HttpParameter.encode(owner);
-        medal = new UserMedalData(medalName,
-                new ArrayList<>(Arrays.asList(5., 10., 25., 50., 100.)),
-                "You have to walk a lot!", new byte[] {10, 55, 67, 89, 103, 116},
-                2.0, 1.0,
+        medal = new UserMedalData(medalName, new ArrayList<>(Arrays.asList(5., 10., 25., 50., 100.)),
+                "You have to walk a lot!", new byte[]{10, 55, 67, 89, 103, 116}, 2.0, 1.0,
                 new ArrayList<>(Arrays.asList("2020-05-12", "2020-08-08", "2020-03-09")));
         medalNameEncoded = HttpParameter.encode(medalName);
         headers = new HashMap<>();
@@ -84,22 +82,20 @@ public class UserMedalManagerClientTest {
     public void getMedal() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(USERMEDAL_PARAMETER, medalName);
-        given(httpClient
-                .get(eq(USERMEDAL_PATH + ownerNameEncoded + "/" + medalNameEncoded),
-                        eq(params), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpClient.get(eq(USERMEDAL_PATH + medalNameEncoded), eq(params), eq(headers), isNull()))
+                .willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(medal));
-        UserMedalData medalData = client.getMedal(token, owner, medalName);
+        UserMedalData medalData = client.getMedal(token, medalName);
         Assert.assertEquals("Should return the requested medal data.", medal, medalData);
     }
 
     @Test
     public void getAllMedals() throws MyPetCareException {
-        given(httpClient.get(eq(USERMEDAL_PATH + ownerNameEncoded),
-                isNull(), eq(headers), isNull())).willReturn(httpResponse);
+        given(httpClient.get(eq(USERMEDAL_PATH), isNull(), eq(headers), isNull())).willReturn(httpResponse);
         List<UserMedalData> medals = new ArrayList<>();
         medals.add(medal);
         given(httpResponse.asString()).willReturn(gson.toJson(medals));
-        List<UserMedalData> response = client.getAllMedals(token, owner);
+        List<UserMedalData> response = client.getAllMedals(token);
         Assert.assertEquals("Should return all the existing medals.", medals, response);
     }
 
@@ -107,24 +103,21 @@ public class UserMedalManagerClientTest {
     public void updateField() throws MyPetCareException {
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(field, value);
-        given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
 
-        client.updateField(token, owner, medalName, field, value);
-        verify(httpClient).put(eq(USERMEDAL_PATH + ownerNameEncoded + "/"
-                        + medalNameEncoded + "/" + fieldNameEncoded), eq(params), eq(headers),
-                isNull());
+        client.updateField(token, medalName, field, value);
+        verify(httpClient)
+                .put(eq(USERMEDAL_PATH + medalNameEncoded + "/" + fieldNameEncoded), eq(params), eq(headers), isNull());
     }
 
     @Test
     public void getField() throws MyPetCareException {
-        given(httpClient.get(eq(USERMEDAL_PATH + ownerNameEncoded + "/" + medalNameEncoded
-                        + "/" + fieldNameEncoded), isNull(), eq(headers), isNull()))
-                .willReturn(httpResponse);
+        given(httpClient
+                .get(eq(USERMEDAL_PATH + medalNameEncoded + "/" + fieldNameEncoded), isNull(),
+                        eq(headers), isNull())).willReturn(httpResponse);
         given(httpResponse.asString()).willReturn(gson.toJson(value));
-        Object response = client.getField(token, owner, medalName, field);
-        Assert.assertEquals("Should return the value of the medal field.", value,
-                response);
+        Object response = client.getField(token, medalName, field);
+        Assert.assertEquals("Should return the value of the medal field.", value, response);
     }
 }
 
