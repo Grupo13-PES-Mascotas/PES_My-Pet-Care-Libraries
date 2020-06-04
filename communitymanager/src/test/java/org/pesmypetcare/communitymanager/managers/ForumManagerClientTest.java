@@ -166,10 +166,10 @@ public class ForumManagerClientTest {
     public void deleteMessage() throws MyPetCareException {
         given(httpClient.delete(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.deleteMessage(token, parentGroup, forumName, creator, DateTime.convertLocalToUTCString(date));
+        client.deleteMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         verify(httpClient)
             .delete(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers),
                 isNull());
@@ -179,10 +179,10 @@ public class ForumManagerClientTest {
     public void reportMessage() throws MyPetCareException {
         given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.reportMessage(token, parentGroup, forumName, creator, reporter, DateTime.convertLocalToUTCString(date));
+        client.reportMessage(token, parentGroup, forumName, creator, reporter, date);
         HttpParameter[] params = new HttpParameter[3];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         params[2] = new HttpParameter(REPORTER_PARAMETER, reporter);
         verify(httpClient)
             .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/report_message"),
@@ -195,10 +195,10 @@ public class ForumManagerClientTest {
     public void unbanMessage() throws MyPetCareException {
         given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.unbanMessage(token, parentGroup, forumName, creator, DateTime.convertLocalToUTCString(date));
+        client.unbanMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         verify(httpClient)
             .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/unban_message"),
                 eq(params),
@@ -226,12 +226,11 @@ public class ForumManagerClientTest {
     public void likeMessage() throws MyPetCareException {
         given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
 
-        client.likeMessage(token, creator, parentGroup, forumName, creator, DateTime.convertLocalToUTCString(date),
-            true);
+        client.likeMessage(token, creator, parentGroup, forumName, creator, date, true);
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", creator);
         params[1] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[2] = new HttpParameter(DATE_PARAMETER, date);
+        params[2] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         params[3] = new HttpParameter("like", true);
         verify(httpClient)
                 .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),
