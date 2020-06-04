@@ -32,14 +32,13 @@ public class UserData {
      * @param username The user's username
      * @param email The user's email
      * @param password The user's password
-     * @param messagesBanned The number of messages from the user that are banned
      */
-    public UserData(String username, String email, String password, Integer messagesBanned) {
+    public UserData(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.groupSubscriptions = new ArrayList<>();
-        this.messagesBanned = messagesBanned;
+        this.messagesBanned = 0;
     }
 
     public String getUsername() {
@@ -72,20 +71,6 @@ public class UserData {
 
     public Integer getMessagesBanned() {
         return messagesBanned;
-    }
-
-    /**
-     * Creates a user data JSONObject.
-     *
-     * @return The JSONObject for the user data
-     * @throws JSONException Thrown to indicate a problem with the JSON API
-     */
-    public JSONObject toJson() throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("username", username);
-        json.put("email", email);
-        json.put("password", password);
-        return json;
     }
 
     @NonNull

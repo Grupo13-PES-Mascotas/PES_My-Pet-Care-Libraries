@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
-        PetManagerClient client = new PetManagerClient();
+        /*PetManagerClient client = new PetManagerClient();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -374,27 +374,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        thread.start();
+        thread.start();*/
 
 
         // TESTS USER
 
 
-        /*UserManagerClient client = new UserManagerClient();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
-                    //System.out.println(img.length);
-                    client.sendTokenToServer("eyJhbGciOiJSUzI1NiIsImtpZCI6ImZjMmM4YmIyNmE3OGM0M2JkODYzNzA1YjNkNzkyMWI0ZTY0MjVkNTQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXBpbnQyMSIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9teS1wZXQtY2FyZS04NTg4MyIsImF1ZCI6Im15LXBldC1jYXJlLTg1ODgzIiwiYXV0aF90aW1lIjoxNTg5NDk5NTQ1LCJ1c2VyX2lkIjoiREljNkZxeUU5R2Jmd3lNbHVVOVg2azl2UVJKMiIsInN1YiI6IkRJYzZGcXlFOUdiZnd5TWx1VTlYNms5dlFSSjIiLCJpYXQiOjE1ODk0OTk1NDUsImV4cCI6MTU4OTUwMzE0NSwiZW1haWwiOiJhbGJlcnQubXlwZXRjYXJlQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFsYmVydC5teXBldGNhcmVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.T9Y2uZd9pCdIaYZIPLqrbaigJvGWyoceAe6LoYEU4twIt54vS1kqwADiTinvO8Z5dbQjiHo_y_UCp2azwCBKRHHczCgjwiF5M111-Ps790croPuiqgQL_9iz5pNJHdKfnbD1FsPuQOlVOzPjffSMACssk2MupBVmEQXe7rnTjxahwcF_cE0HR92P1gcyuIdoEm5vSjcgdKxh3UbDpRlhihPygMT1zuuFVkDc-CgeXAdS33GvR2uN_osfVQIuCt7NA5f88oUi0B9twhRFQQY32RxSBJG4DR7nLM4i84rXj4wifD1_MWA4WN4kZCC_OTCQmtSoqHVnoa0tI1MgrXeo8Q", "c61zZpw4GlE"
-                            + ":APA91bHj1eOAQlFrgVwLoGNiIZsx7yLfc_ljYkRAx7OK5t0e0Pmg9xriuzrpzeFisonFeKS1QDbap4wVe8PX9-D0nfM1Zw0X4ijmm6SEAGzOMOrP0_FInmJHm3aAYTzvgvQHPYjaQZit");
-                } catch (MyPetCareException e) {
-                    e.printStackTrace();
-                }
+        UserManagerClient client = new UserManagerClient();
+        Thread thread = new Thread(() -> {
+            try {
+                //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
+                //System.out.println(img.length);
+                System.out.println(client.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
             }
         });
-        thread.start();*/
+        thread.start();
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);

@@ -73,7 +73,7 @@ public class UserManagerClientTest {
     @Before
     public void setUp() {
         gson = new Gson();
-        user = new UserData(USERNAME, EMAIL, PASSWORD, 0);
+        user = new UserData(USERNAME, EMAIL, PASSWORD);
         image = user.toString().getBytes();
         headers = new HashMap<>();
         headers.put(TOKEN_HEADER, ACCESS_TOKEN);
