@@ -12,6 +12,7 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class ForumManagerClient {
     private final String FORUM_PARAMETER = "forum";
     private final String CREATOR_PARAMETER = "creator";
     private final String DATE_PARAMETER = "date";
+    private final String REPORTER_PARAMETER = "reporter";
     private HttpClient httpClient;
     private final Gson gson;
 
@@ -47,7 +49,8 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void createForum(String parentGroup, ForumData forum) throws MyPetCareException {
-        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, null, gson.toJson(forum));
+        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, null,
+            gson.toJson(forum));
     }
 
     /**
@@ -87,7 +90,8 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public List<ForumData> getAllForums(String groupName) throws MyPetCareException {
-        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null, null, null);
+        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null,
+            null, null);
         Type listType = TypeToken.getParameterized(List.class, ForumData.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -124,7 +128,8 @@ public class ForumManagerClient {
         newValue.put("new", newTags);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, null, gson.toJson(newValue));
+        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, null,
+            gson.toJson(newValue));
     }
 
     /**
@@ -156,7 +161,8 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void deleteMessage(String token, String parentGroup, String forumName, String creatorName, String date)
-            throws MyPetCareException {
+        throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[2];
@@ -165,6 +171,55 @@ public class ForumManagerClient {
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
         httpClient.delete(COMMUNITY_BASE_URL + group + "/" + forum, params, headers, null);
+    }
+
+    /**
+     * Reports a message from a forum.
+     *
+     * @param token The user's personal access token
+     * @param parentGroup The parent group name
+     * @param forumName The forum name
+     * @param creatorName The creator's username
+     * @param reporterName The reporter's username
+     * @param date The message creation date
+     * @throws MyPetCareException When the request fails
+     */
+    public void reportMessage(String token, String parentGroup, String forumName, String creatorName,
+                              String reporterName, String date)
+        throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(TOKEN_HEADER, token);
+        HttpParameter[] params = new HttpParameter[3];
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creatorName);
+        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[2] = new HttpParameter(REPORTER_PARAMETER, reporterName);
+        String group = HttpParameter.encode(parentGroup);
+        String forum = HttpParameter.encode(forumName);
+        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum + "/report_message", params, headers, null);
+    }
+
+    /**
+     * Unbans a message from a forum.
+     *
+     * @param token The user's personal access token
+     * @param parentGroup The parent group name
+     * @param forumName The forum name
+     * @param creatorName The creator's username
+     * @param date The message creation date
+     * @throws MyPetCareException When the request fails
+     */
+    public void unbanMessage(String token, String parentGroup, String forumName, String creatorName, String date)
+        throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(TOKEN_HEADER, token);
+        HttpParameter[] params = new HttpParameter[2];
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creatorName);
+        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        String group = HttpParameter.encode(parentGroup);
+        String forum = HttpParameter.encode(forumName);
+        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum + "/unban_message", params, headers, null);
     }
 
     /**
@@ -182,7 +237,8 @@ public class ForumManagerClient {
         headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        HttpResponse response = httpClient.get(BASE_URL + "storage/image/" + group + "/" + forum, null, headers, null);
+        HttpResponse response = httpClient.get(BASE_URL + "storage/image/" + group + "/" + forum, null,
+            headers, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> responseMap = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> images = new HashMap<>();
@@ -206,6 +262,7 @@ public class ForumManagerClient {
      */
     public void likeMessage(String token, String username, String parentGroup, String forumName, String creatorName,
             String date, boolean like) throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[4];

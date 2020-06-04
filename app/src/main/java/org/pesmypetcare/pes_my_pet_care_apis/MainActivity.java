@@ -5,12 +5,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserMedalManagerClient;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Santiago Del Rey
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.Hello_text);
+
 
         //TESTS MEDAL
 
@@ -37,6 +41,19 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
 */
+
+        // TEST USER
+        /*
+        UserManagerClient userManagerClient = new UserManagerClient();
+
+        try {
+            System.out.println(userManagerClient.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+
 
         // TESTS PET
         /*
@@ -521,6 +538,29 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("FIN");
         });
         thread.start();*/
+
+        // TEST REPORT i UNBAN
+        /*
+        Thread thread = new Thread(() -> {
+            ForumManagerClient forumManager = new ForumManagerClient();
+            List<String> tags = new ArrayList<>();
+            String token = "token";
+            String groupName = "Dog people";
+            String forumName = "Huskies Lovers";
+            String creator = "Santiago Del Rey";
+            String reporter = "Lenin4";
+            String date = "2020-05-20T01:02:38";
+            System.out.println(DateTime.convertLocalToUTCString(date));
+            try {
+                forumManager.reportMessage(token, groupName, forumName, creator, reporter, date);
+                //forumManager.unbanMessage(token, groupName, forumName, creator, date);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("FIN");
+        });
+        thread.start();
+        */
     }
 }
 
