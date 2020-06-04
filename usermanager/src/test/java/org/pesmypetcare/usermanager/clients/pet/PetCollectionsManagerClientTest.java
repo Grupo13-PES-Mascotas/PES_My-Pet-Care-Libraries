@@ -90,7 +90,6 @@ public class PetCollectionsManagerClientTest {
     private List<Weight> weightCollectionList;
     private WeightData weightData;
     private Map<String, String> headers;
-    private String encodedUsername;
     private String encodedPetName;
     private Gson gson;
 
@@ -167,7 +166,6 @@ public class PetCollectionsManagerClientTest {
         weightCollectionList.add(new Weight(DATE_3, weightData));
         headers = new HashMap<>();
         headers.put("token", ACCESS_TOKEN);
-        encodedUsername = HttpParameter.encode(USERNAME);
         encodedPetName = HttpParameter.encode(PET_NAME);
         encodedDate1 = HttpParameter.encode(DATE_1);
         encodedDate3 = HttpParameter.encode(DATE_3);

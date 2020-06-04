@@ -210,8 +210,8 @@ public class PetManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
-                             .encode(field) + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2)
-                        , null, httpHeaders, null);
+                             .encode(field) + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
+                     null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
