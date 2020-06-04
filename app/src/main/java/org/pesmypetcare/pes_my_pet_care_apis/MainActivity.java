@@ -16,6 +16,8 @@ import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
 import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
 import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
+import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -385,7 +387,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
                 //System.out.println(img.length);
-                System.out.println(client.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
+                //System.out.println(client.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
+                client.createUser(new UserDataSender("QABtiSlbB6NkXFCeDa4abRGSopT2", "Santiago Del Rey",
+                        "santi" + ".mypetcare@gmail.com", "123456789$"));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

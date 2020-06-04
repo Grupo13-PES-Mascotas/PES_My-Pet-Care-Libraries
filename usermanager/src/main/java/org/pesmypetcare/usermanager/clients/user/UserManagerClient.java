@@ -12,6 +12,7 @@ import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -48,15 +49,11 @@ public class UserManagerClient {
     /**
      * Method called by the client to sign up a new user.
      *
-     * @param uid The user's unique identifier
      * @param data The user data object that contains the user's username, email and password
      * @throws MyPetCareException When the request fails
      */
-    public void createUser(String uid, UserData data) throws MyPetCareException {
-        Map<String, Object> reqBody = new HashMap<>();
-        reqBody.put(UID_FIELD, uid);
-        reqBody.put("user", gson.toJson(data));
-        httpClient.post(BASE_URL + "signup", null, null, gson.toJson(reqBody));
+    public void createUser(UserDataSender data) throws MyPetCareException {
+        httpClient.post(BASE_URL + "signup", null, null, gson.toJson(data));
     }
 
     /**

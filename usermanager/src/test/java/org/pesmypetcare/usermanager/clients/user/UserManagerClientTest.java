@@ -18,6 +18,7 @@ import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.usermanager.BuildConfig;
 import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -53,6 +54,7 @@ public class UserManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
     private static final String EMAIL_FIELD = "email";
     private static final String TOKEN_HEADER = "token";
+    private UserDataSender userData;
     private UserData user;
     private byte[] image;
     private Map<String, String> headers;
@@ -73,6 +75,7 @@ public class UserManagerClientTest {
     @Before
     public void setUp() {
         gson = new Gson();
+        userData = new UserDataSender(UID, USERNAME, EMAIL, PASSWORD);
         user = new UserData(USERNAME, EMAIL, PASSWORD);
         image = user.toString().getBytes();
         headers = new HashMap<>();
@@ -84,12 +87,8 @@ public class UserManagerClientTest {
     public void createUser() throws MyPetCareException {
         given(httpClient.post(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
-        client.createUser(UID, user);
-
-        Map<String, Object> reqBody = new HashMap<>();
-        reqBody.put("uid", UID);
-        reqBody.put("user", gson.toJson(user));
-        verify(httpClient).post(eq(BASE_URL + "signup"), isNull(), isNull(), eq(gson.toJson(reqBody)));
+        client.createUser(userData);
+        verify(httpClient).post(eq(BASE_URL + "signup"), isNull(), isNull(), eq(gson.toJson(userData)));
     }
 
     @Test
