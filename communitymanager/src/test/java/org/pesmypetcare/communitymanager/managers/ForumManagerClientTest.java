@@ -143,9 +143,8 @@ public class ForumManagerClientTest {
         given(httpClient.put(anyString(), isNull(), anyMap(), anyString())).willReturn(httpResponse);
 
         client.updateTags(token, parentGroup, forumName, tags, tags);
-        verify(httpClient)
-                .put(eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(), eq(headers),
-                        eq(gson.toJson(newValue)));
+        verify(httpClient).put(eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(),
+                eq(headers), eq(gson.toJson(newValue)));
     }
 
     @Test

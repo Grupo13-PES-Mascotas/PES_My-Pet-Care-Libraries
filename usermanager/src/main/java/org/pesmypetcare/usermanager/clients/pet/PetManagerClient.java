@@ -55,7 +55,7 @@ public class PetManagerClient {
     public void createPet(String accessToken, Pet pet) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(pet.getName()), null, httpHeaders,
-                gson.toJson(pet.getBody()));
+                        gson.toJson(pet.getBody()));
     }
 
     /**
@@ -124,7 +124,7 @@ public class PetManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + SIMPLE_PATH + HttpParameter.encode(field),
-                        null, httpHeaders, null);
+                     null, httpHeaders, null);
         if (response == null) {
             return null;
         }
@@ -155,7 +155,7 @@ public class PetManagerClient {
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
         httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + SIMPLE_PATH + HttpParameter.encode(field),
-                null, httpHeaders, gson.toJson(reqData));
+                       null, httpHeaders, gson.toJson(reqData));
     }
 
     /**
@@ -210,8 +210,8 @@ public class PetManagerClient {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
                 .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
-                                .encode(field) + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
-                        httpHeaders, null);
+                             .encode(field) + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2)
+                        , null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
         return gson.fromJson(response.asString(), listType);
     }

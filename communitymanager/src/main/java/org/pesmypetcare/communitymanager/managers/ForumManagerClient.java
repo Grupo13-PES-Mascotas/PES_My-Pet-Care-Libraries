@@ -53,8 +53,7 @@ public class ForumManagerClient {
      */
     public void createForum(String accessToken, String parentGroup, ForumData forum) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, httpHeaders,
-            gson.toJson(forum));
+        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, httpHeaders, gson.toJson(forum));
     }
 
     /**
@@ -96,8 +95,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public List<ForumData> getAllForums(String groupName) throws MyPetCareException {
-        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null,
-            null, null);
+        HttpResponse response = httpClient.get(COMMUNITY_BASE_URL + HttpParameter.encode(groupName), null, null, null);
         Type listType = TypeToken.getParameterized(List.class, ForumData.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -111,7 +109,8 @@ public class ForumManagerClient {
      * @param newName The new name
      * @throws MyPetCareException When the request fails
      */
-    public void updateName(String accessToken, String parentGroup, String forumName, String newName) throws MyPetCareException {
+    public void updateName(String accessToken, String parentGroup, String forumName, String newName)
+            throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("newName", newName);
@@ -131,16 +130,14 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void updateTags(String accessToken, String parentGroup, String forumName, List<String> deletedTags,
-            List<String> newTags)
-            throws MyPetCareException {
+            List<String> newTags) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, httpHeaders,
-            gson.toJson(newValue));
+        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, httpHeaders, gson.toJson(newValue));
     }
 
     /**
@@ -172,7 +169,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void deleteMessage(String token, String parentGroup, String forumName, String creatorName, String date)
-        throws MyPetCareException {
+            throws MyPetCareException {
         date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
@@ -196,8 +193,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void reportMessage(String token, String parentGroup, String forumName, String creatorName,
-                              String reporterName, String date)
-        throws MyPetCareException {
+            String reporterName, String date) throws MyPetCareException {
         date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
@@ -221,7 +217,7 @@ public class ForumManagerClient {
      * @throws MyPetCareException When the request fails
      */
     public void unbanMessage(String token, String parentGroup, String forumName, String creatorName, String date)
-        throws MyPetCareException {
+            throws MyPetCareException {
         date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
@@ -248,8 +244,7 @@ public class ForumManagerClient {
         headers.put(TOKEN_HEADER, token);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        HttpResponse response = httpClient.get(BASE_URL + "storage/image/" + group + "/" + forum, null,
-            headers, null);
+        HttpResponse response = httpClient.get(BASE_URL + "storage/image/" + group + "/" + forum, null, headers, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> responseMap = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> images = new HashMap<>();

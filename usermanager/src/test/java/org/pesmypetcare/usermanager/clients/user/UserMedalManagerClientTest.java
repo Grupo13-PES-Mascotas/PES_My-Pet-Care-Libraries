@@ -40,10 +40,8 @@ public class UserMedalManagerClientTest {
     private static final String USERMEDAL_PARAMETER = "usermedal";
 
     private static String medalName;
-    private static String owner;
     private static String token;
     private static String medalNameEncoded;
-    private static String ownerNameEncoded;
     private static String fieldNameEncoded;
     private static String field;
     private static Double value;
@@ -63,13 +61,11 @@ public class UserMedalManagerClientTest {
     @Before
     public void setUp() {
         gson = new Gson();
-        owner = "Rosa Melano";
         medalName = "Walker";
         token = "token";
         field = "progress";
         value = 3.0;
         fieldNameEncoded = HttpParameter.encode(field);
-        ownerNameEncoded = HttpParameter.encode(owner);
         medal = new UserMedalData(medalName, new ArrayList<>(Arrays.asList(5., 10., 25., 50., 100.)),
                 "You have to walk a lot!", new byte[]{10, 55, 67, 89, 103, 116}, 2.0, 1.0,
                 new ArrayList<>(Arrays.asList("2020-05-12", "2020-08-08", "2020-03-09")));

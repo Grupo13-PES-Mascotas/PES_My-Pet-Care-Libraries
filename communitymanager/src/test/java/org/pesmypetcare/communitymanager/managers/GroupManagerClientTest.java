@@ -165,7 +165,8 @@ public class GroupManagerClientTest {
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", groupList);
         newValue.put("new", groupList);
-        verify(httpClient).put(eq(COMMUNITY_BASE_URL + TAGS_PATH), eq(params), eq(tokenHeader), eq(gson.toJson(newValue)));
+        verify(httpClient)
+                .put(eq(COMMUNITY_BASE_URL + TAGS_PATH), eq(params), eq(tokenHeader), eq(gson.toJson(newValue)));
     }
 
     @Test

@@ -117,7 +117,8 @@ public class GroupManagerClient {
      * @param newValue The new field value
      * @throws MyPetCareException When the request fails
      */
-    public void updateField(String accessToken, String groupName, String field, String newValue) throws MyPetCareException {
+    public void updateField(String accessToken, String groupName, String field, String newValue)
+            throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
@@ -201,7 +202,7 @@ public class GroupManagerClient {
      * Gets the icon of a group.
      *
      * @param groupName The group name
-     * @return The icon as a byte array
+     * @return The icon as a byte {@link android.R.array}
      * @throws MyPetCareException When the request fails
      */
     public byte[] getGroupIcon(String groupName) throws MyPetCareException {

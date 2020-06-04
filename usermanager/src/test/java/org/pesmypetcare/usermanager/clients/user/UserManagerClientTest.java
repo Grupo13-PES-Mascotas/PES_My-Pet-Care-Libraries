@@ -64,7 +64,6 @@ public class UserManagerClientTest {
     private HttpClient httpClient;
     @Mock
     private HttpResponse httpResponse;
-    private String encodedUid;
 
     @InjectMocks
     private UserManagerClient client = new UserManagerClient();
@@ -80,7 +79,6 @@ public class UserManagerClientTest {
         image = user.toString().getBytes();
         headers = new HashMap<>();
         headers.put(TOKEN_HEADER, ACCESS_TOKEN);
-        encodedUid = HttpParameter.encode(UID);
     }
 
     @Test
