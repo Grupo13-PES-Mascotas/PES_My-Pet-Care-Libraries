@@ -15,9 +15,10 @@ import java.util.List;
  */
 public class UserData {
     private String username;
-    private String email;
     private String password;
+    private String email;
     private List<String> groupSubscriptions;
+    private Integer messagesBanned;
 
     /**
      * Default constructor.
@@ -31,12 +32,14 @@ public class UserData {
      * @param username The user's username
      * @param email The user's email
      * @param password The user's password
+     * @param messagesBanned The number of messages from the user that are banned
      */
-    public UserData(String username, String email, String password) {
+    public UserData(String username, String email, String password, Integer messagesBanned) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.groupSubscriptions = new ArrayList<>();
+        this.messagesBanned = messagesBanned;
     }
 
     public String getUsername() {
@@ -67,6 +70,10 @@ public class UserData {
         return groupSubscriptions;
     }
 
+    public Integer getMessagesBanned() {
+        return messagesBanned;
+    }
+
     /**
      * Creates a user data JSONObject.
      *
@@ -85,7 +92,7 @@ public class UserData {
     @Override
     public String toString() {
         return "UserData{" + "username='" + username + '\'' + ", email='" + email + '\'' + ", password='" + password
-                + '\'' + ", groupSubscriptions=" + groupSubscriptions + '}';
+            + '\'' + ", groupSubscriptions=" + groupSubscriptions + '\'' + ", messagesBanned=" + messagesBanned + '}';
     }
 
     @Override
@@ -93,7 +100,8 @@ public class UserData {
         if (obj instanceof UserData) {
             return ((UserData) obj).getUsername().equals(this.username) && ((UserData) obj).getEmail()
                     .equals(this.email) && ((UserData) obj).getPassword().equals(this.password) && ((UserData) obj)
-                    .getGroupSubscriptions().equals(this.groupSubscriptions);
+                    .getGroupSubscriptions().equals(this.groupSubscriptions) && ((UserData) obj).getMessagesBanned()
+                    .equals(this.messagesBanned);
         }
         return false;
     }
