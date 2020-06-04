@@ -17,6 +17,7 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +73,7 @@ public class ForumManagerClientTest {
         forumNameEncoded = HttpParameter.encode(forumName);
         headers = new HashMap<>();
         headers.put(token, token);
-        date = "2020-05-12";
+        date = "2020-05-12T25:30:40";
     }
 
     @Test
@@ -168,7 +169,7 @@ public class ForumManagerClientTest {
         client.deleteMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         verify(httpClient)
             .delete(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers),
                 isNull());
@@ -181,7 +182,7 @@ public class ForumManagerClientTest {
         client.reportMessage(token, parentGroup, forumName, creator, reporter, date);
         HttpParameter[] params = new HttpParameter[3];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         params[2] = new HttpParameter(REPORTER_PARAMETER, reporter);
         verify(httpClient)
             .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/report_message"),
@@ -197,7 +198,7 @@ public class ForumManagerClientTest {
         client.unbanMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         verify(httpClient)
             .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/unban_message"),
                 eq(params),
@@ -229,7 +230,7 @@ public class ForumManagerClientTest {
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", creator);
         params[1] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[2] = new HttpParameter(DATE_PARAMETER, date);
+        params[2] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         params[3] = new HttpParameter("like", true);
         verify(httpClient)
                 .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),

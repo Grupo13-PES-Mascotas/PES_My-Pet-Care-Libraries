@@ -12,6 +12,7 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -161,6 +162,7 @@ public class ForumManagerClient {
      */
     public void deleteMessage(String token, String parentGroup, String forumName, String creatorName, String date)
         throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[2];
@@ -185,6 +187,7 @@ public class ForumManagerClient {
     public void reportMessage(String token, String parentGroup, String forumName, String creatorName,
                               String reporterName, String date)
         throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[3];
@@ -208,6 +211,7 @@ public class ForumManagerClient {
      */
     public void unbanMessage(String token, String parentGroup, String forumName, String creatorName, String date)
         throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[2];
@@ -258,6 +262,7 @@ public class ForumManagerClient {
      */
     public void likeMessage(String token, String username, String parentGroup, String forumName, String creatorName,
             String date, boolean like) throws MyPetCareException {
+        date = DateTime.convertLocalToUTCString(date);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[4];
