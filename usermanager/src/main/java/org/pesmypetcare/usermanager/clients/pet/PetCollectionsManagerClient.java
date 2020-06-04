@@ -61,15 +61,14 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified exercises from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the exercises from the pet
      */
-    public List<Exercise> getAllExercises(String accessToken, String username, String petName)
+    public List<Exercise> getAllExercises(String accessToken, String petName)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + EXERCISES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Exercise.class).getType();
@@ -80,19 +79,18 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the exercises done by the pet between the initial and final date including both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The exercises between the dates
      */
-    public List<Exercise> getExercisesBetween(String accessToken, String username, String petName, String key1,
+    public List<Exercise> getExercisesBetween(String accessToken, String petName, String key1,
             String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + EXERCISES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -104,17 +102,16 @@ public class PetCollectionsManagerClient {
      * Gets a exercise identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the exercise was done
      * @return The ExerciseData identified by its pet and date.
      */
-    public ExerciseData getExercise(String accessToken, String username, String petName, String key)
+    public ExerciseData getExercise(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + EXERCISES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), ExerciseData.class);
@@ -124,15 +121,14 @@ public class PetCollectionsManagerClient {
      * Deletes all the exercises with a date previous to the specified one.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param date Specified date (This one not included)
      */
-    public void deleteExercisesPreviousToDate(String accessToken, String username, String petName, String date)
+    public void deleteExercisesPreviousToDate(String accessToken, String petName, String date)
             throws MyPetCareException {
         PetData.checkDateFormat(date);
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                           + "/fullcollection/exercises/" + HttpParameter.encode(date), null, httpHeaders, null);
     }
 
@@ -140,15 +136,14 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified illnesses from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the illnesses from the pet
      */
-    public List<Illness> getAllIllnesses(String accessToken, String username, String petName)
+    public List<Illness> getAllIllnesses(String accessToken, String petName)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + ILLNESSES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Illness.class).getType();
@@ -160,19 +155,18 @@ public class PetCollectionsManagerClient {
      * them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The illnesses between the dates
      */
-    public List<Illness> getIllnessesBetween(String accessToken, String username, String petName, String key1,
+    public List<Illness> getIllnessesBetween(String accessToken, String petName, String key1,
             String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + ILLNESSES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -184,18 +178,17 @@ public class PetCollectionsManagerClient {
      * Gets an illness identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the illness was acquired
      * @return The IllnessData identified by its pet and date
      */
-    public IllnessData getIllness(String accessToken, String username, String petName, String key)
+    public IllnessData getIllness(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDateFormat(key);
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + ILLNESSES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), IllnessData.class);
@@ -205,14 +198,13 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified meals from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the meals from the pet
      */
-    public List<Meal> getAllMeals(String accessToken, String username, String petName) throws MyPetCareException {
+    public List<Meal> getAllMeals(String accessToken, String petName) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEALS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Meal.class).getType();
@@ -223,19 +215,18 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the meals eaten by the pet between the initial and final date including both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The meals between the dates
      */
-    public List<Meal> getMealsBetween(String accessToken, String username, String petName, String key1, String key2)
+    public List<Meal> getMealsBetween(String accessToken, String petName, String key1, String key2)
             throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEALS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -247,16 +238,15 @@ public class PetCollectionsManagerClient {
      * Gets a meal identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the meal was eaten
      * @return The MealData identified by its pet and date.
      */
-    public MealData getMeal(String accessToken, String username, String petName, String key) throws MyPetCareException {
+    public MealData getMeal(String accessToken, String petName, String key) throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEALS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), MealData.class);
@@ -266,14 +256,13 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified washes from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the washes from the pet
      */
-    public List<Wash> getAllWashes(String accessToken, String username, String petName) throws MyPetCareException {
+    public List<Wash> getAllWashes(String accessToken, String petName) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WASHES_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Wash.class).getType();
@@ -284,19 +273,18 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the washes eaten by the pet between the initial and final date including both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The washes between the dates
      */
-    public List<Wash> getWashesBetween(String accessToken, String username, String petName, String key1, String key2)
+    public List<Wash> getWashesBetween(String accessToken, String petName, String key1, String key2)
             throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WASHES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -308,16 +296,15 @@ public class PetCollectionsManagerClient {
      * Gets a wash identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the wash was done
      * @return The WashData identified by its pet and date.
      */
-    public WashData getWash(String accessToken, String username, String petName, String key) throws MyPetCareException {
+    public WashData getWash(String accessToken, String petName, String key) throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WASHES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), WashData.class);
@@ -327,14 +314,13 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified weights from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the weights from the pet
      */
-    public List<Weight> getAllWeights(String accessToken, String username, String petName) throws MyPetCareException {
+    public List<Weight> getAllWeights(String accessToken, String petName) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WEIGHTS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Weight.class).getType();
@@ -345,19 +331,18 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the weights added between the initial and final date including both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The weights between the dates
      */
-    public List<Weight> getWeightsBetween(String accessToken, String username, String petName, String key1, String key2)
+    public List<Weight> getWeightsBetween(String accessToken, String petName, String key1, String key2)
             throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WEIGHTS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -369,17 +354,16 @@ public class PetCollectionsManagerClient {
      * Gets a weight identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the weight was added
      * @return The WeightData identified by its pet and date.
      */
-    public WeightData getWeight(String accessToken, String username, String petName, String key)
+    public WeightData getWeight(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + WEIGHTS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), WeightData.class);
@@ -389,15 +373,14 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified medications from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the medications from the pet
      */
-    public List<Medication> getAllMedications(String accessToken, String username, String petName)
+    public List<Medication> getAllMedications(String accessToken, String petName)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEDICATIONS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Medication.class).getType();
@@ -409,13 +392,12 @@ public class PetCollectionsManagerClient {
      * both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The medications between the dates
      */
-    public List<Medication> getMedicationsBetween(String accessToken, String username, String petName, String key1,
+    public List<Medication> getMedicationsBetween(String accessToken, String petName, String key1,
             String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
@@ -423,7 +405,7 @@ public class PetCollectionsManagerClient {
         date2.addSecond();
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter
                              .encode(date2.toString()), null, httpHeaders, null);
 
@@ -435,17 +417,16 @@ public class PetCollectionsManagerClient {
      * Gets a medication identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the medication was consumed
      * @return The MedicationData identified by its pet and date.
      */
-    public MedicationData getMedication(String accessToken, String username, String petName, String key)
+    public MedicationData getMedication(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDatePlusNameFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), MedicationData.class);
@@ -455,15 +436,14 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified vaccinations from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the vaccinations from the pet
      */
-    public List<Vaccination> getAllVaccinations(String accessToken, String username, String petName)
+    public List<Vaccination> getAllVaccinations(String accessToken, String petName)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VACCINATIONS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, Vaccination.class).getType();
@@ -475,19 +455,18 @@ public class PetCollectionsManagerClient {
      * them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The vaccinations between the dates
      */
-    public List<Vaccination> getVaccinationsBetween(String accessToken, String username, String petName, String key1,
+    public List<Vaccination> getVaccinationsBetween(String accessToken, String petName, String key1,
             String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
                         null, httpHeaders, null);
 
@@ -499,17 +478,16 @@ public class PetCollectionsManagerClient {
      * Gets a vaccination identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the vaccination was done
      * @return The VaccinationData identified by its pet and date.
      */
-    public VaccinationData getVaccination(String accessToken, String username, String petName, String key)
+    public VaccinationData getVaccination(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), VaccinationData.class);
@@ -519,15 +497,14 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the specified vet visits from the database identified by its pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the vet visits from the pet
      */
-    public List<VetVisit> getAllVetVisits(String accessToken, String username, String petName)
+    public List<VetVisit> getAllVetVisits(String accessToken, String petName)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VET_VISITS_PATH, null, httpHeaders, null);
 
         Type listType = TypeToken.getParameterized(List.class, VetVisit.class).getType();
@@ -538,19 +515,18 @@ public class PetCollectionsManagerClient {
      * Gets the data from all the vet visits done by the pet between the initial and final date including both of them.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The vet visits between the dates
      */
-    public List<VetVisit> getVetVisitsBetween(String accessToken, String username, String petName, String key1,
+    public List<VetVisit> getVetVisitsBetween(String accessToken, String petName, String key1,
             String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VET_VISITS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
                         httpHeaders, null);
 
@@ -562,17 +538,16 @@ public class PetCollectionsManagerClient {
      * Gets a vet visit identified by its pet and date.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param key Date the vet visit was done
      * @return The VetVisitData identified by its pet and date.
      */
-    public VetVisitData getVetVisit(String accessToken, String username, String petName, String key)
+    public VetVisitData getVetVisit(String accessToken, String petName, String key)
             throws MyPetCareException {
         PetData.checkDateFormat(key);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName)
                      + VET_VISITS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
         return gson.fromJson(response.asString(), VetVisitData.class);

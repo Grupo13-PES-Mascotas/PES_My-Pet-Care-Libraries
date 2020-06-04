@@ -77,14 +77,13 @@ public class UserManagerClient {
      * Method called by the client to get a user.
      *
      * @param accessToken The personal access token for the account
-     * @param uid The user uid of which we want the information
      * @return Json that contains all the info of the user
      * @throws MyPetCareException When the request fails
      */
-    public UserData getUser(String accessToken, String uid) throws MyPetCareException {
+    public UserData getUser(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
+                .get(BASE_URL + USERS_PATH, null, httpHeaders, null);
         return gson.fromJson(response.asString(), UserData.class);
     }
 
@@ -92,43 +91,40 @@ public class UserManagerClient {
      * Method called by the client to delete user completely.
      *
      * @param accessToken The personal access token for the account
-     * @param uid The user uid of which we want to delete
      * @throws MyPetCareException When the request fails
      */
-    public void deleteUser(String accessToken, String uid) throws MyPetCareException {
+    public void deleteUser(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), null, httpHeaders, null);
+        httpClient.delete(BASE_URL + USERS_PATH, null, httpHeaders, null);
     }
 
     /**
      * Method called by the client to delete user from database.
      *
      * @param accessToken The personal access token for the account
-     * @param uid The user uid of which we want to delete
      * @throws MyPetCareException When the request fails
      */
-    public void deleteUserFromDatabase(String accessToken, String uid) throws MyPetCareException {
+    public void deleteUserFromDatabase(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("db", true);
-        httpClient.delete(BASE_URL + USERS_PATH + HttpParameter.encode(uid), params, httpHeaders, null);
+        httpClient.delete(BASE_URL + USERS_PATH, params, httpHeaders, null);
     }
 
     /**
      * Method called by the client to update the user's password.
      *
      * @param accessToken The personal access token for the account
-     * @param username The username of which we want to update
      * @param field The field to update
      * @param newValue The new field value
      * @throws MyPetCareException When the request fails
      */
-    public void updateField(String accessToken, String username, String field, String newValue)
+    public void updateField(String accessToken, String field, String newValue)
             throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(field, newValue);
-        httpClient.put(BASE_URL + USERS_PATH + HttpParameter.encode(username), params, httpHeaders, null);
+        httpClient.put(BASE_URL + USERS_PATH, params, httpHeaders, null);
     }
 
     /**
@@ -172,16 +168,13 @@ public class UserManagerClient {
      * Gets the user group subscriptions.
      *
      * @param token The user's personal access token
-     * @param username The user's username
      * @return A list with groups which the user is subscribed to
      * @throws MyPetCareException When the request fails
      */
-    public List<String> getUserSubscriptions(String token, String username) throws MyPetCareException {
-        HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(USERNAME, username);
+    public List<String> getUserSubscriptions(String token) throws MyPetCareException {
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpResponse res = httpClient.get(BASE_URL + USERS_PATH + "subscriptions", params, headers, null);
+        HttpResponse res = httpClient.get(BASE_URL + USERS_PATH + "subscriptions", null, headers, null);
         Type listType = TypeToken.getParameterized(List.class, String.class).getType();
         return gson.fromJson(res.asString(), listType);
     }

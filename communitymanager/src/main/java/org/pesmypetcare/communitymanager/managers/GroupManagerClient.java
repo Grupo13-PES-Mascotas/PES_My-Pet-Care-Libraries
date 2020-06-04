@@ -33,6 +33,7 @@ public class GroupManagerClient {
     private static final String GROUP_ICON_SUFIX = "-icon";
     private final Gson gson;
     private HttpClient httpClient;
+    private Map<String, String> httpHeaders;
 
     /**
      * Default constructor.
@@ -40,28 +41,33 @@ public class GroupManagerClient {
     public GroupManagerClient() {
         gson = new Gson();
         httpClient = new HttpClient();
+        httpHeaders = new HashMap<>();
     }
 
     /**
      * Creates a new group.
      *
+     * @param accessToken The user's access token
      * @param group The group data
      * @throws MyPetCareException When the request fails
      */
-    public void createGroup(GroupData group) throws MyPetCareException {
-        httpClient.post(COMMUNITY_BASE_URL, null, null, gson.toJson(group));
+    public void createGroup(String accessToken, GroupData group) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        httpClient.post(COMMUNITY_BASE_URL, null, httpHeaders, gson.toJson(group));
     }
 
     /**
      * Deletes a group.
      *
+     * @param accessToken The user's access token
      * @param groupName The group name
      * @throws MyPetCareException When the request fails
      */
-    public void deleteGroup(String groupName) throws MyPetCareException {
+    public void deleteGroup(String accessToken, String groupName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
-        httpClient.delete(COMMUNITY_BASE_URL, params, null, null);
+        httpClient.delete(COMMUNITY_BASE_URL, params, httpHeaders, null);
     }
 
     /**
@@ -105,36 +111,40 @@ public class GroupManagerClient {
     /**
      * Updates a field of a group.
      *
+     * @param accessToken The user's access token
      * @param groupName The group name
      * @param field The field to update
      * @param newValue The new field value
      * @throws MyPetCareException When the request fails
      */
-    public void updateField(String groupName, String field, String newValue) throws MyPetCareException {
+    public void updateField(String accessToken, String groupName, String field, String newValue) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
         params[1] = new HttpParameter("field", field);
         Map<String, String> map = new HashMap<>();
         map.put("value", newValue);
-        httpClient.put(COMMUNITY_BASE_URL, params, null, gson.toJson(map));
+        httpClient.put(COMMUNITY_BASE_URL, params, httpHeaders, gson.toJson(map));
     }
 
     /**
      * Updates the tags of a group.
      *
+     * @param accessToken The user's access token
      * @param groupName The group name
      * @param deletedTags The list of deleted tags
      * @param newTags The list of new tags
      * @throws MyPetCareException When the request fails
      */
-    public void updateGroupTags(String groupName, List<String> deletedTags, List<String> newTags)
+    public void updateGroupTags(String accessToken, String groupName, List<String> deletedTags, List<String> newTags)
             throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(GROUP_KEY, groupName);
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
-        httpClient.put(COMMUNITY_BASE_URL + TAGS_PATH, params, null, gson.toJson(newValue));
+        httpClient.put(COMMUNITY_BASE_URL + TAGS_PATH, params, httpHeaders, gson.toJson(newValue));
     }
 
     /**

@@ -30,40 +30,46 @@ public class ForumManagerClient {
     private final String CREATOR_PARAMETER = "creator";
     private final String DATE_PARAMETER = "date";
     private final String REPORTER_PARAMETER = "reporter";
-    private HttpClient httpClient;
     private final Gson gson;
+    private HttpClient httpClient;
+    private Map<String, String> httpHeaders;
 
     /**
      * Default constructor.
      */
     public ForumManagerClient() {
         httpClient = new HttpClient();
+        httpHeaders = new HashMap<>();
         gson = new Gson();
     }
 
     /**
      * Creates a new forum.
      *
+     * @param accessToken The user's access token
      * @param parentGroup The parent group name
      * @param forum The forum data
      * @throws MyPetCareException When the request fails
      */
-    public void createForum(String parentGroup, ForumData forum) throws MyPetCareException {
-        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, null,
+    public void createForum(String accessToken, String parentGroup, ForumData forum) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        httpClient.post(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), null, httpHeaders,
             gson.toJson(forum));
     }
 
     /**
      * Deletes a forum.
      *
+     * @param accessToken The user's access token
      * @param parentGroup The parent group name
      * @param forumName The forum name
      * @throws MyPetCareException When the request fails
      */
-    public void deleteForum(String parentGroup, String forumName) throws MyPetCareException {
+    public void deleteForum(String accessToken, String parentGroup, String forumName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter(FORUM_PARAMETER, forumName);
-        httpClient.delete(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, null, null);
+        httpClient.delete(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup), params, httpHeaders, null);
     }
 
     /**
@@ -99,36 +105,41 @@ public class ForumManagerClient {
     /**
      * Updates the forum name.
      *
+     * @param accessToken The user's access token
      * @param parentGroup The parent group name
      * @param forumName The forum name
      * @param newName The new name
      * @throws MyPetCareException When the request fails
      */
-    public void updateName(String parentGroup, String forumName, String newName) throws MyPetCareException {
+    public void updateName(String accessToken, String parentGroup, String forumName, String newName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpParameter[] params = new HttpParameter[1];
         params[0] = new HttpParameter("newName", newName);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum, params, null, null);
+        httpClient.put(COMMUNITY_BASE_URL + group + "/" + forum, params, httpHeaders, null);
     }
 
     /**
      * Updates the forum tags.
      *
+     * @param accessToken The user's access token
      * @param parentGroup The parent group name
      * @param forumName The forum name
      * @param deletedTags The deleted tags
      * @param newTags The new tags
      * @throws MyPetCareException When the request fails
      */
-    public void updateTags(String parentGroup, String forumName, List<String> deletedTags, List<String> newTags)
+    public void updateTags(String accessToken, String parentGroup, String forumName, List<String> deletedTags,
+            List<String> newTags)
             throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
         Map<String, List<String>> newValue = new HashMap<>();
         newValue.put("deleted", deletedTags);
         newValue.put("new", newTags);
         String group = HttpParameter.encode(parentGroup);
         String forum = HttpParameter.encode(forumName);
-        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, null,
+        httpClient.put(COMMUNITY_BASE_URL + "/tags/" + group + "/" + forum, null, httpHeaders,
             gson.toJson(newValue));
     }
 

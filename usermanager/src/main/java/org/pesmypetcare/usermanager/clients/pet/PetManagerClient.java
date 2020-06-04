@@ -49,30 +49,27 @@ public class PetManagerClient {
      * Creates a pet entry in the data base for the user specified.
      *
      * @param accessToken The personal access token for the account
-     * @param username The user's username
      * @param pet The pet's name
      * @throws MyPetCareException When the request fails
      */
-    public void createPet(String accessToken, String username, Pet pet) throws MyPetCareException {
+    public void createPet(String accessToken, Pet pet) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter
-                .encode(pet.getName()), null, httpHeaders, gson.toJson(pet.getBody()));
+        httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(pet.getName()), null, httpHeaders,
+                gson.toJson(pet.getBody()));
     }
 
     /**
      * Returns the data of a pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner
      * @param petName The pet's name
      * @return The pet data
      * @throws MyPetCareException When the request fails
      */
-    public PetData getPet(String accessToken, String username, String petName) throws MyPetCareException {
+    public PetData getPet(String accessToken, String petName) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName),
-                        null, httpHeaders, null);
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName), null, httpHeaders, null);
         return gson.fromJson(response.asString(), PetData.class);
     }
 
@@ -80,14 +77,12 @@ public class PetManagerClient {
      * Returns all the pets of the user.
      *
      * @param accessToken The personal access token for the account
-     * @param username The user's username
      * @return All the pets of the user
      * @throws MyPetCareException When the request fails
      */
-    public List<Pet> getAllPets(String accessToken, String username) throws MyPetCareException {
+    public List<Pet> getAllPets(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        HttpResponse res = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username), null, httpHeaders, null);
+        HttpResponse res = httpClient.get(BASE_URL + PETS_PATH, null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, Pet.class).getType();
         return gson.fromJson(res.asString(), listType);
     }
@@ -96,45 +91,40 @@ public class PetManagerClient {
      * Deletes a pet of the specified user.
      *
      * @param accessToken The personal access token for the account
-     * @param username The user's username
      * @param petName The pet's name
      * @throws MyPetCareException When the request fails
      */
-    public void deletePet(String accessToken, String username, String petName) throws MyPetCareException {
+    public void deletePet(String accessToken, String petName) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName),
-                null, httpHeaders, null);
+        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(petName), null, httpHeaders, null);
     }
 
     /**
      * Deletes all pets of the specified user.
      *
      * @param accessToken The personal access token for the account
-     * @param username The user's username
      * @throws MyPetCareException When the request fails
      */
-    public void deleteAllPets(String accessToken, String username) throws MyPetCareException {
+    public void deleteAllPets(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username), null, httpHeaders, null);
+        httpClient.delete(BASE_URL + PETS_PATH, null, httpHeaders, null);
     }
 
     /**
      * Gets the value for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field to retrieve the value from
      * @return The value from the field on the database
      * @throws MyPetCareException When the request fails
      */
-    public Object getSimpleField(String accessToken, String username, String petName, String field)
-            throws MyPetCareException {
+    public Object getSimpleField(String accessToken, String petName, String field) throws MyPetCareException {
         PetData.checkSimpleField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                     + SIMPLE_PATH + HttpParameter.encode(field), null, httpHeaders, null);
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + SIMPLE_PATH + HttpParameter.encode(field),
+                        null, httpHeaders, null);
         if (response == null) {
             return null;
         }
@@ -153,57 +143,52 @@ public class PetManagerClient {
      * Updates de gender of a pet.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field The field to update
      * @param newValue The new field value
      * @throws MyPetCareException When the request fails
      */
-    public void updateSimpleField(String accessToken, String username, String petName, String field, Object newValue)
+    public void updateSimpleField(String accessToken, String petName, String field, Object newValue)
             throws MyPetCareException {
         PetData.checkSimpleFieldAndValues(field, newValue);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         Map<String, Object> reqData = new HashMap<>();
         reqData.put(VALUE_KEY, newValue);
-        httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                       + SIMPLE_PATH + HttpParameter.encode(field), null, httpHeaders, gson.toJson(reqData));
+        httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + SIMPLE_PATH + HttpParameter.encode(field),
+                null, httpHeaders, gson.toJson(reqData));
     }
-
 
     /**
      * Deletes the map for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field to delete
      * @throws MyPetCareException When the request fails
      */
-    public void deleteFieldCollection(String accessToken, String username, String petName, String field)
-            throws MyPetCareException {
+    public void deleteFieldCollection(String accessToken, String petName, String field) throws MyPetCareException {
         PetData.checkCollectionField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                          + COLLECTION_PATH + HttpParameter.encode(field), null, httpHeaders, null);
+        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                .encode(field), null, httpHeaders, null);
     }
 
     /**
      * Gets the elements for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field to retrieve
      * @return The elements from the field on the database
      * @throws MyPetCareException When the request fails
      */
-    public List<PetCollectionField> getFieldCollection(String accessToken, String username, String petName,
-            String field) throws MyPetCareException {
+    public List<PetCollectionField> getFieldCollection(String accessToken, String petName, String field)
+            throws MyPetCareException {
         PetData.checkCollectionField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                     + COLLECTION_PATH + HttpParameter.encode(field), null, httpHeaders, null);
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                        .encode(field), null, httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -212,7 +197,6 @@ public class PetManagerClient {
      * Gets all the elements between the keys from the database for the specified field.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field
      * @param key1 Start key (This one included)
@@ -220,14 +204,14 @@ public class PetManagerClient {
      * @return The elements between the keys
      * @throws MyPetCareException When the request fails
      */
-    public List<PetCollectionField> getFieldCollectionElementsBetweenKeys(String accessToken, String username,
-            String petName, String field, String key1, String key2) throws MyPetCareException {
+    public List<PetCollectionField> getFieldCollectionElementsBetweenKeys(String accessToken, String petName,
+            String field, String key1, String key2) throws MyPetCareException {
         PetData.checkCollectionField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                     + COLLECTION_PATH + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key1) + SLASH
-                     + HttpParameter.encode(key2), null, httpHeaders, null);
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                                .encode(field) + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
         Type listType = TypeToken.getParameterized(List.class, PetCollectionField.class).getType();
         return gson.fromJson(response.asString(), listType);
     }
@@ -236,79 +220,71 @@ public class PetManagerClient {
      * Adds an element to the map for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field
      * @param key Key of the new element to be added
      * @param body Element to be added
      * @throws MyPetCareException When the request fails
      */
-    public void addFieldCollectionElement(String accessToken, String username, String petName, String field, String key,
+    public void addFieldCollectionElement(String accessToken, String petName, String field, String key,
             Map<String, Object> body) throws MyPetCareException {
         PetData.checkCollectionKeyAndBody(field, key, body);
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                        + COLLECTION_PATH + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
-                httpHeaders, gson.toJson(body));
+        httpClient.post(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                .encode(field) + SLASH + HttpParameter.encode(key), null, httpHeaders, gson.toJson(body));
     }
 
     /**
      * Deletes an element from the map for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field
      * @param key Key of the element to delete
      * @throws MyPetCareException When the request fails
      */
-    public void deleteFieldCollectionElement(String accessToken, String username, String petName, String field,
-            String key) throws MyPetCareException {
+    public void deleteFieldCollectionElement(String accessToken, String petName, String field, String key)
+            throws MyPetCareException {
         PetData.checkCollectionField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                          + COLLECTION_PATH + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
-                httpHeaders, null);
+        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                .encode(field) + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
     }
 
     /**
      * Updates an element from the map for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field
      * @param key Key of the element to update
      * @param body Update of the element
      * @throws MyPetCareException When the request fails
      */
-    public void updateFieldCollectionElement(String accessToken, String username, String petName, String field,
-            String key, Map<String, Object> body) throws MyPetCareException {
+    public void updateFieldCollectionElement(String accessToken, String petName, String field, String key,
+            Map<String, Object> body) throws MyPetCareException {
         PetData.checkCollectionKeyAndBody(field, key, body);
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                       + COLLECTION_PATH + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
-                httpHeaders, gson.toJson(body));
+        httpClient.put(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                .encode(field) + SLASH + HttpParameter.encode(key), null, httpHeaders, gson.toJson(body));
     }
 
     /**
      * Gets an element from the map for the specified field of the pet on the database.
      *
      * @param accessToken The personal access token for the account
-     * @param username The pet's owner username
      * @param petName The pet's name
      * @param field Name of the field
      * @param key Key of the element
      * @return Element assigned to the key
      */
-    public Map<String, Object> getFieldCollectionElement(String accessToken, String username, String petName,
-            String field, String key) throws MyPetCareException {
+    public Map<String, Object> getFieldCollectionElement(String accessToken, String petName, String field, String key)
+            throws MyPetCareException {
         PetData.checkCollectionField(field);
         httpHeaders.put(TOKEN_HEADER, accessToken);
         HttpResponse response = httpClient
-                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
-                     + COLLECTION_PATH + HttpParameter.encode(field) + SLASH + HttpParameter.encode(key), null,
-                        httpHeaders, null);
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(petName) + COLLECTION_PATH + HttpParameter
+                        .encode(field) + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, Object.class).getType();
         return gson.fromJson(response.asString(), mapType);
     }
@@ -329,8 +305,7 @@ public class PetManagerClient {
         reqData.put("uid", userId);
         reqData.put("imgName", petName + PROFILE_IMAGE_NAME);
         reqData.put("img", image);
-        httpClient.put(BASE_URL + IMAGES_PATH + HttpParameter.encode(userId) + PETS_PICTURES_PATH, null, httpHeaders,
-                gson.toJson(reqData));
+        httpClient.put(BASE_URL + IMAGES_PATH + PETS_PICTURES_PATH, null, httpHeaders, gson.toJson(reqData));
     }
 
     /**
@@ -355,15 +330,12 @@ public class PetManagerClient {
      * Downloads all profile images of the user's pets.
      *
      * @param accessToken The personal access token for the account
-     * @param userId The owner's unique identifier
      * @return A map with all profile images of the user's pets
      * @throws MyPetCareException When the request fails
      */
-    public Map<String, byte[]> downloadAllProfileImages(String accessToken, String userId) throws MyPetCareException {
+    public Map<String, byte[]> downloadAllProfileImages(String accessToken) throws MyPetCareException {
         httpHeaders.put(TOKEN_HEADER, accessToken);
-        HttpResponse response = httpClient
-                .get(BASE_URL + IMAGES_PATH + HttpParameter.encode(userId) + PETS_PICTURES_PATH, null, httpHeaders,
-                        null);
+        HttpResponse response = httpClient.get(BASE_URL + IMAGES_PATH + PETS_PICTURES_PATH, null, httpHeaders, null);
         Type mapType = TypeToken.getParameterized(Map.class, String.class, String.class).getType();
         Map<String, String> encodedImages = gson.fromJson(response.asString(), mapType);
         Map<String, byte[]> result = new HashMap<>();
