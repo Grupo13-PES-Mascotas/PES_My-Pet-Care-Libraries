@@ -58,7 +58,6 @@ import static org.mockito.Mockito.verify;
 @PrepareForTest(fullyQualifiedNames = {"android.util.Base64"})
 public class PetCollectionsManagerClientTest {
     private static final String ACCESS_TOKEN = "my-token";
-    private static final String USERNAME = "user";
     private static final String PET_NAME = "Gustavo";
     private static final String DATE_1 = "1990-01-08T15:20:30";
     private static final String DATE_2 = "1995-01-08T15:20:30";
@@ -110,7 +109,6 @@ public class PetCollectionsManagerClientTest {
     @Before
     public void setUp() {
         gson = new Gson();
-        // Corregir exercise per ficar coordinates
         List<LatLng> coordinates = new ArrayList<>();
         coordinates.add(new LatLng(84, 58));
         coordinates.add(new LatLng(34, 58));
