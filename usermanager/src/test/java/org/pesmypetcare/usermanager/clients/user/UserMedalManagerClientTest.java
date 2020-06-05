@@ -105,15 +105,16 @@ public class UserMedalManagerClientTest {
 
     @Test
     public void updateField() throws MyPetCareException {
-        HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(field, value);
+        String body = "{\n"
+                + "  \"value\":" + value + "\n"
+                + "} ";
         given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull()))
                 .willReturn(httpResponse);
 
         client.updateField(token, owner, medalName, field, value);
         verify(httpClient).put(eq(USERMEDAL_PATH + ownerNameEncoded + "/"
-                        + medalNameEncoded + "/" + fieldNameEncoded), eq(params), eq(headers),
-                isNull());
+                        + medalNameEncoded + "/" + fieldNameEncoded), isNull(), eq(headers),
+                eq(body));
     }
 
     @Test
