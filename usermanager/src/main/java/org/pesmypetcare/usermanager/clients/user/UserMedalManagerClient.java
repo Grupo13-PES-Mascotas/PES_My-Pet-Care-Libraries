@@ -121,7 +121,8 @@ public class UserMedalManagerClient {
      * @param field The value of the field.
      */
     private void checkField(String field) {
-        if (!("progress".equals(field) || "currentLevel".equals(field) || "completedLevelsDate".equals(field))) {
+        if (!("progress".equals(field) || "currentLevel".equals(field)
+                || "completedLevelsDate".equals(field))) {
             throw new IllegalArgumentException("Field not allowed to update.");
         }
     }
