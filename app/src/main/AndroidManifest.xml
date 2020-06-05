@@ -22,6 +22,7 @@
         <activity android:name=".ForumActivity">
 
         </activity>
+
     </application>
 
 </manifest>

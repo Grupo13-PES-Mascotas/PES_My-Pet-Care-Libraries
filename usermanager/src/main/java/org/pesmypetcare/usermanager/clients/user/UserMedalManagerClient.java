@@ -82,15 +82,17 @@ public class UserMedalManagerClient {
      */
     public void updateField(String token, String owner, String medalName, String field,
                            Object value) throws MyPetCareException {
+        UserMedalData.checkFieldAndValues(field, value);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(field, String.valueOf(value));
+        String body = "{\n"
+                + "  \"value\":" + value + "\n"
+                + "} ";
         String user = HttpParameter.encode(owner);
         String medal = HttpParameter.encode(medalName);
         String fieldHttp = HttpParameter.encode(field);
-        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, params,
-                headers, null);
+        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, null,
+                headers, body);
     }
 
     /**
