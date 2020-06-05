@@ -1,7 +1,6 @@
 package org.pesmypetcare.usermanager.clients.user;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.pesmypetcare.httptools.HttpClient;
