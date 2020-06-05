@@ -12,6 +12,12 @@ import java.util.Objects;
  * @author Oriol Catalán
  */
 public class UserMedalData {
+    public static final String NAME = "name";
+    public static final String PROGRESS = "progress";
+    public static final String CURRENT_LEVEL = "currentLevel";
+    public static final String COMPLETED_LEVELS_DATE = "completedLevelsDate";
+    public static final String LEVELS = "levels";
+    public static final String DESCRIPTION = "description";
     private String name;
     private List<Double> levels;
     private String description;
@@ -84,6 +90,20 @@ public class UserMedalData {
 
     public void setProgress(Double progress) {
         this.progress = progress;
+    }
+
+    /**
+     * Checks that the field and the new value for this field have the correct format for a UserMedal attribute.
+     * @param field Name of the attribute.
+     * @param newValue Value of the attribute.
+     */
+    public static void checkFieldAndValues(String field, Object newValue) {
+        if (field.equals(COMPLETED_LEVELS_DATE) && !(newValue instanceof String)) {
+            throw new IllegalArgumentException("New value must be a String");
+        } else if ((field.equals(PROGRESS) || field.equals(CURRENT_LEVEL))
+                && !(newValue instanceof Double || newValue instanceof Integer)) {
+            throw new IllegalArgumentException("New value must be a Double or Integer");
+        }
     }
 
     @NonNull
