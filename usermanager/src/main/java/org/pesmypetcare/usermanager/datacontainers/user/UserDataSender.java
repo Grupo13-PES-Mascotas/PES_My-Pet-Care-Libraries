@@ -84,6 +84,7 @@ public class UserDataSender {
         return Objects.hash(getUid(), getUsername(), getPassword(), getEmail());
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserDataSender{" + "uid='" + uid + '\'' + ", username='" + username + '\'' + ", password='" + password
