@@ -387,9 +387,9 @@ public class MainActivity extends AppCompatActivity {
             try {
                 //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
                 //System.out.println(img.length);
-                //System.out.println(client.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
-                client.createUser(new UserDataSender("QABtiSlbB6NkXFCeDa4abRGSopT2", "Santiago Del Rey",
-                        "santi" + ".mypetcare@gmail.com", "123456789$"));
+                System.out.println(client.getUser("token"));
+                /*client.createUser(new UserDataSender("QABtiSlbB6NkXFCeDa4abRGSopT2", "Santiago Del Rey",
+                        "santi" + ".mypetcare@gmail.com", "123456789$"));*/
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }
