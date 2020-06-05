@@ -1,6 +1,7 @@
 package org.pesmypetcare.usermanager.clients.user;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.pesmypetcare.httptools.HttpClient;
@@ -85,13 +86,14 @@ public class UserMedalManagerClient {
         UserMedalData.checkFieldAndValues(field, value);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
-        HttpParameter[] params = new HttpParameter[1];
-        params[0] = new HttpParameter(field, String.valueOf(value));
+        String body = "{\n"
+                + "  \"value\":" + value + "\n"
+                + "} ";
         String user = HttpParameter.encode(owner);
         String medal = HttpParameter.encode(medalName);
         String fieldHttp = HttpParameter.encode(field);
-        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, params,
-                headers, null);
+        httpClient.put(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, null,
+                headers, body);
     }
 
     /**

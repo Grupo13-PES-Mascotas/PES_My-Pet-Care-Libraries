@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
             UserMedalManagerClient manager = new UserMedalManagerClient();
 
             try {
-                System.out.println(manager.getAllMedals("token", "OriCat8989"));
+                //System.out.println(manager.getAllMedals("token", "OriCat8989"));
+                manager.updateField("token,", "OriCat8989", "Zoo", "progress", 1.0);
+                System.out.println(manager.getField("token", "OriCat8989", "Zoo", "progress"));
                 //System.out.println(manager.getMedal("token", "OriCat8989", "Contributioner"));
             } catch (MyPetCareException e) {
                 e.printStackTrace();
