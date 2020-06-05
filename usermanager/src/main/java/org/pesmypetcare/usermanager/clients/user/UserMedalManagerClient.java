@@ -82,7 +82,7 @@ public class UserMedalManagerClient {
      */
     public void updateField(String token, String owner, String medalName, String field,
                            Object value) throws MyPetCareException {
-        checkField(field);
+        UserMedalData.checkFieldAndValues(field, value);
         Map<String, String> headers = new HashMap<>();
         headers.put(TOKEN_HEADER, token);
         HttpParameter[] params = new HttpParameter[1];
@@ -114,16 +114,5 @@ public class UserMedalManagerClient {
                 .get(USERMEDAL_PATH + user + "/" + medal + "/" + fieldHttp, null,
                         headers, null);
         return gson.fromJson(response.asString(), Object.class);
-    }
-
-    /**
-     * This method check that the field are allowed to update.
-     * @param field The value of the field.
-     */
-    private void checkField(String field) {
-        if (!("progress".equals(field) || "currentLevel".equals(field)
-                || "completedLevelsDate".equals(field))) {
-            throw new IllegalArgumentException("Field not allowed to update.");
-        }
     }
 }
