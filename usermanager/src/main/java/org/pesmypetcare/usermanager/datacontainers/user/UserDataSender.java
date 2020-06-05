@@ -34,6 +34,14 @@ public class UserDataSender {
         this.password = password;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -58,13 +66,6 @@ public class UserDataSender {
         this.password = password;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "UserDataSender{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", email='"
-               + email + '\'' + '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -74,12 +75,18 @@ public class UserDataSender {
             return false;
         }
         UserDataSender that = (UserDataSender) o;
-        return Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword())
-               && Objects.equals(getEmail(), that.getEmail());
+        return Objects.equals(getUid(), that.getUid()) && Objects.equals(getUsername(), that.getUsername()) && Objects
+                .equals(getPassword(), that.getPassword()) && Objects.equals(getEmail(), that.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getEmail());
+        return Objects.hash(getUid(), getUsername(), getPassword(), getEmail());
+    }
+
+    @Override
+    public String toString() {
+        return "UserDataSender{" + "uid='" + uid + '\'' + ", username='" + username + '\'' + ", password='" + password
+               + '\'' + ", email='" + email + '\'' + '}';
     }
 }

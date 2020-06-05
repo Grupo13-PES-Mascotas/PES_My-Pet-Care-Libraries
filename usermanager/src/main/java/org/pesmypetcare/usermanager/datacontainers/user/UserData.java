@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Santiago Del Rey
@@ -73,22 +74,30 @@ public class UserData {
         return messagesBanned;
     }
 
-    @NonNull
     @Override
-    public String toString() {
-        return "UserData{" + "username='" + username + '\'' + ", email='" + email + '\'' + ", password='" + password
-                + '\'' + ", groupSubscriptions=" + groupSubscriptions + '\'' + ", messagesBanned="
-                + messagesBanned + '}';
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserData userData = (UserData) o;
+        return Objects.equals(getUsername(), userData.getUsername()) && Objects
+                .equals(getPassword(), userData.getPassword()) && Objects.equals(getEmail(), userData.getEmail())
+               && Objects.equals(getGroupSubscriptions(), userData.getGroupSubscriptions()) && Objects
+                       .equals(getMessagesBanned(), userData.getMessagesBanned());
     }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
-        if (obj instanceof UserData) {
-            return ((UserData) obj).getUsername().equals(this.username) && ((UserData) obj).getEmail()
-                    .equals(this.email) && ((UserData) obj).getPassword().equals(this.password) && ((UserData) obj)
-                    .getGroupSubscriptions().equals(this.groupSubscriptions) && ((UserData) obj).getMessagesBanned()
-                    .equals(this.messagesBanned);
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(getUsername(), getPassword(), getEmail(), getGroupSubscriptions(), getMessagesBanned());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "UserData{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", email='" + email
+               + '\'' + ", groupSubscriptions=" + groupSubscriptions + ", messagesBanned=" + messagesBanned + '}';
     }
 }
