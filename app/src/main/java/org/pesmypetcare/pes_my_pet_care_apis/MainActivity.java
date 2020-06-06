@@ -5,11 +5,23 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.pesmypetcare.communitymanager.managers.GroupManagerClient;
+import org.pesmypetcare.communitymanager.datacontainers.ForumData;
+import org.pesmypetcare.communitymanager.datacontainers.GroupData;
+import org.pesmypetcare.communitymanager.datacontainers.Message;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
+import org.pesmypetcare.communitymanager.managers.ForumManagerClient;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
+import org.pesmypetcare.usermanager.clients.pet.PetManagerClient;
 import org.pesmypetcare.usermanager.clients.user.UserManagerClient;
+import org.pesmypetcare.usermanager.datacontainers.pet.PetData;
+import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
+import org.pesmypetcare.usermanager.datacontainers.user.UserData;
+import org.pesmypetcare.usermanager.datacontainers.user.UserDataSender;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Santiago Del Rey
@@ -350,25 +362,39 @@ public class MainActivity extends AppCompatActivity {
         }
          */
 
-
-        // TESTS USER
-
-
-        /*UserManagerClient client = new UserManagerClient();
+        /*PetManagerClient client = new PetManagerClient();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                Weight weight = new Weight("2020-05-08T00:00:00", 2.3);
                 try {
-                    //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
-                    //System.out.println(img.length);
-                    client.sendTokenToServer("eyJhbGciOiJSUzI1NiIsImtpZCI6ImZjMmM4YmIyNmE3OGM0M2JkODYzNzA1YjNkNzkyMWI0ZTY0MjVkNTQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQXBpbnQyMSIsImlzcyI6Imh0dHBzOi8vc2VjdXJldG9rZW4uZ29vZ2xlLmNvbS9teS1wZXQtY2FyZS04NTg4MyIsImF1ZCI6Im15LXBldC1jYXJlLTg1ODgzIiwiYXV0aF90aW1lIjoxNTg5NDk5NTQ1LCJ1c2VyX2lkIjoiREljNkZxeUU5R2Jmd3lNbHVVOVg2azl2UVJKMiIsInN1YiI6IkRJYzZGcXlFOUdiZnd5TWx1VTlYNms5dlFSSjIiLCJpYXQiOjE1ODk0OTk1NDUsImV4cCI6MTU4OTUwMzE0NSwiZW1haWwiOiJhbGJlcnQubXlwZXRjYXJlQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImFsYmVydC5teXBldGNhcmVAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.T9Y2uZd9pCdIaYZIPLqrbaigJvGWyoceAe6LoYEU4twIt54vS1kqwADiTinvO8Z5dbQjiHo_y_UCp2azwCBKRHHczCgjwiF5M111-Ps790croPuiqgQL_9iz5pNJHdKfnbD1FsPuQOlVOzPjffSMACssk2MupBVmEQXe7rnTjxahwcF_cE0HR92P1gcyuIdoEm5vSjcgdKxh3UbDpRlhihPygMT1zuuFVkDc-CgeXAdS33GvR2uN_osfVQIuCt7NA5f88oUi0B9twhRFQQY32RxSBJG4DR7nLM4i84rXj4wifD1_MWA4WN4kZCC_OTCQmtSoqHVnoa0tI1MgrXeo8Q", "c61zZpw4GlE"
-                            + ":APA91bHj1eOAQlFrgVwLoGNiIZsx7yLfc_ljYkRAx7OK5t0e0Pmg9xriuzrpzeFisonFeKS1QDbap4wVe8PX9-D0nfM1Zw0X4ijmm6SEAGzOMOrP0_FInmJHm3aAYTzvgvQHPYjaQZit");
+                    client.addFieldCollectionElement("token", "Albert Pinto Gil", "Estela", PetData.WEIGHTS,
+                            weight.getKey(), weight.getBodyAsMap());
                 } catch (MyPetCareException e) {
                     e.printStackTrace();
                 }
             }
         });
+
         thread.start();*/
+
+
+        // TESTS USER
+
+
+        UserManagerClient client = new UserManagerClient();
+        Thread thread = new Thread(() -> {
+            try {
+                //byte[] img = client.downloadProfileImage("token", "Albert Pinto Gil");
+                //System.out.println(img.length);
+                //System.out.println(client.getUser("token", "QABtiSlbB6NkXFCeDa4abRGSopT2"));
+                client.createUser(new UserDataSender("QABtiSlbB6NkXFCeDa4abRGSopT2", "Santiago Del Rey",
+                        "santi" + ".mypetcare@gmail.com", "123456789$"));
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
         /*try {
             if (!client.usernameAlreadyExists("santi")) {
                 client.createUser("iw2VHtSHeoZohD3dAWRafXnb5x42", user);
@@ -448,7 +474,8 @@ public class MainActivity extends AppCompatActivity {
                 //groupManager.createGroup(data);
                 //groupManager.deleteGroup(groupName);
                 //groupManager.createGroup(data);
-                System.out.println("Print 1: " + groupManager.getGroup("Beagles"));
+                Map<String, String> dog_people = groupManager.getGroup("Bienvenidos a My Pet Care").getMembers();
+                System.out.println("Print 1: " + dog_people);
                 //System.out.println("Print 2: " + groupManager.getAllGroups());
                 //System.out.println("Print 3: " + groupManager.getAllTags());
                 //System.out.println("Print 4: " + groupManager.getUserSubscriptions("token", "santi"));
@@ -473,7 +500,7 @@ public class MainActivity extends AppCompatActivity {
             }
             System.out.println("ACABADO");
         });
-        thread.start();*/
+        thread.start();
         //TEST FORUMS
         /*Thread thread = new Thread(() -> {
             ForumManagerClient forumManager = new ForumManagerClient();
@@ -483,11 +510,11 @@ public class MainActivity extends AppCompatActivity {
             String groupName2 = "Prueba 1";
             String forumName = "Vamos que nos vamos";
             String forumName2 = "Peluquerias";
-            ForumData forum = new ForumData(forumName, "santi", tags);
+            ForumData forum = new ForumData(forumName, "santi", new ArrayList<>());
             ForumData forum2 = new ForumData("Marc me aburro", "santi", tags);
-            Message message = new Message("santi", "Hola");
+            //Message message = new Message("santi", "Hola");
             try {
-                //forumManager.createForum(groupName1, form);
+                //forumManager.createForum("Dog people", forum);
                 //forumManager.deleteForum(groupName2, forumName);
                 //forumManager.createForum(groupName1, forum2);
                 //System.out.println(forumManager.getForum(groupName1, forumName));
@@ -497,8 +524,29 @@ public class MainActivity extends AppCompatActivity {
                 //forumManager.postMessage("token", groupName1, forumName2, message);
                 //System.out.println(forumManager.getAllPostsImagesFromForum("token", groupName1, forumName2));
                 //forumManager.deleteMessage("token", groupName1, forumName2, "santi", "2020-04-23T23:40:09");
-                forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
-                        "2020-04-24T08:22:12", true);
+                //forumManager.likeMessage("token", "santi", groupName1, forumName2, "Albert Pinto Gil",
+                //        "2020-04-24T08:22:12", true);
+            } catch (MyPetCareException e) {
+                e.printStackTrace();
+            }
+            System.out.println("FIN");
+        });
+        thread.start();*/
+
+        // TEST REPORT i UNBAN
+        /*
+        Thread thread = new Thread(() -> {
+            ForumManagerClient forumManager = new ForumManagerClient();
+            List<String> tags = new ArrayList<>();
+            String token = "token";
+            String groupName = "Dog people";
+            String forumName = "Huskies Lovers";
+            String creator = "Marc Simó Guzmán";
+            String reporter = "Kilom";
+            String date = "2020-06-03T11:38:00";
+            try {
+               //forumManager.reportMessage(token, groupName, forumName, creator, reporter, date);
+                forumManager.unbanMessage(token, groupName, forumName, creator, date);
             } catch (MyPetCareException e) {
                 e.printStackTrace();
             }

@@ -56,10 +56,10 @@ To add all modules:
 ## Documentation
 Documentation for the current release:
 
-* [Usermanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/usermanager/v2.0.0/javadoc)
+* [Usermanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/usermanager/v2.1.0/javadoc)
 
-* [Communitymanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/communitymanager/v2.0.0/javadoc)
+* [Communitymanager Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/communitymanager/v2.1.0/javadoc)
 			     
-* [Httptools Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/httptools/v2.0.0/javadoc)
+* [Httptools Javadoc](https://javadoc.jitpack.io/com/github/Grupo13-PES-Mascotas/PES_My-Pet-Care-Libraries/httptools/v2.1.0/javadoc)
 
 Both Usermanager and Communitymanager libraries need Httptools to work.

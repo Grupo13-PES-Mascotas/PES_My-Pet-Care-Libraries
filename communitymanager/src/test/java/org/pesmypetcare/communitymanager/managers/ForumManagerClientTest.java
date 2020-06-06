@@ -17,6 +17,7 @@ import org.pesmypetcare.httptools.HttpClient;
 import org.pesmypetcare.httptools.HttpParameter;
 import org.pesmypetcare.httptools.HttpResponse;
 import org.pesmypetcare.httptools.exceptions.MyPetCareException;
+import org.pesmypetcare.httptools.utilities.DateTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,10 +39,12 @@ public class ForumManagerClientTest {
     private static final String COMMUNITY_BASE_URL = BASE_URL + "community/";
     private static final String FORUM_PARAMETER = "forum";
     private static final String CREATOR_PARAMETER = "creator";
+    private static final String REPORTER_PARAMETER = "reporter";
     private static final String DATE_PARAMETER = "date";
     private static String parentGroup;
     private static String forumName;
     private static String creator;
+    private static String reporter;
     private static String token;
     private static String groupNameEncoded;
     private static String forumNameEncoded;
@@ -63,13 +66,14 @@ public class ForumManagerClientTest {
         parentGroup = "Dogs";
         forumName = "Huskies";
         creator = "John";
+        reporter = "Mentecato";
         token = "token";
         groupNameEncoded = HttpParameter.encode(parentGroup);
         forum = new ForumData(forumName, creator, null);
         forumNameEncoded = HttpParameter.encode(forumName);
         headers = new HashMap<>();
         headers.put(token, token);
-        date = "2020-05-12";
+        date = "2020-05-12T25:30:40";
     }
 
     @Test
@@ -89,7 +93,8 @@ public class ForumManagerClientTest {
 
         client.deleteForum(parentGroup, forumName);
         verify(httpClient)
-                .delete(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(), isNull());
+                .delete(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), eq(params), isNull(),
+                    isNull());
     }
 
     @Test
@@ -107,7 +112,8 @@ public class ForumManagerClientTest {
 
     @Test
     public void getAllForums() throws MyPetCareException {
-        given(httpClient.get(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), isNull(), isNull(), isNull()))
+        given(httpClient.get(eq(COMMUNITY_BASE_URL + HttpParameter.encode(parentGroup)), isNull(), isNull(),
+            isNull()))
                 .willReturn(httpResponse);
         List<ForumData> forums = new ArrayList<>();
         forums.add(forum);
@@ -124,7 +130,8 @@ public class ForumManagerClientTest {
         given(httpClient.put(anyString(), any(HttpParameter[].class), isNull(), isNull())).willReturn(httpResponse);
 
         client.updateName(parentGroup, forumName, newName);
-        verify(httpClient).put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), isNull(),
+        verify(httpClient).put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params),
+            isNull(),
                 isNull());
     }
 
@@ -139,7 +146,8 @@ public class ForumManagerClientTest {
 
         client.updateTags(parentGroup, forumName, tags, tags);
         verify(httpClient)
-                .put(eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(), isNull(),
+                .put(eq(COMMUNITY_BASE_URL + "/tags/" + groupNameEncoded + "/" + forumNameEncoded), isNull(),
+                    isNull(),
                         eq(gson.toJson(newValue)));
     }
 
@@ -161,16 +169,48 @@ public class ForumManagerClientTest {
         client.deleteMessage(token, parentGroup, forumName, creator, date);
         HttpParameter[] params = new HttpParameter[2];
         params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[1] = new HttpParameter(DATE_PARAMETER, date);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         verify(httpClient)
-                .delete(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers),
-                        isNull());
+            .delete(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded), eq(params), eq(headers),
+                isNull());
+    }
+
+    @Test
+    public void reportMessage() throws MyPetCareException {
+        given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
+
+        client.reportMessage(token, parentGroup, forumName, creator, reporter, date);
+        HttpParameter[] params = new HttpParameter[3];
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
+        params[2] = new HttpParameter(REPORTER_PARAMETER, reporter);
+        verify(httpClient)
+            .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/report_message"),
+                eq(params),
+                eq(headers),
+                isNull());
+    }
+
+    @Test
+    public void unbanMessage() throws MyPetCareException {
+        given(httpClient.put(anyString(), any(HttpParameter[].class), anyMap(), isNull())).willReturn(httpResponse);
+
+        client.unbanMessage(token, parentGroup, forumName, creator, date);
+        HttpParameter[] params = new HttpParameter[2];
+        params[0] = new HttpParameter(CREATOR_PARAMETER, creator);
+        params[1] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
+        verify(httpClient)
+            .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/unban_message"),
+                eq(params),
+                eq(headers),
+                isNull());
     }
 
     @Test
     public void getAllPostsImagesFromForum() throws MyPetCareException {
         given(httpClient
-                .get(BASE_URL + "storage/image/" + groupNameEncoded + "/" + forumNameEncoded, null, headers, null))
+                .get(BASE_URL + "storage/image/" + groupNameEncoded + "/" + forumNameEncoded, null, headers,
+                    null))
                 .willReturn(httpResponse);
         Map<String, String> response = new HashMap<>();
         response.put("key", forumName);
@@ -190,7 +230,7 @@ public class ForumManagerClientTest {
         HttpParameter[] params = new HttpParameter[4];
         params[0] = new HttpParameter("username", creator);
         params[1] = new HttpParameter(CREATOR_PARAMETER, creator);
-        params[2] = new HttpParameter(DATE_PARAMETER, date);
+        params[2] = new HttpParameter(DATE_PARAMETER, DateTime.convertLocalToUTCString(date));
         params[3] = new HttpParameter("like", true);
         verify(httpClient)
                 .put(eq(COMMUNITY_BASE_URL + groupNameEncoded + "/" + forumNameEncoded + "/messages"), eq(params),
