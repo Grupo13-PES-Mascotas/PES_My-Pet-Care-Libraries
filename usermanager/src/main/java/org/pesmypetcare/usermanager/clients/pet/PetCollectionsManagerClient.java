@@ -1,10 +1,14 @@
 package org.pesmypetcare.usermanager.clients.pet;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.pesmypetcare.httptools.HttpClient;
+import org.pesmypetcare.httptools.HttpParameter;
+import org.pesmypetcare.httptools.HttpResponse;
+import org.pesmypetcare.httptools.exceptions.MyPetCareException;
 import org.pesmypetcare.httptools.utilities.DateTime;
 import org.pesmypetcare.usermanager.BuildConfig;
-import org.pesmypetcare.usermanager.clients.TaskManager;
 import org.pesmypetcare.usermanager.datacontainers.pet.Exercise;
 import org.pesmypetcare.usermanager.datacontainers.pet.ExerciseData;
 import org.pesmypetcare.usermanager.datacontainers.pet.Illness;
@@ -23,12 +27,13 @@ import org.pesmypetcare.usermanager.datacontainers.pet.WashData;
 import org.pesmypetcare.usermanager.datacontainers.pet.Weight;
 import org.pesmypetcare.usermanager.datacontainers.pet.WeightData;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.Map;
 
 /**
- * @author Marc Simó
+ * @author Marc Simó & Santiago Del Rey
  */
 public class PetCollectionsManagerClient {
     private static final String BASE_URL = BuildConfig.URL;
@@ -41,14 +46,15 @@ public class PetCollectionsManagerClient {
     private static final String MEDICATIONS_PATH = "/collection/medications";
     private static final String VACCINATIONS_PATH = "/collection/vaccinations";
     private static final String VET_VISITS_PATH = "/collection/vet_visits";
-    private static final String GET = "GET";
-    private static final String DELETE = "DELETE";
     private static final String SLASH = "/";
-    private final Gson GSON = new Gson();
-    private TaskManager taskManager;
+    private static final String TOKEN_HEADER = "token";
+    private final Gson gson = new Gson();
+    private HttpClient httpClient;
+    private Map<String, String> httpHeaders;
 
     public PetCollectionsManagerClient() {
-        taskManager = new TaskManager();
+        httpClient = new HttpClient();
+        httpHeaders = new HashMap<>();
     }
 
     /**
@@ -58,27 +64,16 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the exercises from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Exercise> getAllExercises(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{\"body\"");
-        List<Exercise> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Exercise.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{\"body\"" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Exercise.class));
-        }
-        return result;
+            throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + EXERCISES_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Exercise.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -90,30 +85,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The exercises between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Exercise> getExercisesBetween(String accessToken, String username, String petName, String key1,
-            String key2) throws ExecutionException, InterruptedException {
+            String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(
-                BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH + SLASH + key1 + SLASH + key2,
-                accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String jsonArray = response.substring(1, response.length() - 1);
-        String[] objectArray = jsonArray.split(",\\{\"body\"");
-        List<Exercise> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Exercise.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{\"body\"" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Exercise.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + EXERCISES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Exercise.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -124,21 +108,16 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the exercise was done
      * @return The ExerciseData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public ExerciseData getExercise(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + EXERCISES_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), ExerciseData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + EXERCISES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), ExerciseData.class);
     }
 
     /**
@@ -148,19 +127,13 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @param date Specified date (This one not included)
-     * @return Server petition response status code
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public int deleteExercisesPreviousToDate(String accessToken, String username, String petName, String date)
-            throws ExecutionException, InterruptedException {
+    public void deleteExercisesPreviousToDate(String accessToken, String username, String petName, String date)
+            throws MyPetCareException {
         PetData.checkDateFormat(date);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(DELETE);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + "/fullcollection/exercises/" + date,
-                        accessToken).get();
-        return Integer.parseInt(response.toString());
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        httpClient.delete(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                          + "/fullcollection/exercises/" + HttpParameter.encode(date), null, httpHeaders, null);
     }
 
     /**
@@ -170,26 +143,16 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the illnesses from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Illness> getAllIllnesses(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Illness> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Illness.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Illness.class));
-        }
-        return result;
+            throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + ILLNESSES_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Illness.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -202,29 +165,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The illnesses between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Illness> getIllnessesBetween(String accessToken, String username, String petName, String key1,
-            String key2) throws ExecutionException, InterruptedException {
+            String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(
-                BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH + SLASH + key1 + SLASH + key2,
-                accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Illness> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Illness.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Illness.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + ILLNESSES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Illness.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -235,21 +188,17 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the illness was acquired
      * @return The IllnessData identified by its pet and date
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public IllnessData getIllness(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + ILLNESSES_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), IllnessData.class);
-        }
-        return null;
+        PetData.checkDateFormat(key);
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + ILLNESSES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), IllnessData.class);
     }
 
     /**
@@ -259,26 +208,15 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the meals from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Meal> getAllMeals(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Meal> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Meal.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Meal.class));
-        }
-        return result;
+    public List<Meal> getAllMeals(String accessToken, String username, String petName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEALS_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Meal.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -290,29 +228,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The meals between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Meal> getMealsBetween(String accessToken, String username, String petName, String key1, String key2)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH + SLASH + key1 + SLASH + key2,
-                        accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Meal> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Meal.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Meal.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEALS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Meal.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -323,21 +251,15 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the meal was eaten
      * @return The MealData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public MealData getMeal(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+    public MealData getMeal(String accessToken, String username, String petName, String key) throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEALS_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), MealData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEALS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), MealData.class);
     }
 
     /**
@@ -347,26 +269,15 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the washes from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Wash> getAllWashes(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Wash> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Wash.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Wash.class));
-        }
-        return result;
+    public List<Wash> getAllWashes(String accessToken, String username, String petName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WASHES_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Wash.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -378,29 +289,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The washes between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Wash> getWashesBetween(String accessToken, String username, String petName, String key1, String key2)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH + SLASH + key1 + SLASH + key2,
-                        accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Wash> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Wash.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Wash.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WASHES_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Wash.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -411,21 +312,15 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the wash was done
      * @return The WashData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public WashData getWash(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+    public WashData getWash(String accessToken, String username, String petName, String key) throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WASHES_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), WashData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WASHES_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), WashData.class);
     }
 
     /**
@@ -435,26 +330,15 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the weights from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
-    public List<Weight> getAllWeights(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Weight> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Weight.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Weight.class));
-        }
-        return result;
+    public List<Weight> getAllWeights(String accessToken, String username, String petName) throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WEIGHTS_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Weight.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -466,29 +350,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The weights between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Weight> getWeightsBetween(String accessToken, String username, String petName, String key1, String key2)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH + SLASH + key1 + SLASH + key2,
-                        accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Weight> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Weight.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Weight.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WEIGHTS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Weight.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -499,21 +373,16 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the weight was added
      * @return The WeightData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public WeightData getWeight(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + WEIGHTS_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), WeightData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + WEIGHTS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), WeightData.class);
     }
 
     /**
@@ -523,26 +392,16 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the medications from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Medication> getAllMedications(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Medication> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Medication.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Medication.class));
-        }
-        return result;
+            throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEDICATIONS_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Medication.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -555,31 +414,21 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The medications between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Medication> getMedicationsBetween(String accessToken, String username, String petName, String key1,
-            String key2) throws ExecutionException, InterruptedException {
+            String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
         DateTime date2 = DateTime.Builder.buildFullString(key2);
         date2.addSecond();
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(
-                BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH + SLASH + key1 + SLASH + date2
-                        .toString(), accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Medication> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Medication.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Medication.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter
+                             .encode(date2.toString()), null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Medication.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -590,21 +439,16 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the medication was consumed
      * @return The MedicationData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public MedicationData getMedication(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDatePlusNameFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + MEDICATIONS_PATH + SLASH + key,
-                        accessToken).get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), MedicationData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + MEDICATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), MedicationData.class);
     }
 
     /**
@@ -614,26 +458,16 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the vaccinations from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Vaccination> getAllVaccinations(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Vaccination> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Vaccination.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Vaccination.class));
-        }
-        return result;
+            throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VACCINATIONS_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Vaccination.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -646,29 +480,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The vaccinations between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<Vaccination> getVaccinationsBetween(String accessToken, String username, String petName, String key1,
-            String key2) throws ExecutionException, InterruptedException {
+            String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(
-                BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH + SLASH + key1 + SLASH + key2,
-                accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<Vaccination> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], Vaccination.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], Vaccination.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2),
+                        null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, Vaccination.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -679,21 +503,16 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the vaccination was done
      * @return The VaccinationData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public VaccinationData getVaccination(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VACCINATIONS_PATH + SLASH + key,
-                        accessToken).get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), VaccinationData.class);
-        }
-        return null;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VACCINATIONS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
+
+        return gson.fromJson(response.asString(), VaccinationData.class);
     }
 
     /**
@@ -703,26 +522,16 @@ public class PetCollectionsManagerClient {
      * @param username The pet's owner username
      * @param petName The pet's name
      * @return The List containing all the vet visits from the pet
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<VetVisit> getAllVetVisits(String accessToken, String username, String petName)
-            throws ExecutionException, InterruptedException {
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH, accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<VetVisit> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], VetVisit.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], VetVisit.class));
-        }
-        return result;
+            throws MyPetCareException {
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VET_VISITS_PATH, null, httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, VetVisit.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -734,29 +543,19 @@ public class PetCollectionsManagerClient {
      * @param key1 Start date (This one included)
      * @param key2 End date (This one included)
      * @return The vet visits between the dates
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public List<VetVisit> getVetVisitsBetween(String accessToken, String username, String petName, String key1,
-            String key2) throws ExecutionException, InterruptedException {
+            String key2) throws MyPetCareException {
         PetData.checkDateFormat(key1);
         PetData.checkDateFormat(key2);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager.execute(
-                BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH + SLASH + key1 + SLASH + key2,
-                accessToken).get();
-        if (responseNullOrEmpty(response)) {
-            return new ArrayList<>();
-        }
-        String[] objectArray = splitResponse(response);
-        List<VetVisit> result = new ArrayList<>();
-        result.add(GSON.fromJson(objectArray[0], VetVisit.class));
-        for (int i = 1; i < objectArray.length; i++) {
-            objectArray[i] = "{" + objectArray[i];
-            result.add(GSON.fromJson(objectArray[i], VetVisit.class));
-        }
-        return result;
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VET_VISITS_PATH + SLASH + HttpParameter.encode(key1) + SLASH + HttpParameter.encode(key2), null,
+                        httpHeaders, null);
+
+        Type listType = TypeToken.getParameterized(List.class, VetVisit.class).getType();
+        return gson.fromJson(response.asString(), listType);
     }
 
     /**
@@ -767,44 +566,15 @@ public class PetCollectionsManagerClient {
      * @param petName The pet's name
      * @param key Date the vet visit was done
      * @return The VetVisitData identified by its pet and date.
-     * @throws ExecutionException When the retrieval fails
-     * @throws InterruptedException When the retrieval is interrupted
      */
     public VetVisitData getVetVisit(String accessToken, String username, String petName, String key)
-            throws ExecutionException, InterruptedException {
+            throws MyPetCareException {
         PetData.checkDateFormat(key);
-        taskManager = taskManager.resetTaskManager();
-        taskManager.setTaskId(GET);
-        StringBuilder response = taskManager
-                .execute(BASE_URL + PETS_PATH + username + SLASH + petName + VET_VISITS_PATH + SLASH + key, accessToken)
-                .get();
-        if (response != null) {
-            return GSON.fromJson(response.toString(), VetVisitData.class);
-        }
-        return null;
-    }
+        httpHeaders.put(TOKEN_HEADER, accessToken);
+        HttpResponse response = httpClient
+                .get(BASE_URL + PETS_PATH + HttpParameter.encode(username) + SLASH + HttpParameter.encode(petName)
+                     + VET_VISITS_PATH + SLASH + HttpParameter.encode(key), null, httpHeaders, null);
 
-    /**
-     * Splits the Json response obtained from a get collection.
-     *
-     * @param response StringBuilder containing the response
-     * @return A basic array containing the response split
-     */
-    private String[] splitResponse(StringBuilder response) {
-        String jsonArray = response.substring(1, response.length() - 1);
-        return jsonArray.split(",\\{");
-    }
-
-    /**
-     * Check wether the Json response obtained is null or empty.
-     *
-     * @param response Json response obtained
-     * @return True if response is null or empty, false otherwise
-     */
-    private boolean responseNullOrEmpty(StringBuilder response) {
-        if (response == null) {
-            return true;
-        }
-        return response.length() <= 2;
+        return gson.fromJson(response.asString(), VetVisitData.class);
     }
 }

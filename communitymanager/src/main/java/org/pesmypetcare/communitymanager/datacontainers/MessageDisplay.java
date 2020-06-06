@@ -3,7 +3,6 @@ package org.pesmypetcare.communitymanager.datacontainers;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,9 +22,8 @@ public class MessageDisplay extends Message {
      * Creates a message from message data.
      *
      * @param messageReceiveData The message data
-     * @throws IOException When reading the image fails
      */
-    public MessageDisplay(MessageReceiveData messageReceiveData) throws IOException {
+    public MessageDisplay(MessageReceiveData messageReceiveData) {
         super(messageReceiveData);
         this.image = messageReceiveData.buildImage();
     }
@@ -44,6 +42,11 @@ public class MessageDisplay extends Message {
 
     public boolean isBanned() {
         return super.isBanned();
+    }
+
+
+    public List<String> getReportedList() {
+        return super.getReportedList();
     }
 
     public List<String> getLikedBy() {

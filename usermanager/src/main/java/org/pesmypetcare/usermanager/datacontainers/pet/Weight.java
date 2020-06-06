@@ -33,7 +33,7 @@ public class Weight {
      * @param date Weight date
      * @param weight Weight value
      */
-    public Weight(String date, Integer weight) {
+    public Weight(String date, Double weight) {
         PetData.checkDateFormat(date);
         this.key = date;
         this.body = new WeightData(weight);
